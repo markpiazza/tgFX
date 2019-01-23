@@ -41,6 +41,7 @@ public class TinygDriver extends Observable {
     private String[] message = new String[2];
     public SimpleBooleanProperty connectionStatus = new SimpleBooleanProperty(false);
 
+    public static TinygDriver instance = null;
 
     public HardwarePlatformManager hardwarePlatformManager = new HardwarePlatformManager();
     /**
@@ -137,7 +138,11 @@ public class TinygDriver extends Observable {
     
     
     public static TinygDriver getInstance() {
-        return TinygDriverHolder.INSTANCE;
+        //return TinygDriverHolder.INSTANCE;
+        if(instance==null){
+            instance=new TinygDriver();
+        }
+        return instance;
     }
 
     public void queryHardwareSingleAxisSettings(char c) {
@@ -474,7 +479,6 @@ public class TinygDriver extends Observable {
     }
 
     private TinygDriver() {
-
         //Setup Logging for TinyG Driver
         if (Main.LOGLEVEL.equals("INFO")) {
             logger.setLevel(Level.INFO);
@@ -486,7 +490,6 @@ public class TinygDriver extends Observable {
     }
 
     private static class TinygDriverHolder {
-
         private static final TinygDriver INSTANCE = new TinygDriver();
     }
 
