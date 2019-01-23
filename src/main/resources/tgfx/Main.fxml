@@ -25,7 +25,9 @@
 <?import jfxtras.labs.scene.control.window.*?>
 <?scenebuilder-classpath-element ../../lib/jfxtras-labs-2.2-r6-20130520.173858-1.jar?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" id="AnchorPane" fx:id="topAnchorPane" disable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-1.0" minWidth="1280.0" prefHeight="-1.0" prefWidth="-1.0" style="&#10;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tgfx.Main">
+<VBox  id="AnchorPane" fx:id="topAnchorPane" disable="false" maxHeight="-Infinity" maxWidth="-Infinity"
+       minHeight="-1.0" minWidth="1280.0" prefHeight="-1.0" prefWidth="-1.0" style="&#10;"
+       xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tgfx.Main">
   <children>
     <BorderPane disable="false" prefHeight="-1.0" prefWidth="-1.0" style="" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <bottom>
@@ -190,4 +192,4 @@
   <stylesheets>
     <URL value="@new_main.css" />
   </stylesheets>
-</fx:root>
+</VBox>

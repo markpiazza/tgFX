@@ -24,7 +24,7 @@ public class TgFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/tgfx/Main.fxml"));
         Scene scene = new Scene(root);
         scene.setRoot(root);
 
