@@ -14,8 +14,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.binding.NumberExpression;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -32,6 +30,7 @@ import static jfxtras.labs.dialogs.MonologFXButton.Type.CANCEL;
 import static jfxtras.labs.dialogs.MonologFXButton.Type.YES;
 import jfxtras.labs.dialogs.MonologFXButtonBuilder;
 import jssc.SerialPortException;
+import org.apache.log4j.Logger;
 import tgfx.Main;
 import tgfx.tinyg.*;
 import tgfx.utility.UtilityFunctions;
@@ -42,6 +41,7 @@ import tgfx.utility.UtilityFunctions;
  * @author ril3y
  */
 public class FirmwareUpdaterController implements Initializable {
+    private static Logger logger = Logger.getLogger(FirmwareUpdaterController.class);
 
     @FXML
     private static Label firmwareVersion;
@@ -52,8 +52,8 @@ public class FirmwareUpdaterController implements Initializable {
     @FXML
     private static Button handleUpdateFirmware;
     private SimpleDoubleProperty _currentVersionString = new SimpleDoubleProperty();
-    private static String avrdudePath = new String();
-    private static String avrconfigPath = new String();
+    private static String avrdudePath = "";
+    private static String avrconfigPath = "";
     static HashMap<String, String> platformSetup = new HashMap<>();
 
     private static Task updateFirmware() {
@@ -72,22 +72,18 @@ public class FirmwareUpdaterController implements Initializable {
                     avrdudePath = avd.getAbsolutePath();
                 }
 
-                Main.print("Trying to enter bootloader mode");
+                logger.info("Trying to enter bootloader mode");
                 Main.postConsoleMessage("Entering Bootloader mode.  tgFX will be un-responsive for then next 30 seconds.\n"
                         + "Your TinyG will start blinking rapidly while being programmed");
-                try {
-                    
-                    enterBootloaderMode();
-                } catch (SerialPortException ex) {
-                    Logger.getLogger(FirmwareUpdaterController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
+                enterBootloaderMode();
 
                 //Download TinyG.hex
                 URL url;
                 try {
                     url = new URL(TinygDriver.getInstance().machine.hardwarePlatform.getFirmwareUrl());
                     URLConnection urlConnection = url.openConnection();
-                    Main.print("Opened Connection to Github");
+                    logger.info("Opened Connection to Github");
                     Main.postConsoleMessage("Downloading tinyg.hex file from github.com");
                     InputStream input;
                     input = urlConnection.getInputStream();
@@ -102,14 +98,14 @@ public class FirmwareUpdaterController implements Initializable {
                         }
                         output.close();
                         Main.postConsoleMessage("Finished Downloading tinyg.hex");
-                        Main.print("Finished Downloading tinyg.hex");
+                        logger.info("Finished Downloading tinyg.hex");
                     }
                 } catch (MalformedURLException ex) {
-                    Logger.getLogger(FirmwareUpdaterController.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                     Main.postConsoleMessage("Error downloading the TinyG update from: " + TinygDriver.getInstance().machine.hardwarePlatform.getFirmwareUrl());
                     Main.postConsoleMessage("Check your internetion connection and try again.  Firmware update aborted...");
                 } catch (IOException ex) {
-                    Logger.getLogger(FirmwareUpdaterController.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                     Main.postConsoleMessage("Error updating your TinyG.  IOERROR");
                     return null;
                 }
@@ -134,11 +130,10 @@ public class FirmwareUpdaterController implements Initializable {
                     Main.postConsoleMessage("Firmware update aborted...");
                     return null;
                 } catch (IOException | InterruptedException ex) {
-                    Logger.getLogger(FirmwareUpdaterController.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
 
                 return null;
-
             }
         };
         return task;
@@ -183,7 +178,7 @@ public class FirmwareUpdaterController implements Initializable {
 
     @FXML
     private void checkFirmwareUpdate(ActionEvent event) {
-        Main.print("Checking current Firmware Version");
+        logger.info("Checking current Firmware Version");
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -194,7 +189,7 @@ public class FirmwareUpdaterController implements Initializable {
                     InputStream input;
                     input = urlConnection.getInputStream();
                     byte[] buffer = new byte[4096];
-                    Main.print("Checking end");
+                    logger.info("Checking end");
                     input.read(buffer);
                     String _currentVersionString = new String(buffer);
                     latestFirmwareBuild.setText(_currentVersionString);
@@ -232,7 +227,6 @@ public class FirmwareUpdaterController implements Initializable {
                                 switch (retval) {
                                     case YES:
 //                                logger.info("Clicked Yes");
-
                                         try {
                                             Main.postConsoleMessage("This is going to take about 30 seconds.... Please Wait... Watch the flashies....");
                                             handleUpdateFirmware(new ActionEvent());
@@ -254,9 +248,9 @@ public class FirmwareUpdaterController implements Initializable {
                     }
 
                 } catch (MalformedURLException ex) {
-                    Logger.getLogger(FirmwareUpdaterController.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 } catch (IOException ex) {
-                    Logger.getLogger(FirmwareUpdaterController.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
             }
         });
@@ -274,23 +268,21 @@ public class FirmwareUpdaterController implements Initializable {
 
     }
 
-    protected static void enterBootloaderMode() throws SerialPortException {
+    protected static void enterBootloaderMode() {
         if (TinygDriver.getInstance().isConnected().get()) {
             //We need to disconnect from tinyg after issuing out boot command.
             try {
                 TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_BOOTLOADER_MODE); //Set our board into bootloader mode.
                 Thread.sleep(1000);
-
             } catch (Exception ex) {
-                Logger.getLogger(FirmwareUpdaterController.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex);
             }
             TinygDriver.getInstance().sendDisconnectRequest();
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
-                Logger.getLogger(FirmwareUpdaterController.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex);
             }
-
         }
     }
 }

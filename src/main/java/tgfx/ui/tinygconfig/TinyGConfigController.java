@@ -123,8 +123,7 @@ public class TinyGConfigController implements Initializable {
                         _updateGuiMotorSettings(MOTOR_ARGUMENT);
                     }
                 } catch (Exception ex) {
-                    Main.print("[!]Exception in updateGuiMotorSettings...");
-                    Main.print(ex.getMessage());
+                    logger.error("[!]Exception in updateGuiMotorSettings...",ex);
                 }
             }
         });
@@ -316,9 +315,7 @@ public class TinyGConfigController implements Initializable {
                         _updateGuiAxisSettings(AXIS_NAME);
                     }
                 } catch (Exception ex) {
-                    Main.print("[!]EXCEPTION in updateGuiAxisSettings");
-                    Main.print("LINE: ");
-                    Main.print(ex.getMessage());
+                    logger.error("[!]EXCEPTION in updateGuiAxisSettings", ex);
                 }
 
             }
@@ -380,7 +377,7 @@ public class TinyGConfigController implements Initializable {
 
     @FXML
     void handleMotorQuerySettings(ActionEvent evt) {
-        Main.print("[+]Querying Motor Config...");
+        logger.info("[+]Querying Motor Config...");
 //        Detect what motor tab is "active"...
         try {
             //            updateGuiAxisSettings();
@@ -399,7 +396,7 @@ public class TinyGConfigController implements Initializable {
                     break;
             }
         } catch (Exception ex) {
-            Main.print("[!]Error Querying Single Motor....");
+            logger.error("[!]Error Querying Single Motor....");
         }
     }
 
@@ -416,8 +413,7 @@ public class TinyGConfigController implements Initializable {
 //            TinygDriver.getInstance().queryAllHardwareAxisSettings();
 
         } catch (Exception ex) {
-            Main.print(ex.getMessage());
-            Main.print("ERROR IN HANDLEAPPLYAXISSETTINGS");
+            logger.error(ex);
         }
 
     }
@@ -429,7 +425,7 @@ public class TinyGConfigController implements Initializable {
         try {
             TinygDriver.getInstance().queryHardwareSingleAxisSettings(_axisSelected.charAt(0));
         } catch (Exception ex) {
-            Main.print("[!]Error Querying Axis: " + _axisSelected);
+            logger.error("[!]Error Querying Axis: " + _axisSelected);
         }
     }
     

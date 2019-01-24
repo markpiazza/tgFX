@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.net.URL;
 import java.util.ArrayList;
 import org.apache.log4j.Logger;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import tgfx.tinyg.TinygDriver;
 
 /**
@@ -22,21 +23,19 @@ import tgfx.tinyg.TinygDriver;
  */
 public class HardwarePlatformManager {
     private static final Logger logger = Logger.getLogger(HardwarePlatformManager.class);
+    private static HardwarePlatformManager hardwarePlatformManagerInstance;
 
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
-    private URL path;
     private File folder;
 
-
     public HardwarePlatformManager() {
-        path = getClass().getResource("/tgfx/hardwarePlatforms/");
+        URL path = getClass().getResource("/tgfx/hardwarePlatforms/");
         logger.info(path);
         folder = new File(path.getFile());
-        this.LoadPlatforConfigs();
-
+        this.loadPlatforConfigs();
     }
-//we are not using this until all platforms have the $hp element.  
 
+    //we are not using this until all platforms have the $hp element.
     public boolean setPlatformByName(String name) {
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getPlatformName().equals(name)) {
@@ -60,7 +59,7 @@ public class HardwarePlatformManager {
         return false;
     }
 
-    private int LoadPlatforConfigs() {
+    private int loadPlatforConfigs() {
         return 0;
 //        File[] listOfFiles = folder.listFiles();
 //
@@ -86,14 +85,14 @@ public class HardwarePlatformManager {
     }
 
     public static HardwarePlatformManager getInstance() {
-        return HardwarePlatformManagerHolder.INSTANCE;
-    }
-
-    private static class HardwarePlatformManagerHolder {
-        private static final HardwarePlatformManager INSTANCE = new HardwarePlatformManager();
+        if(hardwarePlatformManagerInstance==null){
+            hardwarePlatformManagerInstance = new HardwarePlatformManager();
+        }
+        return hardwarePlatformManagerInstance;
     }
 
     private void updatePlatformFiles() {
         //todo code in support for updating platform files from remote server
+        throw new NotImplementedException();
     }
 }

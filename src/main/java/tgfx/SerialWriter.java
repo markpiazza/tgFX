@@ -31,27 +31,19 @@ public class SerialWriter implements Runnable {
     //   public Condition clearToSend = lock.newCondition();
     public SerialWriter(BlockingQueue q) {
         this.queue = q;
-        
-        //Setup Logging for SerialWriter
-        if(Main.LOGLEVEL.equals("INFO")){
-            logger.setLevel(org.apache.log4j.Level.INFO);
-        }else if( Main.LOGLEVEL.equals("ERROR")){
-            logger.setLevel(org.apache.log4j.Level.ERROR);
-        }else{
-            logger.setLevel(org.apache.log4j.Level.OFF);
-        }
     }
 
     public void resetBuffer() {
         //Called onDisconnectActions
         buffer_available.set(BUFFER_SIZE);
-        notifyAck();  
+        notifyAck();
     }
 
- 
-   public void clearQueueBuffer() {
+    public void clearQueueBuffer() {
         queue.clear();
-        this.cleared = true; // We set this to tell the mutex with waiting for an ack to send a line that it should not send a line.. we were asked to be cleared.
+        // We set this to tell the mutex with waiting for an ack to
+        // send a line that it should not send a line.. we were asked to be cleared.
+        this.cleared = true;
         try {
             //This is done in resetBuffer is this needed?
             buffer_available.set(BUFFER_SIZE);
@@ -89,7 +81,6 @@ public class SerialWriter implements Runnable {
     }
 
     public boolean setThrottled(boolean t) {
-
         synchronized (mutex) {
             if (t == throttled) {
                 logger.debug("Throttled already set");
@@ -102,9 +93,9 @@ public class SerialWriter implements Runnable {
     }
 
     public void notifyAck() {
-        //This is called by the response parser when an ack packet is recvd.  This
-        //Will wake up the mutex that is sleeping in the write method of the serialWriter
-        //(this) class.
+        // This is called by the response parser when an ack packet is recvd.  This
+        // Will wake up the mutex that is sleeping in the write method of the serialWriter
+        // (this) class.
         synchronized (mutex) {
             logger.debug("Notifying the SerialWriter we have recvd an ACK");
             mutex.notify();
@@ -113,11 +104,11 @@ public class SerialWriter implements Runnable {
 
     private void sendUiMessage(String str) {
         //Used to send messages to the console on the GUI
-        String gcodeComment = "";
+        StringBuilder gcodeComment = new StringBuilder();
         int startComment = str.indexOf("(");
         int endComment = str.indexOf(")");
         for (int i = startComment; i <= endComment; i++) {
-            gcodeComment += str.charAt(i);
+            gcodeComment.append(str.charAt(i));
         }
         Main.postConsoleMessage(" Gcode Comment << " + gcodeComment);
     }
@@ -135,9 +126,6 @@ public class SerialWriter implements Runnable {
     public void write(String str) {
         try {
             synchronized (mutex) {
-                
-                
-                
 //                if (str.length() > getBufferValue()) {
 //                    setThrottled(true);
 //                } else {
@@ -177,10 +165,6 @@ public class SerialWriter implements Runnable {
             }
 
             ser.write(str);
-            if(!Main.LOGLEVEL.equals("OFF")){
-                Main.print("+" + str);
-            }
-            
             
         } catch (InterruptedException ex) {
             logger.error("Error in SerialDriver Write");
@@ -189,7 +173,7 @@ public class SerialWriter implements Runnable {
 
     @Override
     public void run() {
-        Main.print("[+]Serial Writer Thread Running...");
+        logger.info("[+]Serial Writer Thread Running...");
         while (RUN) {
             try {
                 tmpCmd = queue.take();  //Grab the line
@@ -204,9 +188,9 @@ public class SerialWriter implements Runnable {
                 }
                 this.write(tmpCmd);
             } catch (Exception ex) {
-                Main.print("[!]Exception in SerialWriter Thread");
+                logger.error("[!]Exception in SerialWriter Thread");
             }
         }
-        Main.print("[+]SerialWriter thread exiting...");
+        logger.info("[+]SerialWriter thread exiting...");
     }
 }

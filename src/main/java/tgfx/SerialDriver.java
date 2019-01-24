@@ -12,6 +12,7 @@ import jssc.*;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import org.apache.log4j.Logger;
 
@@ -20,19 +21,22 @@ import org.apache.log4j.Logger;
  * @author ril3y
  */
 public class SerialDriver implements SerialPortEventListener {
-
     private static Logger logger = Logger.getLogger(SerialWriter.class);
+    private static SerialDriver serialDriverInstance;
+
+    private static byte[] lineBuffer = new byte[1024];
+    private static int lineIdx = 0;
+
     private boolean connectionState = false;
-    public String portArray[] = null;
+    private boolean CANCELLED = false;
+
     public SerialPort serialPort;
     public InputStream input;
     public OutputStream output;
-    private boolean CANCELLED = false;
-    private static byte[] lineBuffer = new byte[1024];
-    private static int lineIdx = 0;
+    public String portArray[] = null;
     public String debugFileBuffer = "";
+    public List<String> lastRes = new ArrayList();
     public byte[] debugBuffer = new byte[1024];
-    public ArrayList<String> lastRes = new ArrayList();
     public double offsetPointer = 0;
 
     /**
@@ -42,7 +46,10 @@ public class SerialDriver implements SerialPortEventListener {
     }
 
     public static SerialDriver getInstance() {
-        return SerialDriver.SerialDriverHolder.INSTANCE;
+        if(serialDriverInstance==null){
+            serialDriverInstance = new SerialDriver();
+        }
+        return serialDriverInstance;
     }
 
     public void write(String str) {
@@ -105,8 +112,7 @@ public class SerialDriver implements SerialPortEventListener {
 
         if (event.isRXCHAR()) {
             try {
-                //            int bytesToRead = input.read(inbuffer, 0, inbuffer.length);
-                
+//                int bytesToRead = input.read(inbuffer, 0, inbuffer.length);
                 tmpBuffer = serialPort.readBytes(bytesToRead, serialPort.getInputBufferBytesCount());
             } catch (    SerialPortException | SerialPortTimeoutException ex) {
                 java.util.logging.Logger.getLogger(SerialDriver.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,10 +137,7 @@ public class SerialDriver implements SerialPortEventListener {
     }
 
 
-
-
-
-public static String[] listSerialPorts() {
+    public static String[] listSerialPorts() {
         String[] ports = jssc.SerialPortList.getPortNames();
         ArrayList portList = new ArrayList();
 
@@ -204,15 +207,6 @@ public static String[] listSerialPorts() {
 //            logger.error("[*] " + ex.getMessage());
 //            return false;
 //        }
-    
+    }
 
-}
-
-    /**
-     * usual IBM-approved singleton helper class.
-     */
-    private static class SerialDriverHolder {
-
-    private static final SerialDriver INSTANCE = new SerialDriver();
-}
 }

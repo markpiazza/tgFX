@@ -16,11 +16,9 @@ import javafx.beans.property.SimpleStringProperty;
  * @author ril3y
  */
 public class HardwarePlatform {
-
-    
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
-    
- 
+    private static HardwarePlatform hardwarePlatformInstance;
+
     private String platformName;
     private Double minimalBuildVersion;
     private String latestVersionUrl;
@@ -28,6 +26,9 @@ public class HardwarePlatform {
     private String firmwareUrl;
     private int hardwarePlatformVersion = -1;
     private boolean isUpgradeable;
+
+    public HardwarePlatform() {
+    }
 
     public int getHardwarePlatformVersion() {
         return hardwarePlatformVersion;
@@ -84,20 +85,11 @@ public class HardwarePlatform {
     public void setFirmwareUrl(String firmwareUrl) {
         this.firmwareUrl = firmwareUrl;
     }
-   
-
-    public HardwarePlatform() {
-    }
 
     public static HardwarePlatform getInstance() {
-        return HardwarePlatformHolder.INSTANCE;
+        if(hardwarePlatformInstance==null) {
+            hardwarePlatformInstance = new HardwarePlatform();
+        }
+        return hardwarePlatformInstance;
     }
-
-    private static class HardwarePlatformHolder {
-
-        private static final HardwarePlatform INSTANCE = new HardwarePlatform();
-    }
-
-
-  
 }

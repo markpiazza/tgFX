@@ -4,18 +4,18 @@
  */
 package tgfx.utility;
 
-import com.sun.media.jfxmedia.logging.Logger;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import tgfx.Main;
-import static tgfx.Main.OS;
+
+import org.apache.log4j.Logger;
+import tgfx.TgFXConstants;
 
 /**
  *
  * @author ril3y
  */
 public class UtilityFunctions {
-    
+    private static Logger logger = Logger.getLogger(UtilityFunctions.class);
     final static ResourceBundle rb = ResourceBundle.getBundle("version");   //Used to track build date and build number
     
     public static String getOperatingSystem() {
@@ -33,33 +33,31 @@ public class UtilityFunctions {
     }
 
     private static boolean isLinux() {
-        return (OS.indexOf("lin") >= 0);
+        return TgFXConstants.OS.indexOf("lin") >= 0;
     }
 
     private static boolean isWindows() {
-        return (OS.indexOf("win") >= 0);
+        return TgFXConstants.OS.indexOf("win") >= 0;
     }
 
     private static boolean isMac() {
-        return (OS.indexOf("mac") >= 0);
+        return TgFXConstants.OS.indexOf("mac") >= 0;
     }
 
     private static boolean isUnix() {
-        return (OS.indexOf("nux") >= 0);
+        return TgFXConstants.OS.indexOf("nux") >= 0;
     }
 
     public void testMessage(String message) {
-        Main.print("Message Hit");
-
+        logger.info("Message Hit");
     }
-    
-    
+
     public static String getBuildInfo(String propToken) {
         String msg = "";
         try {
             msg = rb.getString(propToken);
         } catch (MissingResourceException e) {
-            Logger.logMsg(Logger.ERROR, "Error Getting Build Info Token ".concat(propToken).concat(" not in Propertyfile!"));
+            logger.error("Error Getting Build Info Token ".concat(propToken).concat(" not in Propertyfile!"));
         }
         return msg;
     }

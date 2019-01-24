@@ -37,11 +37,8 @@ import tgfx.tinyg.responseCommand;
  * @author ril3y
  */
 public class ResponseParser extends Observable implements Runnable {
-
-    /**
-     * logger instance
-     */
     private static final Logger logger = Logger.getLogger(ResponseParser.class);
+
     private boolean TEXT_MODE = false;
     private String[] message = new String[2];
     boolean RUN = true;
@@ -56,14 +53,6 @@ public class ResponseParser extends Observable implements Runnable {
     private String line;
 
     public ResponseParser() {
-        //Setup Logging for ResponseParser
-        if (Main.LOGLEVEL.equals("INFO")) {
-            logger.setLevel(Level.INFO);
-        } else if (Main.LOGLEVEL.equals("ERROR")) {
-            logger.setLevel(Level.ERROR);
-        } else {
-            logger.setLevel(Level.OFF);
-        }
     }
 
     public boolean isTEXT_MODE() {
@@ -77,9 +66,6 @@ public class ResponseParser extends Observable implements Runnable {
     @Override
     public void run() {
         logger.info("Response Parser Running");
-        if (!Main.LOGLEVEL.equals("OFF")) {
-            Main.print("[+]Response Parser Thread Running...");
-        }
         while (RUN) {
             try {
                 line = TinygDriver.jsonQueue.take();
@@ -500,14 +486,9 @@ public class ResponseParser extends Observable implements Runnable {
     }
 
     public synchronized void parseJSON(String line) throws JSONException {
-
-        //logger.info("Got Line: " + line + " from TinyG.");
-        if (!Main.LOGLEVEL.equals("OFF")) {
-            Main.print("-" + line);
-        }
+        logger.info("Got Line: " + line + " from TinyG.");
 
         final JSONObject js = new JSONObject(line);
-
         if (js.has("r") || (js.has("sr")) || (js.has("tgfx"))) { //tgfx is for messages like timeout connections
             Platform.runLater(new Runnable() {
                 @Override

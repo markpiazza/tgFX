@@ -14,7 +14,6 @@ import javafx.scene.paint.*;
  * @author ril3y
  */
 public class Draw2d {
-
     static Paint retPaint;
     
     public static Paint SLOWEST = Color.web("#ee1a0f");
@@ -38,8 +37,6 @@ public class Draw2d {
     public static void setFirstDraw(boolean firstDraw) {
         Draw2d.firstDraw = firstDraw;
     }
-    
-    
 
     public static double getMagnification() {
         return magnification;
@@ -57,19 +54,15 @@ public class Draw2d {
         if (stroke_weight <= 5) {
             strokeIncrement = 1;
         }
-
         if (stroke_weight <= 2) {
             strokeIncrement = .5;
         }
-
         if (stroke_weight <= 1) {
             strokeIncrement = .1;
         }
-
         if (stroke_weight <= .1) {
             strokeIncrement = .01;
         }
-
         if (strokeIncrement <= .01) {
             strokeIncrement = .001;
         }
@@ -112,8 +105,6 @@ public class Draw2d {
             return (FASTEST);
 
         }
-
-
         return retPaint;
     }
 }

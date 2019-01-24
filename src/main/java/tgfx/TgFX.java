@@ -4,8 +4,6 @@
  */
 package tgfx;
 
-import org.apache.log4j.PropertyConfigurator;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,15 +22,15 @@ public class TgFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/tgfx/Main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource(TgFXConstants.STAGE_FXML_MAIN));
         Scene scene = new Scene(root);
         scene.setRoot(root);
 
         FXMLLoader fxmlLoader = new FXMLLoader();
-        TgFX TgFXController = (TgFX) fxmlLoader.getController();
+        TgFX TgFXController = fxmlLoader.getController();
 
-        stage.setMinHeight(648);
-        stage.setMinWidth(1152);
+        stage.setMinHeight(TgFXConstants.STAGE_MIN_HEIGHT);
+        stage.setMinWidth(TgFXConstants.STAGE_MIN_WIDTH);
         stage.setScene(scene);
         stage.show();
     }

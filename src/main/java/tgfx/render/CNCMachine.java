@@ -6,8 +6,6 @@ package tgfx.render;
 
 import java.text.DecimalFormat;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
@@ -26,6 +24,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import org.apache.log4j.Logger;
 import tgfx.Main;
 import tgfx.tinyg.CommandManager;
 import tgfx.tinyg.TinygDriver;
@@ -36,61 +35,51 @@ import tgfx.ui.gcode.GcodeTabController;
  * @author rileyporter
  */
 public class CNCMachine extends Pane {
+    private static Logger logger = Logger.getLogger(CNCMachine.class);
 
-    public static StackPane gcodePane = new StackPane(); //Holds CNCMachine
-    private BooleanExpression cursorVisibleBinding;
-    private DecimalFormat df = new DecimalFormat("#.##");
     private final Circle cursorPoint = new Circle(2, javafx.scene.paint.Color.RED);
+
     private static double xPrevious;
     private static double yPrevious;
-    private boolean _msgSent = false;
-    private double magnification = 1;
+
     private SimpleDoubleProperty cncHeight = new SimpleDoubleProperty();
     private SimpleDoubleProperty cncWidth = new SimpleDoubleProperty();
-    private static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(CNCMachine.class);
+    private BooleanExpression cursorVisibleBinding;
+    private DecimalFormat df = new DecimalFormat(".");
+    private boolean _msgSent = false;
+    private double magnification = 1;
+    
+    public static StackPane gcodePane = new StackPane(); //Holds CNCMachine
 
     public CNCMachine() {
         //Cursor point indicator
         cursorPoint.setRadius(1);
-
-
-
-
-
         this.setMaxSize(0, 0);  //hide this element until we connect
+
         //Set our machine size from tinyg travel max
         this.setVisible(false);
         this.setPadding(new Insets(10));
         this.setFocusTraversable(true);
         this.setFocused(true);
 
-
-
-        /*####################################
-         *CSS
-         #################################### */
-
+        /*
+         * CSS
+         */
         this.setStyle("-fx-background-color: black; -fx-border-color: orange;  -fx-border-width: .5;");
 
-        /*####################################
+        /*
          *PositionCursor Set
-         #################################### */
-
+         */
         final Circle c = new Circle(2, Color.RED);
         final Text cursorText = new Text("None");
         cursorText.setFill(Color.YELLOW);
         cursorText.setFont(Font.font("Arial", 6));
 
-
-
         setupLayout(); //initial layout setup in constructor
 
-
-
-        /*####################################
-         *Event / Change Listeners
-         *#################################### */
-
+        /*
+         * Event / Change Listeners
+         */
 //ugh...
 //
 //
@@ -107,74 +96,81 @@ public class CNCMachine extends Pane {
 //            }
 //        };
 
-
-
-        this.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent me) {
-//                gcodePane.getChildren().remove(c);
-                getChildren().remove(cursorText);
-                unFocusForJogging();
-            }
+        this.setOnMouseExited(me -> {
+//             gcodePane.getChildren().remove(c);
+            getChildren().remove(cursorText);
+            unFocusForJogging();
         });
 
 
-        this.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent me) {
-                setFocusForJogging();
-                requestFocus();
+        this.setOnMouseEntered(me -> {
+            setFocusForJogging();
+            requestFocus();
 
-            }
         });
 
 
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(final MouseEvent me) {
-                //This is so we can set our machine position when a machine does not have homing switches
-                if (me.getButton().equals(MouseButton.SECONDARY)) {
-                    //Right Clicked
-                    ContextMenu cm = new ContextMenu();
-                    MenuItem menuItem1 = new MenuItem("Set Machine Position");
-                    menuItem1.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent t) {
-                            Draw2d.setFirstDraw(true); //We do not want to draw a line from our previous position
-                            TinygDriver.getInstance().cmdManager.setMachinePosition(getNormalizedX(me.getX()), getNormalizedY(me.getY()));
-                            Draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
-                            try {
-                                TinygDriver.getInstance().write(CommandManager.CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
-                                TinygDriver.getInstance().write(CommandManager.CMD_QUERY_STATUS_REPORT);
-                            } catch (Exception ex) {
-                                Logger.getLogger(CNCMachine.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            //G92 does not invoke a status report... So we need to generate one to have
-                            //Our GUI update the coordinates to zero
-
-
+        this.setOnMouseClicked(me -> {
+            //This is so we can set our machine position when a machine does not have homing switches
+            if (me.getButton().equals(MouseButton.SECONDARY)) {
+                //Right Clicked
+                ContextMenu cm = new ContextMenu();
+                MenuItem menuItem1 = new MenuItem("Set Machine Position");
+                menuItem1.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent t) {
+                        Draw2d.setFirstDraw(true); //We do not want to draw a line from our previous position
+                        TinygDriver.getInstance().cmdManager.setMachinePosition(getNormalizedX(me.getX()), getNormalizedY(me.getY()));
+                        Draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
+                        try {
+                            TinygDriver.getInstance().write(CommandManager.CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
+                            TinygDriver.getInstance().write(CommandManager.CMD_QUERY_STATUS_REPORT);
+                        } catch (Exception ex) {
+                            logger.error(ex);
                         }
-                    });
-                    cm.getItems().add(menuItem1);
-                    cm.show((Node) me.getSource(), me.getScreenX(), me.getScreenY());
-                }
-
+                        //G92 does not invoke a status report... So we need to generate one to have
+                        //Our GUI update the coordinates to zero
+                    }
+                });
+                cm.getItems().add(menuItem1);
+                cm.show((Node) me.getSource(), me.getScreenX(), me.getScreenY());
             }
         });
 
 
-        /*####################################
-         *Bindings
-         *#################################### */
+        /*
+         * Bindings
+         */
+        maxHeightProperty().bind(
+                TinygDriver.getInstance()
+                .machine.getAxisByName("y")
+                .getTravelMaxSimple()
+                .multiply(TinygDriver.getInstance().machine.gcodeUnitDivision)
+        );
 
-        maxHeightProperty().bind(TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().multiply(TinygDriver.getInstance().machine.gcodeUnitDivision));
-        maxWidthProperty().bind(TinygDriver.getInstance().machine.getAxisByName("x").getTravelMaxSimple().multiply(TinygDriver.getInstance().machine.gcodeUnitDivision));
-        cursorPoint.translateYProperty().bind(this.heightProperty().subtract(TinygDriver.getInstance().machine.getAxisByName("y").getMachinePositionSimple()));
-        cursorPoint.layoutXProperty().bind(TinygDriver.getInstance().machine.getAxisByName("x").getMachinePositionSimple());
-//        cncHeight.bind(this.heightProperty());
-//        cncWidth.bind(this.widthProperty());
-//        cursorPoint.layoutXProperty().addListener(posChangeListener); //When the x or y pos changes we see if we want to show or hide the cursor
-//        cursorPoint.layoutYProperty().addListener(posChangeListener);
+        maxWidthProperty().bind(
+                TinygDriver.getInstance()
+                .machine.getAxisByName("x")
+                .getTravelMaxSimple()
+                .multiply(TinygDriver.getInstance().machine.gcodeUnitDivision)
+        );
+
+        cursorPoint.translateYProperty().bind(
+            this.heightProperty()
+                .subtract(
+                    TinygDriver.getInstance()
+                    .machine.getAxisByName("y")
+                    .getMachinePositionSimple())
+        );
+
+        cursorPoint.layoutXProperty().bind(
+            TinygDriver.getInstance()
+                .machine.getAxisByName("x")
+                .getMachinePositionSimple());
+//             cncHeight.bind(this.heightProperty());
+//             cncWidth.bind(this.widthProperty());
+//             cursorPoint.layoutXProperty().addListener(posChangeListener); //When the x or y pos changes we see if we want to show or hide the cursor
+//             cursorPoint.layoutYProperty().addListener(posChangeListener);
     }
 
     private void hideOrShowCursor(boolean choice) {
@@ -190,15 +186,15 @@ public class CNCMachine extends Pane {
     private void setFocusForJogging() {
         this.setFocused(true);
 //        Main.postConsoleMessage("Focused");
-        GcodeTabController.setGcodeText("Jogging Enabled");
+        //GcodeTabController.setGcodeText("Jogging Enabled");
     }
 
     public double getNormalizedX(double x) {
-        return (Double.valueOf((x / TinygDriver.getInstance().machine.gcodeUnitDivision.get())));
+        return x / TinygDriver.getInstance().machine.gcodeUnitDivision.get();
     }
 
     public double getNormalizedY(double y) {
-        return (Double.valueOf((getHeight() - y) / TinygDriver.getInstance().machine.gcodeUnitDivision.get()));
+        return (getHeight() - y) / TinygDriver.getInstance().machine.gcodeUnitDivision.get();
     }
 
     public String getNormalizedYasString(double y) {
@@ -209,20 +205,14 @@ public class CNCMachine extends Pane {
         return (df.format(getNormalizedX(x)));
     }
 
-    public boolean checkBoundsY(Line l) {
-        if ((this.getHeight() - l.getEndY()) >=0 && (this.getHeight() - l.getEndY()) <= this.getHeight() + 1) {
-            return true;
-        } else {
-            return false;
-        }
+    private boolean checkBoundsY(Line l) {
+        return (this.getHeight() - l.getEndY()) >= 0
+                && (this.getHeight() - l.getEndY()) <= this.getHeight() + 1;
     }
 
-    public boolean checkBoundsX(Line l) {
-        if (l.getEndX() >= 0 && l.getEndX() <= this.getWidth()) {
-            return true;
-        } else {
-            return false;
-        }
+    private boolean checkBoundsX(Line l) {
+        return l.getEndX() >= 0
+                && l.getEndX() <= this.getWidth();
     }
 
     public void clearScreen() {
@@ -231,11 +221,6 @@ public class CNCMachine extends Pane {
         setupLayout();  //re-draw the needed elements.
     }
 
-    /**
-     *
-     * @param moveType
-     * @param vel
-     */
     public void drawLine(String moveType, double vel) {
         Line l;
         l = new Line();
@@ -276,8 +261,12 @@ public class CNCMachine extends Pane {
 //            gcodeWindow.setScaleY(scale);
 //        }
 //        Main.print(gcodePane.getHeight() - TinygDriver.getInstance().m.getAxisByName("y").getWork_position().get());
-        double newX = TinygDriver.getInstance().machine.getAxisByName("x").getMachinePositionSimple().get();// + magnification;
-        double newY = this.getHeight() - TinygDriver.getInstance().machine.getAxisByName("y").getMachinePositionSimple().get();//(gcodePane.getHeight() - (Double.valueOf(TinygDriver.getInstance().m.getAxisByName("y").getWork_position().get())));// + magnification;
+        double newX = TinygDriver.getInstance()
+                .machine.getAxisByName("x")
+                .getMachinePositionSimple().get();  // + magnification;
+        double newY = this.getHeight() - TinygDriver.getInstance()
+                .machine.getAxisByName("y")
+                .getMachinePositionSimple().get();  //(gcodePane.getHeight() - (Double.valueOf(TinygDriver.getInstance().m.getAxisByName("y").getWork_position().get())));// + magnification;
        
         
         if (Draw2d.isFirstDraw()) {
@@ -289,9 +278,8 @@ public class CNCMachine extends Pane {
             l.setStrokeWidth(.5);
         }
         
-         xPrevious = newX;
+        xPrevious = newX;
         yPrevious = newY; //TODO Pull these out to CNC machine or Draw2d these are out of place
-
 
         if (TinygDriver.getInstance().machine.getMotionMode().get().equals("traverse")) {
             //G0 Moves
@@ -301,8 +289,6 @@ public class CNCMachine extends Pane {
 //            l.setStroke(Draw2d.getLineColorFromVelocity(vel));
             l.setStroke(Draw2d.FAST);
         }
-
-
 
         if (l != null) {
             if (this.checkBoundsX(l) && this.checkBoundsY(l)) {
@@ -330,8 +316,6 @@ public class CNCMachine extends Pane {
                             _msgSent = true; //We do this as to not continue to spam the user with out of bound errors.
                         }
                     }
-                }else{
-                    
                 }
             }
         }
@@ -349,6 +333,7 @@ public class CNCMachine extends Pane {
                 //We need to set these to 0 so we do not draw a line from the last place we were to 0,0
                 resetDrawingCoords();
             } catch (Exception ex) {
+                logger.error(ex);
             }
         }
     }
@@ -384,10 +369,7 @@ public class CNCMachine extends Pane {
     }
 
     public void autoScaleWorkTravelSpace(double scaleAmount) {
-
         //Get the axis with the smallest available space.  Think aspect ratio really
-
-
         double stroke = 2 / scaleAmount;
         this.setScaleX(scaleAmount);
         this.setScaleY(scaleAmount);

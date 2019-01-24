@@ -173,7 +173,7 @@ public class TinygDriver extends Observable {
                     break;
             }
         } catch (Exception ex) {
-            Main.print("[!]Error in queryHardwareSingleMotorSettings() " + ex.getMessage());
+            logger.error("[!]Error in queryHardwareSingleMotorSettings() " + ex.getMessage());
         }
     }
 
@@ -212,7 +212,7 @@ public class TinygDriver extends Observable {
         }
 
 
-        Main.print("[+]Applying Axis Settings...");
+        logger.info("[+]Applying Axis Settings...");
     }
 
     public void applyHardwareMotorSettings(Motor _motor, TextField tf) throws Exception {
@@ -295,7 +295,7 @@ public class TinygDriver extends Observable {
                 this.write("{\"" + _axis.getAxis_name().toLowerCase() + MnemonicManager.MNEMONIC_AXIS_ZERO_BACKOFF + "\":" + tf.getText() + "}\n");
             }
         }
-        Main.print("[+]Applying " + _axis.getAxis_name() + " settings");
+        logger.info("[+]Applying " + _axis.getAxis_name() + " settings");
 
     }
 
@@ -310,10 +310,10 @@ public class TinygDriver extends Observable {
             } else if (motorNumber == 4) {
                 ser.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
             } else {
-                TinygDriver.logger.error("Invalid Motor Number.. Please try again..");
+                logger.error("Invalid Motor Number.. Please try again..");
             }
         } catch (Exception ex) {
-            TinygDriver.logger.error(ex.getMessage());
+            logger.error(ex.getMessage());
         }
     }
 
@@ -468,25 +468,15 @@ public class TinygDriver extends Observable {
             } else if (motorNumber == 4) {
                 ser.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
             } else {
-                Main.print("Invalid Motor Number.. Please try again..");
+                logger.warn("Invalid Motor Number.. Please try again..");
                 setChanged();
             }
         } catch (Exception ex) {
-            Main.print("[!]Error in queryHardwareSingleMotorSettings() " + ex.getMessage());
-
-
+            logger.error("[!]Error in queryHardwareSingleMotorSettings() " + ex.getMessage());
         }
     }
 
     private TinygDriver() {
-        //Setup Logging for TinyG Driver
-        if (Main.LOGLEVEL.equals("INFO")) {
-            logger.setLevel(Level.INFO);
-        } else if (Main.LOGLEVEL.equals("ERROR")) {
-            logger.setLevel(Level.ERROR);
-        } else {
-            logger.setLevel(Level.OFF);
-        }
     }
 
     private static class TinygDriverHolder {
@@ -506,9 +496,9 @@ public class TinygDriver extends Observable {
     public synchronized void appendResponseQueue(byte[] queue) {
         // Add byte arrays to the buffer queue from tinyG's responses.
         try {
-            TinygDriver.queue.put((byte[]) queue);
+            TinygDriver.queue.put(queue);
         } catch (Exception e) {
-            Main.print("ERROR appending to the Response Queue");
+            logger.error("ERROR appending to the Response Queue");
         }
     }
 
@@ -555,45 +545,28 @@ public class TinygDriver extends Observable {
      * All Methods involving writing to TinyG.. This messages will call the
      * SerialDriver write methods from here.
      * @param msg
-     * @throws java.lang.Exception
      */
-    public synchronized void write(String msg) throws Exception {
-
-        TinygDriver.getInstance().serialWriter.addCommandToBuffer(msg);
-        if(!Main.LOGLEVEL.equals("OFF")){
-            Main.print("+" + msg);
-        }
+    public synchronized void write(String msg) {
+        TinygDriver.getInstance()
+                .serialWriter.addCommandToBuffer(msg);
     }
-    
-   
 
     public void priorityWrite(Byte b) throws Exception {
         this.ser.priorityWrite(b);
-        if(!Main.LOGLEVEL.equals("OFF")){
-            Main.print("+" + String.valueOf(b));
-        }
     }
 
-    public void priorityWrite(String msg) throws Exception {
+    public void priorityWrite(String msg){
         if (!msg.contains("\n")) {
             msg = msg + "\n";
         }
         ser.write(msg);
-        if(!Main.LOGLEVEL.equals("OFF")){
-            Main.print("+" + msg);
-        }
-        
+        logger.info("+" + msg);
     }
 
-    /**
-     *
-     *
-     *
-     *
+    /*
      * Utility Methods
-     *
-     * @return
      */
+
     public String[] listSerialPorts() {
         // Get a listing current system serial ports
         String portArray[];

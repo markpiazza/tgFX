@@ -121,16 +121,9 @@ public class GcodeTabController implements Initializable {
     public GcodeTabController() {
         logger.setLevel(org.apache.log4j.Level.ERROR);
         logger.info("Gcode Controller Loaded");
-        cncMachine.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent me) {
-                yAxisLocation.setText(cncMachine.getNormalizedYasString(me.getY()));
-                xAxisLocation.setText(cncMachine.getNormalizedXasString(me.getX()));
-
-
-
-
-            }
+        cncMachine.setOnMouseMoved(me -> {
+            yAxisLocation.setText(cncMachine.getNormalizedYasString(me.getY()));
+            xAxisLocation.setText(cncMachine.getNormalizedXasString(me.getX()));
         });
 
 
@@ -142,110 +135,104 @@ public class GcodeTabController implements Initializable {
         //JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
         //JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
 
-        keyPress = new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (isSendingFile.get() == false) {  //If we are sending a file.. Do NOT jog right now
+        keyPress = (EventHandler<KeyEvent>) keyEvent -> {
+            if (isSendingFile.get() == false) {  //If we are sending a file.. Do NOT jog right now
 //                Main.postConsoleMessage("KEY PRESSED: " + keyEvent.getCode().toString());
 
-                    //Do the jogging.
-                    _axis = " "; // Initialize to no valid axis set
+                //Do the jogging.
+                _axis = " "; // Initialize to no valid axis set
 
-                    if (!isKeyPressed) { //If this event has already sent a jog in need to pass this over.
-                        KeyCode _kc = keyEvent.getCode();
-                        if (_kc.equals(KeyCode.SHIFT)) {
-                            return;   //This is going to toss out our initial SHIFT press for the z axis key combination.
-                        }
-
-                        if (keyEvent.isShiftDown()) {
-                            //Alt is down so we make this into a Z movement
-                            FEED_RATE_PERCENTAGE = TRAVERSE_FEED_RATE;
-                        } else {
-                            FEED_RATE_PERCENTAGE = NUDGE_FEED_RATE;
-                        }
-
-                        //Y Axis Jogging Movement
-                        if (_kc.equals(KeyCode.UP) || _kc.equals(KeyCode.DOWN)) {
-                            //This is and Y Axis Jog action
-                            _axis = "Y"; //Set the axis for this jog movment
-                            if (keyEvent.getCode().equals(KeyCode.UP)) {
-                                jogDial = TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis);
-                            } else if (keyEvent.getCode().equals(KeyCode.DOWN)) {
-                                jogDial = (-1 * TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis)); //Invert this value by multiplying by -1
-                            }
-
-                            //X Axis Jogging Movement
-                        } else if (_kc.equals(KeyCode.RIGHT) || _kc.equals(KeyCode.LEFT)) {
-                            //This is a X Axis Jog Action
-                            _axis = "X"; //Set the axis for this jog movment
-                            if (keyEvent.getCode().equals(KeyCode.LEFT)) {
-                                jogDial = (-1 * TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis));
-
-
-                            } else if (keyEvent.getCode().equals(KeyCode.RIGHT)) {
-                                jogDial = TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis); //Invert this value by multiplying by -1
-                            }
-
-                            //Z Axis Jogging Movement
-                        } else if (_kc.equals(KeyCode.MINUS) || (_kc.equals(KeyCode.EQUALS))) {
-                            _axis = "Z";
-                            if (keyEvent.getCode().equals(KeyCode.MINUS)) {
-                                jogDial = (-1 * TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis));
-                            } else if (keyEvent.getCode().equals(KeyCode.EQUALS)) {
-                                jogDial = TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis); //Invert this value by multiplying by -1
-                            }
-                        }
-
-
-                        try {
-                            if (_axis.equals("X") || _axis.equals("Y") || _axis.equals("Z")) {
-                                // valid key pressed
-                                CommandManager.setIncrementalMovementMode();
-                                TinygDriver.getInstance().write("{\"GC\":\"G1F" + (TinygDriver.getInstance().machine.getAxisByName(_axis).getFeed_rate_maximum() * FEED_RATE_PERCENTAGE) + _axis + jogDial + "\"}\n");
-//                                TinygDriver.getInstance().write("{\"GC\":\"G0" + _axis + jogDial + "\"}\n");
-                                isKeyPressed = true;
-                            }
-
-                        } catch (Exception ex) {
-                            java.util.logging.Logger.getLogger(CNCMachine.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-
-
+                if (!isKeyPressed) { //If this event has already sent a jog in need to pass this over.
+                    KeyCode _kc = keyEvent.getCode();
+                    if (_kc.equals(KeyCode.SHIFT)) {
+                        return;   //This is going to toss out our initial SHIFT press for the z axis key combination.
                     }
 
-                } //end if isSendingFile
-                else {
-                    //We are sending a file... We need to post a messages
-                    setGcodeTextTemp("Jogging Disabled... Sending File.");
-                }
-            }
-        };
+                    if (keyEvent.isShiftDown()) {
+                        //Alt is down so we make this into a Z movement
+                        FEED_RATE_PERCENTAGE = TRAVERSE_FEED_RATE;
+                    } else {
+                        FEED_RATE_PERCENTAGE = NUDGE_FEED_RATE;
+                    }
 
-        keyRelease = new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-//                Main.postConsoleMessage("Stopping Jog Action: " + keyEvent.getCode().toString());
-                if (isSendingFile.get() == false) {
+                    //Y Axis Jogging Movement
+                    if (_kc.equals(KeyCode.UP) || _kc.equals(KeyCode.DOWN)) {
+                        //This is and Y Axis Jog action
+                        _axis = "Y"; //Set the axis for this jog movment
+                        if (keyEvent.getCode().equals(KeyCode.UP)) {
+                            jogDial = TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis);
+                        } else if (keyEvent.getCode().equals(KeyCode.DOWN)) {
+                            jogDial = (-1 * TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis)); //Invert this value by multiplying by -1
+                        }
+
+                        //X Axis Jogging Movement
+                    } else if (_kc.equals(KeyCode.RIGHT) || _kc.equals(KeyCode.LEFT)) {
+                        //This is a X Axis Jog Action
+                        _axis = "X"; //Set the axis for this jog movment
+                        if (keyEvent.getCode().equals(KeyCode.LEFT)) {
+                            jogDial = (-1 * TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis));
+
+
+                        } else if (keyEvent.getCode().equals(KeyCode.RIGHT)) {
+                            jogDial = TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis); //Invert this value by multiplying by -1
+                        }
+
+                        //Z Axis Jogging Movement
+                    } else if (_kc.equals(KeyCode.MINUS) || (_kc.equals(KeyCode.EQUALS))) {
+                        _axis = "Z";
+                        if (keyEvent.getCode().equals(KeyCode.MINUS)) {
+                            jogDial = (-1 * TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis));
+                        } else if (keyEvent.getCode().equals(KeyCode.EQUALS)) {
+                            jogDial = TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis); //Invert this value by multiplying by -1
+                        }
+                    }
 
 
                     try {
-                        setGcodeText("");
-                        if (isKeyPressed) {  //We should find out of TinyG's distance mode is set to G90 before just firing this off.
-
-                            CommandManager.stopJogMovement();
-                            if (TinygDriver.getInstance().machine.getGcode_distance_mode().equals(TinygDriver.getInstance().machine.gcode_distance_mode.INCREMENTAL)) {
-                                //We are in incremental mode we now will enter ABSOLUTE mode
-                                CommandManager.setAbsoluteMovementMode();
-                            } //re-enable absolute mode
-                            isKeyPressed = false; //reset the press flag
+                        if (_axis.equals("X") || _axis.equals("Y") || _axis.equals("Z")) {
+                            // valid key pressed
+                            CommandManager.setIncrementalMovementMode();
+                            TinygDriver.getInstance().write("{\"GC\":\"G1F" + (TinygDriver.getInstance().machine.getAxisByName(_axis).getFeed_rate_maximum() * FEED_RATE_PERCENTAGE) + _axis + jogDial + "\"}\n");
+//                                TinygDriver.getInstance().write("{\"GC\":\"G0" + _axis + jogDial + "\"}\n");
+                            isKeyPressed = true;
                         }
+
                     } catch (Exception ex) {
                         java.util.logging.Logger.getLogger(CNCMachine.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
+
+                }
+
+            } //end if isSendingFile
+            else {
+                //We are sending a file... We need to post a messages
+                setGcodeTextTemp("Jogging Disabled... Sending File.");
+            }
+        };
+
+        keyRelease = (EventHandler<KeyEvent>) keyEvent -> {
+//                Main.postConsoleMessage("Stopping Jog Action: " + keyEvent.getCode().toString());
+            if (isSendingFile.get() == false) {
+
+
+                try {
+                    setGcodeText("");
+                    if (isKeyPressed) {  //We should find out of TinyG's distance mode is set to G90 before just firing this off.
+
+                        CommandManager.stopJogMovement();
+                        if (TinygDriver.getInstance().machine.getGcode_distance_mode().equals(TinygDriver.getInstance().machine.gcode_distance_mode.INCREMENTAL)) {
+                            //We are in incremental mode we now will enter ABSOLUTE mode
+                            CommandManager.setAbsoluteMovementMode();
+                        } //re-enable absolute mode
+                        isKeyPressed = false; //reset the press flag
+                    }
+                } catch (Exception ex) {
+                    java.util.logging.Logger.getLogger(CNCMachine.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
+
         };
 
 

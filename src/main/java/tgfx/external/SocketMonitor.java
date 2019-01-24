@@ -4,6 +4,7 @@
  */
 package tgfx.external;
 
+import org.apache.log4j.Logger;
 import tgfx.SerialDriver;
 import java.io.*;
 import java.net.ServerSocket;
@@ -11,6 +12,7 @@ import java.net.Socket;
 import java.nio.channels.ClosedChannelException;
 import java.util.Observable;
 import java.util.Observer;
+
 import tgfx.Main;
 import tgfx.tinyg.TinygDriver;
 
@@ -19,16 +21,20 @@ import tgfx.tinyg.TinygDriver;
  * @author ril3y
  */
 public class SocketMonitor {
-
+    private static Logger logger = Logger.getLogger(SocketMonitor.class);
     private SerialDriver ser = SerialDriver.getInstance();
-    private int LISTENER_PORT;
     private ServerSocket server;
+    private int listenerPort;
     private int clientCount = 0;
 
     public SocketMonitor(String tmpport) {
-        LISTENER_PORT = Integer.parseInt(tmpport);
+        listenerPort = Integer.parseInt(tmpport);
         this.initServer();
         this.handleConnections();
+    }
+
+    public SocketMonitor(ServerSocket server) {
+        this.server = server;
     }
 
     int countClientConnections() {
@@ -37,66 +43,57 @@ public class SocketMonitor {
 
     boolean initServer() {
         try {
-            server = new ServerSocket(LISTENER_PORT);
+            server = new ServerSocket(listenerPort);
             return (true);
         } catch (IOException e) {
-            Main.print("Could not listen on port: " + String.valueOf(LISTENER_PORT));
+            logger.error("Could not listen on port: " + listenerPort);
             return (false);
         }
     }
 
     public void handleConnections() {
-        Main.print("[+]Remote Monitor Listening for Connections....");
+        logger.info("[+]Remote Monitor Listening for Connections....");
 //        while (ser.isConnected()) {
             try {
                 final Socket socket = server.accept();
             ConnectionHandler connectionHandler = new ConnectionHandler(socket);
             } catch (IOException ex) {
-                Main.print("[!]Error: " + ex.getMessage());
+                logger.error("[!]Error: " + ex.getMessage());
             }
 //        }
-        Main.print("[!]Socket Monitor Terminated...");
-
+        logger.info("[!]Socket Monitor Terminated...");
     }
 
-    public SocketMonitor(ServerSocket server) {
-        this.server = server;
-    }
 }
-/*
- * New Class Here
- */
+
 
 class ConnectionHandler implements Runnable, Observer {
+    private static Logger logger = Logger.getLogger(ConnectionHandler.class);
 
+    private Socket socket;
     private boolean disconnect = false;
-    public Socket socket;
-
-    @Override
-    public void update(Observable o, Object arg) {
-
-        String[] MSG = (String[]) arg;
-
-        if (MSG[0] == "JSON") {
-            final String line = MSG[1];
-            try {
-                this.write(MSG[1] + "\n");
-            } catch (IOException ex) {
-                disconnect = true;
-            } catch (Exception ex) {
-                Main.print("update(): " + ex.getMessage());
-            }
-        }
-    }
-
     public ConnectionHandler(Socket socket) {
         this.socket = socket;
-
         SerialDriver ser = SerialDriver.getInstance();
-       Main.print("[+]Opening Remote Listener Socket");
+        logger.info("[+]Opening Remote Listener Socket");
 //        ser.addObserver(this);
        Thread t = new Thread(this);
 //        t.start();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        String[] message = (String[]) arg;
+        if (message[0] == "JSON") {
+            final String line = message[1];
+            try {
+                this.write(line + "\n");
+            } catch (IOException ex) {
+                disconnect = true;
+            } catch (Exception ex) {
+                logger.error("update(): " + ex.getMessage());
+            }
+        }
     }
 
     private void write(String l) throws Exception {
@@ -113,25 +110,24 @@ class ConnectionHandler implements Runnable, Observer {
 //            } catch (Exception ex) {
 //            }
             TinygDriver tg = TinygDriver.getInstance();
-            String line = "";
             SerialDriver ser = SerialDriver.getInstance();
             while (ser.isConnected() && !disconnect) {
                 try {
-                    line = stdIn.readLine() + "\n";
+                    String line = stdIn.readLine() + "\n";
                     tg.write(line);
                     Thread.sleep(100);
                 } catch (IOException ex) {
                     disconnect = true;
                 } catch (Exception ex) {
-                    Main.print("run(): " + ex.getMessage());
+                    logger.error("run(): " + ex.getMessage());
                     break;
                 }
             }
-            Main.print("[+]Closing Remote Listener Socket");
+            logger.info("[+]Closing Remote Listener Socket");
             socket.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 }
