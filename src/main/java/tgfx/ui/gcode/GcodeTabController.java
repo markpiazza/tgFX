@@ -58,27 +58,31 @@ import tgfx.ui.tgfxsettings.TgfxSettingsController;
  * @author rileyporter
  */
 public class GcodeTabController implements Initializable {
+    private static final Logger logger = Logger.getLogger(GcodeTabController.class);
 
-    private byte[] BAD_BYTES = {(byte) 0x21, (byte) 0x18, (byte) 0x7e};
-    private double scaleAmount;
+    private static CNCMachine cncMachine = new CNCMachine();
+    private static byte[] BAD_BYTES = {(byte) 0x21, (byte) 0x18, (byte) 0x7e};
+    private static int test = 1;
+    private static Date timeStartDt;
+
+    public static StackPane gcodePane = new StackPane(); //Holds CNCMachine  This needs to be before CNCMachine()
+    public static SimpleBooleanProperty isSendingFile = new SimpleBooleanProperty(false);  //This tracks to see if we are sending a file to tinyg.  This allows us to NOT try to jog while sending files
+
+    public ObservableList data; //List to store the gcode file
+
     private int buildNumber;
     private String buildDate;
+    private String _axis = "";
+
     private boolean taskActive = false;
-    static final Logger logger = Logger.getLogger(GcodeTabController.class);
-    public ObservableList data; //List to store the gcode file
-    public static StackPane gcodePane = new StackPane(); //Holds CNCMachine  This needs to be before CNCMachine()
-    private static CNCMachine cncMachine = new CNCMachine();
-    private final EventHandler keyPress;
-    private final EventHandler keyRelease;
-    private String _axis = new String();
-    public static SimpleBooleanProperty isSendingFile = new SimpleBooleanProperty(false);  //This tracks to see if we are sending a file to tinyg.  This allows us to NOT try to jog while sending files
     private boolean isKeyPressed = false;
+    private double scaleAmount;
     private double jogDial = 0;
     private double FEED_RATE_PERCENTAGE = .05;  //%5
     private double TRAVERSE_FEED_RATE = 1;  //%100
     private double NUDGE_FEED_RATE = .05;  //%5
     private static int totalGcodeLines = 0;
-    private static Date timeStartDt;
+
     /*  ######################## FXML ELEMENTS ############################*/
     @FXML
     private static Text timeElapsedTxt;
@@ -127,16 +131,10 @@ public class GcodeTabController implements Initializable {
         });
 
 
-        //JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
-        //JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
-        //JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
-        //JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
-        //JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
-        //JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
-        //JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
+        //TODO: JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
 
-        keyPress = (EventHandler<KeyEvent>) keyEvent -> {
-            if (isSendingFile.get() == false) {  //If we are sending a file.. Do NOT jog right now
+        EventHandler keyPress = (EventHandler<KeyEvent>) keyEvent -> {
+            if (!isSendingFile.get()) {  //If we are sending a file.. Do NOT jog right now
 //                Main.postConsoleMessage("KEY PRESSED: " + keyEvent.getCode().toString());
 
                 //Do the jogging.
@@ -211,9 +209,9 @@ public class GcodeTabController implements Initializable {
             }
         };
 
-        keyRelease = (EventHandler<KeyEvent>) keyEvent -> {
+        EventHandler keyRelease = (EventHandler<KeyEvent>) keyEvent -> {
 //                Main.postConsoleMessage("Stopping Jog Action: " + keyEvent.getCode().toString());
-            if (isSendingFile.get() == false) {
+            if (!isSendingFile.get()) {
 
 
                 try {
@@ -234,8 +232,6 @@ public class GcodeTabController implements Initializable {
             }
 
         };
-
-
 
         cncMachine.setOnKeyPressed(keyPress);
         cncMachine.setOnKeyReleased(keyRelease);
@@ -420,85 +416,60 @@ public class GcodeTabController implements Initializable {
          ######################################*/
 
 
-        xLcd.valueProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue ov, Object oldValue, Object newValue) {
-                double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
-            }
+        xLcd.valueProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> {
+            double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
         });
 
 
-        yLcd.valueProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue ov, Object oldValue, Object newValue) {
-                double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
-            }
+        yLcd.valueProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> {
+            double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
         });
 
-        TinygDriver.getInstance().machine.getGcodeUnitMode().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue ov, Object oldValue, Object newValue) {
-                String tmp = TinygDriver.getInstance().machine.getGcodeUnitMode().get();
+        TinygDriver.getInstance().machine.getGcodeUnitMode().addListener((ChangeListener) (ov, oldValue, newValue) -> {
+            String tmp = TinygDriver.getInstance().machine.getGcodeUnitMode().get();
 
 //                gcodeUnitMode.getSelectionModel().select(TinygDriver.getInstance().m.getGcodeUnitModeAsInt());
-                if (TinygDriver.getInstance().machine.getGcodeUnitModeAsInt() == 0) {
-                    //A bug in the jfxtras does not allow for units to be updated.. we hide them if they are not mm
-                    xLcd.lcdUnitVisibleProperty().setValue(false);
-                    yLcd.lcdUnitVisibleProperty().setValue(false);
-                    zLcd.lcdUnitVisibleProperty().setValue(false);
-                    aLcd.lcdUnitVisibleProperty().setValue(false);
-                    velLcd.lcdUnitVisibleProperty().setValue(false);
-                } else {
-                    xLcd.lcdUnitVisibleProperty().setValue(true);
-                    yLcd.lcdUnitVisibleProperty().setValue(true);
-                    zLcd.lcdUnitVisibleProperty().setValue(true);
-                    aLcd.lcdUnitVisibleProperty().setValue(true);
-                    velLcd.lcdUnitVisibleProperty().setValue(true);
-                }
-                tgfx.Main.postConsoleMessage("[+]Gcode Unit Mode Changed to: " + tmp + "\n");
+            if (TinygDriver.getInstance().machine.getGcodeUnitModeAsInt() == 0) {
+                //A bug in the jfxtras does not allow for units to be updated.. we hide them if they are not mm
+                xLcd.lcdUnitVisibleProperty().setValue(false);
+                yLcd.lcdUnitVisibleProperty().setValue(false);
+                zLcd.lcdUnitVisibleProperty().setValue(false);
+                aLcd.lcdUnitVisibleProperty().setValue(false);
+                velLcd.lcdUnitVisibleProperty().setValue(false);
+            } else {
+                xLcd.lcdUnitVisibleProperty().setValue(true);
+                yLcd.lcdUnitVisibleProperty().setValue(true);
+                zLcd.lcdUnitVisibleProperty().setValue(true);
+                aLcd.lcdUnitVisibleProperty().setValue(true);
+                velLcd.lcdUnitVisibleProperty().setValue(true);
+            }
+            Main.postConsoleMessage("[+]Gcode Unit Mode Changed to: " + tmp + "\n");
 
-                try {
-                    TinygDriver.getInstance().serialWriter.setThrottled(true);
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
+            try {
+                TinygDriver.getInstance().serialWriter.setThrottled(true);
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
 
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_X);
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_Y);
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_Z);
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_A);
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_B);
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_C);
-                    Thread.sleep(400);
-                    TinygDriver.getInstance().serialWriter.setThrottled(false);
-                } catch (Exception ex) {
-                    logger.error("Error querying tg model state on gcode unit change.  Main.java binding section.");
-                }
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_X);
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_Y);
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_Z);
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_A);
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_B);
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_C);
+                Thread.sleep(400);
+                TinygDriver.getInstance().serialWriter.setThrottled(false);
+            } catch (Exception ex) {
+                logger.error("Error querying tg model state on gcode unit change.  Main.java binding section.");
             }
         });
 
-        cncMachine.heightProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue o, Object oldVal,
-                    Object newVal) {
-                logger.info("cncHeightChanged: " + cncMachine.getHeight());
-//                Main.print(cncHeightString 
-            }
+        cncMachine.heightProperty().addListener((ChangeListener) (o, oldVal, newVal) -> {
+            logger.info("cncHeightChanged: " + cncMachine.getHeight());
         });
-        cncMachine.maxWidthProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue ov, Object oldValue, Object newValue) {
-                handleMaxWithChange();
-            }
-        });
-        cncMachine.maxHeightProperty()
-                .addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue ov, Object oldValue, Object newValue) {
-                handleMaxHeightChange();
-            }
-        });
+        cncMachine.maxWidthProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> handleMaxWithChange());
+        cncMachine.maxHeightProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> handleMaxHeightChange());
 
 
 
@@ -513,8 +484,7 @@ public class GcodeTabController implements Initializable {
                 new PropertyValueFactory<GcodeLine, String>("codeLine"));
         GcodeLine n = new GcodeLine("Click open to load..", 0);
 
-        gcodeView.getItems()
-                .setAll(data);
+        gcodeView.getItems().setAll(data);
         data.add(n);
 
         gcodeView.setItems(data);
@@ -633,7 +603,6 @@ public class GcodeTabController implements Initializable {
             }
         });
     }
-    static int test = 1;
 
     @FXML
     static void handleTestButton(ActionEvent evt) throws Exception {

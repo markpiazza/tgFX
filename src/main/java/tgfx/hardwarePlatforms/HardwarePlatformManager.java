@@ -11,10 +11,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import tgfx.Main;
 import tgfx.tinyg.TinygDriver;
 
 /**
@@ -26,62 +29,53 @@ public class HardwarePlatformManager {
     private static HardwarePlatformManager hardwarePlatformManagerInstance;
 
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
-    private File folder;
 
     public HardwarePlatformManager() {
-        URL path = getClass().getResource("/tgfx/hardwarePlatforms/");
-        logger.info(path);
-        folder = new File(path.getFile());
-        this.loadPlatforConfigs();
+        this.loadPlatformConfigs();
     }
 
     //we are not using this until all platforms have the $hp element.
-    public boolean setPlatformByName(String name) {
+    public void setPlatformByName(String name) {
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getPlatformName().equals(name)) {
                 TinygDriver.getInstance().machine.hardwarePlatform = platform;
                 logger.info("Applied " + name + " hardware Profile to System");
-                return true;
+                return;
             }
         }
-        return false;
     }
 
-    public boolean setHardwarePlatformByVersionNumber(int verNumber) {
+    public void setHardwarePlatformByVersionNumber(int verNumber) {
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getHardwarePlatformVersion() == verNumber) {
                 TinygDriver.getInstance().machine.hardwarePlatform = platform;
                 logger.info("Applied " + verNumber + " hardware platform id number to System");
-                return true;
-
+                return;
             }
         }
-        return false;
     }
 
-    private int loadPlatforConfigs() {
-        return 0;
-//        File[] listOfFiles = folder.listFiles();
-//
-//        for (int i = 0; i < listOfFiles.length; i++) {
-//            if (listOfFiles[i].isFile()) {
-//                File file = listOfFiles[i].getAbsoluteFile();
-//                if (file.getName().endsWith(".json")) {
-//                    try {
-//                        Gson gson = new Gson();
-//                        BufferedReader br = new BufferedReader(new FileReader(file));
-//                        HardwarePlatform hp = gson.fromJson(br, HardwarePlatform.class);
-//                        availablePlatforms.add(hp);
-//                    } catch (FileNotFoundException | JsonIOException ex) {
-//                        logger.error("Error loading hardware platforms: " + ex.getMessage());
-//                    }catch (JsonSyntaxException ex){
-//                        logger.error(ex.getMessage());
-//                    }
-//                }
-//            }
-//        }
-//        logger.info("Loaded " + availablePlatforms.size() + " platform files");
-//        return availablePlatforms.size();
+    private void loadPlatformConfigs() {
+        File folder = new File("resources/hardwarePlatforms/");
+        File[] listOfFiles = folder.listFiles();
+        for (File listOfFile : listOfFiles) {
+            if (listOfFile.isFile()) {
+                if (listOfFile.getName().endsWith(".json")) {
+                    try {
+                        Gson gson = new Gson();
+                        BufferedReader br = new BufferedReader(new FileReader(listOfFile));
+                        HardwarePlatform hp = gson.fromJson(br, HardwarePlatform.class);
+                        availablePlatforms.add(hp);
+                    } catch (FileNotFoundException | JsonIOException ex) {
+                        logger.error("Error loading hardware platforms: " + ex.getMessage());
+                    }catch (JsonSyntaxException ex){
+                        logger.error(ex.getMessage());
+                    }
+                }
+            }
+        }
+        logger.info("Loaded " + availablePlatforms.size() + " platform files");
+        availablePlatforms.size();
     }
 
     public static HardwarePlatformManager getInstance() {

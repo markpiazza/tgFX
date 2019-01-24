@@ -142,9 +142,9 @@
                 <BorderPane.margin>
                     <Insets fx:id="x77"/>
                 </BorderPane.margin>
-                <!--<fx:include source="ui/gcode/GcodeTab.fxml" />-->
+                <fx:include source="ui/gcode/GcodeTab.fxml" />
                 <fx:include source="ui/tinygconfig/TinyGConfig.fxml"/>
-                <!--<fx:include source="ui/machinesettings/MachineSettings.fxml" />-->
+                <fx:include source="ui/machinesettings/MachineSettings.fxml" />
                 <fx:include source="ui/tgfxsettings/TgfxSettings.fxml"/>
             </TabPane>
         </center>

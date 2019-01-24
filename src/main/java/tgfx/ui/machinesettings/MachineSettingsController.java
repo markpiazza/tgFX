@@ -70,15 +70,11 @@ public class MachineSettingsController implements Initializable {
     }
 
     private void populateConfigFiles() {
-
-        String path = "configs";
-
-        String files;
-        File folder = new File(path);
+        File folder = new File("resources/configs/");
         File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
-                files = listOfFile.getName();
+                String files = listOfFile.getName();
                 if (files.endsWith(".config") || files.endsWith(".json")) {
                     configsListView.getItems().add(files);
                 }

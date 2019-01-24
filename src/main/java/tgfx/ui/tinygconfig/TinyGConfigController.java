@@ -18,7 +18,6 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.apache.log4j.Logger;
-import tgfx.Main;
 import tgfx.system.Axis;
 import tgfx.system.Machine;
 import tgfx.system.Motor;
@@ -297,28 +296,25 @@ public class TinyGConfigController implements Initializable {
     public static void updateGuiAxisSettings(String axname) {
         //Update the GUI for Axis Config Settings
         final String AXIS_NAME = axname;
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                //We are now back in the EventThread and can update the GUI for the CMD SETTINGS
-                //Right now this is how I am doing this.  However I think there can be a more optimized way
-                //Perhaps by passing a routing message as to which motor was updated then not all have to be updated
-                //every time one is.
-                try {
-                    if (AXIS_NAME == null) {
-                        //Axis was not provied as a sting argument.. so we update all of them
-                        for (Axis ax : TinygDriver.getInstance().machine.getAllAxis()) {
-                            _updateGuiAxisSettings(ax);
-                        }
-                    } else {
-                        //We were provided with a specific axis to update.  Update it.
-                        _updateGuiAxisSettings(AXIS_NAME);
+        Platform.runLater(() -> {
+            //We are now back in the EventThread and can update the GUI for the CMD SETTINGS
+            //Right now this is how I am doing this.  However I think there can be a more optimized way
+            //Perhaps by passing a routing message as to which motor was updated then not all have to be updated
+            //every time one is.
+            try {
+                if (AXIS_NAME == null) {
+                    //Axis was not provied as a sting argument.. so we update all of them
+                    for (Axis ax : TinygDriver.getInstance().machine.getAllAxis()) {
+                        _updateGuiAxisSettings(ax);
                     }
-                } catch (Exception ex) {
-                    logger.error("[!]EXCEPTION in updateGuiAxisSettings", ex);
+                } else {
+                    //We were provided with a specific axis to update.  Update it.
+                    _updateGuiAxisSettings(AXIS_NAME);
                 }
-
+            } catch (Exception ex) {
+                logger.error("[!]EXCEPTION in updateGuiAxisSettings", ex);
             }
+
         });
     }
 
@@ -419,7 +415,7 @@ public class TinyGConfigController implements Initializable {
     }
 
     @FXML
-    private void handleAxisQuerySettings(ActionEvent evt) throws Exception {
+    private void handleAxisQuerySettings(ActionEvent evt) {
         String _axisSelected = axisTabPane.getSelectionModel().getSelectedItem().getText().toLowerCase();
         tgfx.Main.postConsoleMessage("[+]Querying Axis: " + _axisSelected + "\n");
         try {

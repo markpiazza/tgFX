@@ -223,9 +223,9 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                     Thread.sleep(delayValue);
                     tg.write(CommandManager.CMD_APPLY_TEXT_VOBERSITY);
 
-                    //tgfx.ui.gcode.GcodeTabController.setCNCMachineVisible(true); //Once we connected we should show the drawing enevlope.
-                    //Main.postConsoleMessage("Showing CNC Machine Preview...");
-                    //GcodeTabController.setGcodeTextTemp("TinyG Connected.");
+//                    tgfx.ui.gcode.GcodeTabController.setCNCMachineVisible(true); //Once we connected we should show the drawing enevlope.
+//                    Main.postConsoleMessage("Showing CNC Machine Preview...");
+//                    GcodeTabController.setGcodeTextTemp("TinyG Connected.");
 
                 } catch (Exception ex) {
                     logger.error("Error in OnConnectActions()", ex);
@@ -251,7 +251,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
                     logger.info("[*]Attempting to Connect to TinyG.");
 
-                    if (!tg.initialize(serialPortSelected, 115200)) {  //This will be true if we connected when we tried to!
+                    if (!tg.initialize(serialPortSelected, TgFXConstants.SERIAL_DATA_RATE)) {  //This will be true if we connected when we tried to!
                         postConsoleMessage("[!]There was an error connecting to " + serialPortSelected + " please verify that the port is not in use.");
                     }
 
@@ -357,7 +357,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     }
 
     @FXML
-    private void handleKeyPress(final InputEvent event) throws Exception {
+    private void handleKeyPress(final InputEvent event) {
         //private void handleEnter(ActionEvent event) throws Exception {
         final KeyEvent keyEvent = (KeyEvent) event;
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
@@ -403,7 +403,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 final String routingKey = updateMessage[0];
                 final String keyArgument = updateMessage[1];
 
-                /**
+                /*
                  * This is our update routing switch From here we update
                  * different parts of the GUI that is not bound to properties.
                  */
@@ -509,7 +509,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                                 try {
                                     tg.disconnect();
                                 } catch (SerialPortException ex) {
-                                    java.util.logging.Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                                    logger.error(ex);
                                 }
 
                             });
@@ -707,30 +707,14 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         /*
          * BINDINGS
          */
-        srMomo.textProperty()
-                .bind(TinygDriver.getInstance()
-                        .machine.getMotionMode());
-        srVer.textProperty()
-                .bind(TinygDriver.getInstance()
-                        .machine.firmwareVersion);
-        srBuild.textProperty()
-                .bindBidirectional(TinygDriver.getInstance()
-                        .machine.firmwareBuild, sc);
-        srState.textProperty()
-                .bind(TinygDriver.getInstance().
-                        machine.m_state);
-        srCoord.textProperty()
-                .bind(TinygDriver.getInstance()
-                        .machine.getCoordinateSystem());
-        srUnits.textProperty()
-                .bind(TinygDriver.getInstance()
-                        .machine.getGcodeUnitMode());
-        srCoord.textProperty()
-                .bind(TinygDriver.getInstance()
-                        .machine.gcm.getCurrentGcodeCoordinateSystemName());
-        srGcodeLine.textProperty()
-                .bind(TinygDriver.getInstance()
-                        .machine.getLineNumberSimple().asString());
+        srMomo.textProperty().bind(TinygDriver.getInstance().machine.getMotionMode());
+        srVer.textProperty().bind(TinygDriver.getInstance().machine.firmwareVersion);
+        srBuild.textProperty().bindBidirectional(TinygDriver.getInstance().machine.firmwareBuild, sc);
+        srState.textProperty().bind(TinygDriver.getInstance().machine.m_state);
+        srCoord.textProperty().bind(TinygDriver.getInstance().machine.getCoordinateSystem());
+        srUnits.textProperty().bind(TinygDriver.getInstance().machine.getGcodeUnitMode());
+        srCoord.textProperty().bind(TinygDriver.getInstance().machine.gcm.getCurrentGcodeCoordinateSystemName());
+        srGcodeLine.textProperty().bind(TinygDriver.getInstance().machine.getLineNumberSimple().asString());
 
     }
 }
