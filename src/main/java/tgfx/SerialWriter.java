@@ -23,7 +23,7 @@ public class SerialWriter implements Runnable {
     private boolean cleared  = false;
     private String tmpCmd;
     private int BUFFER_SIZE = 180;
-    public AtomicInteger buffer_available = new AtomicInteger(BUFFER_SIZE);
+    private AtomicInteger buffer_available = new AtomicInteger(BUFFER_SIZE);
     private SerialDriver ser = SerialDriver.getInstance();
     private static final Object mutex = new Object();
     private static boolean throttled = false;
@@ -34,7 +34,7 @@ public class SerialWriter implements Runnable {
         this.queue = q;
     }
 
-    public void resetBuffer() {
+    void resetBuffer() {
         //Called onDisconnectActions
         buffer_available.set(BUFFER_SIZE);
         notifyAck();
@@ -63,7 +63,7 @@ public class SerialWriter implements Runnable {
         this.RUN = RUN;
     }
 
-    public synchronized int getBufferValue() {
+    synchronized int getBufferValue() {
         return buffer_available.get();
     }
 
@@ -72,7 +72,7 @@ public class SerialWriter implements Runnable {
         logger.debug("Got a BUFFER Response.. reset it to: " + val);
     }
 
-    public synchronized void addBytesReturnedToBuffer(int lenBytesReturned) {
+    synchronized void addBytesReturnedToBuffer(int lenBytesReturned) {
         buffer_available.set(getBufferValue() + lenBytesReturned);
         logger.debug("Returned " + lenBytesReturned + " to buffer.  Buffer is now at " + buffer_available + "\n");
     }
@@ -81,16 +81,15 @@ public class SerialWriter implements Runnable {
         this.queue.add(cmd);
     }
 
-    public boolean setThrottled(boolean t) {
+    public void setThrottled(boolean t) {
         synchronized (mutex) {
             if (t == throttled) {
                 logger.debug("Throttled already set");
-                return false;
+                return;
             }
             logger.debug("Setting Throttled " + t);
             throttled = t;
         }
-        return true;
     }
 
     public void notifyAck() {

@@ -19,7 +19,7 @@ public class ResponseCommand {
     private String settingKey;
     private String settingValue;
     
-    public ResponseCommand(){
+    ResponseCommand(){
         
     }
     public ResponseCommand(String sp, String sk, String sv){
@@ -33,7 +33,7 @@ public class ResponseCommand {
         return settingParent;
     }
 
-    public void setSettingParent(String settingParent) {
+    void setSettingParent(String settingParent) {
         this.settingParent = settingParent;
     }
 
@@ -41,7 +41,7 @@ public class ResponseCommand {
         return settingKey;
     }
 
-    public void setSettingKey(String settingKey) {
+    void setSettingKey(String settingKey) {
         this.settingKey = settingKey;
     }
 

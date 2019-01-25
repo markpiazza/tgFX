@@ -54,11 +54,11 @@ public class HardwarePlatformManager {
 
     private void loadPlatformConfigs() {
         File folder = new File("hardwarePlatforms");
-        if (!folder.exists()) {
-            logger.warn("Error loading platform configs, "+folder.getName()+" not found");
+        File[] listOfFiles = folder.listFiles();
+        if (listOfFiles==null) {
+            logger.warn("Error loading hardware platforms, '"+folder.getName()+"' not found");
             return;
         }
-        File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
                 if (listOfFile.getName().endsWith(".json")) {

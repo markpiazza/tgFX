@@ -44,8 +44,7 @@ import javafx.stage.Stage;
 
 import jfxtras.labs.dialogs.MonologFX;
 import jfxtras.labs.dialogs.MonologFXBuilder;
-import static jfxtras.labs.dialogs.MonologFXButton.Type.NO;
-import static jfxtras.labs.dialogs.MonologFXButton.Type.YES;
+
 import static tgfx.TgFXConstants.CONNECTION_TIMEOUT;
 import static tgfx.TgFXConstants.CONNECTION_TIMEOUT_STRING;
 
@@ -63,7 +62,6 @@ import tgfx.render.Draw2d;
 import tgfx.ui.gcode.GcodeHistory;
 import tgfx.ui.gcode.GcodeTabController;
 import tgfx.ui.machinesettings.MachineSettingsController;
-import tgfx.ui.tgfxsettings.TgfxSettingsController;
 import tgfx.ui.tinygconfig.TinyGConfigController;
 import tgfx.updater.firmware.FirmwareUpdaterController;
 import tgfx.utility.QueueUsingTimer;
@@ -87,7 +85,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     private TinygDriver tg;
     private GcodeHistory gcodeCommandHistory;
-    private QueueUsingTimer connectionTimer;
+    private QueueUsingTimer<String> connectionTimer;
 
     @FXML
     private Circle cursor;
@@ -109,7 +107,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     @FXML
     Text heightSize, widthSize;
     @FXML
-    ChoiceBox serialPorts;
+    ChoiceBox<String> serialPorts;
 
     //Config FXML//
     @FXML
@@ -129,7 +127,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     }
 
     public Main() {
-        connectionTimer = new QueueUsingTimer( CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
+        connectionTimer = new QueueUsingTimer<>( CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
 
         gcodeCommandHistory = new GcodeHistory();
         tg = TinygDriver.getInstance();
@@ -155,7 +153,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
      */
     private void onConnectActions() {
         try {
-            connectionTimer = new QueueUsingTimer(CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
+            connectionTimer = new QueueUsingTimer<>(CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
             Platform.runLater(() -> {
                 try {
                     GcodeTabController.setGcodeTextTemp("Attempting to Connect to TinyG.");
@@ -277,7 +275,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     }
 
-    public void onDisconnectActions() throws SerialPortException {
+    private void onDisconnectActions() throws SerialPortException {
         TinygDriver.getInstance().disconnect();
         Platform.runLater(() -> {
             try {
@@ -685,7 +683,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         /*
          * String Converters
          */
-        StringConverter sc = new StringConverter<Number>() {
+        StringConverter<Number> sc = new StringConverter<Number>() {
             @Override
             public String toString(Number n) {
                 return String.valueOf(n.floatValue());

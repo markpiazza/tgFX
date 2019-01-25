@@ -27,31 +27,31 @@ public final class GcodeCoordinateSystem {
     private double cOffset;
     
 
-    public GcodeCoordinateSystem(String coordinateName) {
+    GcodeCoordinateSystem(String coordinateName) {
         setCoordinate(coordinateName);
         setCoordinateNumberMnemonic(Integer.valueOf(String.valueOf(coordinateName).substring(1, 2)));
 
     }
     
-    public StringProperty getGcodeCoordinateSystemProperty() {
+    StringProperty getGcodeCoordinateSystemProperty() {
         return(this.coordinateSystemName);
     }
     
-    public GcodeCoordinateSystem() {
+    GcodeCoordinateSystem() {
         
     }
 
-    public int getCoordinateNumberMnemonic() {
+    int getCoordinateNumberMnemonic() {
         //Returns a 54 vs a 1 
         return coordinateNumber;
     }
 
-    public int getCoordinateNumberByTgFormat() {
+    int getCoordinateNumberByTgFormat() {
         //Returns a 54 vs a 1 
         return coordinateNumberTgFormat;
     }
 
-    public void setCoordinateNumber(int number) {
+    private void setCoordinateNumber(int number) {
         //sets a 1 for g54 etc...
         switch (number) {
             case 1:
@@ -87,7 +87,7 @@ public final class GcodeCoordinateSystem {
         }
     }
 
-    public void setCoordinateNumberMnemonic(int coordinateNumber) {
+    private void setCoordinateNumberMnemonic(int coordinateNumber) {
         if (coordinateNumber > 59 || coordinateNumber < 54) {
             //invalid range
         } else {
@@ -103,11 +103,11 @@ public final class GcodeCoordinateSystem {
         }
     }
 
-    public String getCoordinate() {
+    String getCoordinate() {
         return coordinateSystemName.get();
     }
 
-    public void setCoordinate(String coordinate) {
+    void setCoordinate(String coordinate) {
         this.coordinateSystemName.set(coordinate);
         this.coordinateSystemName.set(coordinate);
     }

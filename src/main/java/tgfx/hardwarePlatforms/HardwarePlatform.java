@@ -4,12 +4,7 @@
  */
 package tgfx.hardwarePlatforms;
 
-import java.io.File;
 import java.util.ArrayList;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,8 +15,9 @@ import org.apache.logging.log4j.Logger;
 public class HardwarePlatform {
     private static final Logger logger = LogManager.getLogger();
 
-    private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
     private static HardwarePlatform hardwarePlatformInstance;
+
+    private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
 
     private String platformName;
     private Double minimalBuildVersion;

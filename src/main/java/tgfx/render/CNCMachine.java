@@ -117,21 +117,18 @@ public class CNCMachine extends Pane {
                 //Right Clicked
                 ContextMenu cm = new ContextMenu();
                 MenuItem menuItem1 = new MenuItem("Set Machine Position");
-                menuItem1.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent t) {
-                        Draw2d.setFirstDraw(true); //We do not want to draw a line from our previous position
-                        TinygDriver.getInstance().cmdManager.setMachinePosition(getNormalizedX(me.getX()), getNormalizedY(me.getY()));
-                        Draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
-                        try {
-                            TinygDriver.getInstance().write(CommandManager.CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
-                            TinygDriver.getInstance().write(CommandManager.CMD_QUERY_STATUS_REPORT);
-                        } catch (Exception ex) {
-                            logger.error(ex);
-                        }
-                        //G92 does not invoke a status report... So we need to generate one to have
-                        //Our GUI update the coordinates to zero
+                menuItem1.setOnAction(t -> {
+                    Draw2d.setFirstDraw(true); //We do not want to draw a line from our previous position
+                    TinygDriver.getInstance().cmdManager.setMachinePosition(getNormalizedX(me.getX()), getNormalizedY(me.getY()));
+                    Draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
+                    try {
+                        TinygDriver.getInstance().write(CommandManager.CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
+                        TinygDriver.getInstance().write(CommandManager.CMD_QUERY_STATUS_REPORT);
+                    } catch (Exception ex) {
+                        logger.error(ex);
                     }
+                    //G92 does not invoke a status report... So we need to generate one to have
+                    //Our GUI update the coordinates to zero
                 });
                 cm.getItems().add(menuItem1);
                 cm.show((Node) me.getSource(), me.getScreenX(), me.getScreenY());
@@ -190,11 +187,11 @@ public class CNCMachine extends Pane {
         //GcodeTabController.setGcodeText("Jogging Enabled");
     }
 
-    public double getNormalizedX(double x) {
+    private double getNormalizedX(double x) {
         return x / TinygDriver.getInstance().machine.gcodeUnitDivision.get();
     }
 
-    public double getNormalizedY(double y) {
+    private double getNormalizedY(double y) {
         return (getHeight() - y) / TinygDriver.getInstance().machine.gcodeUnitDivision.get();
     }
 
@@ -291,36 +288,34 @@ public class CNCMachine extends Pane {
             l.setStroke(Draw2d.FAST);
         }
 
-        if (l != null) {
-            if (this.checkBoundsX(l) && this.checkBoundsY(l)) {
-                //Line is within the travel max gcode preview box.  So we will draw it.
-                this.getChildren().add(l);  //Add the line to the Pane 
+        if (this.checkBoundsX(l) && this.checkBoundsY(l)) {
+            //Line is within the travel max gcode preview box.  So we will draw it.
+            this.getChildren().add(l);  //Add the line to the Pane
 //                cursorPoint.visibleProperty().set(true);
-                _msgSent = false;
-                if (!getChildren().contains(cursorPoint)) { //If the cursorPoint is not in the Group and we are in bounds
-                    this.getChildren().add(cursorPoint);  //Adding the cursorPoint back
-                }
+            _msgSent = false;
+            if (!getChildren().contains(cursorPoint)) { //If the cursorPoint is not in the Group and we are in bounds
+                this.getChildren().add(cursorPoint);  //Adding the cursorPoint back
+            }
 
-            } else {
-                logger.info("Outside of Bounds X");
-                
-                if (getWidth() != 21 && getHeight() != 21) { //This is a bug fix to avoid the cursor being hidden on the initial connect.
-                    //This should be fairly harmless as it will always show the cursor if its the inital connect size 21,21
-                    //its a bit of a hack but it works for now.
+        } else {
+            logger.info("Outside of Bounds X");
+
+            if (getWidth() != 21 && getHeight() != 21) { //This is a bug fix to avoid the cursor being hidden on the initial connect.
+                //This should be fairly harmless as it will always show the cursor if its the inital connect size 21,21
+                //its a bit of a hack but it works for now.
 //                    cursorPoint.visibleProperty().set(false);
 //                    Draw2d.setFirstDraw(true);
-                    if (getChildren().contains(cursorPoint)) { //If cursor is in the group we are going to remove it util above is true
-                        getChildren().remove(this.getChildren().indexOf(cursorPoint)); //Remove it.
-                        if (!_msgSent) {
-                            Main.postConsoleMessage("You are out of your TinyG machine working envelope.  You need to either move back in by jogging, homing"
-                                    + "\n or you can right click on the Gcode Preview and click set position to set your estimated position.\n");
-                            _msgSent = true; //We do this as to not continue to spam the user with out of bound errors.
-                        }
+                if (getChildren().contains(cursorPoint)) { //If cursor is in the group we are going to remove it util above is true
+                    getChildren().remove(this.getChildren().indexOf(cursorPoint)); //Remove it.
+                    if (!_msgSent) {
+                        Main.postConsoleMessage("You are out of your TinyG machine working envelope.  You need to either move back in by jogging, homing"
+                                + "\n or you can right click on the Gcode Preview and click set position to set your estimated position.\n");
+                        _msgSent = true; //We do this as to not continue to spam the user with out of bound errors.
                     }
                 }
             }
         }
-       
+
     }
 
     public void zeroSystem() {

@@ -74,16 +74,6 @@ public final class Machine {
     private final List<Motor> motors = new ArrayList<>();
     private final  List<Axis> axis = new ArrayList<>();
     private List<GcodeCoordinateSystem> gcodeCoordinateSystems = new ArrayList<>();
-    private final  Axis x = new Axis(Axis.AXIS.X, Axis.AXIS_TYPE.LINEAR, Axis.AXIS_MODES.STANDARD);
-    private final  Axis y = new Axis(Axis.AXIS.Y, Axis.AXIS_TYPE.LINEAR, Axis.AXIS_MODES.STANDARD);
-    private final  Axis z = new Axis(Axis.AXIS.Z, Axis.AXIS_TYPE.LINEAR, Axis.AXIS_MODES.STANDARD);
-    private final  Axis a = new Axis(Axis.AXIS.A, Axis.AXIS_TYPE.ROTATIONAL, Axis.AXIS_MODES.STANDARD);
-    private final  Axis b = new Axis(Axis.AXIS.B, Axis.AXIS_TYPE.ROTATIONAL, Axis.AXIS_MODES.STANDARD);
-    private final  Axis c = new Axis(Axis.AXIS.C, Axis.AXIS_TYPE.ROTATIONAL, Axis.AXIS_MODES.STANDARD);
-    private final Motor Motor1 = new Motor(1);
-    private final Motor Motor2 = new Motor(2);
-    private final Motor Motor3 = new Motor(3);
-    private final Motor Motor4 = new Motor(4);
     public GcodeCoordinateManager gcm = new GcodeCoordinateManager();
 
     public static enum motion_modes {
@@ -97,7 +87,7 @@ public final class Machine {
         g54, g55, g56, g57, g58, g59
     }
 
-    public void setSwitchType(int swType) {
+    private void setSwitchType(int swType) {
         this.switchType = swType;
     }
 
@@ -122,11 +112,11 @@ public final class Machine {
         return gcode_distance_mode;
     }
 
-    public void setGcodeDistanceMode(String gdm) {
+    private void setGcodeDistanceMode(String gdm) {
         setGcodeDistanceMode(Integer.valueOf(gdm));
     }
 
-    public void setGcodeDistanceMode(int gdm) {
+    private void setGcodeDistanceMode(int gdm) {
 
         switch (gdm) {
             case 0:
@@ -138,7 +128,7 @@ public final class Machine {
 
     }
 
-    public void setGcodeSelectPlane(String gsp) {
+    private void setGcodeSelectPlane(String gsp) {
         setGcodeSelectPlane(Integer.valueOf(gsp));
     }
 
@@ -150,7 +140,7 @@ public final class Machine {
         this.last_message = last_message;
     }
 
-    public void setGcodeSelectPlane(int gsp) {
+    private void setGcodeSelectPlane(int gsp) {
         switch (gsp) {
             case 0:
                 this.gcode_select_plane = Gcode_select_plane.XY;
@@ -171,7 +161,7 @@ public final class Machine {
     }
 
 
-    public void setHardwareId(String hwIdString) {
+    private void setHardwareId(String hwIdString) {
         hardwareId.set(hwIdString);
     }
 
@@ -179,7 +169,7 @@ public final class Machine {
         return hardwareVersion;
     }
 
-    public void setHardwareVersion(String hardwareVersion) {
+    private void setHardwareVersion(String hardwareVersion) {
         if(Integer.valueOf(hardwareVersion) == 8 && hardwarePlatform.getHardwarePlatformVersion() == -1){
             //We do this beacause early builds of TinyG did not have a $hp value so we assume it is an v8 tinyg
             TinygDriver.getInstance().hardwarePlatformManager.setHardwarePlatformByVersionNumber(8);
@@ -220,11 +210,11 @@ public final class Machine {
         return gcode_path_control;
     }
 
-    public void setGcodePathControl(String gpc) {
+    private void setGcodePathControl(String gpc) {
         setGcodePathControl(Integer.valueOf(gpc));
     }
 
-    public void setGcodePathControl(int gpc) {
+    private void setGcodePathControl(int gpc) {
         switch (gpc) {
             case 0:
                 this.gcode_path_control = Gcode_path_control.G61;
@@ -296,7 +286,7 @@ public final class Machine {
         return machineName;
     }
 
-    public void setGcodeUnits(int unitMode) {
+    private void setGcodeUnits(int unitMode) {
         if (unitMode == 0) {
             gcodeUnitMode.setValue("inches");
             gcodeUnitDivision.set(25.4);  //mm to inches conversion   
@@ -378,7 +368,7 @@ public final class Machine {
         return enable_echo;
     }
 
-    public void setEnable_echo(boolean enable_echo) {
+    private void setEnable_echo(boolean enable_echo) {
         this.enable_echo = enable_echo;
     }
 
@@ -386,7 +376,7 @@ public final class Machine {
         return enable_xon_xoff;
     }
 
-    public void setEnable_xon_xoff(boolean enable_xon_xoff) {
+    private void setEnable_xon_xoff(boolean enable_xon_xoff) {
         this.enable_xon_xoff = enable_xon_xoff;
     }
 
@@ -404,7 +394,7 @@ public final class Machine {
         return firmwareVersion;
     }
 
-    public void setFirmwareVersion(String fv) {
+    private void setFirmwareVersion(String fv) {
         this.firmwareVersion.setValue(fv);
     }
 
@@ -466,7 +456,7 @@ public final class Machine {
     //                break;
     //        }
     //    }
-    public void setMachineState(int state) {
+    private void setMachineState(int state) {
 
         switch (state) {
             case 1:
@@ -540,16 +530,26 @@ public final class Machine {
     }
 
     public Machine() {
-        motors.add(Motor1);
-        motors.add(Motor2);
-        motors.add(Motor3);
-        motors.add(Motor4);
+        Motor motor1 = new Motor(1);
+        motors.add(motor1);
+        Motor motor2 = new Motor(2);
+        motors.add(motor2);
+        Motor motor3 = new Motor(3);
+        motors.add(motor3);
+        Motor motor4 = new Motor(4);
+        motors.add(motor4);
 
+        Axis x = new Axis(Axis.AXIS.X, Axis.AXIS_TYPE.LINEAR, Axis.AXIS_MODES.STANDARD);
         axis.add(x);
+        Axis y = new Axis(Axis.AXIS.Y, Axis.AXIS_TYPE.LINEAR, Axis.AXIS_MODES.STANDARD);
         axis.add(y);
+        Axis z = new Axis(Axis.AXIS.Z, Axis.AXIS_TYPE.LINEAR, Axis.AXIS_MODES.STANDARD);
         axis.add(z);
+        Axis a = new Axis(Axis.AXIS.A, Axis.AXIS_TYPE.ROTATIONAL, Axis.AXIS_MODES.STANDARD);
         axis.add(a);
+        Axis b = new Axis(Axis.AXIS.B, Axis.AXIS_TYPE.ROTATIONAL, Axis.AXIS_MODES.STANDARD);
         axis.add(b);
+        Axis c = new Axis(Axis.AXIS.C, Axis.AXIS_TYPE.ROTATIONAL, Axis.AXIS_MODES.STANDARD);
         axis.add(c);
 
         setMotionMode(0);
@@ -596,12 +596,10 @@ public final class Machine {
         return axis;
     }
 
-    public List getAllLinearAxis() {
-        List _allAxis = getAllAxis();
-        List _retAxisList = new ArrayList();
-        Axis _ax;
-        for (int i = 0; i < _allAxis.size(); i++) {
-            Axis a = (Axis) _allAxis.get(i);
+    List<Axis> getAllLinearAxis() {
+        List<Axis> _allAxis = getAllAxis();
+        List<Axis> _retAxisList = new ArrayList<>();
+        for (Axis a : _allAxis) {
             if (a.getAxisType().equals(Axis.AXIS_TYPE.LINEAR)) {
                 _retAxisList.add(a);
             }
@@ -609,7 +607,7 @@ public final class Machine {
         return _retAxisList;
     }
 
-    public Axis getAxisByName(char c) {
+    private Axis getAxisByName(char c) {
         return (getAxisByName(String.valueOf(c)));
     }
 

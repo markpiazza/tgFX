@@ -622,19 +622,17 @@ public class GcodeTabController implements Initializable {
 //        }
     }
 
-    public Task fileSenderTask() {
+    private Task fileSenderTask() {
         return new Task() {
             @Override
-            protected Object call() throws Exception {
+            protected Object call()  {
                 StringBuilder line = new StringBuilder();
-                int gcodeCharLength = data.size();
-                String tmp;
-                for (int i = 0; i < gcodeCharLength; i++) {
-                    GcodeLine _gcl = (GcodeLine) data.get(i);
+                for (Object aData : data) {
+                    GcodeLine _gcl = (GcodeLine) aData;
 
-                    if (isTaskActive() == false) {
+                    if (!isTaskActive()) {
                         //Cancel Button was pushed
-                        tgfx.Main.postConsoleMessage("[!]File Sending Task Killed....\n");
+                        Main.postConsoleMessage("[!]File Sending Task Killed....\n");
                         break;
                     } else {
                         if (_gcl.getCodeLine().equals("")) {
@@ -679,7 +677,7 @@ public class GcodeTabController implements Initializable {
         }
     }
 
-    public synchronized boolean isTaskActive() {
+    private synchronized boolean isTaskActive() {
         return taskActive;
     }
 

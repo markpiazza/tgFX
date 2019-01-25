@@ -189,10 +189,8 @@ public class FirmwareUpdaterController implements Initializable {
                 Double currentVal;
                 if (TinygDriver.getInstance().machine.getFirmwareBuild() < Double.parseDouble(_currentVersionString)) {
                     //We need to update your firmware
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Main.postConsoleMessage("TinyG Firmware Update Available.");
+                    Platform.runLater(() -> {
+                        Main.postConsoleMessage("TinyG Firmware Update Available.");
 //
 //                            MonologFXButton btnYes = MonologFXButtonBuilder.create()
 //                                    .defaultButton(true)
@@ -233,7 +231,6 @@ public class FirmwareUpdaterController implements Initializable {
 //                                    Main.postConsoleMessage("TinyG firmware update cancelled.");
 //                                    break;
 //                            }
-                        }
                     });
 
                 } else {

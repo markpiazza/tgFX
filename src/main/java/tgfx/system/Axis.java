@@ -82,8 +82,7 @@ public final class Axis {
     private double junction_devation;
     private SWITCH_MODES max_switch_mode = SWITCH_MODES.DISABLED;
     private SWITCH_MODES min_switch_mode = SWITCH_MODES.DISABLED;
-    private List allAxis = new ArrayList();
-//    private float homing_travel;
+    //    private float homing_travel;
 //    private float homing_search_velocity;
 //    private float homing_latch_velocity;
 //    private float homing_zero_offset;
@@ -91,9 +90,9 @@ public final class Axis {
     private String axis_name;
     private List<Motor> motors = new ArrayList<>();
 
-    DecimalFormat decimalFormat;
-    DecimalFormat decimalFormatjunctionDeviation;
-    DecimalFormat decimalFormatMaximumJerk;
+    private DecimalFormat decimalFormat;
+    private DecimalFormat decimalFormatjunctionDeviation;
+    private DecimalFormat decimalFormatMaximumJerk;
 
     public String getCURRENT_AXIS_JSON_OBJECT() {
         return CURRENT_AXIS_JSON_OBJECT;
@@ -302,9 +301,8 @@ public final class Axis {
 //        this.radius = radius;
 //    }
 
-    public boolean setLatch_backoff(float latch_backoff) {
+    private void setLatch_backoff(float latch_backoff) {
         this.latch_backoff = latch_backoff;
-        return true;
     }
 
     public float getLatch_velocity() {
@@ -323,30 +321,27 @@ public final class Axis {
         return formatDoubleValue(searchVelocity);
     }
 
-    public boolean setSearch_velocity(double search_velocity) {
+    private void setSearch_velocity(double search_velocity) {
         this.searchVelocity = search_velocity;
-        return true;
     }
 
-    public boolean setLatch_velocity(float latch_velocity) {
+    private void setLatch_velocity(float latch_velocity) {
         this.latch_velocity = latch_velocity;
-        return true;
     }
 
     public double getZero_backoff() {
         return formatDoubleValue(zero_backoff);
     }
 
-    public boolean setZero_backoff(float zero_backoff) {
+    private void setZero_backoff(float zero_backoff) {
         this.zero_backoff = zero_backoff;
-        return true;
     }
 
-    public void setRadius(double r) {
+    private void setRadius(double r) {
         this.radius = r;
     }
 
-    public void setAxisType(AXIS_TYPE at) {
+    private void setAxisType(AXIS_TYPE at) {
         this.axis_type = at;
     }
 
@@ -435,43 +430,42 @@ public final class Axis {
 //        }
 //    }
 
-    public boolean setAxis_mode(int axMode) {
+    private void setAxis_mode(int axMode) {
         switch (axMode) {
             case 0:
                 this.axis_mode = AXIS_MODES.DISABLE;
-                return true;
+                return;
             case 1:
                 this.axis_mode = AXIS_MODES.STANDARD;
-                return true;
+                return;
             case 2:
                 this.axis_mode = AXIS_MODES.INHIBITED;
-                return true;
+                return;
             case 3:
                 this.axis_mode = AXIS_MODES.RADIUS;
-                return true;
+                return;
             case 4:
                 this.axis_mode = AXIS_MODES.SLAVE_X;
-                return true;
+                return;
             case 5:
                 this.axis_mode = AXIS_MODES.SLAVE_Y;
-                return true;
+                return;
             case 6:
                 this.axis_mode = AXIS_MODES.SLAVE_Z;
-                return true;
+                return;
             case 7:
                 this.axis_mode = AXIS_MODES.SLAVE_XY;
-                return true;
+                return;
             case 8:
                 this.axis_mode = AXIS_MODES.SLAVE_XZ;
-                return true;
+                return;
             case 9:
                 this.axis_mode = AXIS_MODES.SLAVE_YZ;
-                return true;
+                return;
             case 10:
                 this.axis_mode = AXIS_MODES.SLAVE_XYZ;
-                return true;
+                return;
             default:
-                return false;
         }
 //        if (axMode == 0) {
 //            this.axis_mode =AXIS_MODES.DISABLE;
@@ -484,7 +478,7 @@ public final class Axis {
         return axis_name;
     }
 
-    public void setAxis_name(String axis_name) {
+    private void setAxis_name(String axis_name) {
         this.axis_name = axis_name;
     }
 
@@ -493,9 +487,8 @@ public final class Axis {
 
     }
 
-    public boolean setFeed_rate_maximum(float feed_rate_maximum) {
+    private void setFeed_rate_maximum(float feed_rate_maximum) {
         this.feedRateMaximum = feed_rate_maximum;
-        return true;
     }
 
     public double getJerkHomingMaximum() {
@@ -510,18 +503,16 @@ public final class Axis {
         return (jerkMaximum);
     }
 
-    public boolean setJerkMaximum(double jerk_maximum) {
+    private void setJerkMaximum(double jerk_maximum) {
         this.jerkMaximum = jerk_maximum;
-        return true;
     }
 
     public double getJunction_devation() {
         return formatJuctionDeviation(junction_devation);
     }
 
-    public boolean setJunctionDevation(float junction_devation) {
+    private void setJunctionDevation(float junction_devation) {
         this.junction_devation = junction_devation;
-        return true;
     }
 
     public double getMachinePosition() {
@@ -565,41 +556,39 @@ public final class Axis {
         return min_switch_mode;
     }
 
-    public Boolean setMaxSwitchMode(int _sw_mode) {
+    private void setMaxSwitchMode(int _sw_mode) {
         switch (_sw_mode) {
             case 0:
                 max_switch_mode = SWITCH_MODES.DISABLED;
-                return true;
+                return;
             case 1:
                 max_switch_mode = SWITCH_MODES.HOMING_ONLY;
-                return true;
+                return;
             case 2:
                 max_switch_mode = SWITCH_MODES.LIMIT_ONLY;
-                return true;
+                return;
             case 3:
                 max_switch_mode = SWITCH_MODES.HOMING_AND_LIMIT;
-                return true;
+                return;
             default:
-                return false;
         }
     }
 
-    public Boolean setMinSwitch_mode(int _sw_mode) {
+    private void setMinSwitch_mode(int _sw_mode) {
         switch (_sw_mode) {
             case 0:
                 min_switch_mode = SWITCH_MODES.DISABLED;
-                return true;
+                return;
             case 1:
                 min_switch_mode = SWITCH_MODES.HOMING_ONLY;
-                return true;
+                return;
             case 2:
                 min_switch_mode = SWITCH_MODES.LIMIT_ONLY;
-                return true;
+                return;
             case 3:
                 min_switch_mode = SWITCH_MODES.HOMING_AND_LIMIT;
-                return true;
+                return;
             default:
-                return false;
         }
     }
 
@@ -631,11 +620,11 @@ public final class Axis {
         return formatDoubleValue(travel_maximum.getValue());
     }
 
-    public boolean setTravel_maximum(float travel_maximum) {
+    private void setTravel_maximum(float travel_maximum) {
         try {
             //Stub to always track the largest travel axis
-            allAxis = TinygDriver.getInstance().machine.getAllLinearAxis();
-            Iterator<Axis> iterator = allAxis.iterator();
+            List allAxis = TinygDriver.getInstance().machine.getAllLinearAxis();
+            Iterator iterator = allAxis.iterator();
             double _maxTravel = 0;
             Axis _ax;
 
@@ -650,10 +639,8 @@ public final class Axis {
 
 
             this.travel_maximum.set(travel_maximum);
-            return true;
         } catch (Exception ex) {
             //supress this error
-            return false;
         }
     }
 
@@ -661,9 +648,8 @@ public final class Axis {
         return formatDoubleValue(velocityMaximum);
     }
 
-    public boolean setVelocityMaximum(double velocity_maximum) {
+    private void setVelocityMaximum(double velocity_maximum) {
         this.velocityMaximum = velocity_maximum;
-        return true;
     }
 
     public SimpleDoubleProperty getWorkPosition() {
@@ -674,7 +660,7 @@ public final class Axis {
         this.workPosition.set(workpos);
     }
 
-    public void setMachinePosition(double workpos) {
+    void setMachinePosition(double workpos) {
         this.machinePosition.set(workpos);
     }
 

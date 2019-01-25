@@ -35,7 +35,7 @@ public class SerialDriver implements SerialPortEventListener {
     public OutputStream output;
     public String portArray[] = null;
     public String debugFileBuffer = "";
-    public List<String> lastRes = new ArrayList();
+    public List<String> lastRes = new ArrayList<>();
     public byte[] debugBuffer = new byte[1024];
     public double offsetPointer = 0;
 
@@ -139,7 +139,7 @@ public class SerialDriver implements SerialPortEventListener {
 
     public static String[] listSerialPorts() {
         String[] ports = jssc.SerialPortList.getPortNames();
-        ArrayList portList = new ArrayList();
+        List<String> portList = new ArrayList<String>();
 
         for (String port : ports) {
 //            CommPortIdentifier port = (CommPortIdentifier) ports.nextElement();
@@ -157,8 +157,7 @@ public class SerialDriver implements SerialPortEventListener {
             portList.add(_tmpPort.getPortName());  //Go ahead and add the ports that made it though the logic above
         }
 
-        String portArray[] = (String[]) portList.toArray(new String[0]);
-        return portArray;
+        return portList.toArray(new String[0]);
     }
 
     public boolean initialize(String port, int DATA_RATE) throws SerialPortException {

@@ -60,9 +60,6 @@ public class MachineSettingsController implements Initializable {
 
     /**
      * Initializes the controller class.
-     *
-     * @param url
-     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -72,11 +69,11 @@ public class MachineSettingsController implements Initializable {
 
     private void populateConfigFiles() {
         File folder = new File("hardwarePlatforms");
-        if (!folder.exists()) {
+        File[] listOfFiles = folder.listFiles();
+        if (listOfFiles==null) {
             logger.warn("Error loading platform configs, "+folder.getName()+" not found");
             return;
         }
-        File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
                 String files = listOfFile.getName();
@@ -167,7 +164,7 @@ public class MachineSettingsController implements Initializable {
                 String line;
                 int maxElements = 0;
                 int currentElement = 0;
-                String filename = new String();
+                String filename = "";
 
                 while ((line = br2.readLine()) != null) {
                     JSONObject j = new JSONObject(line);
