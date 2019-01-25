@@ -92,7 +92,7 @@ public class CommandManager {
     public static final String CMD_APPLY_BOOTLOADER_MODE = "{\"boot\":1}\n";
     
 
-    public CommandManager() {
+    CommandManager() {
     }
 
     public static void stopTinyGMovement() throws Exception {
@@ -218,10 +218,8 @@ public class CommandManager {
 
     /**
      * writes the commands to query current hardware settings on the tinyg board
-     *
-     * @throws Exception
      */
-    public void queryAllHardwareAxisSettings() throws Exception {
+    public void queryAllHardwareAxisSettings() {
         try {
 
             logger.info("[+]Getting A AXIS Settings");

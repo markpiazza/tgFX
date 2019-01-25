@@ -15,9 +15,9 @@ import org.apache.logging.log4j.Logger;
 public class StatusCode {
     private static final Logger logger = LogManager.getLogger();
 
-    int statusNUmber;
-    String message;
-    String statusType;
+    private int statusNUmber;
+    private String message;
+    private String statusType;
     
     
 

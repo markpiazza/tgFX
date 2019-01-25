@@ -94,7 +94,7 @@ public class TinyGConfigController implements Initializable {
         }
     }
 
-    public static void _updateGuiAxisSettings(String axname) {
+    private static void _updateGuiAxisSettings(String axname) {
         Axis ax = TinygDriver.getInstance().machine.getAxisByName(axname);
         _updateGuiAxisSettings(ax);
     }
@@ -129,7 +129,7 @@ public class TinyGConfigController implements Initializable {
         });
     }
     
-    public static void _updateGuiMotorSettings(String motor) {
+    private static void _updateGuiMotorSettings(String motor) {
 
         switch (TinygDriver.getInstance().machine.getMotorByNumber(Integer.valueOf(motor)).getId_number()) {
             case 1:
@@ -167,7 +167,7 @@ public class TinyGConfigController implements Initializable {
         }
     }
 
-    public static void _updateGuiAxisSettings(Axis ax) {
+    private static void _updateGuiAxisSettings(Axis ax) {
         
         switch (ax.getAxis_name().toLowerCase()) {
             case "a":
@@ -290,7 +290,7 @@ public class TinyGConfigController implements Initializable {
         }
     }
 
-    public static void updateGuiAxisSettings(Axis ax) {
+    private static void updateGuiAxisSettings(Axis ax) {
         updateGuiAxisSettings(ax);
     }
 

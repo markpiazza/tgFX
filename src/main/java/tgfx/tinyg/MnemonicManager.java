@@ -117,7 +117,7 @@ public class MnemonicManager {
     public static final String MNEMONIC_SYSTEM_TINYG_ID_VERSION = "id";
     public static final String MNEMONIC_STATUS_REPORT_TINYG_DISTANCE_MODE = "dist";
 
-    public MnemonicManager() {
+    MnemonicManager() {
         //When new settings are added we need to add them to the this class.
         //Axis
         AXIS_MNEMONICS.add(MNEMONIC_AXIS_AXIS_MODE);
@@ -222,11 +222,8 @@ public class MnemonicManager {
     }
 
     public boolean isMasterGroupObject(String strToLookup) {
-        if (GROUP_MNEMONICS.contains(strToLookup)) {
-            return true;
-        }
+        return GROUP_MNEMONICS.contains(strToLookup);
 
-        return false;
     }
 
     public ResponseCommand lookupSingleGroupMaster(String strToLookup, String parentGroup) {

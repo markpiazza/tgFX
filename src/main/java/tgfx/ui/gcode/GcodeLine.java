@@ -15,11 +15,11 @@ import org.apache.logging.log4j.Logger;
 public class GcodeLine {
     private static final Logger logger = LogManager.getLogger();
 
-    public SimpleStringProperty codeLine;// = new SimpleStringProperty();// = new SimpleStringProperty("<gcodeLine>");
-    public int gcodeLineNumber;
+    private SimpleStringProperty codeLine;// = new SimpleStringProperty();// = new SimpleStringProperty("<gcodeLine>");
+    private int gcodeLineNumber;
     
 
-    public GcodeLine(String gc, int gcl_number){
+    GcodeLine(String gc, int gcl_number){
         this.codeLine = new SimpleStringProperty(gc);
         this.gcodeLineNumber = gcl_number;
     }
@@ -28,11 +28,11 @@ public class GcodeLine {
         return this.gcodeLineNumber;
     }
     
-    public String getCodeLine(){
+    String getCodeLine(){
         return codeLine.get();
     } 
     
-    public String getGcodeLineJsonified(){
+    String getGcodeLineJsonified(){
         return("{\"gc\":\""+codeLine.get()+"\"}\n");
     }
     

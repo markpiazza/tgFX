@@ -40,9 +40,9 @@ public class ResponseParser extends Observable implements Runnable {
 
     private boolean TEXT_MODE = false;
     private String[] message = new String[2];
-    boolean RUN = true;
+    private boolean RUN = true;
     String buf = "";
-    public ResponseFooter responseFooter = new ResponseFooter();  //our holder for ResponseFooter Data
+    private ResponseFooter responseFooter = new ResponseFooter();  //our holder for ResponseFooter Data
     //These values are for mapping what n'Th element inthe json footer array maps to which values.
     private static final int FOOTER_ELEMENT_PROTOCOL_VERSION = 0;
     private static final int FOOTER_ELEMENT_STATUS_CODE = 1;
@@ -54,11 +54,11 @@ public class ResponseParser extends Observable implements Runnable {
     public ResponseParser() {
     }
 
-    public boolean isTEXT_MODE() {
+    private boolean isTEXT_MODE() {
         return TEXT_MODE;
     }
 
-    public void setTEXT_MODE(boolean TEXT_MODE) {
+    private void setTEXT_MODE(boolean TEXT_MODE) {
         this.TEXT_MODE = TEXT_MODE;
     }
 
@@ -113,14 +113,10 @@ public class ResponseParser extends Observable implements Runnable {
     }
 
     private boolean isJsonObject(JSONObject js, String strVal) throws Exception {
-        if (js.get(strVal).getClass().toString().contains("JSONObject")) {
-            return true;
-        } else {
-            return false;
-        }
+        return js.get(strVal).getClass().toString().contains("JSONObject");
     }
 
-    public void applySettingMasterGroup(JSONObject js, String pg) throws Exception {
+    private void applySettingMasterGroup(JSONObject js, String pg) throws Exception {
 
         if (pg.equals(MNEMONIC_GROUP_STATUS_REPORT)) {
             //This is a status report master object that came in through a response object.
@@ -132,10 +128,9 @@ public class ResponseParser extends Observable implements Runnable {
             applySettingStatusReport(js);
         } else {
             if (js.keySet().size() > 1) {
-                Iterator ii = js.keySet().iterator();
                 //This is a special multi single value response object
-                while (ii.hasNext()) {
-                    String key = ii.next().toString();
+                for (Object o : js.keySet()) {
+                    String key = o.toString();
                     if (key.equals("f")) {
                         parseFooter(js.getJSONArray("f"));  //This is very important.  We break out our response footer.. error codes.. bytes availble in hardware buffer etc.               
                     } else {
@@ -155,18 +150,17 @@ public class ResponseParser extends Observable implements Runnable {
         }
     }
 
-    public void applySettingStatusReport(JSONObject js) {
-        /**
+    private void applySettingStatusReport(JSONObject js) {
+        /*
          * This breaks the mold a bit.. but its more efficient. This gets called
          * off the top of ParseJson if it has an "SR" in it. Sr's are called so
          * often that instead of walking the normal parsing tree.. this skips to
          * the end
          */
         try {
-            Iterator ii = js.keySet().iterator();
             //This is a special multi single value response object
-            while (ii.hasNext()) {
-                String key = ii.next().toString();
+            for (Object o : js.keySet()) {
+                String key = o.toString();
 
                 ResponseCommand rc = new ResponseCommand(MNEMONIC_GROUP_SYSTEM, key.toString(), js.get(key).toString());
                 TinygDriver.getInstance().machine.applyJsonStatusReport(rc);
@@ -191,15 +185,14 @@ public class ResponseParser extends Observable implements Runnable {
         this.setChanged();
     }
 
-    public void applySetting(JSONObject js) {
+    private void applySetting(JSONObject js) {
         try {
             if (js.length() == 0) {
                 //This is a blank object we just return and move on
             } else if (js.keySet().size() > 1) { //If there are more than one object in the json response
-                Iterator ii = js.keySet().iterator();
                 //This is a special multi single value response object
-                while (ii.hasNext()) {
-                    String key = ii.next().toString();
+                for (Object o : js.keySet()) {
+                    String key = o.toString();
                     switch (key) {
                         case "f":
                             parseFooter(js.getJSONArray("f"));
@@ -234,13 +227,13 @@ public class ResponseParser extends Observable implements Runnable {
                  * Contains a single object in the JSON response
                  */
                 if (js.keySet().contains("f")) {
-                    /**
+                    /*
                      * This is a single response footer object: Like So:
                      * {"f":[1,0,5,3330]}
                      */
                     parseFooter(js.getJSONArray("f"));
                 } else {
-                    /**
+                    /*
                      * Contains a single object in the json response I am not
                      * sure this else is needed any longer.
                      */
@@ -295,7 +288,8 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case (MNEMONIC_GROUP_AXIS_X):
-                TinygDriver.getInstance().machine.getAxisByName(MNEMONIC_GROUP_AXIS_X).applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_X), MNEMONIC_GROUP_AXIS_X);
+                TinygDriver.getInstance().machine.getAxisByName(MNEMONIC_GROUP_AXIS_X)
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_X), MNEMONIC_GROUP_AXIS_X);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_X;
@@ -356,7 +350,7 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_SYSTEM):
                 TinygDriver.getInstance().machine.applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_SYSTEM), MNEMONIC_GROUP_SYSTEM);
-                /**
+                /*
                  * UNCOMMENT THIS BELOW WHEN WE HAVE MACHINE SETTINGS THAT NEED
                  * TO UPDATE THE GU
                  */
@@ -484,7 +478,7 @@ public class ResponseParser extends Observable implements Runnable {
         }
     }
 
-    public synchronized void parseJSON(String line) throws JSONException {
+    private synchronized void parseJSON(String line) throws JSONException {
         logger.info("Got Line: " + line + " from TinyG.");
 
         final JSONObject js = new JSONObject(line);

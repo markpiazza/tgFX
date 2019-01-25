@@ -19,22 +19,22 @@ public class Draw2d {
     private static final Logger logger = LogManager.getLogger();
 
     static Paint retPaint;
-    
-    public static Paint SLOWEST = Color.web("#ee1a0f");
-    public static Paint SLOW = Color.web("#ff9933");
-    public static Paint MEDIUM_SLOW = Color.web("#eed00f");
-    public static Paint MEDUIM = Color.web("#c1ff66");
-    public static Paint FAST = Color.web("#85ff22");
-    public static Paint FASTEST = Color.web("#0fee17");
-    public static Paint TRAVERSE = Color.GRAY;
+    static Paint FAST = Color.web("#85ff22");
+    static Paint TRAVERSE = Color.GRAY;
+
+    private static Paint SLOWEST = Color.web("#ee1a0f");
+    private static Paint SLOW = Color.web("#ff9933");
+    private static Paint MEDIUM_SLOW = Color.web("#eed00f");
+    private static Paint MEDUIM = Color.web("#c1ff66");
+    private static Paint FASTEST = Color.web("#0fee17");
     private float MAX_MACHINE_VELOCITY;
     private static double stroke_weight = .5;
-    public static double magnification = 3;
+    private static double magnification = 3;
     private static double magZoomIncrement = 2;
     private static double strokeIncrement = .1;
     private static boolean firstDraw = true;
 
-    public static boolean isFirstDraw() {
+    static boolean isFirstDraw() {
         return firstDraw;
     }
 

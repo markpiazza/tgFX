@@ -18,7 +18,7 @@ import tgfx.TgFXConstants;
 public class UtilityFunctions {
     private static final Logger logger = LogManager.getLogger();
 
-    final static ResourceBundle rb = ResourceBundle.getBundle("version");   //Used to track build date and build number
+    private final static ResourceBundle rb = ResourceBundle.getBundle("version");   //Used to track build date and build number
     
     public static String getOperatingSystem() {
         if (isWindows()) {
@@ -35,19 +35,19 @@ public class UtilityFunctions {
     }
 
     private static boolean isLinux() {
-        return TgFXConstants.OS.indexOf("lin") >= 0;
+        return TgFXConstants.OS.contains("lin");
     }
 
     private static boolean isWindows() {
-        return TgFXConstants.OS.indexOf("win") >= 0;
+        return TgFXConstants.OS.contains("win");
     }
 
     private static boolean isMac() {
-        return TgFXConstants.OS.indexOf("mac") >= 0;
+        return TgFXConstants.OS.contains("mac");
     }
 
     private static boolean isUnix() {
-        return TgFXConstants.OS.indexOf("nux") >= 0;
+        return TgFXConstants.OS.contains("nux");
     }
 
     public void testMessage(String message) {

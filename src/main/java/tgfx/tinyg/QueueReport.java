@@ -42,7 +42,7 @@ public class QueueReport {
         return removed;
     }
 
-    public void setRemoved(int removed) {
+    private void setRemoved(int removed) {
         this.removed = removed;
     }
 
@@ -53,7 +53,7 @@ public class QueueReport {
     private QueueReport() {
     }
 
-    public void setPba(int pba) {
+    private void setPba(int pba) {
         this.pba = pba;
     }
 

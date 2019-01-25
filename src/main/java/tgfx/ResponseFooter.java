@@ -22,10 +22,10 @@ public class ResponseFooter {
     private static int rxRecvd = 254;
     private static long checkSum;    
 
-    public ResponseFooter(){
+    ResponseFooter(){
     }
 
-    public int getRxRecvd() {
+    int getRxRecvd() {
         return rxRecvd;
     }
 
@@ -33,19 +33,19 @@ public class ResponseFooter {
         return checkSum;
     }
 
-    public void setProtocolVersion(int protocolVersion) {
+    void setProtocolVersion(int protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
 
-    public  void setStatusCode(int statusCode) {
+    void setStatusCode(int statusCode) {
         ResponseFooter.statusCode = statusCode;
     }
 
-    public  void setRxRecvd(int rxRecvd) {
+    void setRxRecvd(int rxRecvd) {
         ResponseFooter.rxRecvd = rxRecvd;
     }
 
-    public  void setCheckSum(long checkSum) {
+    void setCheckSum(long checkSum) {
         ResponseFooter.checkSum = checkSum;
     }
 

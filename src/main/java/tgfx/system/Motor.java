@@ -51,20 +51,12 @@ public class Motor {
 
     //Small wrappers to return int's vs bools
     public int isPolarityInt() {
-        if (isPolarity() == true) {
-            return (1);
-        } else {
-            return (0);
-        }
+        return isPolarity() ? 1 : 0;
     }
     //Small wrappers to return int's vs bools
 
     public int isPower_managementInt() {
-        if (isPower_management() == true) {
-            return (1);
-        } else {
-            return (0);
-        }
+        return isPower_management() ? 1 : 0;
     }
 
     public int getId_number() {
@@ -104,7 +96,7 @@ public class Motor {
         }
     }
 
-    public boolean isPolarity() {
+    private boolean isPolarity() {
         return po;
     }
 
@@ -112,24 +104,16 @@ public class Motor {
         this.po = polarity;
     }
 
-    public void setPolarity(int polarity) {
-        if (polarity == 0) {
-            this.po = false;
-        } else {
-            this.po = true;
-        }
+    private void setPolarity(int polarity) {
+        this.po = polarity != 0;
     }
 
-    public boolean isPower_management() {
+    private boolean isPower_management() {
         return pm;
     }
 
-    public void setPower_management(int power_management) {
-        if (power_management == 0) {
-            this.pm = false;
-        } else {
-            this.pm = true;
-        }
+    private void setPower_management(int power_management) {
+        this.pm = power_management != 0;
     }
 
     public void setPower_management(boolean power_management) {
@@ -140,7 +124,7 @@ public class Motor {
         return sa;
     }
 
-    public void setStep_angle(float step_angle) {
+    private void setStep_angle(float step_angle) {
         this.sa = step_angle;
     }
 
@@ -148,12 +132,12 @@ public class Motor {
         return tr;
     }
 
-    public void setTravel_per_revolution(float travel_per_revolution) {
+    private void setTravel_per_revolution(float travel_per_revolution) {
         this.tr = travel_per_revolution;
     }
 
     //This is the main method to parser a JSON Motor object
-public void applyJsonSystemSetting(JSONObject js, String parent) {
+    public void applyJsonSystemSetting(JSONObject js, String parent) {
         logger.info("Applying JSON Object to " + parent + " Group");
         Iterator ii = js.keySet().iterator();
         try {

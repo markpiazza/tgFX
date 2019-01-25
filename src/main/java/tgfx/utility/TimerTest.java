@@ -20,7 +20,7 @@ public class TimerTest implements Timeable {
 
     private AtomicBoolean timerKicked = new AtomicBoolean(false);
 
-    public TimerTest() {
+    private TimerTest() {
         AsyncTimer at = new AsyncTimer(5000, this);
         at.start();
     }

@@ -62,7 +62,7 @@ public class TgfxSettingsController implements Initializable {
         return drawPreview;
     }
 
-    public void setDrawPreview(boolean drawPreview) {
+    private void setDrawPreview(boolean drawPreview) {
         TgfxSettingsController.drawPreview = drawPreview;
     }
      

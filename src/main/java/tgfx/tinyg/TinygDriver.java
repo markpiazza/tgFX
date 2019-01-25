@@ -198,7 +198,6 @@ public class TinygDriver extends Observable {
                     int axisMode = cb.getSelectionModel().getSelectedIndex();
                     String configObj = String.format("{\"%s%s\":%s}\n", _axis.getAxis_name().toLowerCase(), MnemonicManager.MNEMONIC_AXIS_AXIS_MODE, axisMode);
                     this.write(configObj);
-                    continue;
                 } else if (cb.getId().contains("switchModeMax")) {
                     int switchMode = cb.getSelectionModel().getSelectedIndex();
                     String configObj = String.format("{\"%s%s\":%s}\n", _axis.getAxis_name().toLowerCase(), MnemonicManager.MNEMONIC_AXIS_MAX_SWITCH_MODE, switchMode);
@@ -228,7 +227,7 @@ public class TinygDriver extends Observable {
     }
 
     public void applyHardwareAxisSettings(Axis _axis, TextField tf) throws Exception {
-        /**
+        /*
          * Apply Axis Settings to TinyG from GUI
          */
         if (tf.getId().contains("maxVelocity")) {
@@ -373,7 +372,7 @@ public class TinygDriver extends Observable {
     }
 
     public void applyHardwareMotorSettings(Tab _tab) throws Exception {
-        /**
+        /*
          * Apply Motor Settings to TinyG from GUI
          */
         Tab selectedTab = _tab.getTabPane().getSelectionModel().getSelectedItem();
@@ -520,7 +519,6 @@ public class TinygDriver extends Observable {
 
     /**
      * Connection Methods
-     * @param choice
      */
     public void setConnected(boolean choice) {
         this.ser.setConnected(choice);
@@ -544,7 +542,6 @@ public class TinygDriver extends Observable {
     /**
      * All Methods involving writing to TinyG.. This messages will call the
      * SerialDriver write methods from here.
-     * @param msg
      */
     public synchronized void write(String msg) {
         TinygDriver.getInstance()
