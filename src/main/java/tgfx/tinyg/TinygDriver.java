@@ -135,10 +135,9 @@ public class TinygDriver extends Observable {
         setChanged();
         notifyObservers(message);
     }
-    
-    
+
+
     public static TinygDriver getInstance() {
-        //return TinygDriverHolder.INSTANCE;
         if(instance==null){
             instance=new TinygDriver();
         }
@@ -478,9 +477,6 @@ public class TinygDriver extends Observable {
     private TinygDriver() {
     }
 
-    private static class TinygDriverHolder {
-        private static final TinygDriver INSTANCE = new TinygDriver();
-    }
 
     @Override
     public synchronized void addObserver(Observer obsrvr) {

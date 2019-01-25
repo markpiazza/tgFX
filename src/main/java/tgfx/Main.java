@@ -28,27 +28,19 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
-import jfxtras.labs.dialogs.MonologFXButton;
-import java.util.logging.Level;
-import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.scene.web.WebEngine;
 import javafx.util.StringConverter;
 import jfxtras.labs.scene.control.gauge.Lcd;
 import jfxtras.labs.scene.control.gauge.LcdBuilder;
 import jfxtras.labs.scene.control.gauge.StyleModel;
 import javafx.stage.Stage;
 
-import jfxtras.labs.dialogs.MonologFX;
-import jfxtras.labs.dialogs.MonologFXBuilder;
-
 import static tgfx.TgFXConstants.CONNECTION_TIMEOUT;
 import static tgfx.TgFXConstants.CONNECTION_TIMEOUT_STRING;
 
-import jfxtras.labs.dialogs.MonologFXButtonBuilder;
 import jssc.SerialPortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,7 +55,6 @@ import tgfx.ui.gcode.GcodeHistory;
 import tgfx.ui.gcode.GcodeTabController;
 import tgfx.ui.machinesettings.MachineSettingsController;
 import tgfx.ui.tinygconfig.TinyGConfigController;
-import tgfx.updater.firmware.FirmwareUpdaterController;
 import tgfx.utility.QueueUsingTimer;
 import tgfx.utility.QueuedTimerable;
 
@@ -194,11 +185,11 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                      * as it goes into a "disable interrupt mode"
                      * to write values to EEPROM
                      */
-                    tg.write(CommandManager.CMD_APPLY_JSON_VOBERSITY);
+                    tg.write(CommandManager.CMD_APPLY_JSON_VERBOSITY);
                     Thread.sleep(delayValue);
                     tg.write(CommandManager.CMD_APPLY_STATUS_UPDATE_INTERVAL);
                     Thread.sleep(delayValue);
-                    tg.write(CommandManager.CMD_APPLY_TEXT_VOBERSITY);
+                    tg.write(CommandManager.CMD_APPLY_TEXT_VERBOSITY);
                     Thread.sleep(delayValue);
                     tg.write(CommandManager.CMD_APPLY_FLOWCONTROL);
                     Thread.sleep(delayValue);
@@ -217,11 +208,11 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                     Thread.sleep(delayValue);
                     tg.cmdManager.queryAllHardwareAxisSettings();
                     Thread.sleep(delayValue);
-                    tg.write(CommandManager.CMD_APPLY_TEXT_VOBERSITY);
+                    tg.write(CommandManager.CMD_APPLY_TEXT_VERBOSITY);
 
-//                    tgfx.ui.gcode.GcodeTabController.setCNCMachineVisible(true); //Once we connected we should show the drawing enevlope.
-//                    Main.postConsoleMessage("Showing CNC Machine Preview...");
-//                    GcodeTabController.setGcodeTextTemp("TinyG Connected.");
+                    GcodeTabController.setCNCMachineVisible(true); //Once we connected we should show the drawing enevlope.
+                    Main.postConsoleMessage("Showing CNC Machine Preview...");
+                    GcodeTabController.setGcodeTextTemp("TinyG Connected.");
 
                 } catch (Exception ex) {
                     logger.error("Error in OnConnectActions()", ex);
