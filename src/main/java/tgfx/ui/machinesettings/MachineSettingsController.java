@@ -70,7 +70,11 @@ public class MachineSettingsController implements Initializable {
     }
 
     private void populateConfigFiles() {
-        File folder = new File("resources/configs/");
+        File folder = new File("hardwarePlatforms");
+        if (!folder.exists()) {
+            logger.warn("Error loading platform configs, "+folder.getName()+" not found");
+            return;
+        }
         File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {

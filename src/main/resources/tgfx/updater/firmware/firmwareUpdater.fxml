@@ -83,8 +83,8 @@
         </padding>
         <Button id="checkFirmwareUpdate" mnemonicParsing="false" onAction="#checkFirmwareUpdate"
                 text="Check For Updates"/>
-        <Button fx:id="handleUpdateFirmware" mnemonicParsing="false" onAction="#handleUpdateFirmware"
-                text="Update Firmware"/>
+        <!--<Button fx:id="handleUpdateFirmware" mnemonicParsing="false" onAction="#handleUpdateFirmware"-->
+                <!--text="Update Firmware"/>-->
       </HBox>
     </VBox>
   </VBox>

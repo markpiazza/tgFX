@@ -26,10 +26,7 @@ import javafx.scene.control.Label;
 import jfxtras.labs.dialogs.MonologFX;
 import jfxtras.labs.dialogs.MonologFXBuilder;
 import jfxtras.labs.dialogs.MonologFXButton;
-import static jfxtras.labs.dialogs.MonologFXButton.Type.CANCEL;
-import static jfxtras.labs.dialogs.MonologFXButton.Type.YES;
 import jfxtras.labs.dialogs.MonologFXButtonBuilder;
-import jssc.SerialPortException;
 import org.apache.log4j.Logger;
 import tgfx.Main;
 import tgfx.tinyg.*;
@@ -142,7 +139,6 @@ public class FirmwareUpdaterController implements Initializable {
 
     private static void toggleUpdateFirmwareButton(boolean choice) {
         final boolean bChoice = choice;
-        
         Platform.runLater(() -> {
             handleUpdateFirmware.disableProperty().set(bChoice);  //when we are updating we dont want to hit it 2x
         });
@@ -257,7 +253,7 @@ public class FirmwareUpdaterController implements Initializable {
         hardwareId.textProperty().bind(TinygDriver.getInstance().machine.hardwareId); //Bind the tinyg hardware id to the tg driver value
         //hwVersion.textProperty().bind(TinygDriver.getInstance().machine.hardwareVersion); //Bind the tinyg version  to the tg driver value
         hwVersion.textProperty().bind(TinygDriver.getInstance().machine.hardwareVersion); //Bind the tinyg version  to the tg driver value
-        firmwareVersion.textProperty().bind(TinygDriver.getInstance().machine.firmwareVersion);
+//        firmwareVersion.textProperty().bind(TinygDriver.getInstance().machine.firmwareVersion);
         buildNumb.textProperty().bind(TinygDriver.getInstance().machine.firmwareBuild.asString());
 
     }
