@@ -49,6 +49,7 @@ import jfxtras.labs.scene.control.gauge.Gauge.NumberSystem;
 import jfxtras.labs.scene.control.gauge.Gauge.Trend;
 
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -757,11 +758,11 @@ public class GaugeModel {
 
         // ******************** Constructors **************************************
         public GaugeModelEvent() {
-            super(new EventType<GaugeModelEvent>());
+            super(new EventType<GaugeModelEvent>(UUID.randomUUID().toString()));
         }
 
         public GaugeModelEvent(final Object source, final EventTarget target) {
-            super(source, target, new EventType<GaugeModelEvent>());
+            super(source, target, new EventType<GaugeModelEvent>(UUID.randomUUID().toString()));
         }
     }
 }

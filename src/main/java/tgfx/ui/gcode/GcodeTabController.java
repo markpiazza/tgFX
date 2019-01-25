@@ -346,13 +346,13 @@ public class GcodeTabController implements Initializable {
 
     @FXML
     private void handleDroMouseClick(MouseEvent me) {
-//        if (me.isSecondaryButtonDown()) { //Check to see if its a Right Click
-//            String t;
-//            String _axis;
-//            Lcd l;
-//            l = (Lcd) me.getSource();
-//            t = String.valueOf(l.idProperty().get().charAt(0));
-//        }
+        if (me.isSecondaryButtonDown()) { //Check to see if its a Right Click
+            String t;
+            String _axis;
+            Lcd l;
+            l = (Lcd) me.getSource();
+            t = String.valueOf(l.idProperty().get().charAt(0));
+        }
     }
 
     public static void setCNCMachineVisible(boolean t) {

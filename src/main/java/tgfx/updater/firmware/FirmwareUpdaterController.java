@@ -257,7 +257,7 @@ public class FirmwareUpdaterController implements Initializable {
 
     }
 
-    protected static void enterBootloaderMode() {
+    private static void enterBootloaderMode() {
         if (TinygDriver.getInstance().isConnected().get()) {
             //We need to disconnect from tinyg after issuing out boot command.
             try {

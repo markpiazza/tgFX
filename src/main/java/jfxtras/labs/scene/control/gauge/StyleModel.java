@@ -53,6 +53,8 @@ import jfxtras.labs.scene.control.gauge.Gauge.TickmarkType;
 import jfxtras.labs.scene.control.gauge.Radial.ForegroundType;
 import jfxtras.labs.util.Util;
 
+import java.util.UUID;
+
 
 /**
  * Created by
@@ -1224,11 +1226,11 @@ public class StyleModel {
 
         // ******************** Constructors **************************************
         public StyleModelEvent() {
-            super(new EventType<StyleModelEvent>());
+            super(new EventType<StyleModelEvent>(UUID.randomUUID().toString()));
         }
 
         public StyleModelEvent(final Object source, final EventTarget target) {
-            super(source, target, new EventType<StyleModelEvent>());
+            super(source, target, new EventType<StyleModelEvent>(UUID.randomUUID().toString()));
         }
     }
 }

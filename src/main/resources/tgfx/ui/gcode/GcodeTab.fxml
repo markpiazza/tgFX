@@ -177,70 +177,70 @@
             <padding>
                 <Insets top="15.0"/>
             </padding>
-            <!--<Lcd fx:id="xLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true"-->
-                 <!--lcdValueFont="LCD" ledVisible="true" minHeight="-Infinity"-->
-                 <!--minWidth="-Infinity" onMousePressed="#handleDroMouseClick" prefHeight="40.0" prefWidth="120.0"-->
-                 <!--title="X Axis Position" unit="mm">-->
-                <!--<contextMenu>-->
-                    <!--<ContextMenu fx:id="xAxisContextMenu">-->
-                        <!--<items>-->
-                            <!--<MenuItem mnemonicParsing="false" onAction="#handleZeroAxisClick" text="Zero X Axis"-->
-                                      <!--fx:id="xZeroAxis"/>-->
-                            <!--<MenuItem mnemonicParsing="false" onAction="#handleHomeAxisClick" text="Home X Axis"-->
-                                      <!--fx:id="xHomeAxis"/>-->
-                        <!--</items>-->
-                    <!--</ContextMenu>-->
-                <!--</contextMenu>-->
-            <!--</Lcd>-->
-            <!--<Lcd fx:id="yLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true"-->
-                 <!--lcdValueFont="LCD" minHeight="-Infinity" minWidth="-Infinity"-->
-                 <!--onMousePressed="#handleDroMouseClick" prefHeight="40.0" prefWidth="120.0" title="Y Axis Position"-->
-                 <!--unit="mm">-->
-                <!--<contextMenu>-->
-                    <!--<ContextMenu fx:id="yAxisContextMenu">-->
-                        <!--<items>-->
-                            <!--<MenuItem mnemonicParsing="false" onAction="#handleZeroAxisClick" text="Zero Y Axis"-->
-                                      <!--fx:id="yZeroAxis"/>-->
-                            <!--<MenuItem mnemonicParsing="false" onAction="#handleHomeAxisClick" text="Home Y Axis"-->
-                                      <!--fx:id="yHomeAxis"/>-->
-                        <!--</items>-->
-                    <!--</ContextMenu>-->
-                <!--</contextMenu>-->
-            <!--</Lcd>-->
-            <!--<Lcd fx:id="zLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true"-->
-                 <!--lcdValueFont="LCD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"-->
-                 <!--minWidth="-Infinity"-->
-                 <!--onMousePressed="#handleDroMouseClick" prefHeight="40.0" prefWidth="120.0" title="Z Axis Position"-->
-                 <!--unit="mm">-->
-                <!--<contextMenu>-->
-                    <!--<ContextMenu fx:id="zAxisContextMenu">-->
-                        <!--<items>-->
-                            <!--<MenuItem mnemonicParsing="false" onAction="#handleZeroAxisClick" text="Zero Z Axis"-->
-                                      <!--fx:id="zZeroAxis"/>-->
-                            <!--<MenuItem mnemonicParsing="false" onAction="#handleHomeAxisClick" text="Home Z Axis"-->
-                                      <!--fx:id="zHomeAxis"/>-->
-                        <!--</items>-->
-                    <!--</ContextMenu>-->
-                <!--</contextMenu>-->
-            <!--</Lcd>-->
-            <!--<Lcd fx:id="aLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true"-->
-                 <!--lcdValueFont="LCD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"-->
-                 <!--minWidth="-Infinity"-->
-                 <!--onMousePressed="#handleDroMouseClick" prefHeight="40.0" prefWidth="120.0" title="A Axis Position"-->
-                 <!--unit="mm">-->
-                <!--<contextMenu>-->
-                    <!--<ContextMenu fx:id="aAxisContextMenu">-->
-                        <!--<items>-->
-                            <!--<MenuItem mnemonicParsing="false" onAction="#handleZeroAxisClick" text="Zero A Axis"-->
-                                      <!--fx:id="aZeroAxis"/>-->
-                        <!--</items>-->
-                    <!--</ContextMenu>-->
-                <!--</contextMenu>-->
-            <!--</Lcd>-->
-            <!--<Lcd fx:id="velLcd" lcdDecimals="0" lcdDesign="RED_DARKRED" lcdUnitVisible="true"-->
-                 <!--lcdValueFont="LCD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"-->
-                 <!--minWidth="-Infinity"-->
-                 <!--prefHeight="40.0" prefWidth="120.0" title="Velocity" unit="mm/min"/>-->
+            <Lcd fx:id="xLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true"
+                 lcdValueFont="LCD" ledVisible="true" minHeight="-Infinity"
+                 minWidth="-Infinity" onMousePressed="#handleDroMouseClick" prefHeight="40.0" prefWidth="120.0"
+                 title="X Axis Position" unit="mm">
+                <contextMenu>
+                    <ContextMenu fx:id="xAxisContextMenu">
+                        <items>
+                            <MenuItem mnemonicParsing="false" onAction="#handleZeroAxisClick" text="Zero X Axis"
+                                      fx:id="xZeroAxis"/>
+                            <MenuItem mnemonicParsing="false" onAction="#handleHomeAxisClick" text="Home X Axis"
+                                      fx:id="xHomeAxis"/>
+                        </items>
+                    </ContextMenu>
+                </contextMenu>
+            </Lcd>
+            <Lcd fx:id="yLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true"
+                 lcdValueFont="LCD" minHeight="-Infinity" minWidth="-Infinity"
+                 onMousePressed="#handleDroMouseClick" prefHeight="40.0" prefWidth="120.0" title="Y Axis Position"
+                 unit="mm">
+                <contextMenu>
+                    <ContextMenu fx:id="yAxisContextMenu">
+                        <items>
+                            <MenuItem mnemonicParsing="false" onAction="#handleZeroAxisClick" text="Zero Y Axis"
+                                      fx:id="yZeroAxis"/>
+                            <MenuItem mnemonicParsing="false" onAction="#handleHomeAxisClick" text="Home Y Axis"
+                                      fx:id="yHomeAxis"/>
+                        </items>
+                    </ContextMenu>
+                </contextMenu>
+            </Lcd>
+            <Lcd fx:id="zLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true"
+                 lcdValueFont="LCD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                 minWidth="-Infinity"
+                 onMousePressed="#handleDroMouseClick" prefHeight="40.0" prefWidth="120.0" title="Z Axis Position"
+                 unit="mm">
+                <contextMenu>
+                    <ContextMenu fx:id="zAxisContextMenu">
+                        <items>
+                            <MenuItem mnemonicParsing="false" onAction="#handleZeroAxisClick" text="Zero Z Axis"
+                                      fx:id="zZeroAxis"/>
+                            <MenuItem mnemonicParsing="false" onAction="#handleHomeAxisClick" text="Home Z Axis"
+                                      fx:id="zHomeAxis"/>
+                        </items>
+                    </ContextMenu>
+                </contextMenu>
+            </Lcd>
+            <Lcd fx:id="aLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true"
+                 lcdValueFont="LCD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                 minWidth="-Infinity"
+                 onMousePressed="#handleDroMouseClick" prefHeight="40.0" prefWidth="120.0" title="A Axis Position"
+                 unit="mm">
+                <contextMenu>
+                    <ContextMenu fx:id="aAxisContextMenu">
+                        <items>
+                            <MenuItem mnemonicParsing="false" onAction="#handleZeroAxisClick" text="Zero A Axis"
+                                      fx:id="aZeroAxis"/>
+                        </items>
+                    </ContextMenu>
+                </contextMenu>
+            </Lcd>
+            <Lcd fx:id="velLcd" lcdDecimals="0" lcdDesign="RED_DARKRED" lcdUnitVisible="true"
+                 lcdValueFont="LCD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                 minWidth="-Infinity"
+                 prefHeight="40.0" prefWidth="120.0" title="Velocity" unit="mm/min"/>
             <Button fx:id="gcodeZero" focusTraversable="false"
                     onAction="#handleZeroSystem" text="Zero Axes" VBox.vgrow="NEVER"/>
             <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleHomeXYZ" text="Home Axes"/>
