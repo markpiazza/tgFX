@@ -372,45 +372,45 @@ public class ResponseParser extends Observable implements Runnable {
                     @Override
                     public void run() {
                         Main.postConsoleMessage("TinyG Alarm " + line);
+//
+//                        MonologFXButton btnYes = MonologFXButtonBuilder.create()
+//                                .defaultButton(true)
+//                                .icon("/testmonologfx/dialog_apply.png")
+//                                .type(MonologFXButton.Type.YES)
+//                                .build();
+//
+//                        MonologFXButton btnNo = MonologFXButtonBuilder.create()
+//                                .cancelButton(true)
+//                                .icon("/testmonologfx/dialog_cancel.png")
+//                                .type(MonologFXButton.Type.CANCEL)
+//                                .build();
+//
+//                        MonologFX mono = MonologFXBuilder.create()
+//                                .titleText("Error Occured")
+//                                .message("You have triggered a limit switch.  TinyG is now in DISABLED mode. \n"
+//                                + "Manually back your machine off of its limit switches.\n  Once done, if you would like to re-enable TinyG click yes.")
+//                                .button(btnYes)
+//                                .button(btnNo)
+//                                .type(MonologFX.Type.ERROR)
+//                                .build();
 
-                        MonologFXButton btnYes = MonologFXButtonBuilder.create()
-                                .defaultButton(true)
-                                .icon("/testmonologfx/dialog_apply.png")
-                                .type(MonologFXButton.Type.YES)
-                                .build();
-
-                        MonologFXButton btnNo = MonologFXButtonBuilder.create()
-                                .cancelButton(true)
-                                .icon("/testmonologfx/dialog_cancel.png")
-                                .type(MonologFXButton.Type.CANCEL)
-                                .build();
-
-                        MonologFX mono = MonologFXBuilder.create()
-                                .titleText("Error Occured")
-                                .message("You have triggered a limit switch.  TinyG is now in DISABLED mode. \n"
-                                + "Manually back your machine off of its limit switches.\n  Once done, if you would like to re-enable TinyG click yes.")
-                                .button(btnYes)
-                                .button(btnNo)
-                                .type(MonologFX.Type.ERROR)
-                                .build();
-
-                        MonologFXButton.Type retval = mono.showDialog();
-
-                        switch (retval) {
-                            case YES:
-                                logger.info("Clicked Yes");
-
-                                try {
-                                    TinygDriver.getInstance().priorityWrite((byte) 0x18);
-                                } catch (Exception ex) {
-                                    logger.error(ex);
-                                }
-                                break;
-                            case CANCEL:
-                                logger.info("Clicked No");
-                                Main.postConsoleMessage("TinyG will remain in diabled mode until you power cycle or click the reset button.");
-                                break;
-                        }
+//                        MonologFXButton.Type retval = mono.showDialog();
+//
+//                        switch (retval) {
+//                            case YES:
+//                                logger.info("Clicked Yes");
+//
+//                                try {
+//                                    TinygDriver.getInstance().priorityWrite((byte) 0x18);
+//                                } catch (Exception ex) {
+//                                    logger.error(ex);
+//                                }
+//                                break;
+//                            case CANCEL:
+//                                logger.info("Clicked No");
+//                                Main.postConsoleMessage("TinyG will remain in diabled mode until you power cycle or click the reset button.");
+//                                break;
+//                        }
                     }
                 });
 

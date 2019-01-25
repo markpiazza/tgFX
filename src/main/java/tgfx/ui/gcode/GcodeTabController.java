@@ -68,7 +68,7 @@ public class GcodeTabController implements Initializable {
     public static StackPane gcodePane = new StackPane(); //Holds CNCMachine  This needs to be before CNCMachine()
     public static SimpleBooleanProperty isSendingFile = new SimpleBooleanProperty(false);  //This tracks to see if we are sending a file to tinyg.  This allows us to NOT try to jog while sending files
 
-    public ObservableList data; //List to store the gcode file
+    public ObservableList<GcodeLine> data; //List to store the gcode file
 
     private int buildNumber;
     private String buildDate;
@@ -132,7 +132,7 @@ public class GcodeTabController implements Initializable {
 
         //TODO: JOGGING NEEDS TO BE BROKEN INTO A NEW CLASS
 
-        EventHandler keyPress = (EventHandler<KeyEvent>) keyEvent -> {
+        EventHandler<KeyEvent> keyPress = keyEvent -> {
             if (!isSendingFile.get()) {  //If we are sending a file.. Do NOT jog right now
 //                Main.postConsoleMessage("KEY PRESSED: " + keyEvent.getCode().toString());
 
@@ -208,7 +208,7 @@ public class GcodeTabController implements Initializable {
             }
         };
 
-        EventHandler keyRelease = (EventHandler<KeyEvent>) keyEvent -> {
+        EventHandler<KeyEvent> keyRelease = keyEvent -> {
 //                Main.postConsoleMessage("Stopping Jog Action: " + keyEvent.getCode().toString());
             if (!isSendingFile.get()) {
 
@@ -405,7 +405,7 @@ public class GcodeTabController implements Initializable {
         /*######################################
          * BINDINGS CODE
          ######################################*/
-        gcodeTabControllerHBox.disableProperty().bind(TinygDriver.getInstance().connectionStatus.not());
+        //gcodeTabControllerHBox.disableProperty().bind(TinygDriver.getInstance().connectionStatus.not());
 
 
 
@@ -415,16 +415,16 @@ public class GcodeTabController implements Initializable {
          ######################################*/
 
 
-        xLcd.valueProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> {
+        xLcd.valueProperty().addListener((ov, oldValue, newValue) -> {
             double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
         });
 
 
-        yLcd.valueProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> {
+        yLcd.valueProperty().addListener((ov, oldValue, newValue) -> {
             double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
         });
 
-        TinygDriver.getInstance().machine.getGcodeUnitMode().addListener((ChangeListener) (ov, oldValue, newValue) -> {
+        TinygDriver.getInstance().machine.getGcodeUnitMode().addListener((ov, oldValue, newValue) -> {
             String tmp = TinygDriver.getInstance().machine.getGcodeUnitMode().get();
 
 //                gcodeUnitMode.getSelectionModel().select(TinygDriver.getInstance().m.getGcodeUnitModeAsInt());
@@ -464,11 +464,11 @@ public class GcodeTabController implements Initializable {
             }
         });
 
-        cncMachine.heightProperty().addListener((ChangeListener) (o, oldVal, newVal) -> {
+        cncMachine.heightProperty().addListener((o, oldVal, newVal) -> {
             logger.info("cncHeightChanged: " + cncMachine.getHeight());
         });
-        cncMachine.maxWidthProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> handleMaxWithChange());
-        cncMachine.maxHeightProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> handleMaxHeightChange());
+        cncMachine.maxWidthProperty().addListener((ov, oldValue, newValue) -> handleMaxWithChange());
+        cncMachine.maxHeightProperty().addListener((ov, oldValue, newValue) -> handleMaxHeightChange());
 
 
 
@@ -480,38 +480,38 @@ public class GcodeTabController implements Initializable {
         data = FXCollections.observableArrayList();
 
         gcodeCol.setCellValueFactory(
-                new PropertyValueFactory<GcodeLine, String>("codeLine"));
+                new PropertyValueFactory<>("codeLine"));
         GcodeLine n = new GcodeLine("Click open to load..", 0);
 
-        gcodeView.getItems().setAll(data);
-        data.add(n);
+//        gcodeView.getItems().setAll(data);
+//        data.add(n);
 
-        gcodeView.setItems(data);
+//        gcodeView.setItems(data);
 
-        gcodeView.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent me) {
-                if (me.getButton().equals(me.getButton().PRIMARY)) {
-                    if (me.getClickCount() == 2) {
-                        GcodeLine gcl = (GcodeLine) gcodeView.getSelectionModel().getSelectedItem();
-                        if (TinygDriver.getInstance().isConnected().get()) {
-                            logger.info("Double Clicked gcodeView " + gcl.getCodeLine());
-                            try {
-                                TinygDriver.getInstance().write(gcl.getGcodeLineJsonified());
-                                tgfx.Main.postConsoleMessage(gcl.getGcodeLineJsonified());
-                            } catch (Exception ex) {
-                                java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                            }
-                        } else {
-                            logger.info("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
-                            tgfx.Main.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
-                        }
-
-                    }
-                }
-            }
-        });
+//        gcodeView.addEventHandler(MouseEvent.MOUSE_CLICKED,
+//                new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent me) {
+//                if (me.getButton().equals(me.getButton().PRIMARY)) {
+//                    if (me.getClickCount() == 2) {
+//                        GcodeLine gcl = (GcodeLine) gcodeView.getSelectionModel().getSelectedItem();
+//                        if (TinygDriver.getInstance().isConnected().get()) {
+//                            logger.info("Double Clicked gcodeView " + gcl.getCodeLine());
+//                            try {
+//                                TinygDriver.getInstance().write(gcl.getGcodeLineJsonified());
+//                                tgfx.Main.postConsoleMessage(gcl.getGcodeLineJsonified());
+//                            } catch (Exception ex) {
+//                                java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//                            }
+//                        } else {
+//                            logger.info("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
+//                            tgfx.Main.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
+//                        }
+//
+//                    }
+//                }
+//            }
+//        });
     }
 
     private Lcd getLcdByAxisName(String _axis) {
@@ -536,7 +536,7 @@ public class GcodeTabController implements Initializable {
     }
 
     @FXML
-    private void handlePauseResumeAct(ActionEvent evt) throws Exception {
+    private void handlePauseResumeAct(ActionEvent evt) {
         if ("Pause".equals(pauseResume.getText())) {
             pauseResume.setText("Resume");
             TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_PAUSE);
@@ -555,56 +555,48 @@ public class GcodeTabController implements Initializable {
     }
 
     @FXML
-    private void handleReset(ActionEvent evt) throws Exception {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    TinygDriver.getInstance().serialWriter.clearQueueBuffer();
-                    TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_RESET); //This sends the 0x18 byte
+    private void handleReset(ActionEvent evt) {
+        Platform.runLater(() -> {
+            try {
+                TinygDriver.getInstance().serialWriter.clearQueueBuffer();
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_RESET); //This sends the 0x18 byte
 
-
-
-                    //We disable everything while waiting for theboard to reset
+                //We disable everything while waiting for theboard to reset
 //                    topAnchorPane.setDisable(true);
 //                    topTabPane.setDisable(true);
 
 //                    Thread.sleep(8000);
 //                    onConnectActions();
-                    tgfx.Main.postConsoleMessage("[!]Resetting TinyG....\n.");
-                    TinygDriver.getInstance().serialWriter.notifyAck();
-                    TinygDriver.getInstance().serialWriter.clearQueueBuffer();
-                    cncMachine.clearScreen();
-                    isSendingFile.set(false); //We set this to false to allow us to jog again
+                Main.postConsoleMessage("[!]Resetting TinyG....\n.");
+                TinygDriver.getInstance().serialWriter.notifyAck();
+                TinygDriver.getInstance().serialWriter.clearQueueBuffer();
+                cncMachine.clearScreen();
+                isSendingFile.set(false); //We set this to false to allow us to jog again
 
-                } catch (Exception ex) {
-                    logger.error("handleReset " + ex.getMessage());
-                }
+            } catch (Exception ex) {
+                logger.error("handleReset " + ex.getMessage());
             }
         });
     }
 
     @FXML
-    private void handleStop(ActionEvent evt) throws Exception {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
+    private void handleStop(ActionEvent evt) {
+        Platform.runLater(() -> {
+            try {
 
-                    logger.info("[!]Stopping Job Clearing Serial Queue...\n");
-                    CommandManager.stopTinyGMovement();
-                    isSendingFile.set(false); //We set this to false to allow us to jog again
+                logger.info("[!]Stopping Job Clearing Serial Queue...\n");
+                CommandManager.stopTinyGMovement();
+                isSendingFile.set(false); //We set this to false to allow us to jog again
 
 
-                } catch (Exception ex) {
-                    logger.error("handleStop " + ex.getMessage());
-                }
+            } catch (Exception ex) {
+                logger.error("handleStop " + ex.getMessage());
             }
         });
     }
 
     @FXML
-    static void handleTestButton(ActionEvent evt) throws Exception {
+    static void handleTestButton(ActionEvent evt) {
         //logger.info("Test Button....");
 
         updateProgress(test);
@@ -688,59 +680,55 @@ public class GcodeTabController implements Initializable {
     @FXML
     private void handleOpenFile(ActionEvent event) {
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
+        Platform.runLater(() -> {
 //                logger.debug("handleOpenFile");
 
-                try {
-                    tgfx.Main.postConsoleMessage("[+]Loading a gcode file.....\n");
-                    FileChooser fc = new FileChooser();
-                    fc.setTitle("Open GCode File");
+            try {
+                Main.postConsoleMessage("[+]Loading a gcode file.....\n");
+                FileChooser fc = new FileChooser();
+                fc.setTitle("Open GCode File");
 
-                    String HOME_DIR = System.getenv("HOME"); //Get Home DIR in OSX
-                    if (HOME_DIR == null) {
-                        HOME_DIR = System.getProperty("user.home");  //Get Home DIR in Windows
-                    }
-
-                    fc.setInitialDirectory(new File(HOME_DIR));  //This will find osx users home dir
-                    File f = fc.showOpenDialog(null);
-                    FileInputStream fstream = new FileInputStream(f);
-                    DataInputStream in = new DataInputStream((fstream));
-                    BufferedReader br = new BufferedReader(new InputStreamReader(in));
-                    String strLine;
-
-                    data.removeAll(data);
-                    //Clear the list if there was a previous file loaded
-
-                    int _linenumber = 0;
-                    while ((strLine = br.readLine()) != null) {
-
-                        if (!strLine.equals("")) {
-                            //Do not add empty lines to the list
-                            //gcodesList.appendText(strLine + "\n");
-                            if (!strLine.toUpperCase().startsWith("N")) {
-                                strLine = "N" + String.valueOf(_linenumber) + " " + strLine;
-                            }
-                            if (normalizeGcodeLine(strLine)) {
-                                data.add(new GcodeLine(strLine, _linenumber));
-                                _linenumber++;
-                            } else {
-                                Main.postConsoleMessage("ERROR: Your gcode file contains an invalid character.. Either !,% or ~. Remove this character and try again.");
-                                Main.postConsoleMessage("  Line " + _linenumber);
-                                data.clear(); //Remove all other previous entered lines
-                                break;
-                            }
-
-                        }
-                    }
-                    totalGcodeLines = _linenumber;
-//                    logger.info("File Loading Complete");
-                } catch (FileNotFoundException ex) {
-                    logger.error("File Not Found.");
-                } catch (Exception ex) {
-                    logger.error(ex.getMessage());
+                String HOME_DIR = System.getenv("HOME"); //Get Home DIR in OSX
+                if (HOME_DIR == null) {
+                    HOME_DIR = System.getProperty("user.home");  //Get Home DIR in Windows
                 }
+
+                fc.setInitialDirectory(new File(HOME_DIR));  //This will find osx users home dir
+                File f = fc.showOpenDialog(null);
+                FileInputStream fstream = new FileInputStream(f);
+                DataInputStream in = new DataInputStream((fstream));
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                String strLine;
+
+                //Clear the list if there was a previous file loaded
+                data.clear();
+                int _linenumber = 0;
+                while ((strLine = br.readLine()) != null) {
+
+                    if (!strLine.equals("")) {
+                        //Do not add empty lines to the list
+                        //gcodesList.appendText(strLine + "\n");
+                        if (!strLine.toUpperCase().startsWith("N")) {
+                            strLine = "N" + String.valueOf(_linenumber) + " " + strLine;
+                        }
+                        if (normalizeGcodeLine(strLine)) {
+                            data.add(new GcodeLine(strLine, _linenumber));
+                            _linenumber++;
+                        } else {
+                            Main.postConsoleMessage("ERROR: Your gcode file contains an invalid character.. Either !,% or ~. Remove this character and try again.");
+                            Main.postConsoleMessage("  Line " + _linenumber);
+                            data.clear(); //Remove all other previous entered lines
+                            break;
+                        }
+
+                    }
+                }
+                totalGcodeLines = _linenumber;
+//                    logger.info("File Loading Complete");
+            } catch (FileNotFoundException ex) {
+                logger.error("File Not Found.");
+            } catch (Exception ex) {
+                logger.error(ex.getMessage());
             }
         });
     }
@@ -771,7 +759,7 @@ public class GcodeTabController implements Initializable {
     /*######################################
      * EVENT LISTENERS CODE
      ######################################*/
-    public void handleMaxHeightChange() {
+    private void handleMaxHeightChange() {
         if (gcodePane.getWidth() - TinygDriver.getInstance().machine.getAxisByName("x").getTravelMaxSimple().get() < gcodePane.getHeight() - TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get()) {
             //X is longer use this code
             if (TinygDriver.getInstance().machine.getGcodeUnitModeAsInt() == 0) {  //INCHES
@@ -796,7 +784,7 @@ public class GcodeTabController implements Initializable {
 
     }
 
-    public void handleMaxWithChange() {
+    private void handleMaxWithChange() {
         //This is for the change listener to call for Max Width Change on the CNC Machine
         if (gcodePane.getWidth() - TinygDriver.getInstance().machine.getAxisByName("x").getTravelMaxSimple().get() < gcodePane.getHeight() - TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get()) {
             //X is longer use this code

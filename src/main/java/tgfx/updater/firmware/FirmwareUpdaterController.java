@@ -191,46 +191,46 @@ public class FirmwareUpdaterController implements Initializable {
                     //We need to update your firmware
                     Platform.runLater(() -> {
                         Main.postConsoleMessage("TinyG Firmware Update Available.");
+//
+//                            MonologFXButton btnYes = MonologFXButtonBuilder.create()
+//                                    .defaultButton(true)
+//                                    .icon("/testmonologfx/dialog_apply.png")
+//                                    .type(MonologFXButton.Type.YES)
+//                                    .build();
+//
+//                            MonologFXButton btnNo = MonologFXButtonBuilder.create()
+//                                    .cancelButton(true)
+//                                    .icon("/testmonologfx/dialog_cancel.png")
+//                                    .type(MonologFXButton.Type.CANCEL)
+//                                    .build();
+//
+//                            MonologFX mono = MonologFXBuilder.create()
+//                                    .titleText("Firmware Update Available")
+//                                    .message("There is a firmware update available for your TinyG Hardware. \n"
+//                                            + "\n Click Yes to start your firmware update.")
+//                                    .button(btnYes)
+//                                    .button(btnNo)
+//                                    .type(MonologFX.Type.ERROR)
+//                                    .build();
 
-                        MonologFXButton btnYes = MonologFXButtonBuilder.create()
-                                .defaultButton(true)
-                                .icon("/testmonologfx/dialog_apply.png")
-                                .type(MonologFXButton.Type.YES)
-                                .build();
-
-                        MonologFXButton btnNo = MonologFXButtonBuilder.create()
-                                .cancelButton(true)
-                                .icon("/testmonologfx/dialog_cancel.png")
-                                .type(MonologFXButton.Type.CANCEL)
-                                .build();
-
-                        MonologFX mono = MonologFXBuilder.create()
-                                .titleText("Firmware Update Available")
-                                .message("There is a firmware update available for your TinyG Hardware. \n"
-                                        + "\n Click Yes to start your firmware update.")
-                                .button(btnYes)
-                                .button(btnNo)
-                                .type(MonologFX.Type.ERROR)
-                                .build();
-
-                        MonologFXButton.Type retval = mono.showDialog();
-
-                        switch (retval) {
-                            case YES:
-//                                logger.info("Clicked Yes");
-                                try {
-                                    Main.postConsoleMessage("This is going to take about 30 seconds.... Please Wait... Watch the flashies....");
-                                    handleUpdateFirmware(new ActionEvent());
-
-                                } catch (Exception ex) {
-                                    Main.postConsoleMessage("Error in updating firmware.");
-                                }
-                                break;
-                            case CANCEL:
-//                                logger.info("Clicked No");
-                                Main.postConsoleMessage("TinyG firmware update cancelled.");
-                                break;
-                        }
+//                            MonologFXButton.Type retval = mono.showDialog();
+//
+//                            switch (retval) {
+//                                case YES:
+////                                logger.info("Clicked Yes");
+//                                    try {
+//                                        Main.postConsoleMessage("This is going to take about 30 seconds.... Please Wait... Watch the flashies....");
+//                                        handleUpdateFirmware(new ActionEvent());
+//
+//                                    } catch (Exception ex) {
+//                                        Main.postConsoleMessage("Error in updating firmware.");
+//                                    }
+//                                    break;
+//                                case CANCEL:
+////                                logger.info("Clicked No");
+//                                    Main.postConsoleMessage("TinyG firmware update cancelled.");
+//                                    break;
+//                            }
                     });
 
                 } else {

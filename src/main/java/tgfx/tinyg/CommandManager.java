@@ -49,10 +49,10 @@ public class CommandManager {
     public static final String CMD_APPLY_DISABLE_HASHCODE = "{\"eh\":0\"}\n";
     public static final String CMD_APPLY_DEFAULT_SETTINGS = "{\"defa\":1}\n";
     public static final String CMD_APPLY_STATUS_UPDATE_INTERVAL = "{\"si\":100}\n";
-    public static final String CMD_APPLY_JSON_VOBERSITY = "{\"jv\":3}\n";
+    public static final String CMD_APPLY_JSON_VERBOSITY = "{\"jv\":3}\n";
     public static final String CMD_APPLY_ENABLE_JSON_MODE = "{\"ej\":1}\n";
     public static final String CMD_DEFAULT_ENABLE_JSON = "{\"ej\":1}\n";
-    public static final String CMD_APPLY_TEXT_VOBERSITY = "{\"tv\":0}\n";
+    public static final String CMD_APPLY_TEXT_VERBOSITY = "{\"tv\":0}\n";
     public static final String CMD_APPLY_NOOP = "{}\n";
     public static final String CMD_QUERY_SWITCHMODE = "{\"st\":null}\n";
     public static final String CMD_APPLY_SWITCHMODE_NORMALLY_OPEN = "{\"st\":0}\n";
