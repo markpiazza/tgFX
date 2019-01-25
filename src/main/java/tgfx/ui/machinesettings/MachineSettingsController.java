@@ -16,13 +16,14 @@ import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import tgfx.Main;
 import tgfx.tinyg.CommandManager;
@@ -32,16 +33,16 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import org.json.JSONException;
-
 /**
  * FXML Controller class
  *
  * @author rileyporter
  */
 public class MachineSettingsController implements Initializable {
+    private static final Logger logger = LogManager.getLogger();
 
     private final DecimalFormat decimalFormat = new DecimalFormat("################################.############################");
-    private static final Logger logger = Logger.getLogger(MachineSettingsController.class);
+    //private static final Logger logger = Logger.getLogger(MachineSettingsController.class);
     @FXML
     private ListView configsListView;
     @FXML

@@ -29,8 +29,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import jfxtras.labs.dialogs.MonologFXButton;
-import org.apache.log4j.Logger;
-import org.apache.log4j.BasicConfigurator;
 import java.util.logging.Level;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
@@ -53,6 +51,8 @@ import static tgfx.TgFXConstants.CONNECTION_TIMEOUT_STRING;
 
 import jfxtras.labs.dialogs.MonologFXButtonBuilder;
 import jssc.SerialPortException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 
 import tgfx.tinyg.TinygDriver;
@@ -79,9 +79,7 @@ import tgfx.utility.QueuedTimerable;
  * @author riley
  */
 public class Main extends Stage implements Initializable, Observer, QueuedTimerable<String> {
-
-    private static final Logger logger = Logger.getLogger(Main.class);
-
+    private static final Logger logger = LogManager.getLogger();
 
     private int oldRspLine = 0;
     private int delayValue = 150; //Time between config set'ers.
@@ -683,11 +681,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         threadResponseParser.setDaemon(true);
         threadResponseParser.setName("ResponseParser");
         threadResponseParser.start();
-
-        /*
-         * LOGGER CONFIG
-         */
-        BasicConfigurator.configure();
 
         /*
          * String Converters

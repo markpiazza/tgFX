@@ -4,6 +4,9 @@
  */
 package tgfx.tinyg;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 
 /**
@@ -11,6 +14,7 @@ import java.util.ArrayList;
  * @author ril3y
  */
 public class MnemonicManager {
+    private static final Logger logger = LogManager.getLogger();
     //Group holder Mnemonics
 
     private static final ArrayList<String> GROUP_MNEMONICS = new ArrayList<>();
@@ -225,11 +229,11 @@ public class MnemonicManager {
         return false;
     }
 
-    public responseCommand lookupSingleGroupMaster(String strToLookup, String parentGroup) {
+    public ResponseCommand lookupSingleGroupMaster(String strToLookup, String parentGroup) {
         //This will iterate all group mnemoics to see if the single group object
         // belongs in which group.
 
-        responseCommand rc = new responseCommand(parentGroup, null, null);
+        ResponseCommand rc = new ResponseCommand(parentGroup, null, null);
 
         if (AXIS_MNEMONICS.contains(strToLookup)) {
             rc.setSettingKey(strToLookup);
@@ -247,11 +251,11 @@ public class MnemonicManager {
         return null;
     }
 
-    public responseCommand lookupSingleGroup(String strToLookup) {
+    public ResponseCommand lookupSingleGroup(String strToLookup) {
         //This will iterate all group mnemoics to see if the single group object
         // belongs in which group.
 
-        responseCommand rc = new responseCommand();
+        ResponseCommand rc = new ResponseCommand();
 
         if (AXIS_MNEMONICS.contains(strToLookup.substring(1))) {
             rc.setSettingParent(String.valueOf(strToLookup.charAt(0)));

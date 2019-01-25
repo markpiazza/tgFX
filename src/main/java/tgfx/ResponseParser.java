@@ -4,6 +4,8 @@
  */
 package tgfx;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.*;
 import java.util.Iterator;
 import java.util.Observable;
@@ -11,11 +13,8 @@ import javafx.application.Platform;
 import jfxtras.labs.dialogs.MonologFX;
 import jfxtras.labs.dialogs.MonologFXBuilder;
 import jfxtras.labs.dialogs.MonologFXButton;
-import static jfxtras.labs.dialogs.MonologFXButton.Type.YES;
 import jfxtras.labs.dialogs.MonologFXButtonBuilder;
-import org.apache.log4j.Level;
 
-import org.apache.log4j.Logger;
 import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_A;
 import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_B;
 import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_C;
@@ -30,14 +29,14 @@ import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_SYSTEM;
 import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_STATUS_REPORT;
 import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_EMERGENCY_SHUTDOWN;
 import tgfx.tinyg.TinygDriver;
-import tgfx.tinyg.responseCommand;
+import tgfx.tinyg.ResponseCommand;
 
 /**
  *
  * @author ril3y
  */
 public class ResponseParser extends Observable implements Runnable {
-    private static final Logger logger = Logger.getLogger(ResponseParser.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private boolean TEXT_MODE = false;
     private String[] message = new String[2];
@@ -140,7 +139,7 @@ public class ResponseParser extends Observable implements Runnable {
                     if (key.equals("f")) {
                         parseFooter(js.getJSONArray("f"));  //This is very important.  We break out our response footer.. error codes.. bytes availble in hardware buffer etc.               
                     } else {
-                        responseCommand rc = TinygDriver.getInstance().mneManager.lookupSingleGroupMaster(key, pg);
+                        ResponseCommand rc = TinygDriver.getInstance().mneManager.lookupSingleGroupMaster(key, pg);
                         if (rc == null) { //This happens when a new mnemonic has been added to the tinyG firmware but not added to tgFX's MnemonicManger
                             //This is the error case
                             logger.error("Mnemonic Lookup Failed in applySettingsMasterGroup. \n\tMake sure there are not new elements added to TinyG and not to the MnemonicManager Class.\n\tMNEMONIC FAILED: " + key);
@@ -169,7 +168,7 @@ public class ResponseParser extends Observable implements Runnable {
             while (ii.hasNext()) {
                 String key = ii.next().toString();
 
-                responseCommand rc = new responseCommand(MNEMONIC_GROUP_SYSTEM, key.toString(), js.get(key).toString());
+                ResponseCommand rc = new ResponseCommand(MNEMONIC_GROUP_SYSTEM, key.toString(), js.get(key).toString());
                 TinygDriver.getInstance().machine.applyJsonStatusReport(rc);
 //                _applySettings(rc.buildJsonObject(), rc.getSettingParent()); //we will supply the parent object name for each key pair
             }
@@ -224,7 +223,7 @@ public class ResponseParser extends Observable implements Runnable {
                                 applySettingMasterGroup(js.getJSONObject(key), key);
                                 continue;
                             }
-                            responseCommand rc = TinygDriver.getInstance().mneManager.lookupSingleGroup(key);
+                            ResponseCommand rc = TinygDriver.getInstance().mneManager.lookupSingleGroup(key);
                             rc.setSettingValue(js.get(key).toString());
                             _applySettings(rc.buildJsonObject(), rc.getSettingParent()); //we will supply the parent object name for each key pair
                             break;
@@ -426,7 +425,7 @@ public class ResponseParser extends Observable implements Runnable {
 
                 //This is for single settings xfr, 1tr etc...
                 //This is pretty ugly but it gets the key and the value. For single values.
-                responseCommand rc = TinygDriver.getInstance().mneManager.lookupSingleGroup(pg);
+                ResponseCommand rc = TinygDriver.getInstance().mneManager.lookupSingleGroup(pg);
 
 //                  String _parent = String.valueOf(parentGroup.charAt(0));
                 String newJs;

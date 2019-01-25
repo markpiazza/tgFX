@@ -4,6 +4,8 @@
  */
 package tgfx.utility;
 
+import org.apache.logging.log4j.LogManager;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,13 +16,14 @@ import java.util.logging.Logger;
  * @author pfarrell
  */
 public class TimerTest implements Timeable {
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
 
-private AtomicBoolean timerKicked = new AtomicBoolean(false);    
-    
-public TimerTest() {
-    AsyncTimer at = new AsyncTimer(5000, this);
-    at.start();
-}
+    private AtomicBoolean timerKicked = new AtomicBoolean(false);
+
+    public TimerTest() {
+        AsyncTimer at = new AsyncTimer(5000, this);
+        at.start();
+    }
 
     @Override
     public AtomicBoolean getTimeSemaphore() {

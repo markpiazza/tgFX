@@ -17,7 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.system.Axis;
 import tgfx.system.Machine;
 import tgfx.system.Motor;
@@ -29,8 +30,8 @@ import tgfx.tinyg.TinygDriver;
  * @author rileyporter
  */
 public class TinyGConfigController implements Initializable {
+    private static final Logger logger = LogManager.getLogger();
 
-    private static final Logger logger = Logger.getLogger(TinyGConfigController.class);
     private static DecimalFormat decimalFormat = new DecimalFormat("#0.000");
 
     public TinyGConfigController() {

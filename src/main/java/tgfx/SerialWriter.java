@@ -6,7 +6,8 @@ package tgfx;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.tinyg.TinygDriver;
 import tgfx.ui.gcode.GcodeTabController;
 
@@ -15,8 +16,8 @@ import tgfx.ui.gcode.GcodeTabController;
  * @author ril3y
  */
 public class SerialWriter implements Runnable {
+    private static final Logger logger = LogManager.getLogger();
 
-    private static Logger logger = Logger.getLogger(SerialWriter.class);
     private BlockingQueue<String> queue;
     private boolean RUN = true;
     private boolean cleared  = false;

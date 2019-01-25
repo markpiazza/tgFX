@@ -10,13 +10,13 @@ import java.util.Iterator;
 import java.util.List;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
-import tgfx.Main;
 import tgfx.tinyg.MnemonicManager;
 import tgfx.tinyg.TinygDriver;
-import tgfx.tinyg.responseCommand;
+import tgfx.tinyg.ResponseCommand;
 
 /**
  * [xmp] x_machine_position 0.000 mm [xwp] x_work_position 0.000 mm [xam]
@@ -30,7 +30,7 @@ import tgfx.tinyg.responseCommand;
  *
  */
 public final class Axis {
-    static final Logger logger = Logger.getLogger(TinygDriver.class);
+    private static final Logger logger = LogManager.getLogger();
 
     public enum AXIS_TYPE {
         LINEAR, ROTATIONAL
@@ -682,7 +682,7 @@ public final class Axis {
         return machinePosition;
     }
 
-    public void applyJsonSystemSetting(responseCommand rc) {
+    public void applyJsonSystemSetting(ResponseCommand rc) {
         _applyJsonSystemSetting(rc);
     }
 
@@ -694,7 +694,7 @@ public final class Axis {
             while (ii.hasNext()) {
                 String _key = ii.next().toString();
                 String _val = js.get(_key).toString();
-                responseCommand rc = new responseCommand(parent, _key, _val);
+                ResponseCommand rc = new ResponseCommand(parent, _key, _val);
                 _applyJsonSystemSetting(rc);
             }
 
@@ -704,7 +704,7 @@ public final class Axis {
 
     }
 
-    private void _applyJsonSystemSetting(responseCommand rc) {
+    private void _applyJsonSystemSetting(ResponseCommand rc) {
 
 
         switch (rc.getSettingKey()) {

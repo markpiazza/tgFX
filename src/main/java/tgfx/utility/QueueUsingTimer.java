@@ -4,7 +4,8 @@
  */
 package tgfx.utility;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The
@@ -16,10 +17,8 @@ import org.apache.log4j.Logger;
  */
 public class QueueUsingTimer<T> extends Thread {
 
-    /**
-     * logger instance
-     */
-    private static final Logger aLog = Logger.getLogger(QueueUsingTimer.class);
+    private static final Logger logger = LogManager.getLogger();
+
     private final QueuedTimerable<T> callback;
     private final long naptime;
     private boolean report_timeout = true;
@@ -45,7 +44,7 @@ public class QueueUsingTimer<T> extends Thread {
                 callback.addToQueue(makeEntryOf);
             }
         } catch (InterruptedException ex) {
-            aLog.error("sleep interupted", ex);
+            logger.error("sleep interupted", ex);
         }
     }
 

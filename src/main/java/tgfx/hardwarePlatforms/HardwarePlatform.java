@@ -10,12 +10,16 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author ril3y
  */
 public class HardwarePlatform {
+    private static final Logger logger = LogManager.getLogger();
+
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
     private static HardwarePlatform hardwarePlatformInstance;
 

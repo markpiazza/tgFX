@@ -5,6 +5,9 @@
 package tgfx.ui.gcode;
 
 import java.util.ArrayList;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.Main;
 
 /**
@@ -12,6 +15,7 @@ import tgfx.Main;
  * @author rileyporter
  */
 public final class GcodeHistory {
+    private static final Logger logger = LogManager.getLogger();
 
     private ArrayList<String> commandHistory = new ArrayList<>();
     private int commandIndex = -1;

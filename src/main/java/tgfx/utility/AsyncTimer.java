@@ -5,18 +5,20 @@
 
 package tgfx.utility;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * The <code>AsyncTimer</code> class implements a timer that will fire off asynchronously
  * and set the callback's semaphore variable.
  * @see Timeable
- * @see AtomicBoolean
  * @author pfarrell
  * Created on Jan 24, 2014 4:23:40 PM
  */
 public class AsyncTimer extends Thread {
     /** logger instance */
-    private static final Logger aLog = Logger.getLogger(AsyncTimer.class);
+    private static final Logger logger = LogManager.getLogger();
+
     private final Timeable callback;
     private final long naptime;
     private final boolean more;
@@ -47,13 +49,13 @@ public class AsyncTimer extends Thread {
                 Thread.sleep(naptime);
                 callback.getTimeSemaphore().set(true);
             } catch (InterruptedException ex) {
-                aLog.error("sleep interupted", ex);
+                logger.error("sleep interupted", ex);
             }
             if (more) {
                 try {
                     Thread.sleep(2);
                 } catch (InterruptedException ex) {
-                    aLog.fatal("more sleep interupted", ex);
+                    logger.fatal("more sleep interupted", ex);
                 }
             }
         } while (more);

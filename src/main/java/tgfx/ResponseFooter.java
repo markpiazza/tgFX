@@ -4,11 +4,15 @@
  */
 package tgfx;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  *
  * @author ril3y
  */
 public class ResponseFooter {
+    private static final Logger logger = LogManager.getLogger();
 
     //{"b":{"xvm":12000},"f":[1,0,255,1234]}
     //"f":[<protocol_version>, <status_code>, <input_available>, <checksum>]

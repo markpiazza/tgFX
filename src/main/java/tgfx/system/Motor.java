@@ -5,20 +5,21 @@
 package tgfx.system;
 
 import java.util.Iterator;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import org.apache.log4j.Logger;
 import tgfx.tinyg.MnemonicManager;
 import tgfx.tinyg.TinygDriver;
-import tgfx.tinyg.responseCommand;
+import tgfx.tinyg.ResponseCommand;
 
 /**
  *
  * @author ril3y
  */
 public class Motor {
-
+    private static final Logger logger = LogManager.getLogger();
     
-    static final Logger logger = Logger.getLogger(TinygDriver.class);
     private String CURRENT_MOTOR_JSON_OBJECT;
     private int id_number; //On TinyG the motor ports are 1-4
     private int ma;// map_to_axis
@@ -159,7 +160,7 @@ public void applyJsonSystemSetting(JSONObject js, String parent) {
             while (ii.hasNext()) {
                 String _key = ii.next().toString();
                 String _val = js.get(_key).toString();
-                responseCommand rc = new responseCommand(parent, _key, _val);
+                ResponseCommand rc = new ResponseCommand(parent, _key, _val);
 
                 switch (_key) {
                     case (MnemonicManager.MNEMONIC_MOTOR_MAP_AXIS):

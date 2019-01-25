@@ -24,7 +24,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.Main;
 import tgfx.tinyg.CommandManager;
 import tgfx.tinyg.TinygDriver;
@@ -35,7 +36,7 @@ import tgfx.ui.gcode.GcodeTabController;
  * @author rileyporter
  */
 public class CNCMachine extends Pane {
-    private static Logger logger = Logger.getLogger(CNCMachine.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private final Circle cursorPoint = new Circle(2, javafx.scene.paint.Color.RED);
 
@@ -301,7 +302,7 @@ public class CNCMachine extends Pane {
                 }
 
             } else {
-                Logger.getLogger("Main").info("Outside of Bounds X");
+                logger.info("Outside of Bounds X");
                 
                 if (getWidth() != 21 && getHeight() != 21) { //This is a bug fix to avoid the cursor being hidden on the initial connect.
                     //This should be fairly harmless as it will always show the cursor if its the inital connect size 21,21

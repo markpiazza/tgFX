@@ -4,7 +4,8 @@
  */
 package tgfx.external;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.SerialDriver;
 import java.io.*;
 import java.net.ServerSocket;
@@ -21,7 +22,8 @@ import tgfx.tinyg.TinygDriver;
  * @author ril3y
  */
 public class SocketMonitor {
-    private static Logger logger = Logger.getLogger(SocketMonitor.class);
+    private static final Logger logger = LogManager.getLogger();
+
     private SerialDriver ser = SerialDriver.getInstance();
     private ServerSocket server;
     private int listenerPort;
@@ -68,7 +70,7 @@ public class SocketMonitor {
 
 
 class ConnectionHandler implements Runnable, Observer {
-    private static Logger logger = Logger.getLogger(ConnectionHandler.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private Socket socket;
     private boolean disconnect = false;

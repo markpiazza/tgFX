@@ -11,7 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.utility.UtilityFunctions;
 
 /**
@@ -21,7 +22,7 @@ import tgfx.utility.UtilityFunctions;
  */
 public class TgfxSettingsController implements Initializable {
 
-    private static final Logger logger = Logger.getLogger(TgfxSettingsController.class);
+    private static final Logger logger = LogManager.getLogger();
     
     @FXML
     private Label tgfxBuildNumber, tgfxBuildDate, tgfxVersion;

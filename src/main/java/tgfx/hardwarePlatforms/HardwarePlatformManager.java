@@ -12,7 +12,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.tinyg.TinygDriver;
 
 /**
@@ -20,7 +22,7 @@ import tgfx.tinyg.TinygDriver;
  * @author ril3y
  */
 public class HardwarePlatformManager {
-    private static final Logger logger = Logger.getLogger(HardwarePlatformManager.class);
+    private static final Logger logger = LogManager.getLogger();
     private static HardwarePlatformManager hardwarePlatformManagerInstance;
 
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();

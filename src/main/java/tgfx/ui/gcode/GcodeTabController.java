@@ -42,7 +42,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
-import org.apache.log4j.Logger;
+import jfxtras.labs.scene.control.gauge.Lcd;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.Main;
 import tgfx.render.CNCMachine;
 import tgfx.render.Draw2d;
@@ -56,7 +58,7 @@ import tgfx.ui.tgfxsettings.TgfxSettingsController;
  * @author rileyporter
  */
 public class GcodeTabController implements Initializable {
-    private static final Logger logger = Logger.getLogger(GcodeTabController.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private static CNCMachine cncMachine = new CNCMachine();
     private static byte[] BAD_BYTES = {(byte) 0x21, (byte) 0x18, (byte) 0x7e};
@@ -121,7 +123,6 @@ public class GcodeTabController implements Initializable {
      * Initializes the controller class.
      */
     public GcodeTabController() {
-        logger.setLevel(org.apache.log4j.Level.ERROR);
         logger.info("Gcode Controller Loaded");
         cncMachine.setOnMouseMoved(me -> {
             yAxisLocation.setText(cncMachine.getNormalizedYasString(me.getY()));

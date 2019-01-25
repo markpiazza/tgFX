@@ -4,8 +4,8 @@
  */
 package tgfx.tinyg;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.Main;
 
 /**
@@ -14,8 +14,8 @@ import tgfx.Main;
  *
  */
 public class CommandManager {
+    private static final Logger logger = LogManager.getLogger();
 
-    private static Logger logger = Logger.getLogger(CommandManager.class);
     public static final String CMD_QUERY_COORDINATE_SYSTEM = "{\"coor\":\"\"}\n";
     public static final String CMD_QUERY_HARDWARE_BUILD_NUMBER = "{\"fb\":\"\"}\n";
     public static final String CMD_QUERY_HARDWARE_FIRMWARE_NUMBER = "{\"fv\":\"\"}\n";
@@ -93,7 +93,6 @@ public class CommandManager {
     
 
     public CommandManager() {
-        logger.setLevel(Level.ERROR);
     }
 
     public static void stopTinyGMovement() throws Exception {

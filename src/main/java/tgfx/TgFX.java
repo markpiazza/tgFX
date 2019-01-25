@@ -9,7 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -17,8 +18,8 @@ import org.apache.log4j.Logger;
  * @author ril3y
  */
 public class TgFX extends Application {
+    private static final Logger logger = LogManager.getLogger();
 
-    private static final Logger logger = Logger.getLogger(TgFX.class);
 
     @Override
     public void start(Stage stage) throws Exception {

@@ -4,7 +4,8 @@
  */
 package tgfx.tinyg;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,11 +15,11 @@ import org.json.JSONObject;
  * @author ril3y
  */
 public class QueueReport {
+    private static final Logger logger = LogManager.getLogger();
 
     private int pba = 24;
     private int added = 0;
     private int removed = 0;
-    private static final Logger logger = Logger.getLogger(QueueReport.class);
 
     public synchronized void parse(JSONObject js) throws JSONException {
         logger.info("QUEUE REPORT");

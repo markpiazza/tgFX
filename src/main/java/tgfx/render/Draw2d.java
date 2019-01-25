@@ -7,6 +7,8 @@ package tgfx.render;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -14,6 +16,8 @@ import javafx.scene.paint.*;
  * @author ril3y
  */
 public class Draw2d {
+    private static final Logger logger = LogManager.getLogger();
+
     static Paint retPaint;
     
     public static Paint SLOWEST = Color.web("#ee1a0f");

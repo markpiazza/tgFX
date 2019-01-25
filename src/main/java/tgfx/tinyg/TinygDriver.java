@@ -16,8 +16,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import jssc.SerialPortException;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import tgfx.Main;
 import tgfx.ResponseParser;
@@ -31,8 +31,8 @@ import tgfx.hardwarePlatforms.HardwarePlatformManager;
 import tgfx.utility.AsyncTimer;
 
 public class TinygDriver extends Observable {
+    private static final Logger logger = LogManager.getLogger();
 
-    static final Logger logger = Logger.getLogger(TinygDriver.class);
     public Machine machine = Machine.getInstance();
     public QueueReport qr = QueueReport.getInstance();
     public MnemonicManager mneManager = new MnemonicManager();
@@ -317,7 +317,7 @@ public class TinygDriver extends Observable {
         }
     }
 
-    public void applyResponseCommand(responseCommand rc) {
+    public void applyResponseCommand(ResponseCommand rc) {
         char _ax;
         switch (rc.getSettingKey()) {
 

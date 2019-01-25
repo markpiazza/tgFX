@@ -4,8 +4,9 @@
  */
 package tgfx;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.tinyg.TinygDriver;
-//import gnu.io.*;
 import jssc.SerialPort;
 import jssc.*;
 
@@ -14,14 +15,13 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import org.apache.log4j.Logger;
-
 /**
  *
  * @author ril3y
  */
 public class SerialDriver implements SerialPortEventListener {
-    private static Logger logger = Logger.getLogger(SerialWriter.class);
+    private static final Logger logger = LogManager.getLogger();
+
     private static SerialDriver serialDriverInstance;
 
     private static byte[] lineBuffer = new byte[1024];

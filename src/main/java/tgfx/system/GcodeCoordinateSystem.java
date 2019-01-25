@@ -6,12 +6,15 @@ package tgfx.system;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author rileyporter
  */
 public final class GcodeCoordinateSystem {
+    private static final Logger logger = LogManager.getLogger();
 
     private StringProperty coordinateSystemName = new SimpleStringProperty();
     private int coordinateNumber;

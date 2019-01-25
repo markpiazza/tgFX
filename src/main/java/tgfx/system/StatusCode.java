@@ -5,12 +5,15 @@
 package tgfx.system;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author ril3y
  */
 public class StatusCode {
+    private static final Logger logger = LogManager.getLogger();
 
     int statusNUmber;
     String message;

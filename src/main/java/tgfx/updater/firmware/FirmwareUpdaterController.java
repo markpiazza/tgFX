@@ -27,7 +27,8 @@ import jfxtras.labs.dialogs.MonologFX;
 import jfxtras.labs.dialogs.MonologFXBuilder;
 import jfxtras.labs.dialogs.MonologFXButton;
 import jfxtras.labs.dialogs.MonologFXButtonBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.Main;
 import tgfx.tinyg.*;
 import tgfx.utility.UtilityFunctions;
@@ -38,7 +39,8 @@ import tgfx.utility.UtilityFunctions;
  * @author ril3y
  */
 public class FirmwareUpdaterController implements Initializable {
-    private static Logger logger = Logger.getLogger(FirmwareUpdaterController.class);
+    private static final Logger logger = LogManager.getLogger();
+
 
     @FXML
     private static Label firmwareVersion;

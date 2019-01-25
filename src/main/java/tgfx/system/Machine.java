@@ -8,24 +8,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javafx.beans.binding.NumberBinding;
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.tinyg.MnemonicManager;
 import org.json.JSONObject;
 import tgfx.tinyg.TinygDriver;
-import org.apache.log4j.Logger;
 import org.json.JSONException;
 import tgfx.hardwarePlatforms.HardwarePlatform;
-import tgfx.tinyg.responseCommand;
+import tgfx.tinyg.ResponseCommand;
 
 /**
  *
  * @author ril3y
  */
 public final class Machine {
+    private static final Logger logger = LogManager.getLogger();
 
     //TG Specific
     //Machine EEPROM Values
@@ -58,7 +60,6 @@ public final class Machine {
     private boolean enable_acceleration;
     private float junction_acceleration;
     private float min_line_segment;
-    static final Logger logger = Logger.getLogger(TinygDriver.class);
     private float min_arc_segment;
     private double min_segment_time;
     private boolean enable_CR_on_TX;
@@ -644,7 +645,7 @@ public final class Machine {
         m.setMapToAxis(x);
     }
 
-    public void applyJsonStatusReport(responseCommand rc) {
+    public void applyJsonStatusReport(ResponseCommand rc) {
 
 
         switch (rc.getSettingKey()) {
@@ -711,7 +712,7 @@ public final class Machine {
             while (ii.hasNext()) {
                 String _key = ii.next().toString();
                 String _val = js.get(_key).toString();
-                final responseCommand rc = new responseCommand(parent, _key, _val);
+                final ResponseCommand rc = new ResponseCommand(parent, _key, _val);
 
                 switch (_key) {
 

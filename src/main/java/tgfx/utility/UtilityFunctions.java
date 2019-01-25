@@ -7,7 +7,8 @@ package tgfx.utility;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tgfx.TgFXConstants;
 
 /**
@@ -15,7 +16,8 @@ import tgfx.TgFXConstants;
  * @author ril3y
  */
 public class UtilityFunctions {
-    private static Logger logger = Logger.getLogger(UtilityFunctions.class);
+    private static final Logger logger = LogManager.getLogger();
+
     final static ResourceBundle rb = ResourceBundle.getBundle("version");   //Used to track build date and build number
     
     public static String getOperatingSystem() {

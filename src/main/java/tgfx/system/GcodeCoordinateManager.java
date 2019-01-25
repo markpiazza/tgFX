@@ -7,12 +7,15 @@ package tgfx.system;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.beans.property.StringProperty;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author rileyporter
  */
 public class GcodeCoordinateManager {
+    private static final Logger logger = LogManager.getLogger();
 
     private GcodeCoordinateSystem g54;
     private GcodeCoordinateSystem g55;
