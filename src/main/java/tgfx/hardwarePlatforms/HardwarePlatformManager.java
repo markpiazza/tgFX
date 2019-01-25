@@ -11,13 +11,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import org.apache.log4j.Logger;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import tgfx.Main;
 import tgfx.tinyg.TinygDriver;
 
 /**
@@ -56,7 +51,11 @@ public class HardwarePlatformManager {
     }
 
     private void loadPlatformConfigs() {
-        File folder = new File("resources/hardwarePlatforms/");
+        File folder = new File("hardwarePlatforms");
+        if (!folder.exists()) {
+            logger.warn("Error loading platform configs, "+folder.getName()+" not found");
+            return;
+        }
         File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
@@ -87,6 +86,5 @@ public class HardwarePlatformManager {
 
     private void updatePlatformFiles() {
         //todo code in support for updating platform files from remote server
-        throw new NotImplementedException();
     }
 }

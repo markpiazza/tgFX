@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
-<?import tgfx.updater.firmware.*?>
 
-<AnchorPane style=" " xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
-            fx:controller="tgfx.updater.firmware.FirmwareUpdaterController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
+      fx:controller="tgfx.updater.firmware.FirmwareUpdaterController">
   <VBox id="firmwareUpdateVbox" alignment="TOP_CENTER" prefWidth="350.0" spacing="5.0"
         AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
         AnchorPane.topAnchor="0.0">
@@ -93,4 +88,4 @@
       </HBox>
     </VBox>
   </VBox>
-</AnchorPane>
+</VBox>

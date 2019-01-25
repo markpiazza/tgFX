@@ -1,29 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
 <?import javafx.collections.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.Group ?>
-<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.web.*?>
-<?import jfxtras.labs.scene.control.gauge.*?>
-<?import jfxtras.labs.scene.control.gauge.Gauge?>
-<?import jfxtras.labs.scene.control.gauge.GaugeBuilder.GaugeType ?>
-<?import jfxtras.labs.scene.control.gauge.Lcd?>
-<?import jfxtras.labs.scene.control.gauge.Marker?>
-<?import jfxtras.labs.scene.control.gauge.Section?>
-<?import jfxtras.labs.scene.control.window.*?>
-<?scenebuilder-classpath-element ../../../../lib/jfxtras-labs-2.2-r5-20121222.173143-8.jar?>
 
 <Tab fx:id="config_tab" closable="false" text="Axis / Motor Settings" xmlns:fx="http://javafx.com/fxml"
      fx:controller="tgfx.ui.tinygconfig.TinyGConfigController">
