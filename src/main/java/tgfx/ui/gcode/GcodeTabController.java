@@ -88,8 +88,8 @@ public class GcodeTabController implements Initializable {
     private static Text timeElapsedTxt;
     @FXML
     private static Text timeLeftTxt;
-    @FXML
-    private Lcd xLcd, yLcd, zLcd, aLcd, velLcd; //DRO Lcds
+//    @FXML
+//    private Lcd xLcd, yLcd, zLcd, aLcd, velLcd; //DRO Lcds
     @FXML
     StackPane machineWorkspace;
     @FXML
@@ -346,13 +346,13 @@ public class GcodeTabController implements Initializable {
 
     @FXML
     private void handleDroMouseClick(MouseEvent me) {
-        if (me.isSecondaryButtonDown()) { //Check to see if its a Right Click
-            String t;
-            String _axis;
-            Lcd l;
-            l = (Lcd) me.getSource();
-            t = String.valueOf(l.idProperty().get().charAt(0));
-        }
+//        if (me.isSecondaryButtonDown()) { //Check to see if its a Right Click
+//            String t;
+//            String _axis;
+//            Lcd l;
+//            l = (Lcd) me.getSource();
+//            t = String.valueOf(l.idProperty().get().charAt(0));
+//        }
     }
 
     public static void setCNCMachineVisible(boolean t) {
@@ -395,17 +395,17 @@ public class GcodeTabController implements Initializable {
 
         coordLocationGridPane.visibleProperty().bind(cncMachine.visibleProperty());  //This shows the coords when the cncMachine is visible.
 
-        xLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("x").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("x").getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
-        yLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("y").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("y").getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
-        zLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("z").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("z").getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
-        aLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("a").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("a").getOffset()));
-        velLcd.valueProperty().bind(TinygDriver.getInstance().machine.velocity);
+//        xLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("x").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("x").getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
+//        yLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("y").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("y").getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
+//        zLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("z").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("z").getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
+//        aLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("a").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("a").getOffset()));
+//        velLcd.valueProperty().bind(TinygDriver.getInstance().machine.velocity);
 
 
         /*######################################
          * BINDINGS CODE
          ######################################*/
-        gcodeTabControllerHBox.disableProperty().bind(TinygDriver.getInstance().connectionStatus.not());
+        //gcodeTabControllerHBox.disableProperty().bind(TinygDriver.getInstance().connectionStatus.not());
 
 
 
@@ -415,33 +415,33 @@ public class GcodeTabController implements Initializable {
          ######################################*/
 
 
-        xLcd.valueProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> {
-            double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
-        });
-
-
-        yLcd.valueProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> {
-            double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
-        });
+//        xLcd.valueProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> {
+//            double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
+//        });
+//
+//
+//        yLcd.valueProperty().addListener((ChangeListener) (ov, oldValue, newValue) -> {
+//            double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
+//        });
 
         TinygDriver.getInstance().machine.getGcodeUnitMode().addListener((ChangeListener) (ov, oldValue, newValue) -> {
             String tmp = TinygDriver.getInstance().machine.getGcodeUnitMode().get();
 
 //                gcodeUnitMode.getSelectionModel().select(TinygDriver.getInstance().m.getGcodeUnitModeAsInt());
-            if (TinygDriver.getInstance().machine.getGcodeUnitModeAsInt() == 0) {
-                //A bug in the jfxtras does not allow for units to be updated.. we hide them if they are not mm
-                xLcd.lcdUnitVisibleProperty().setValue(false);
-                yLcd.lcdUnitVisibleProperty().setValue(false);
-                zLcd.lcdUnitVisibleProperty().setValue(false);
-                aLcd.lcdUnitVisibleProperty().setValue(false);
-                velLcd.lcdUnitVisibleProperty().setValue(false);
-            } else {
-                xLcd.lcdUnitVisibleProperty().setValue(true);
-                yLcd.lcdUnitVisibleProperty().setValue(true);
-                zLcd.lcdUnitVisibleProperty().setValue(true);
-                aLcd.lcdUnitVisibleProperty().setValue(true);
-                velLcd.lcdUnitVisibleProperty().setValue(true);
-            }
+//            if (TinygDriver.getInstance().machine.getGcodeUnitModeAsInt() == 0) {
+//                //A bug in the jfxtras does not allow for units to be updated.. we hide them if they are not mm
+//                xLcd.lcdUnitVisibleProperty().setValue(false);
+//                yLcd.lcdUnitVisibleProperty().setValue(false);
+//                zLcd.lcdUnitVisibleProperty().setValue(false);
+//                aLcd.lcdUnitVisibleProperty().setValue(false);
+//                velLcd.lcdUnitVisibleProperty().setValue(false);
+//            } else {
+//                xLcd.lcdUnitVisibleProperty().setValue(true);
+//                yLcd.lcdUnitVisibleProperty().setValue(true);
+//                zLcd.lcdUnitVisibleProperty().setValue(true);
+//                aLcd.lcdUnitVisibleProperty().setValue(true);
+//                velLcd.lcdUnitVisibleProperty().setValue(true);
+//            }
             Main.postConsoleMessage("[+]Gcode Unit Mode Changed to: " + tmp + "\n");
 
             try {
@@ -483,52 +483,52 @@ public class GcodeTabController implements Initializable {
                 new PropertyValueFactory<GcodeLine, String>("codeLine"));
         GcodeLine n = new GcodeLine("Click open to load..", 0);
 
-        gcodeView.getItems().setAll(data);
-        data.add(n);
+//        gcodeView.getItems().setAll(data);
+//        data.add(n);
 
-        gcodeView.setItems(data);
+//        gcodeView.setItems(data);
 
-        gcodeView.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent me) {
-                if (me.getButton().equals(me.getButton().PRIMARY)) {
-                    if (me.getClickCount() == 2) {
-                        GcodeLine gcl = (GcodeLine) gcodeView.getSelectionModel().getSelectedItem();
-                        if (TinygDriver.getInstance().isConnected().get()) {
-                            logger.info("Double Clicked gcodeView " + gcl.getCodeLine());
-                            try {
-                                TinygDriver.getInstance().write(gcl.getGcodeLineJsonified());
-                                tgfx.Main.postConsoleMessage(gcl.getGcodeLineJsonified());
-                            } catch (Exception ex) {
-                                java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                            }
-                        } else {
-                            logger.info("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
-                            tgfx.Main.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
-                        }
-
-                    }
-                }
-            }
-        });
+//        gcodeView.addEventHandler(MouseEvent.MOUSE_CLICKED,
+//                new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent me) {
+//                if (me.getButton().equals(me.getButton().PRIMARY)) {
+//                    if (me.getClickCount() == 2) {
+//                        GcodeLine gcl = (GcodeLine) gcodeView.getSelectionModel().getSelectedItem();
+//                        if (TinygDriver.getInstance().isConnected().get()) {
+//                            logger.info("Double Clicked gcodeView " + gcl.getCodeLine());
+//                            try {
+//                                TinygDriver.getInstance().write(gcl.getGcodeLineJsonified());
+//                                tgfx.Main.postConsoleMessage(gcl.getGcodeLineJsonified());
+//                            } catch (Exception ex) {
+//                                java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//                            }
+//                        } else {
+//                            logger.info("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
+//                            tgfx.Main.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
+//                        }
+//
+//                    }
+//                }
+//            }
+//        });
     }
 
-    private Lcd getLcdByAxisName(String _axis) {
-        switch (_axis) {
-            case ("x"):
-                return (xLcd);
-            case ("y"):
-                return (yLcd);
-            case ("z"):
-                return (zLcd);
-            case ("a"):
-                return (aLcd);
-            case ("vel"):
-                return (velLcd);
-        }
-        return (null);
-    }
+//    private Lcd getLcdByAxisName(String _axis) {
+//        switch (_axis) {
+//            case ("x"):
+//                return (xLcd);
+//            case ("y"):
+//                return (yLcd);
+//            case ("z"):
+//                return (zLcd);
+//            case ("a"):
+//                return (aLcd);
+//            case ("vel"):
+//                return (velLcd);
+//        }
+//        return (null);
+//    }
 
     @FXML
     private void handleZeroSystem(ActionEvent evt) {
