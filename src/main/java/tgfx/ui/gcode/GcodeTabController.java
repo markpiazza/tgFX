@@ -4,12 +4,7 @@
  */
 package tgfx.ui.gcode;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -17,7 +12,6 @@ import java.util.logging.Level;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -43,6 +37,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import jfxtras.labs.scene.control.gauge.Lcd;
+import jssc.SerialPortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tgfx.Main;
@@ -61,27 +56,30 @@ public class GcodeTabController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
 
     private static CNCMachine cncMachine = new CNCMachine();
-    private static byte[] BAD_BYTES = {(byte) 0x21, (byte) 0x18, (byte) 0x7e};
-    private static int test = 1;
     private static Date timeStartDt;
-
-    public static StackPane gcodePane = new StackPane(); //Holds CNCMachine  This needs to be before CNCMachine()
-    public static SimpleBooleanProperty isSendingFile = new SimpleBooleanProperty(false);  //This tracks to see if we are sending a file to tinyg.  This allows us to NOT try to jog while sending files
-
-    public ObservableList<GcodeLine> data; //List to store the gcode file
-
+    private static byte[] BAD_BYTES = {(byte) 0x21, (byte) 0x18, (byte) 0x7e};
+    private static int totalGcodeLines = 0;
+    private static int test = 1;
     private int buildNumber;
     private String buildDate;
     private String _axis = "";
-
-    private boolean taskActive = false;
-    private boolean isKeyPressed = false;
     private double scaleAmount;
     private double jogDial = 0;
     private double FEED_RATE_PERCENTAGE = .05;  //%5
     private double TRAVERSE_FEED_RATE = 1;  //%100
     private double NUDGE_FEED_RATE = .05;  //%5
-    private static int totalGcodeLines = 0;
+    private boolean taskActive = false;
+    private boolean isKeyPressed = false;
+
+    // Holds CNCMachine  This needs to be before CNCMachine()
+    public static StackPane gcodePane = new StackPane();
+
+    // This tracks to see if we are sending a file to tinyg.
+    // This allows us to NOT try to jog while sending files
+    public static SimpleBooleanProperty isSendingFile = new SimpleBooleanProperty(false);
+
+    public ObservableList<GcodeLine> data; //List to store the gcode file
+
 
     /*  ######################## FXML ELEMENTS ############################*/
     @FXML
@@ -157,45 +155,48 @@ public class GcodeTabController implements Initializable {
                         //This is and Y Axis Jog action
                         _axis = "Y"; //Set the axis for this jog movment
                         if (keyEvent.getCode().equals(KeyCode.UP)) {
-                            jogDial = TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis);
+                            jogDial = TinygDriver.getInstance().machine
+                                    .getJoggingIncrementByAxis(_axis);
                         } else if (keyEvent.getCode().equals(KeyCode.DOWN)) {
-                            jogDial = (-1 * TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis)); //Invert this value by multiplying by -1
-                        }
+                            //Invert this value by multiplying by -1
+                            jogDial = (-1 * TinygDriver.getInstance().machine
+                                    .getJoggingIncrementByAxis(_axis));           }
 
-                        //X Axis Jogging Movement
+                    //X Axis Jogging Movement
                     } else if (_kc.equals(KeyCode.RIGHT) || _kc.equals(KeyCode.LEFT)) {
                         //This is a X Axis Jog Action
-                        _axis = "X"; //Set the axis for this jog movment
+                        _axis = "X"; //Set the axis for this jog movement
                         if (keyEvent.getCode().equals(KeyCode.LEFT)) {
-                            jogDial = (-1 * TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis));
-
-
+                            jogDial = (-1 * TinygDriver.getInstance().machine.
+                                    getJoggingIncrementByAxis(_axis));
                         } else if (keyEvent.getCode().equals(KeyCode.RIGHT)) {
-                            jogDial = TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis); //Invert this value by multiplying by -1
+                            //Invert this value by multiplying by -1
+                            jogDial = TinygDriver.getInstance().machine
+                                    .getJoggingIncrementByAxis(_axis);
                         }
 
                         //Z Axis Jogging Movement
                     } else if (_kc.equals(KeyCode.MINUS) || (_kc.equals(KeyCode.EQUALS))) {
                         _axis = "Z";
                         if (keyEvent.getCode().equals(KeyCode.MINUS)) {
-                            jogDial = (-1 * TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis));
+                            jogDial = (-1 * TinygDriver.getInstance().machine
+                                    .getJoggingIncrementByAxis(_axis));
                         } else if (keyEvent.getCode().equals(KeyCode.EQUALS)) {
-                            jogDial = TinygDriver.getInstance().machine.getJoggingIncrementByAxis(_axis); //Invert this value by multiplying by -1
+                            //Invert this value by multiplying by -1
+                            jogDial = TinygDriver.getInstance().machine
+                                    .getJoggingIncrementByAxis(_axis);
                         }
                     }
 
-
-                    try {
-                        if (_axis.equals("X") || _axis.equals("Y") || _axis.equals("Z")) {
-                            // valid key pressed
-                            CommandManager.setIncrementalMovementMode();
-                            TinygDriver.getInstance().write("{\"GC\":\"G1F" + (TinygDriver.getInstance().machine.getAxisByName(_axis).getFeed_rate_maximum() * FEED_RATE_PERCENTAGE) + _axis + jogDial + "\"}\n");
-//                                TinygDriver.getInstance().write("{\"GC\":\"G0" + _axis + jogDial + "\"}\n");
-                            isKeyPressed = true;
-                        }
-
-                    } catch (Exception ex) {
-                        java.util.logging.Logger.getLogger(CNCMachine.class.getName()).log(Level.SEVERE, null, ex);
+                    if (_axis.equals("X") || _axis.equals("Y") || _axis.equals("Z")) {
+                        // valid key pressed
+                        CommandManager.setIncrementalMovementMode();
+                        TinygDriver.getInstance().write("{\"GC\":\"G1F" +
+                            (TinygDriver.getInstance().machine.
+                                    getAxisByName(_axis).getFeed_rate_maximum() *
+                                    FEED_RATE_PERCENTAGE) + _axis + jogDial + "\"}\n");
+//                        TinygDriver.getInstance().write("{\"GC\":\"G0" + _axis + jogDial + "\"}\n");
+                        isKeyPressed = true;
                     }
 
 
@@ -211,25 +212,22 @@ public class GcodeTabController implements Initializable {
         EventHandler<KeyEvent> keyRelease = keyEvent -> {
 //                Main.postConsoleMessage("Stopping Jog Action: " + keyEvent.getCode().toString());
             if (!isSendingFile.get()) {
-
-
                 try {
                     setGcodeText("");
                     if (isKeyPressed) {  //We should find out of TinyG's distance mode is set to G90 before just firing this off.
-
-                        CommandManager.stopJogMovement();
-                        if (TinygDriver.getInstance().machine.getGcode_distance_mode().equals(TinygDriver.getInstance().machine.gcode_distance_mode.INCREMENTAL)) {
+                      CommandManager.stopJogMovement();
+                        if (TinygDriver.getInstance().machine
+                                .getGcode_distance_mode().equals(TinygDriver.getInstance()
+                                        .machine.gcode_distance_mode.INCREMENTAL)) {
                             //We are in incremental mode we now will enter ABSOLUTE mode
                             CommandManager.setAbsoluteMovementMode();
                         } //re-enable absolute mode
                         isKeyPressed = false; //reset the press flag
                     }
-                } catch (Exception ex) {
-                    java.util.logging.Logger.getLogger(CNCMachine.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException ex) {
+                   logger.error(ex);
                 }
-
             }
-
         };
 
         cncMachine.setOnKeyPressed(keyPress);
@@ -244,7 +242,6 @@ public class GcodeTabController implements Initializable {
         fadeTransition.setToValue(0.0);
         fadeTransition.play();
 //        gcodeStatusMessage.setText(""); //clear it out
-
     }
 
     public static void setGcodeText(String _text) {
@@ -266,14 +263,16 @@ public class GcodeTabController implements Initializable {
 
     public static void drawCanvasUpdate() {
         if (TgfxSettingsController.isDrawPreview()) {
-            cncMachine.drawLine(TinygDriver.getInstance().machine.getMotionMode().get(), TinygDriver.getInstance().machine.getVelocity());
+            cncMachine.drawLine(TinygDriver.getInstance().machine
+                    .getMotionMode().get(), TinygDriver.getInstance().machine.getVelocity());
         }
     }
 
     private void drawTable() {
         //TODO  We need to make this a message to subscribe to.
         if (!gcodePane.getChildren().contains(cncMachine)) {
-            gcodePane.getChildren().add(cncMachine); // Add the cnc machine to the gcode pane
+            // Add the cnc machine to the gcode pane
+            gcodePane.getChildren().add(cncMachine);
         }
     }
 
@@ -281,7 +280,8 @@ public class GcodeTabController implements Initializable {
     private void handleHomeXYZ(ActionEvent evt) {
         if (TinygDriver.getInstance().isConnected().get()) {
             try {
-                TinygDriver.getInstance().write(CommandManager.CMD_APPLY_SYSTEM_HOME_XYZ_AXES);
+                TinygDriver.getInstance()
+                        .write(CommandManager.CMD_APPLY_SYSTEM_HOME_XYZ_AXES);
             } catch (Exception ex) {
                 logger.error("Erroring HomingXYZ Command");
             }
@@ -293,23 +293,19 @@ public class GcodeTabController implements Initializable {
         MenuItem m = (MenuItem) evt.getSource();
         String _axis = String.valueOf(m.getId().charAt(0));
         if (TinygDriver.getInstance().isConnected().get()) {
-            try {
-                switch (_axis) {
-                    case "x":
-                        TinygDriver.getInstance().write(CommandManager.CMD_APPLY_HOME_X_AXIS);
-                        break;
-                    case "y":
-                        TinygDriver.getInstance().write(CommandManager.CMD_APPLY_HOME_Y_AXIS);
-                        break;
-                    case "z":
-                        TinygDriver.getInstance().write(CommandManager.CMD_APPLY_HOME_Z_AXIS);
-                        break;
-                    case "a":
-                        TinygDriver.getInstance().write(CommandManager.CMD_APPLY_HOME_A_AXIS);
-                        break;
-                }
-            } catch (Exception ex) {
-                logger.error("Exception in handleHomeAxisClick for Axis: " + _axis + " " + ex.getMessage());
+            switch (_axis) {
+                case "x":
+                    TinygDriver.getInstance().write(CommandManager.CMD_APPLY_HOME_X_AXIS);
+                    break;
+                case "y":
+                    TinygDriver.getInstance().write(CommandManager.CMD_APPLY_HOME_Y_AXIS);
+                    break;
+                case "z":
+                    TinygDriver.getInstance().write(CommandManager.CMD_APPLY_HOME_Z_AXIS);
+                    break;
+                case "a":
+                    TinygDriver.getInstance().write(CommandManager.CMD_APPLY_HOME_A_AXIS);
+                    break;
             }
         }
         tgfx.Main.postConsoleMessage("[+]Homing " + _axis.toUpperCase() + " Axis...\n");
@@ -320,28 +316,24 @@ public class GcodeTabController implements Initializable {
         MenuItem m = (MenuItem) evt.getSource();
         String _axis = String.valueOf(m.getId().charAt(0));
         if (TinygDriver.getInstance().isConnected().get()) {
-            Draw2d.setFirstDraw(true);  //We set this so we do not draw lines for the previous position to the new zero.
-            try {
-                switch (_axis) {
-                    case "x":
-                        TinygDriver.getInstance().write(CommandManager.CMD_APPLY_ZERO_X_AXIS);
-                        break;
-                    case "y":
-                        TinygDriver.getInstance().write(CommandManager.CMD_APPLY_ZERO_Y_AXIS);
-                        break;
-                    case "z":
-                        TinygDriver.getInstance().write(CommandManager.CMD_APPLY_ZERO_Z_AXIS);
-                        break;
-                    case "a":
-                        TinygDriver.getInstance().write(CommandManager.CMD_APPLY_ZERO_A_AXIS);
-                        break;
-                }
-            } catch (Exception ex) {
-                logger.error("Exception in handleZeroAxisClick for Axis: " + _axis + " " + ex.getMessage());
+            //We set this so we do not draw lines for the previous position to the new zero.
+            Draw2d.setFirstDraw(true);
+            switch (_axis) {
+                case "x":
+                    TinygDriver.getInstance().write(CommandManager.CMD_APPLY_ZERO_X_AXIS);
+                    break;
+                case "y":
+                    TinygDriver.getInstance().write(CommandManager.CMD_APPLY_ZERO_Y_AXIS);
+                    break;
+                case "z":
+                    TinygDriver.getInstance().write(CommandManager.CMD_APPLY_ZERO_Z_AXIS);
+                    break;
+                case "a":
+                    TinygDriver.getInstance().write(CommandManager.CMD_APPLY_ZERO_A_AXIS);
+                    break;
             }
         }
         tgfx.Main.postConsoleMessage("[+]Zeroed " + _axis.toUpperCase() + " Axis...\n");
-
     }
 
     @FXML
@@ -395,41 +387,48 @@ public class GcodeTabController implements Initializable {
 
         coordLocationGridPane.visibleProperty().bind(cncMachine.visibleProperty());  //This shows the coords when the cncMachine is visible.
 
-        xLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("x").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("x").getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
-        yLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("y").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("y").getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
-        zLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("z").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("z").getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
-        aLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("a").getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("a").getOffset()));
+        xLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("x")
+                .getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("x").
+                        getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
+        yLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("y")
+                .getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("y")
+                        .getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
+        zLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("z")
+                .getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("z")
+                        .getOffset()).divide(TinygDriver.getInstance().machine.gcodeUnitDivision));
+        aLcd.valueProperty().bind(TinygDriver.getInstance().machine.getAxisByName("a")
+                .getMachinePositionSimple().subtract(TinygDriver.getInstance().machine.getAxisByName("a")
+                        .getOffset()));
         velLcd.valueProperty().bind(TinygDriver.getInstance().machine.velocity);
 
-
-        /*######################################
+        /*
          * BINDINGS CODE
-         ######################################*/
+         */
         //gcodeTabControllerHBox.disableProperty().bind(TinygDriver.getInstance().connectionStatus.not());
 
-
-
-
-        /*######################################
+        /*
          * CHANGE LISTENERS
-         ######################################*/
-
+         */
 
         xLcd.valueProperty().addListener((ov, oldValue, newValue) -> {
-            double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
+            double tmp = TinygDriver.getInstance().machine.
+                    getAxisByName("y").getWorkPosition().doubleValue() + 5;
         });
 
 
         yLcd.valueProperty().addListener((ov, oldValue, newValue) -> {
-            double tmp = TinygDriver.getInstance().machine.getAxisByName("y").getWorkPosition().doubleValue() + 5;
+            double tmp = TinygDriver.getInstance().machine
+                    .getAxisByName("y").getWorkPosition().doubleValue() + 5;
         });
 
-        TinygDriver.getInstance().machine.getGcodeUnitMode().addListener((ov, oldValue, newValue) -> {
+        TinygDriver.getInstance().machine.getGcodeUnitMode()
+                .addListener((ov, oldValue, newValue) -> {
             String tmp = TinygDriver.getInstance().machine.getGcodeUnitMode().get();
 
-//                gcodeUnitMode.getSelectionModel().select(TinygDriver.getInstance().m.getGcodeUnitModeAsInt());
+//            gcodeUnitMode.getSelectionModel().select(TinygDriver.getInstance().m.getGcodeUnitModeAsInt());
             if (TinygDriver.getInstance().machine.getGcodeUnitModeAsInt() == 0) {
-                //A bug in the jfxtras does not allow for units to be updated.. we hide them if they are not mm
+                // A bug in the jfxtras does not allow for units to be updated..
+                // we hide them if they are not mm
                 xLcd.lcdUnitVisibleProperty().setValue(false);
                 yLcd.lcdUnitVisibleProperty().setValue(false);
                 zLcd.lcdUnitVisibleProperty().setValue(false);
@@ -459,28 +458,27 @@ public class GcodeTabController implements Initializable {
                 TinygDriver.getInstance().priorityWrite(CommandManager.CMD_QUERY_AXIS_C);
                 Thread.sleep(400);
                 TinygDriver.getInstance().serialWriter.setThrottled(false);
-            } catch (Exception ex) {
-                logger.error("Error querying tg model state on gcode unit change.  Main.java binding section.");
+            } catch (InterruptedException ex) {
+                logger.error("Error querying tg model state on gcode unit change.  " +
+                        "Main.java binding section.");
             }
         });
 
         cncMachine.heightProperty().addListener((o, oldVal, newVal) -> {
             logger.info("cncHeightChanged: " + cncMachine.getHeight());
         });
-        cncMachine.maxWidthProperty().addListener((ov, oldValue, newValue) -> handleMaxWithChange());
-        cncMachine.maxHeightProperty().addListener((ov, oldValue, newValue) -> handleMaxHeightChange());
 
+        cncMachine.maxWidthProperty().addListener((ov, oldValue, newValue) ->
+                handleMaxWithChange());
+        cncMachine.maxHeightProperty().addListener((ov, oldValue, newValue) ->
+                handleMaxHeightChange());
 
-
-
-
-        /*######################################
+        /*
          * GCODE FILE CODE
-         ######################################*/
+         */
         data = FXCollections.observableArrayList();
 
-        gcodeCol.setCellValueFactory(
-                new PropertyValueFactory<>("codeLine"));
+        gcodeCol.setCellValueFactory(new PropertyValueFactory<>("codeLine"));
         GcodeLine n = new GcodeLine("Click open to load..", 0);
 
 //        gcodeView.getItems().setAll(data);
@@ -526,8 +524,9 @@ public class GcodeTabController implements Initializable {
                 return (aLcd);
             case ("vel"):
                 return (velLcd);
+            default:
+                return (null);
         }
-        return (null);
     }
 
     @FXML
@@ -540,7 +539,6 @@ public class GcodeTabController implements Initializable {
         if ("Pause".equals(pauseResume.getText())) {
             pauseResume.setText("Resume");
             TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_PAUSE);
-
         } else {
             pauseResume.setText("Pause");
             TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_RESUME);
@@ -551,7 +549,8 @@ public class GcodeTabController implements Initializable {
     private void handleClearScreen(ActionEvent evt) {
         tgfx.Main.postConsoleMessage("[+]Clearing Screen...\n");
         cncMachine.clearScreen();
-        Draw2d.setFirstDraw(true);  //clear this so our first line added draws correctly
+        //clear this so our first line added draws correctly
+        Draw2d.setFirstDraw(true);
     }
 
     @FXML
@@ -559,21 +558,22 @@ public class GcodeTabController implements Initializable {
         Platform.runLater(() -> {
             try {
                 TinygDriver.getInstance().serialWriter.clearQueueBuffer();
-                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_RESET); //This sends the 0x18 byte
+                //This sends the 0x18 byte
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_RESET);
 
                 //We disable everything while waiting for theboard to reset
-//                    topAnchorPane.setDisable(true);
-//                    topTabPane.setDisable(true);
+//                 topAnchorPane.setDisable(true);
+//                 topTabPane.setDisable(true);
 
-//                    Thread.sleep(8000);
-//                    onConnectActions();
+//                Thread.sleep(8000);
+//                onConnectActions();
                 Main.postConsoleMessage("[!]Resetting TinyG....\n.");
                 TinygDriver.getInstance().serialWriter.notifyAck();
                 TinygDriver.getInstance().serialWriter.clearQueueBuffer();
                 cncMachine.clearScreen();
-                isSendingFile.set(false); //We set this to false to allow us to jog again
-
-            } catch (Exception ex) {
+                // We set this to false to allow us to jog again
+                isSendingFile.set(false);
+            } catch (SerialPortException ex) {
                 logger.error("handleReset " + ex.getMessage());
             }
         });
@@ -582,23 +582,15 @@ public class GcodeTabController implements Initializable {
     @FXML
     private void handleStop(ActionEvent evt) {
         Platform.runLater(() -> {
-            try {
-
-                logger.info("[!]Stopping Job Clearing Serial Queue...\n");
-                CommandManager.stopTinyGMovement();
-                isSendingFile.set(false); //We set this to false to allow us to jog again
-
-
-            } catch (Exception ex) {
-                logger.error("handleStop " + ex.getMessage());
-            }
+            logger.info("[!]Stopping Job Clearing Serial Queue...\n");
+            CommandManager.stopTinyGMovement();
+            isSendingFile.set(false); //We set this to false to allow us to jog again
         });
     }
 
     @FXML
     static void handleTestButton(ActionEvent evt) {
         //logger.info("Test Button....");
-
         updateProgress(test);
         test += 5;
 
@@ -618,35 +610,35 @@ public class GcodeTabController implements Initializable {
         return new Task() {
             @Override
             protected Object call()  {
-                StringBuilder line = new StringBuilder();
-                for (Object aData : data) {
-                    GcodeLine _gcl = (GcodeLine) aData;
+            StringBuilder line = new StringBuilder();
+            for (Object aData : data) {
+                GcodeLine _gcl = (GcodeLine) aData;
 
-                    if (!isTaskActive()) {
-                        //Cancel Button was pushed
-                        Main.postConsoleMessage("[!]File Sending Task Killed....\n");
-                        break;
-                    } else {
-                        if (_gcl.getCodeLine().equals("")) {
-                            //Blank Line.. Passing.. 
-                            continue;
-                        }
-
-                        if (_gcl.getCodeLine().toLowerCase().contains("(")) {
-                            TinygDriver.getInstance().write("**COMMENT**" + _gcl.getCodeLine());
-//                            tgfx.Main.postConsoleMessage("GCODE COMMENT:" + _gcl.getCodeLine());
-                            continue;
-
-                        }
-
-                        line.setLength(0);
-                        line.append("{\"gc\":\"").append(_gcl.getCodeLine()).append("\"}\n");
-                        TinygDriver.getInstance().write(line.toString());
-
+                if (!isTaskActive()) {
+                    //Cancel Button was pushed
+                    Main.postConsoleMessage("[!]File Sending Task Killed....\n");
+                    break;
+                } else {
+                    if (_gcl.getCodeLine().equals("")) {
+                        //Blank Line.. Passing..
+                        continue;
                     }
+
+                    if (_gcl.getCodeLine().toLowerCase().contains("(")) {
+                        TinygDriver.getInstance().write("**COMMENT**" + _gcl.getCodeLine());
+//                            tgfx.Main.postConsoleMessage("GCODE COMMENT:" + _gcl.getCodeLine());
+                        continue;
+                    }
+
+                    line.setLength(0);
+                    line.append("{\"gc\":\"").append(_gcl.getCodeLine()).append("\"}\n");
+                    TinygDriver.getInstance().write(line.toString());
+
                 }
-                TinygDriver.getInstance().write("**FILEDONE**");
-                return true;
+            }
+
+            TinygDriver.getInstance().write("**FILEDONE**");
+            return true;
             }
         };
     }
@@ -681,8 +673,7 @@ public class GcodeTabController implements Initializable {
     private void handleOpenFile(ActionEvent event) {
 
         Platform.runLater(() -> {
-//                logger.debug("handleOpenFile");
-
+//            logger.debug("handleOpenFile");
             try {
                 Main.postConsoleMessage("[+]Loading a gcode file.....\n");
                 FileChooser fc = new FileChooser();
@@ -704,7 +695,6 @@ public class GcodeTabController implements Initializable {
                 data.clear();
                 int _linenumber = 0;
                 while ((strLine = br.readLine()) != null) {
-
                     if (!strLine.equals("")) {
                         //Do not add empty lines to the list
                         //gcodesList.appendText(strLine + "\n");
@@ -715,7 +705,8 @@ public class GcodeTabController implements Initializable {
                             data.add(new GcodeLine(strLine, _linenumber));
                             _linenumber++;
                         } else {
-                            Main.postConsoleMessage("ERROR: Your gcode file contains an invalid character.. Either !,% or ~. Remove this character and try again.");
+                            Main.postConsoleMessage("ERROR: Your gcode file contains an invalid character.. " +
+                                    "Either !,% or ~. Remove this character and try again.");
                             Main.postConsoleMessage("  Line " + _linenumber);
                             data.clear(); //Remove all other previous entered lines
                             break;
@@ -727,8 +718,8 @@ public class GcodeTabController implements Initializable {
 //                    logger.info("File Loading Complete");
             } catch (FileNotFoundException ex) {
                 logger.error("File Not Found.");
-            } catch (Exception ex) {
-                logger.error(ex.getMessage());
+            } catch (IOException ex) {
+                logger.error(ex);
             }
         });
     }
@@ -760,50 +751,77 @@ public class GcodeTabController implements Initializable {
      * EVENT LISTENERS CODE
      ######################################*/
     private void handleMaxHeightChange() {
-        if (gcodePane.getWidth() - TinygDriver.getInstance().machine.getAxisByName("x").getTravelMaxSimple().get() < gcodePane.getHeight() - TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get()) {
+        if (gcodePane.getWidth() - TinygDriver.getInstance().machine.getAxisByName("x")
+                .getTravelMaxSimple().get() < gcodePane.getHeight() -
+                TinygDriver.getInstance().machine.getAxisByName("y")
+                        .getTravelMaxSimple().get()) {
             //X is longer use this code
             if (TinygDriver.getInstance().machine.getGcodeUnitModeAsInt() == 0) {  //INCHES
-                scaleAmount = ((gcodePane.heightProperty().get() / (TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get() * 25.4))) * .80;  //%80 of the scale;
+                scaleAmount = ((gcodePane.heightProperty().get() /
+                        (TinygDriver.getInstance().machine.getAxisByName("y")
+                                .getTravelMaxSimple().get() * 25.4))) * .80;  //%80 of the scale;
             } else { //MM
-                scaleAmount = ((gcodePane.heightProperty().get() / TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get())) * .80;  //%80 of the scale;
+                scaleAmount = ((gcodePane.heightProperty().get() /
+                        TinygDriver.getInstance().machine.getAxisByName("y")
+                                .getTravelMaxSimple().get())) * .80;  //%80 of the scale;
             }
         } else {
             //Y is longer use this code
             if (TinygDriver.getInstance().machine.getGcodeUnitModeAsInt() == 0) {  //INCHES
-                scaleAmount = ((gcodePane.heightProperty().get() / (TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get() * 25.4))) * .80;  //%80 of the scale;
+                scaleAmount = ((gcodePane.heightProperty().get() /
+                        (TinygDriver.getInstance().machine.getAxisByName("y")
+                                .getTravelMaxSimple().get() * 25.4))) * .80;  //%80 of the scale;
             } else { //MM
-                scaleAmount = ((gcodePane.heightProperty().get() / TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get())) * .80;  //%80 of the scale;
+                scaleAmount = ((gcodePane.heightProperty().get() /
+                        TinygDriver.getInstance().machine.getAxisByName("y")
+                                .getTravelMaxSimple().get())) * .80;  //%80 of the scale;
             }
-//                    scaleAmount = ((gcodePane.heightProperty().get() / TinygDriver.getInstance().m.getAxisByName("y").getTravelMaxSimple().get())) * .80;  //%80 of the scale;
+//            scaleAmount = ((gcodePane.heightProperty().get() /
+//                    TinygDriver.getInstance().m.getAxisByName("y")
+//                            .getTravelMaxSimple().get())) * .80;  //%80 of the scale;
         }
         cncMachine.autoScaleWorkTravelSpace(scaleAmount);
-        //        widthSize.textProperty().bind( Bindings.format("%s",  cncMachine.widthProperty().divide(TinygDriver.getInstance().m.gcodeUnitDivision).asString().concat(TinygDriver.getInstance().m.getGcodeUnitMode())    ));  //.asString().concat(TinygDriver.getInstance().m.getGcodeUnitMode().get()));
+        //        widthSize.textProperty().bind( Bindings.format("%s",
+        //        cncMachine.widthProperty().divide(TinygDriver.getInstance()
+        //        .m.gcodeUnitDivision).asString().concat(TinygDriver.getInstance()
+        //        .m.getGcodeUnitMode())    ));  //.asString().concat(TinygDriver.getInstance().m.getGcodeUnitMode().get()));
 
-//        heightSize.setText(decimalFormat.format(TinygDriver.getInstance().m.getAxisByName("y").getTravel_maximum()) + " " + TinygDriver.getInstance().m.getGcodeUnitMode().getValue());
-
-
+//        heightSize.setText(decimalFormat.format(TinygDriver.getInstance()
+//        .m.getAxisByName("y").getTravel_maximum()) + " " + TinygDriver.getInstance()
+//        .m.getGcodeUnitMode().getValue());
     }
 
     private void handleMaxWithChange() {
         //This is for the change listener to call for Max Width Change on the CNC Machine
-        if (gcodePane.getWidth() - TinygDriver.getInstance().machine.getAxisByName("x").getTravelMaxSimple().get() < gcodePane.getHeight() - TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get()) {
+        if (gcodePane.getWidth() - TinygDriver.getInstance().machine.getAxisByName("x")
+                .getTravelMaxSimple().get() < gcodePane.getHeight() -
+                TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get()) {
             //X is longer use this code
             if (TinygDriver.getInstance().machine.getGcodeUnitModeAsInt() == 0) {  //INCHES
-                scaleAmount = ((gcodePane.heightProperty().get() / (TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get() * 25.4))) * .80;  //%80 of the scale;
+                scaleAmount = ((gcodePane.heightProperty().get() /
+                        (TinygDriver.getInstance().machine.getAxisByName("y")
+                                .getTravelMaxSimple().get() * 25.4))) * .80;  //%80 of the scale;
             } else { //MM
-                scaleAmount = ((gcodePane.heightProperty().get() / TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get())) * .80;  //%80 of the scale;
+                scaleAmount = ((gcodePane.heightProperty().get() /
+                        TinygDriver.getInstance().machine
+                                .getAxisByName("y").getTravelMaxSimple().get())) * .80;  //%80 of the scale;
             }
         } else {
             //Y is longer use this code
             if (TinygDriver.getInstance().machine.getGcodeUnitModeAsInt() == 0) {  //INCHES
-                scaleAmount = ((gcodePane.heightProperty().get() / (TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get() * 25.4))) * .80;  //%80 of the scale;
+                scaleAmount = ((gcodePane.heightProperty().get() /
+                        (TinygDriver.getInstance().machine.getAxisByName("y")
+                                .getTravelMaxSimple().get() * 25.4))) * .80;  //%80 of the scale;
             } else { //MM
-                scaleAmount = ((gcodePane.heightProperty().get() / TinygDriver.getInstance().machine.getAxisByName("y").getTravelMaxSimple().get())) * .80;  //%80 of the scale;
+                scaleAmount = ((gcodePane.heightProperty().get() /
+                        TinygDriver.getInstance().machine.getAxisByName("y")
+                                .getTravelMaxSimple().get())) * .80;  //%80 of the scale;
             }
         }
         cncMachine.autoScaleWorkTravelSpace(scaleAmount);
-//        widthSize.setText(decimalFormat.format(TinygDriver.getInstance().m.getAxisByName("x").getTravel_maximum()) + " " + TinygDriver.getInstance().m.getGcodeUnitMode().getValue());
-
+//        widthSize.setText(decimalFormat.format(TinygDriver.getInstance()
+//        .m.getAxisByName("x").getTravel_maximum()) + " " + TinygDriver.getInstance()
+//        .m.getGcodeUnitMode().getValue());
     }
 
     // Scroll Gcode table view to specified line, show elapsed and remaining time

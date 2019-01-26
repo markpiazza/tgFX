@@ -42,20 +42,21 @@ public class MachineSettingsController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
 
     private final DecimalFormat decimalFormat = new DecimalFormat("################################.############################");
-    //private static final Logger logger = Logger.getLogger(MachineSettingsController.class);
+
     @FXML
     private ListView configsListView;
     @FXML
     private static ChoiceBox machineSwitchType, machineUnitMode;
     @FXML
     private Button loadbutton;
-    
     @FXML
     private ProgressBar configProgress;
 
     public static void updateGuiMachineSettings() {
-        machineUnitMode.getSelectionModel().select(TinygDriver.getInstance().machine.getGcodeUnitModeAsInt());
-        machineSwitchType.getSelectionModel().select(TinygDriver.getInstance().machine.getSwitchType());
+        machineUnitMode.getSelectionModel().select(
+                TinygDriver.getInstance().machine.getGcodeUnitModeAsInt());
+        machineSwitchType.getSelectionModel().select(
+                TinygDriver.getInstance().machine.getSwitchType());
     }
 
     /**
@@ -63,8 +64,7 @@ public class MachineSettingsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        populateConfigFiles();          //Populate all Config Files
-
+        populateConfigFiles();
     }
 
     private void populateConfigFiles() {
@@ -85,30 +85,31 @@ public class MachineSettingsController implements Initializable {
     }
 
     @FXML
-    private void handleSaveCurrentSettings(ActionEvent event) throws Exception {
+    private void handleSaveCurrentSettings(ActionEvent event) {
         Main.postConsoleMessage("Saving current of Config Files is unsupported at this time.");
 //        Platform.runLater(new Runnable() {
 //            @Override
 //            public void run() {
                 
 //                FileChooser fc = new FileChooser();
-//                fc.setInitialDirectory(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "configs" + System.getProperty("file.separator")));
+//                fc.setInitialDirectory(new File(System.getProperty("user.dir") +
+//                      System.getProperty("file.separator") + "configs" +
+//                      System.getProperty("file.separator")));
 //                fc.setTitle("Save Current TinyG Configuration");
 //                File f = fc.showSaveDialog(null);
 //                if (f.canWrite()) {
 //                }
-            }
+//            }
 //        });
-//    }
+    }
 
     @FXML
-    private void handleImportConfig(ActionEvent event) throws Exception {
+    private void handleImportConfig(ActionEvent event) {
         Main.postConsoleMessage("Importing of Config Files is unsupported at this time.");
     }
 
 
-    private void writeConfigValue(JSONObject j) throws Exception {
-
+    private void writeConfigValue(JSONObject j) throws InterruptedException {
         String topLevelParent = new String();
         topLevelParent = (String) j.names().get(0);
         Iterator it = j.getJSONObject(topLevelParent).keys();
@@ -121,9 +122,7 @@ public class MachineSettingsController implements Initializable {
             String singleJsonSetting = "{\"" + topLevelParent + k + "\":" + value + "}\n";
             TinygDriver.getInstance().write(singleJsonSetting);
             Thread.sleep(400);
-
         }
-
     }
 
     private int getElementCount(JSONObject j) throws JSONException {
@@ -146,8 +145,12 @@ public class MachineSettingsController implements Initializable {
             Main.postConsoleMessage("Please select a valid config file");
             return;
         }
-        //Why are we reading the file 2x?  It is to get the count of elemnts we need to write.. then writing each line... so we just do it 2x.
-        File selected_config = new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "configs" + System.getProperty("file.separator") + configsListView.getSelectionModel().getSelectedItem());
+        // Why are we reading the file 2x?  It is to get the count of elements
+        // we need to write.. then writing each line... so we just do it 2x.
+        File selected_config = new File(System.getProperty("user.dir") +
+                System.getProperty("file.separator") + "configs" +
+                System.getProperty("file.separator") +
+                configsListView.getSelectionModel().getSelectedItem());
         
         fis = new FileInputStream(selected_config);
         fis2 = new FileInputStream(selected_config);
@@ -155,57 +158,55 @@ public class MachineSettingsController implements Initializable {
         br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
         br2 = new BufferedReader(new InputStreamReader(fis2, Charset.forName("UTF-8")));
 
-
- 
         Task task;
         task = new Task<Void>() {
             @Override
             public Void call() throws IOException, Exception {
-                String line;
-                int maxElements = 0;
-                int currentElement = 0;
-                String filename = "";
+            String line;
+            int maxElements = 0;
+            int currentElement = 0;
+            String filename = "";
 
-                while ((line = br2.readLine()) != null) {
-                    JSONObject j = new JSONObject(line);
-                    maxElements = maxElements + getElementCount(j);
-                }
+            while ((line = br2.readLine()) != null) {
+                JSONObject j = new JSONObject(line);
+                maxElements = maxElements + getElementCount(j);
+            }
 
-                while ((line = br.readLine()) != null) {
-                    if (TinygDriver.getInstance().isConnected().get()) {
-                        if (line.startsWith("{\"name")) {
-                            //This is the name of the CONFIG lets not write this to TinyG 
-                            filename = line.split(":")[1];
-                            tgfx.Main.postConsoleMessage("[+]Loading " + filename + " config into TinyG... Please Wait...");
-                        } else {
+            while ((line = br.readLine()) != null) {
+                if (TinygDriver.getInstance().isConnected().get()) {
+                    if (line.startsWith("{\"name")) {
+                        //This is the name of the CONFIG lets not write this to TinyG
+                        filename = line.split(":")[1];
+                        tgfx.Main.postConsoleMessage("[+]Loading " + filename +
+                                " config into TinyG... Please Wait...");
+                    } else {
 
-                            JSONObject j = new JSONObject(line);
+                        JSONObject j = new JSONObject(line);
 
-                            String topLevelParent;
-                            topLevelParent = (String) j.names().get(0);
-                            Iterator it = j.getJSONObject(topLevelParent).keys();
+                        String topLevelParent;
+                        topLevelParent = (String) j.names().get(0);
+                        Iterator it = j.getJSONObject(topLevelParent).keys();
 
-                            while (it.hasNext()) {
-                                String k = (String) it.next();
-                                Double value = (Double) j.getJSONObject(topLevelParent).getDouble(k);
-                                System.out.println("This is the value " + k + " " + decimalFormat.format(value));
-                                Main.postConsoleMessage("Applied: " + k + ":" + decimalFormat.format(value));
-                                //value = Double.valueOf(decimalFormatjunctionDeviation.format(value));
+                        while (it.hasNext()) {
+                            String k = (String) it.next();
+                            Double value = (Double) j.getJSONObject(topLevelParent).getDouble(k);
+                            System.out.println("This is the value " + k + " " + decimalFormat.format(value));
+                            Main.postConsoleMessage("Applied: " + k + ":" + decimalFormat.format(value));
+                            //value = Double.valueOf(decimalFormatjunctionDeviation.format(value));
 
-                                String singleJsonSetting = "{\"" + topLevelParent + k + "\":" + value + "}\n";
-                                TinygDriver.getInstance().write(singleJsonSetting);
-                                updateProgress(currentElement, maxElements);
-                                Thread.sleep(400); //Writing Values to eeprom can take a bit of time..
-                                currentElement++;
-                            }
+                            String singleJsonSetting = "{\"" + topLevelParent + k + "\":" + value + "}\n";
+                            TinygDriver.getInstance().write(singleJsonSetting);
+                            updateProgress(currentElement, maxElements);
+                            Thread.sleep(400); //Writing Values to eeprom can take a bit of time..
+                            currentElement++;
                         }
                     }
                 }
-                updateProgress(0, 0); //reset the progress bar
-                Main.postConsoleMessage("Finished Loading " + filename + ".");
-                loadbutton.setDisable(false);
-                return null;
-                
+            }
+            updateProgress(0, 0); //reset the progress bar
+            Main.postConsoleMessage("Finished Loading " + filename + ".");
+            loadbutton.setDisable(false);
+            return null;
             }
         };
         
@@ -214,41 +215,29 @@ public class MachineSettingsController implements Initializable {
             loadbutton.setDisable(true);
             new Thread(task).start();
         }
-
-       
     }
 
     @FXML
     private void handleApplyMachineSettings() {
-        try {
-            TinygDriver.getInstance().cmdManager.applyMachineSwitchMode(machineSwitchType.getSelectionModel().getSelectedIndex());
-            TinygDriver.getInstance().cmdManager.applyMachineUnitMode(machineUnitMode.getSelectionModel().getSelectedIndex());
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        TinygDriver.getInstance().cmdManager.
+                applyMachineSwitchMode(machineSwitchType.getSelectionModel().getSelectedIndex());
+        TinygDriver.getInstance().cmdManager.
+                applyMachineUnitMode(machineUnitMode.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
     private void handleQueryMachineSettings() {
-        try {
-            TinygDriver.getInstance().cmdManager.queryMachineSwitchMode();
-            TinygDriver.getInstance().cmdManager.queryAllMachineSettings();
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-    }
+        TinygDriver.getInstance().cmdManager.queryMachineSwitchMode();
+        TinygDriver.getInstance().cmdManager.queryAllMachineSettings();
+}
 
     @FXML
     void handleApplyDefaultSettings(ActionEvent evt) {
-        try {
-            if (checkConectedMessage().equals("true")) {
-                TinygDriver.getInstance().write(CommandManager.CMD_APPLY_DEFAULT_SETTINGS);
-            } else {
-                logger.error(checkConectedMessage());
-                tgfx.Main.postConsoleMessage(checkConectedMessage());
-            }
-        } catch (Exception ex) {
-            logger.error("[!]Error Applying Default Settings");
+        if (checkConectedMessage().equals("true")) {
+            TinygDriver.getInstance().write(CommandManager.CMD_APPLY_DEFAULT_SETTINGS);
+        } else {
+            logger.error(checkConectedMessage());
+            tgfx.Main.postConsoleMessage(checkConectedMessage());
         }
     }
 

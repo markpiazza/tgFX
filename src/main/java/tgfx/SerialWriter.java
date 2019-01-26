@@ -28,8 +28,8 @@ public class SerialWriter implements Runnable {
     private static final Object mutex = new Object();
     private static boolean throttled = false;
     private int pbaChamberedRounds = 0;
+    // public Condition clearToSend = lock.newCondition();
 
-    //   public Condition clearToSend = lock.newCondition();
     public SerialWriter(BlockingQueue q) {
         this.queue = q;
     }
@@ -74,7 +74,8 @@ public class SerialWriter implements Runnable {
 
     synchronized void addBytesReturnedToBuffer(int lenBytesReturned) {
         buffer_available.set(getBufferValue() + lenBytesReturned);
-        logger.debug("Returned " + lenBytesReturned + " to buffer.  Buffer is now at " + buffer_available + "\n");
+        logger.debug("Returned " + lenBytesReturned + " to buffer. " +
+                "Buffer is now at " + buffer_available);
     }
 
     public void addCommandToBuffer(String cmd) {
@@ -139,7 +140,8 @@ public class SerialWriter implements Runnable {
 
                 while (throttled) {
                     if (str.length() > getBufferValue()) {
-                        logger.debug("Throttling: Line Length: " + str.length() + " is smaller than buffer length: " + buffer_available);
+                        logger.debug("Throttling: Line Length: " + str.length() +
+                                " is smaller than buffer length: " + buffer_available);
                         setThrottled(true);
                     } else {
                         setThrottled(false);
@@ -147,7 +149,7 @@ public class SerialWriter implements Runnable {
                         break;
                     }
                     logger.debug("We are Throttled in the write method for SerialWriter");
-                    //We wait here until the an ack comes in to the response parser
+                    // We wait here until the an ack comes in to the response parser
                     // frees up some buffer space.  Then we unlock the mutex and write the next line.
                     mutex.wait();
                     if(cleared){

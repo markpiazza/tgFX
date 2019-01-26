@@ -18,17 +18,24 @@ import org.apache.logging.log4j.Logger;
 import tgfx.tinyg.TinygDriver;
 
 /**
- *
  * @author ril3y
  */
 public class HardwarePlatformManager {
     private static final Logger logger = LogManager.getLogger();
+
     private static HardwarePlatformManager hardwarePlatformManagerInstance;
 
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
 
     public HardwarePlatformManager() {
         this.loadPlatformConfigs();
+    }
+
+    public static HardwarePlatformManager getInstance() {
+        if(hardwarePlatformManagerInstance==null){
+            hardwarePlatformManagerInstance = new HardwarePlatformManager();
+        }
+        return hardwarePlatformManagerInstance;
     }
 
     //we are not using this until all platforms have the $hp element.
@@ -77,13 +84,6 @@ public class HardwarePlatformManager {
         }
         logger.info("Loaded " + availablePlatforms.size() + " platform files");
         availablePlatforms.size();
-    }
-
-    public static HardwarePlatformManager getInstance() {
-        if(hardwarePlatformManagerInstance==null){
-            hardwarePlatformManagerInstance = new HardwarePlatformManager();
-        }
-        return hardwarePlatformManagerInstance;
     }
 
     private void updatePlatformFiles() {

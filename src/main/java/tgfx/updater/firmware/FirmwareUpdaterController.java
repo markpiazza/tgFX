@@ -41,27 +41,31 @@ import tgfx.utility.UtilityFunctions;
 public class FirmwareUpdaterController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
 
-
     @FXML
     private static Label firmwareVersion;
+
     @FXML
     private Label hwVersion, buildNumb, hardwareId, latestFirmwareBuild;
+
     @FXML
     private Label currentFirmwareVersionLabel;
+
     @FXML
     private static Button handleUpdateFirmware;
-    private SimpleDoubleProperty _currentVersionString = new SimpleDoubleProperty();
+
     private static String avrdudePath = "";
     private static String avrconfigPath = "";
+
+    private SimpleDoubleProperty _currentVersionString = new SimpleDoubleProperty();
+
     static HashMap<String, String> platformSetup = new HashMap<>();
 
     private static Task updateFirmware() {
-        Task task;
-        task = new Task<Void>() {
+        Task task = new Task<Void>() {
             @Override
-            public Void call() throws IOException, Exception {
-                
-                File avc = new File("tools" + File.separator + "config" + File.separator + "avrdude.conf");
+            public Void call() {
+                File avc = new File("tools" + File.separator + "config" +
+                        File.separator + "avrdude.conf");
                 avrconfigPath = avc.getAbsolutePath();
                 if (UtilityFunctions.getOperatingSystem().equals("mac")) {
                     File avd = new File("tools" + File.separator + "avrdude");
@@ -72,8 +76,9 @@ public class FirmwareUpdaterController implements Initializable {
                 }
 
                 logger.info("Trying to enter bootloader mode");
-                Main.postConsoleMessage("Entering Bootloader mode.  tgFX will be un-responsive for then next 30 seconds.\n"
-                        + "Your TinyG will start blinking rapidly while being programmed");
+                Main.postConsoleMessage("Entering Bootloader mode.  " +
+                        " tgFX will be un-responsive for then next 30 seconds.\n" +
+                        "Your TinyG will start blinking rapidly while being programmed");
 
                 enterBootloaderMode();
 
@@ -101,8 +106,10 @@ public class FirmwareUpdaterController implements Initializable {
                     }
                 } catch (MalformedURLException ex) {
                     logger.error(ex);
-                    Main.postConsoleMessage("Error downloading the TinyG update from: " + TinygDriver.getInstance().machine.hardwarePlatform.getFirmwareUrl());
-                    Main.postConsoleMessage("Check your internetion connection and try again.  Firmware update aborted...");
+                    Main.postConsoleMessage("Error downloading the TinyG update from: " +
+                            TinygDriver.getInstance().machine.hardwarePlatform.getFirmwareUrl());
+                    Main.postConsoleMessage("Check your internetion connection and try again. " +
+                            "Firmware update aborted...");
                 } catch (IOException ex) {
                     logger.error(ex);
                     Main.postConsoleMessage("Error updating your TinyG.  IOERROR");
@@ -113,7 +120,11 @@ public class FirmwareUpdaterController implements Initializable {
 
                 try {
                     Main.postConsoleMessage("Updating TinyG Now... Please Wait");
-                    Process process = rt.exec(avrdudePath + " -p x192a3 -C " + avrconfigPath + " -c avr109 -b 115200 -P " + TinygDriver.getInstance().getPortName() + " -U flash:w:tinyg.hex");
+                    Process process = rt.exec(avrdudePath +
+                            " -p x192a3 -C " + avrconfigPath +
+                            " -c avr109 -b 115200 -P " +
+                            TinygDriver.getInstance().getPortName() +
+                            " -U flash:w:tinyg.hex");
                     InputStream is = process.getInputStream();
                     Main.postConsoleMessage("Attempting to update TinyG's firmware.");
                     process.waitFor();
@@ -124,25 +135,26 @@ public class FirmwareUpdaterController implements Initializable {
                     toggleUpdateFirmwareButton(true);
 
                 } catch (MalformedURLException ex) {
-                    Main.postConsoleMessage("TinyG update URL: " + TinygDriver.getInstance().machine.hardwarePlatform.getFirmwareUrl() + " is invalid, check the platform config "
+                    Main.postConsoleMessage("TinyG update URL: " +
+                            TinygDriver.getInstance().machine.hardwarePlatform.getFirmwareUrl() +
+                            " is invalid, check the platform config "
                             + "file you are using in the configs directory.");
                     Main.postConsoleMessage("Firmware update aborted...");
                     return null;
                 } catch (IOException | InterruptedException ex) {
                     logger.error(ex);
                 }
-
                 return null;
             }
         };
         return task;
-   
     }
 
     private static void toggleUpdateFirmwareButton(boolean choice) {
         final boolean bChoice = choice;
         Platform.runLater(() -> {
-            handleUpdateFirmware.disableProperty().set(bChoice);  //when we are updating we dont want to hit it 2x
+            // when we are updating we dont want to hit it 2x
+            handleUpdateFirmware.disableProperty().set(bChoice);
         });
     }
 
@@ -158,7 +170,8 @@ public class FirmwareUpdaterController implements Initializable {
             TinygDriver.getInstance().hardwarePlatformManager.setPlatformByName("TinyG");
         }
 
-        if (TinygDriver.getInstance().isTimedout() || TinygDriver.getInstance().machine.hardwarePlatform.isIsUpgradeable()) {
+        if (TinygDriver.getInstance().isTimedout() || TinygDriver.getInstance().machine.
+                hardwarePlatform.isIsUpgradeable()) {
             //This platform can be upgraded  
             
             toggleUpdateFirmwareButton(false);
@@ -167,7 +180,8 @@ public class FirmwareUpdaterController implements Initializable {
             toggleUpdateFirmwareButton(true);
             
         } else {
-            Main.postConsoleMessage("Sorry your TinyG platform cannot be auto upgraded at this time.  Please see the TinyG wiki for manual upgrade instructions.");
+            Main.postConsoleMessage("Sorry your TinyG platform cannot be auto upgraded at this time.  " +
+                    "Please see the TinyG wiki for manual upgrade instructions.");
         }
     }
 
@@ -176,7 +190,8 @@ public class FirmwareUpdaterController implements Initializable {
         logger.info("Checking current Firmware Version");
         Platform.runLater(() -> {
             try {
-                URL url = new URL(TinygDriver.getInstance().machine.hardwarePlatform.getLatestVersionUrl());
+                URL url = new URL(TinygDriver.getInstance().machine
+                        .hardwarePlatform.getLatestVersionUrl());
                 URLConnection urlConnection = url.openConnection();
 
                 InputStream input;
@@ -187,7 +202,8 @@ public class FirmwareUpdaterController implements Initializable {
                 String _currentVersionString = new String(buffer);
                 latestFirmwareBuild.setText(_currentVersionString);
                 Double currentVal;
-                if (TinygDriver.getInstance().machine.getFirmwareBuild() < Double.parseDouble(_currentVersionString)) {
+                if (TinygDriver.getInstance().machine.getFirmwareBuild() <
+                        Double.parseDouble(_currentVersionString)) {
                     //We need to update your firmware
                     Platform.runLater(() -> {
                         Main.postConsoleMessage("TinyG Firmware Update Available.");
@@ -234,7 +250,8 @@ public class FirmwareUpdaterController implements Initializable {
                     });
 
                 } else {
-                    Main.postConsoleMessage("Your " + TinygDriver.getInstance().machine.hardwarePlatform.getPlatformName() + "'s firmware is up to date...\n");
+                    Main.postConsoleMessage("Your " + TinygDriver.getInstance()
+                            .machine.hardwarePlatform.getPlatformName() + "'s firmware is up to date...\n");
                 }
 
             } catch (MalformedURLException ex) {
@@ -261,13 +278,14 @@ public class FirmwareUpdaterController implements Initializable {
         if (TinygDriver.getInstance().isConnected().get()) {
             //We need to disconnect from tinyg after issuing out boot command.
             try {
-                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_BOOTLOADER_MODE); //Set our board into bootloader mode.
+                //Set our board into bootloader mode.
+                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_BOOTLOADER_MODE);
                 Thread.sleep(1000);
             } catch (Exception ex) {
                 logger.error(ex);
             }
-            TinygDriver.getInstance().sendDisconnectRequest();
             try {
+                TinygDriver.getInstance().sendDisconnectRequest();
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
                 logger.error(ex);

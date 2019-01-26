@@ -30,19 +30,20 @@ class ConnectionHandler implements Runnable, Observer {
     @Override
     public void update(Observable o, Object arg) {
         String[] message = (String[]) arg;
-        if (message[0] == "JSON") {
+        if (message[0].equals("JSON")) {
             final String line = message[1];
             try {
                 this.write(line + "\n");
             } catch (IOException ex) {
                 disconnect = true;
-            } catch (Exception ex) {
                 logger.error("update(): " + ex.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
 
-    private void write(String l) throws Exception {
+    private void write(String l) throws IOException {
         //Method for writing to the socket
         socket.getOutputStream().write(l.getBytes());
     }
@@ -64,7 +65,7 @@ class ConnectionHandler implements Runnable, Observer {
                     Thread.sleep(100);
                 } catch (IOException ex) {
                     disconnect = true;
-                } catch (Exception ex) {
+                } catch (InterruptedException ex) {
                     logger.error("run(): " + ex.getMessage());
                     break;
                 }

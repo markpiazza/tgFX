@@ -35,14 +35,12 @@ public final class GcodeHistory {
     }
 
     public String getNextHistoryCommand() {
-
         if (commandIndex == 0) {
             commandIndex++; //Edge case when you are at the 0th command
             String _tmpHistory = commandHistory.get(commandIndex);
 //            Main.print(" Get Next History got " + _tmpHistory + " at index " + commandIndex);
             return (_tmpHistory);
         } else {
-
             if (commandIndex == commandHistory.size() - 1) {
                 String _tmpHistory = commandHistory.get(commandIndex);
 //                Main.print(" Get Next History got " + _tmpHistory + " at index " + commandIndex);

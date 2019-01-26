@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+
 /**
  *
  * @author ril3y
@@ -33,7 +34,7 @@ public class SerialDriver implements SerialPortEventListener {
     public SerialPort serialPort;
     public InputStream input;
     public OutputStream output;
-    public String portArray[] = null;
+    public String[] portArray = null;
     public String debugFileBuffer = "";
     public List<String> lastRes = new ArrayList<>();
     public byte[] debugBuffer = new byte[1024];
@@ -63,12 +64,12 @@ public class SerialDriver implements SerialPortEventListener {
         }
     }
 
-    public void priorityWrite(String str) throws Exception {
+    public void priorityWrite(String str) throws SerialPortException {
         serialPort.writeBytes(str.getBytes());
         //this.output.write(str.getBytes());
     }
 
-    public void priorityWrite(Byte b) throws Exception {
+    public void priorityWrite(Byte b) throws SerialPortException {
         logger.debug("[*] Priority Write Sent\n");
         serialPort.writeByte(b);
         //this.output.write(b);
@@ -114,8 +115,8 @@ public class SerialDriver implements SerialPortEventListener {
             try {
 //                int bytesToRead = input.read(inbuffer, 0, inbuffer.length);
                 tmpBuffer = serialPort.readBytes(bytesToRead, serialPort.getInputBufferBytesCount());
-            } catch (    SerialPortException | SerialPortTimeoutException ex) {
-                java.util.logging.Logger.getLogger(SerialDriver.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SerialPortException | SerialPortTimeoutException ex) {
+                logger.error(ex);
             }
             
             for (int i = 0; i < bytesToRead; i++) {
@@ -132,7 +133,6 @@ public class SerialDriver implements SerialPortEventListener {
                     lineBuffer[lineIdx++] = tmpBuffer[i];
                 }
             }
-
         }
     }
 
@@ -154,14 +154,14 @@ public class SerialDriver implements SerialPortEventListener {
 //                }
 //            }
 
-            portList.add(_tmpPort.getPortName());  //Go ahead and add the ports that made it though the logic above
+            //Go ahead and add the ports that made it though the logic above
+            portList.add(_tmpPort.getPortName());
         }
 
         return portList.toArray(new String[0]);
     }
 
     public boolean initialize(String port, int DATA_RATE) throws SerialPortException {
-
         int TIME_OUT = 2000;
 
         if (isConnected()) {
@@ -177,9 +177,9 @@ public class SerialDriver implements SerialPortEventListener {
         serialPort = new SerialPort(port);
         serialPort.openPort();
         serialPort.setParams(DATA_RATE,
-                SerialPort.DATABITS_8,
-                SerialPort.STOPBITS_1,
-                SerialPort.PARITY_NONE);
+            SerialPort.DATABITS_8,
+            SerialPort.STOPBITS_1,
+            SerialPort.PARITY_NONE);
 
         // open the streams
         //input = serialPort.getInputBufferBytesCount;
@@ -195,17 +195,6 @@ public class SerialDriver implements SerialPortEventListener {
         setConnected(true); //Register that this is connectionState.
 
         return true;
-
-//        } catch (PortInUseException ex) {
-//            logger.error("[*] Port In Use Error: " + ex.getMessage());
-//            return false;
-//        } catch (NoSuchPortException ex) {
-//            logger.error("[*] No Such Port Error: " + ex.getMessage());
-//            return false;
-//        } catch (Exception ex) {
-//            logger.error("[*] " + ex.getMessage());
-//            return false;
-//        }
     }
 
 }

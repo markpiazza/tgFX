@@ -18,7 +18,8 @@ import tgfx.TgFXConstants;
 public class UtilityFunctions {
     private static final Logger logger = LogManager.getLogger();
 
-    private final static ResourceBundle rb = ResourceBundle.getBundle("version");   //Used to track build date and build number
+    // Used to track build date and build number
+    private final static ResourceBundle rb = ResourceBundle.getBundle("version");
     
     public static String getOperatingSystem() {
         if (isWindows()) {
@@ -59,7 +60,8 @@ public class UtilityFunctions {
         try {
             msg = rb.getString(propToken);
         } catch (MissingResourceException e) {
-            logger.error("Error Getting Build Info Token ".concat(propToken).concat(" not in Propertyfile!"));
+            logger.error("Error Getting Build Info Token ".concat(propToken)
+                    .concat(" not in Propertyfile!"));
         }
         return msg;
     }

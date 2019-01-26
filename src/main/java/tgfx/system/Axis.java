@@ -14,6 +14,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import tgfx.system.enums.AxisMode;
+import tgfx.system.enums.AxisName;
+import tgfx.system.enums.AxisType;
+import tgfx.system.enums.SwitchMode;
 import tgfx.tinyg.MnemonicManager;
 import tgfx.tinyg.TinygDriver;
 import tgfx.tinyg.ResponseCommand;
@@ -32,36 +36,9 @@ import tgfx.tinyg.ResponseCommand;
 public final class Axis {
     private static final Logger logger = LogManager.getLogger();
 
-    public enum AXIS_TYPE {
-        LINEAR, ROTATIONAL
-    }
 
-    public enum SWITCH_MODES {
-        DISABLED,
-        HOMING_ONLY,
-        LIMIT_ONLY,
-        HOMING_AND_LIMIT,
-    }
-    public enum AXIS_MODES {
-        DISABLE,
-        STANDARD,
-        INHIBITED,
-        RADIUS,
-        SLAVE_X,
-        SLAVE_Y,
-        SLAVE_Z,
-        SLAVE_XY,
-        SLAVE_XZ,
-        SLAVE_YZ,
-        SLAVE_XYZ
-    }
-
-    public enum AXIS {
-        X, Y, Z, A, B, C
-    }
-    
     private String CURRENT_AXIS_JSON_OBJECT;
-    private AXIS_TYPE axis_type;
+    private AxisType axis_type;
     private SimpleBooleanProperty homed;
     private float latch_velocity;
 //    private float seek_rate_maximum;
@@ -70,7 +47,7 @@ public final class Axis {
     private double machine_position;
     private SimpleDoubleProperty workPosition;     //This has to be public if we are going to allow it to be updated.
     private SimpleDoubleProperty machinePosition;  //This has to be public if we are going to allow it to be updated.
-    private AXIS_MODES axis_mode;
+    private AxisMode axis_mode;
     private double radius;
     private double searchVelocity;
     private double feedRateMaximum;
@@ -80,8 +57,8 @@ public final class Axis {
     private double jerkMaximum;
     private double jerkHomingMaximum;
     private double junction_devation;
-    private SWITCH_MODES max_switch_mode = SWITCH_MODES.DISABLED;
-    private SWITCH_MODES min_switch_mode = SWITCH_MODES.DISABLED;
+    private SwitchMode max_switch_mode = SwitchMode.DISABLED;
+    private SwitchMode min_switch_mode = SwitchMode.DISABLED;
     //    private float homing_travel;
 //    private float homing_search_velocity;
 //    private float homing_latch_velocity;
@@ -104,13 +81,13 @@ public final class Axis {
 
 
 //    public Axis() {
-//        axis_mode = AXIS_MODES.STANDARD;
+//        axis_mode = AxisMode.STANDARD;
 ////        latch_velocity = 0;
 ////        latch_backoff = 0;
 ////        machine_position = 0;
 ////        feed_rate_maximum = 800;
 ////        jerk_maximum = 0;
-//        
+//
 //    }
     public void setHomed(boolean choice) {
         homed.set(choice);
@@ -341,43 +318,43 @@ public final class Axis {
         this.radius = r;
     }
 
-    private void setAxisType(AXIS_TYPE at) {
+    private void setAxisType(AxisType at) {
         this.axis_type = at;
     }
 
-    public AXIS_TYPE getAxisType() {
+    public AxisType getAxisType() {
         return (this.axis_type);
     }
 
-    public Axis(AXIS ax, AXIS_TYPE at, AXIS_MODES am) {
+    public Axis(AxisName ax, AxisType at, AxisMode am) {
 
         this.axis_mode = am;
 
-        if (ax == AXIS.X) {
+        if (ax == AxisName.X) {
             this.setAxis_name("X");
             this.setAxisType(at);
 
-        } else if (ax == AXIS.Y) {
+        } else if (ax == AxisName.Y) {
             this.setAxis_name("Y");
             this.setAxisType(at);
 
-        } else if (ax == AXIS.Z) {
+        } else if (ax == AxisName.Z) {
             this.setAxis_name("Z");
             this.setAxisType(at);
 
-        } else if (ax == AXIS.A) {
+        } else if (ax == AxisName.A) {
             this.setAxis_name("A");
             this.setAxisType(at);
 
-        } else if (ax == AXIS.B) {
+        } else if (ax == AxisName.B) {
             this.setAxis_name("B");
             this.setAxisType(at);
 
-        } else if (ax == AXIS.C) {
+        } else if (ax == AxisName.C) {
             this.setAxis_name("C");
             this.setAxisType(at);
         } else {
-            logger.info("[!]Invalide Axis Name Specified.\n");
+            logger.info("[!]Invalid Axis Name Specified.\n");
         }
 
         homed = new SimpleBooleanProperty(false);
@@ -390,7 +367,7 @@ public final class Axis {
         decimalFormatMaximumJerk = new DecimalFormat("################################.############################");
     }
 
-    public AXIS_MODES getAxis_mode() {
+    public AxisMode getAxis_mode() {
         return axis_mode;
     }
 
@@ -433,44 +410,44 @@ public final class Axis {
     private void setAxis_mode(int axMode) {
         switch (axMode) {
             case 0:
-                this.axis_mode = AXIS_MODES.DISABLE;
+                this.axis_mode = AxisMode.DISABLE;
                 return;
             case 1:
-                this.axis_mode = AXIS_MODES.STANDARD;
+                this.axis_mode = AxisMode.STANDARD;
                 return;
             case 2:
-                this.axis_mode = AXIS_MODES.INHIBITED;
+                this.axis_mode = AxisMode.INHIBITED;
                 return;
             case 3:
-                this.axis_mode = AXIS_MODES.RADIUS;
+                this.axis_mode = AxisMode.RADIUS;
                 return;
             case 4:
-                this.axis_mode = AXIS_MODES.SLAVE_X;
+                this.axis_mode = AxisMode.SLAVE_X;
                 return;
             case 5:
-                this.axis_mode = AXIS_MODES.SLAVE_Y;
+                this.axis_mode = AxisMode.SLAVE_Y;
                 return;
             case 6:
-                this.axis_mode = AXIS_MODES.SLAVE_Z;
+                this.axis_mode = AxisMode.SLAVE_Z;
                 return;
             case 7:
-                this.axis_mode = AXIS_MODES.SLAVE_XY;
+                this.axis_mode = AxisMode.SLAVE_XY;
                 return;
             case 8:
-                this.axis_mode = AXIS_MODES.SLAVE_XZ;
+                this.axis_mode = AxisMode.SLAVE_XZ;
                 return;
             case 9:
-                this.axis_mode = AXIS_MODES.SLAVE_YZ;
+                this.axis_mode = AxisMode.SLAVE_YZ;
                 return;
             case 10:
-                this.axis_mode = AXIS_MODES.SLAVE_XYZ;
+                this.axis_mode = AxisMode.SLAVE_XYZ;
                 return;
             default:
         }
 //        if (axMode == 0) {
-//            this.axis_mode =AXIS_MODES.DISABLE;
+//            this.axis_mode =AxisMode.DISABLE;
 //        }else if( axMode == 1){
-//            this.axis_mode = AXIS_MODES.
+//            this.axis_mode = AxisMode.
 //        }
     }
 
@@ -548,27 +525,27 @@ public final class Axis {
         this.motors = motors;
     }
 
-    public SWITCH_MODES getMaxSwitchMode() {
+    public SwitchMode getMaxSwitchMode() {
         return max_switch_mode;
     }
 
-    public SWITCH_MODES getMinSwitchMode() {
+    public SwitchMode getMinSwitchMode() {
         return min_switch_mode;
     }
 
     private void setMaxSwitchMode(int _sw_mode) {
         switch (_sw_mode) {
             case 0:
-                max_switch_mode = SWITCH_MODES.DISABLED;
+                max_switch_mode = SwitchMode.DISABLED;
                 return;
             case 1:
-                max_switch_mode = SWITCH_MODES.HOMING_ONLY;
+                max_switch_mode = SwitchMode.HOMING_ONLY;
                 return;
             case 2:
-                max_switch_mode = SWITCH_MODES.LIMIT_ONLY;
+                max_switch_mode = SwitchMode.LIMIT_ONLY;
                 return;
             case 3:
-                max_switch_mode = SWITCH_MODES.HOMING_AND_LIMIT;
+                max_switch_mode = SwitchMode.HOMING_AND_LIMIT;
                 return;
             default:
         }
@@ -577,16 +554,16 @@ public final class Axis {
     private void setMinSwitch_mode(int _sw_mode) {
         switch (_sw_mode) {
             case 0:
-                min_switch_mode = SWITCH_MODES.DISABLED;
+                min_switch_mode = SwitchMode.DISABLED;
                 return;
             case 1:
-                min_switch_mode = SWITCH_MODES.HOMING_ONLY;
+                min_switch_mode = SwitchMode.HOMING_ONLY;
                 return;
             case 2:
-                min_switch_mode = SWITCH_MODES.LIMIT_ONLY;
+                min_switch_mode = SwitchMode.LIMIT_ONLY;
                 return;
             case 3:
-                min_switch_mode = SWITCH_MODES.HOMING_AND_LIMIT;
+                min_switch_mode = SwitchMode.HOMING_AND_LIMIT;
                 return;
             default:
         }

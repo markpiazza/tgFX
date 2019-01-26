@@ -27,8 +27,8 @@ public class AsyncTimer extends Thread {
     * construct an AsyncTimer
     * @param nap milliseconds to nap
     * @param cb a Timeable for callback access to semaphore
-    */ 
-    public AsyncTimer(long nap, Timeable cb) {
+    */
+   AsyncTimer(long nap, Timeable cb) {
         this(nap, cb, false);
     }
    /**
@@ -36,21 +36,23 @@ public class AsyncTimer extends Thread {
     * @param nap milliseconds to nap
     * @param cb a Timeable for callback access to semaphore
     * @param moreflag if true, loop after each nap, if false, once only code
-    */ 
-    public AsyncTimer(long nap, Timeable cb, boolean moreflag) {
+    */
+   private AsyncTimer(long nap, Timeable cb, boolean moreflag) {
         callback = cb;        
         naptime = nap;
         more = moreflag;
-    }
-    @Override
-    public void run() {
-        do {
+   }
+
+   @Override
+   public void run() {
+       do {
             try {
                 Thread.sleep(naptime);
                 callback.getTimeSemaphore().set(true);
             } catch (InterruptedException ex) {
                 logger.error("sleep interupted", ex);
             }
+
             if (more) {
                 try {
                     Thread.sleep(2);

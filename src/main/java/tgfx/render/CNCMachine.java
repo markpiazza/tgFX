@@ -8,15 +8,12 @@ import java.text.DecimalFormat;
 import java.util.Iterator;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -69,7 +66,7 @@ public class CNCMachine extends Pane {
         this.setStyle("-fx-background-color: black; -fx-border-color: orange;  -fx-border-width: .5;");
 
         /*
-         *PositionCursor Set
+         * PositionCursor Set
          */
         final Circle c = new Circle(2, Color.RED);
         final Text cursorText = new Text("None");
@@ -103,13 +100,10 @@ public class CNCMachine extends Pane {
             unFocusForJogging();
         });
 
-
         this.setOnMouseEntered(me -> {
             setFocusForJogging();
             requestFocus();
-
         });
-
 
         this.setOnMouseClicked(me -> {
             //This is so we can set our machine position when a machine does not have homing switches
@@ -227,14 +221,13 @@ public class CNCMachine extends Pane {
         double scale = 1;
         double unitMagnication = 1;
 
-//        if (TinygDriver.getInstance().m.getGcodeUnitMode().get().equals(Gcode_unit_modes.inches.toString())) {
+//        if (TinygDriver.getInstance().m.getGcodeUnitMode().get().equals(GcodeUnitMode.inches.toString())) {
 //            unitMagnication = 5;  //INCHES
 //        } else {
 //            unitMagnication = 2; //MM
 //        }
 //        double newX = unitMagnication * (Double.valueOf(TinygDriver.getInstance().m.getAxisByName("X").getWork_position().get()) + 80);// + magnification;
 //        double newY = unitMagnication * (Double.valueOf(TinygDriver.getInstance().m.getAxisByName("Y").getWork_position().get()) + 80);// + magnification;
-
 
 //        if (newX > gcodePane.getWidth() || newX > gcodePane.getWidth()) {
 //            scale = scale / 2;
@@ -266,7 +259,6 @@ public class CNCMachine extends Pane {
                 .machine.getAxisByName("y")
                 .getMachinePositionSimple().get();  //(gcodePane.getHeight() - (Double.valueOf(TinygDriver.getInstance().m.getAxisByName("y").getWork_position().get())));// + magnification;
        
-        
         if (Draw2d.isFirstDraw()) {
             //This is to not have us draw a line on the first connect.
             l = new Line(newX, this.getHeight(), newX, this.getHeight());
@@ -291,12 +283,11 @@ public class CNCMachine extends Pane {
         if (this.checkBoundsX(l) && this.checkBoundsY(l)) {
             //Line is within the travel max gcode preview box.  So we will draw it.
             this.getChildren().add(l);  //Add the line to the Pane
-//                cursorPoint.visibleProperty().set(true);
+//            cursorPoint.visibleProperty().set(true);
             _msgSent = false;
             if (!getChildren().contains(cursorPoint)) { //If the cursorPoint is not in the Group and we are in bounds
                 this.getChildren().add(cursorPoint);  //Adding the cursorPoint back
             }
-
         } else {
             logger.info("Outside of Bounds X");
 
@@ -308,8 +299,10 @@ public class CNCMachine extends Pane {
                 if (getChildren().contains(cursorPoint)) { //If cursor is in the group we are going to remove it util above is true
                     getChildren().remove(this.getChildren().indexOf(cursorPoint)); //Remove it.
                     if (!_msgSent) {
-                        Main.postConsoleMessage("You are out of your TinyG machine working envelope.  You need to either move back in by jogging, homing"
-                                + "\n or you can right click on the Gcode Preview and click set position to set your estimated position.\n");
+                        Main.postConsoleMessage("You are out of your TinyG machine working envelope. " +
+                                " You need to either move back in by jogging, homing \n" +
+                                " or you can right click on the Gcode Preview and click set position " +
+                                " to set your estimated position.\n");
                         _msgSent = true; //We do this as to not continue to spam the user with out of bound errors.
                     }
                 }

@@ -25,20 +25,17 @@ public final class GcodeCoordinateSystem {
     private double aOffset;
     private double bOffset;
     private double cOffset;
-    
+
+    GcodeCoordinateSystem() {
+    }
 
     GcodeCoordinateSystem(String coordinateName) {
         setCoordinate(coordinateName);
-        setCoordinateNumberMnemonic(Integer.valueOf(String.valueOf(coordinateName).substring(1, 2)));
-
+        setCoordinateNumberMnemonic(Integer.valueOf(coordinateName.substring(1, 2)));
     }
     
     StringProperty getGcodeCoordinateSystemProperty() {
         return(this.coordinateSystemName);
-    }
-    
-    GcodeCoordinateSystem() {
-        
     }
 
     int getCoordinateNumberMnemonic() {

@@ -30,6 +30,13 @@ public class HardwarePlatform {
     public HardwarePlatform() {
     }
 
+    public static HardwarePlatform getInstance() {
+        if(hardwarePlatformInstance==null) {
+            hardwarePlatformInstance = new HardwarePlatform();
+        }
+        return hardwarePlatformInstance;
+    }
+
     public int getHardwarePlatformVersion() {
         return hardwarePlatformVersion;
     }
@@ -86,10 +93,4 @@ public class HardwarePlatform {
         this.firmwareUrl = firmwareUrl;
     }
 
-    public static HardwarePlatform getInstance() {
-        if(hardwarePlatformInstance==null) {
-            hardwarePlatformInstance = new HardwarePlatform();
-        }
-        return hardwarePlatformInstance;
-    }
 }

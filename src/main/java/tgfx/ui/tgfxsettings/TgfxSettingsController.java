@@ -23,7 +23,9 @@ import tgfx.utility.UtilityFunctions;
 public class TgfxSettingsController implements Initializable {
 
     private static final Logger logger = LogManager.getLogger();
-    
+
+    private static boolean drawPreview = true;
+
     @FXML
     private Label tgfxBuildNumber, tgfxBuildDate, tgfxVersion;
     
@@ -33,13 +35,7 @@ public class TgfxSettingsController implements Initializable {
     @FXML
     public static ToggleButton settingDebugBtn;
 
-    
-
-    public static void updateTgfxSettings() {
-    }
-    private static boolean drawPreview = true;
-    
-     @FXML
+    @FXML
     private void handleTogglePreview(ActionEvent event) {
         if(settingDrawBtn.isSelected()){
             settingDrawBtn.setText("Enabled");
@@ -58,6 +54,10 @@ public class TgfxSettingsController implements Initializable {
         }
     }
 
+    public static void updateTgfxSettings() {
+
+    }
+
     public static boolean isDrawPreview() {
         return drawPreview;
     }
@@ -65,15 +65,12 @@ public class TgfxSettingsController implements Initializable {
     private void setDrawPreview(boolean drawPreview) {
         TgfxSettingsController.drawPreview = drawPreview;
     }
-     
-     
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
         settingDrawBtn.setSelected(true);  //We set drawing preview to default
         settingDrawBtn.setText("Enabled");
         

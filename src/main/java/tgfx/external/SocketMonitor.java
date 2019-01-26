@@ -50,7 +50,7 @@ public class SocketMonitor {
 //        while (ser.isConnected()) {
             try {
                 final Socket socket = server.accept();
-            ConnectionHandler connectionHandler = new ConnectionHandler(socket);
+                ConnectionHandler connectionHandler = new ConnectionHandler(socket);
             } catch (IOException ex) {
                 logger.error("[!]Error: " + ex.getMessage());
             }

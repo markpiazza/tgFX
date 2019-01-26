@@ -22,11 +22,11 @@ public class ResponseCommand {
     ResponseCommand(){
         
     }
+
     public ResponseCommand(String sp, String sk, String sv){
         settingParent = sp;
         settingKey = sk;
         settingValue = sv;
-                
     }
 
     public String getSettingParent() {
@@ -53,10 +53,8 @@ public class ResponseCommand {
         this.settingValue = settingValue;
     }
     
-    public JSONObject buildJsonObject() throws Exception{
-        return(new JSONObject("{\"" + this.getSettingParent() + "\":{\"" + this.getSettingKey() + "\":" + this.getSettingValue() + "}}"));
+    public JSONObject buildJsonObject() {
+        return(new JSONObject("{\"" + this.getSettingParent() + "\"" +
+                ":{\"" + this.getSettingKey() + "\":" + this.getSettingValue() + "}}"));
     }
-    
-    
-    
 }

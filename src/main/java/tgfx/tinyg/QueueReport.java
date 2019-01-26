@@ -21,10 +21,21 @@ public class QueueReport {
     private int added = 0;
     private int removed = 0;
 
+    private static QueueReport queueReportInstance;
+
+    private QueueReport() {
+    }
+
+    public static QueueReport getInstance(){
+        if(queueReportInstance==null){
+            queueReportInstance = new QueueReport();
+        }
+        return queueReportInstance;
+    }
+
     public synchronized void parse(JSONObject js) throws JSONException {
         logger.info("QUEUE REPORT");
-        JSONArray jsa;
-        jsa = js.getJSONArray("qr");
+        JSONArray jsa = js.getJSONArray("qr");
         setPba(jsa.getInt(0));
         setAdded(jsa.getInt(1));
         setRemoved(jsa.getInt(2));
@@ -50,19 +61,8 @@ public class QueueReport {
         return pba;
     }
 
-    private QueueReport() {
-    }
-
     private void setPba(int pba) {
         this.pba = pba;
     }
 
-    public static QueueReport getInstance() {
-        return QueueReportHolder.INSTANCE;
-    }
-
-    private static class QueueReportHolder {
-
-        private static final QueueReport INSTANCE = new QueueReport();
-    }
 }

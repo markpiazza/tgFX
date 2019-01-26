@@ -18,7 +18,6 @@ public class GcodeLine {
     private SimpleStringProperty codeLine;// = new SimpleStringProperty();// = new SimpleStringProperty("<gcodeLine>");
     private int gcodeLineNumber;
     
-
     GcodeLine(String gc, int gcl_number){
         this.codeLine = new SimpleStringProperty(gc);
         this.gcodeLineNumber = gcl_number;
@@ -35,7 +34,5 @@ public class GcodeLine {
     String getGcodeLineJsonified(){
         return("{\"gc\":\""+codeLine.get()+"\"}\n");
     }
-    
-    
-    
+
 }

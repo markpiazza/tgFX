@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+
 
 /**
  *
@@ -20,15 +22,14 @@ import org.apache.logging.log4j.Logger;
 public class TgFX extends Application {
     private static final Logger logger = LogManager.getLogger();
 
-
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(TgFXConstants.STAGE_FXML_MAIN));
         Scene scene = new Scene(root);
         scene.setRoot(root);
 
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        TgFX TgFXController = fxmlLoader.getController();
+        //FXMLLoader fxmlLoader = new FXMLLoader();
+        //TgFX TgFXController = fxmlLoader.getController();
 
         stage.setMinHeight(TgFXConstants.STAGE_MIN_HEIGHT);
         stage.setMinWidth(TgFXConstants.STAGE_MIN_WIDTH);

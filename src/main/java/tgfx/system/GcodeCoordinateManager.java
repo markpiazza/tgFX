@@ -21,33 +21,23 @@ public class GcodeCoordinateManager {
     private ArrayList<GcodeCoordinateSystem> coordinateSystems = new ArrayList<>();
 
     GcodeCoordinateManager() {
-
-        GcodeCoordinateSystem g54 = new GcodeCoordinateSystem("g54");
-        GcodeCoordinateSystem g55 = new GcodeCoordinateSystem("g55");
-        GcodeCoordinateSystem g56 = new GcodeCoordinateSystem("g56");
-        GcodeCoordinateSystem g57 = new GcodeCoordinateSystem("g57");
-        GcodeCoordinateSystem g58 = new GcodeCoordinateSystem("g58");
-        GcodeCoordinateSystem g59 = new GcodeCoordinateSystem("g59");
-
-        coordinateSystems.add(g54);
-        coordinateSystems.add(g55);
-        coordinateSystems.add(g56);
-        coordinateSystems.add(g57);
-        coordinateSystems.add(g58);
-        coordinateSystems.add(g59);
-
+        coordinateSystems.add(new GcodeCoordinateSystem("g54"));
+        coordinateSystems.add(new GcodeCoordinateSystem("g55"));
+        coordinateSystems.add(new GcodeCoordinateSystem("g56"));
+        coordinateSystems.add(new GcodeCoordinateSystem("g57"));
+        coordinateSystems.add(new GcodeCoordinateSystem("g58"));
+        coordinateSystems.add(new GcodeCoordinateSystem("g59"));
         currentGcodeCoordinateSystem = new GcodeCoordinateSystem();
-
     }
 
     
 
     public GcodeCoordinateSystem getCurrentGcodeCoordinateSystem() { 
-        return(currentGcodeCoordinateSystem);
+        return currentGcodeCoordinateSystem;
     }
     
     public StringProperty getCurrentGcodeCoordinateSystemName() { 
-        return(currentGcodeCoordinateSystem.getGcodeCoordinateSystemProperty());
+        return currentGcodeCoordinateSystem.getGcodeCoordinateSystemProperty();
     }
     
     

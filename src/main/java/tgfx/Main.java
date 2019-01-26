@@ -119,7 +119,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     public Main() {
         connectionTimer = new QueueUsingTimer<>( CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
-
         gcodeCommandHistory = new GcodeHistory();
         tg = TinygDriver.getInstance();
     }

@@ -6,13 +6,10 @@ package tgfx.render;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.paint.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 /**
- *
  * @author ril3y
  */
 public class Draw2d {
@@ -94,20 +91,18 @@ public class Draw2d {
     }
 
     public static Paint getLineColorFromVelocity(double vel) {
-
         if (vel > 1 && vel < 100) {
-            return (SLOWEST);
+            return SLOWEST;
         } else if (vel > 101 && vel <= 250) {
-            return (SLOW);
+            return SLOW;
         } else if (vel > 251 && vel <= 350) {
-            return (MEDIUM_SLOW);
+            return MEDIUM_SLOW;
         } else if (vel > 351 && vel <= 390) {
-            return (MEDUIM);
+            return MEDUIM;
         } else if (vel > 391 && vel <= 650) {
-            return (FAST);
+            return FAST;
         } else if (vel > 651) {
-            return (FASTEST);
-
+            return FASTEST;
         }
         return retPaint;
     }
