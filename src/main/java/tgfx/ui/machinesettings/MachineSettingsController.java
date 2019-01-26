@@ -219,16 +219,16 @@ public class MachineSettingsController implements Initializable {
 
     @FXML
     private void handleApplyMachineSettings() {
-        TinygDriver.getInstance().cmdManager.
+        TinygDriver.getInstance().getCommandManager().
                 applyMachineSwitchMode(machineSwitchType.getSelectionModel().getSelectedIndex());
-        TinygDriver.getInstance().cmdManager.
+        TinygDriver.getInstance().getCommandManager().
                 applyMachineUnitMode(machineUnitMode.getSelectionModel().getSelectedIndex());
     }
 
     @FXML
     private void handleQueryMachineSettings() {
-        TinygDriver.getInstance().cmdManager.queryMachineSwitchMode();
-        TinygDriver.getInstance().cmdManager.queryAllMachineSettings();
+        TinygDriver.getInstance().getCommandManager().queryMachineSwitchMode();
+        TinygDriver.getInstance().getCommandManager().queryAllMachineSettings();
 }
 
     @FXML

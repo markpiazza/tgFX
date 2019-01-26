@@ -167,7 +167,7 @@ public class FirmwareUpdaterController implements Initializable {
         if (TinygDriver.getInstance().getMachine().hardwarePlatform.getHardwarePlatformVersion() == -1) {
             //This code checks to see if a hardware platform has been applied.
             //if the hpv is -1 then it has not.  So we guess that the board is a v8 TinyG.
-            TinygDriver.getInstance().hardwarePlatformManager.setPlatformByName("TinyG");
+            TinygDriver.getInstance().getHardwarePlatformManager().setPlatformByName("TinyG");
         }
 
         if (TinygDriver.getInstance().isTimedout() || TinygDriver.getInstance().getMachine().
@@ -268,9 +268,9 @@ public class FirmwareUpdaterController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         NumberExpression ne = new SimpleDoubleProperty(_currentVersionString.doubleValue())
                 .subtract(TinygDriver.getInstance().getMachine().getFirmwareBuild());
-        hardwareId.textProperty().bind(TinygDriver.getInstance().getMachine().hardwareId); //Bind the tinyg hardware id to the tg driver value
+        hardwareId.textProperty().bind(TinygDriver.getInstance().getMachine().getHardwareId()); //Bind the tinyg hardware id to the tg driver value
         //hwVersion.textProperty().bind(TinygDriver.getInstance().machine.hardwareVersion); //Bind the tinyg version  to the tg driver value
-        hwVersion.textProperty().bind(TinygDriver.getInstance().getMachine().hardwareVersion); //Bind the tinyg version  to the tg driver value
+        hwVersion.textProperty().bind(TinygDriver.getInstance().getMachine().getHardwareVersion()); //Bind the tinyg version  to the tg driver value
 //        firmwareVersion.textProperty().bind(TinygDriver.getInstance().machine.firmwareVersion);
         buildNumb.textProperty().bind(TinygDriver.getInstance().getMachine().firmwareBuild.asString());
 

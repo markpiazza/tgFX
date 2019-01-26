@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
@@ -32,25 +33,20 @@ import tgfx.utility.AsyncTimer;
 
 public class TinygDriver extends Observable {
     private static final Logger logger = LogManager.getLogger();
-    private static TinygDriver instance = null;
+
+    private static TinygDriver instance;
+
     private String[] message = new String[2];
 
-    public HardwarePlatformManager hardwarePlatformManager = new HardwarePlatformManager();
-    public SimpleBooleanProperty connectionStatus = new SimpleBooleanProperty(false);
-    public MnemonicManager mneManager = new MnemonicManager();
-    public ResponseManager resManager = new ResponseManager();
-    public CommandManager cmdManager = new CommandManager();
+    private HardwarePlatformManager hardwarePlatformManager = new HardwarePlatformManager();
+    private SimpleBooleanProperty connectionStatus = new SimpleBooleanProperty(false);
 
-    private QueueReport qr = QueueReport.getInstance();
+    private MnemonicManager mnemonicManager = new MnemonicManager();
+    private ResponseManager responseManager = new ResponseManager();
+    private CommandManager commandManager = new CommandManager();
+
+    private QueueReport queueReport = QueueReport.getInstance();
     private Machine machine = Machine.getInstance();
-
-    public QueueReport getQueryReport(){
-        return qr;
-    }
-
-    public Machine getMachine(){
-        return machine;
-    }
 
     /**
      * Static commands for TinyG to get settings from the TinyG Driver Board
@@ -68,14 +64,77 @@ public class TinygDriver extends Observable {
     public ResponseParser resParse = new ResponseParser();
     public SerialWriter serialWriter = new SerialWriter(writerQueue);
 
+    /**
+     * make TingygDriver private so the caller needs to call get instance
+     */
     private TinygDriver() {
     }
 
+    /**
+     * get an instance of TingyDriver
+     * @return static instance of TinygDriver
+     */
     public static TinygDriver getInstance() {
-        if(instance==null){
-            instance=new TinygDriver();
+        if(instance == null){
+            instance = new TinygDriver();
         }
         return instance;
+    }
+
+    /**
+     * get the platform manager
+     * @return hardware platform manager
+     */
+    public HardwarePlatformManager getHardwarePlatformManager() {
+        return hardwarePlatformManager;
+    }
+
+    /**
+     * get the connection status
+     * @return connection status
+     */
+    public  SimpleBooleanProperty getConnectionStatus(){
+        return connectionStatus;
+    }
+
+    /**
+     * get the mnemonic manager
+     * @return mnemonic manager
+     */
+    public MnemonicManager getMnemonicManager(){
+        return mnemonicManager;
+    }
+
+    /**
+     * get the response manager
+     * @return response manager
+     */
+    public ResponseManager getResponseManager(){
+        return responseManager;
+    }
+
+    /**
+     * get the command manager
+     * @return command manager
+     */
+    public CommandManager getCommandManager(){
+        return commandManager;
+    }
+
+    /**
+     * get the queue report
+     * @return queue report
+     */
+    public QueueReport getQueryReport(){
+        return queueReport;
+    }
+
+    /**
+     * get the machine
+     * @return machine
+     */
+    public Machine getMachine(){
+        return machine;
     }
 
     public void setAsyncTimer(AsyncTimer value){
@@ -100,23 +159,25 @@ public class TinygDriver extends Observable {
 
     public void notifyBuildChanged() throws JSONException {
         if(machine.hardwarePlatform.getMinimalBuildVersion() < this.machine.getFirmwareBuild()){
-            //This checks to see if the current build version on TinyG is greater than what tgFX's hardware profile needs.
+            // This checks to see if the current build version on
+            // TinyG is greater than what tgFX's hardware profile needs.
         }
 
         if (machine.getFirmwareBuild() < TinygDriver.getInstance().machine
                 .hardwarePlatform.getMinimalBuildVersion() &&
                 this.machine.getFirmwareBuild() != 0.0) {
-            // too old of a build  we need to tell the GUI about this... This is where PUB/SUB will fix this
+            // too old of a build  we need to tell the GUI about this...
+            // This is where PUB/SUB will fix this
             // bad way of alerting the gui about model changes.
             message[0] = "BUILD_ERROR";
-            message[1] = Double.toString(TinygDriver.getInstance().machine.getFirmwareBuild());
+            message[1] = Double.toString(machine.getFirmwareBuild());
             setChanged();
             notifyObservers(message);
-            logger.debug("Build Version: " + TinygDriver.getInstance().machine.getFirmwareBuild() + " is NOT OK");
+            logger.debug("Build Version: " + machine.getFirmwareBuild() + " is NOT OK");
         } else if(machine.getFirmwareBuild() == 0.0){
-            // no op
+            // FIXME: remove no op
         } else {
-            logger.debug("Build Version: " + TinygDriver.getInstance().machine.getFirmwareBuild() + " is OK");
+            logger.debug("Build Version: " + machine.getFirmwareBuild() + " is OK");
             message[0] = "BUILD_OK";
             message[1] = null;
             setChanged();
@@ -146,63 +207,61 @@ public class TinygDriver extends Observable {
         queryHardwareSingleAxisSettings(String.valueOf(c));
     }
 
-    public void queryHardwareSingleAxisSettings(String _axis) {
-        try {
-            switch (_axis.toLowerCase()) {
-                case "x":
-                    serialWriter.write(CommandManager.CMD_QUERY_AXIS_X);
-                    break;
-                case "y":
-                    ser.write(CommandManager.CMD_QUERY_AXIS_Y);
-                    break;
-                case "z":
-                    ser.write(CommandManager.CMD_QUERY_AXIS_Z);
-                    break;
-                case "a":
-                    ser.write(CommandManager.CMD_QUERY_AXIS_A);
-                    break;
-                case "b":
-                    ser.write(CommandManager.CMD_QUERY_AXIS_B);
-                    break;
-                case "c":
-                    ser.write(CommandManager.CMD_QUERY_AXIS_C);
-                    break;
-            }
-        } catch (Exception ex) {
-            logger.error("[!]Error in queryHardwareSingleMotorSettings() " + ex.getMessage());
+    public void queryHardwareSingleAxisSettings(String axis) {
+        switch (axis.toLowerCase()) {
+            case "x":
+                // this was serialWriter, not sure why it
+                // wasn't the same as everything else
+                ser.write(CommandManager.CMD_QUERY_AXIS_X);
+                break;
+            case "y":
+                ser.write(CommandManager.CMD_QUERY_AXIS_Y);
+                break;
+            case "z":
+                ser.write(CommandManager.CMD_QUERY_AXIS_Z);
+                break;
+            case "a":
+                ser.write(CommandManager.CMD_QUERY_AXIS_A);
+                break;
+            case "b":
+                ser.write(CommandManager.CMD_QUERY_AXIS_B);
+                break;
+            case "c":
+                ser.write(CommandManager.CMD_QUERY_AXIS_C);
+                break;
         }
     }
 
-    public void applyHardwareAxisSettings(Tab _tab) throws Exception {
-        GridPane _gp = (GridPane) _tab.getContent();
-        int size = _gp.getChildren().size();
-        Axis _axis = this.machine.getAxisByName(String.valueOf(_gp.getId().charAt(0)));
-        for (int i = 0; i < size; i++) {
-            if (_gp.getChildren().get(i).getClass().toString().contains("TextField")) {
-                //This ia a TextField... Lets get the value and apply it if it needs to be applied.
-                TextField tf = (TextField) _gp.getChildren().get(i);
-                applyHardwareAxisSettings(_axis, tf);
+    public void applyHardwareAxisSettings(Tab tab) {
+        GridPane gridPane = (GridPane) tab.getContent();
+        Axis axis = this.machine.getAxisByName(String.valueOf(gridPane.getId().charAt(0)));
 
-            } else if (_gp.getChildren().get(i) instanceof ChoiceBox) {
+        for(Node node : gridPane.getChildren()) {
+            // FIXME: something not right about this..
+            if (node.getClass().toString().contains("TextField")) {
+                //This ia a TextField... Lets get the value and apply it if it needs to be applied.
+                 applyHardwareAxisSettings(axis, (TextField) node);
+
+            } else if (node instanceof ChoiceBox) {
                 //This ia a ChoiceBox... Lets get the value and apply it if it needs to be applied.
                 @SuppressWarnings("unchecked")
-                ChoiceBox<Object> cb = (ChoiceBox<Object>) _gp.getChildren().get(i);
-                if (cb.getId().contains("AxisMode")) {
-                    int axisMode = cb.getSelectionModel().getSelectedIndex();
+                ChoiceBox<Object> choiceBox = (ChoiceBox<Object>) node;
+                if (choiceBox.getId().contains("AxisMode")) {
+                    int axisMode = choiceBox.getSelectionModel().getSelectedIndex();
                     String configObj = String.format("{\"%s%s\":%s}\n",
-                            _axis.getAxisName().toLowerCase(),
+                            axis.getAxisName().toLowerCase(),
                             MnemonicManager.MNEMONIC_AXIS_AXIS_MODE, axisMode);
                     this.write(configObj);
-                } else if (cb.getId().contains("switchModeMax")) {
-                    int switchMode = cb.getSelectionModel().getSelectedIndex();
+                } else if (choiceBox.getId().contains("switchModeMax")) {
+                    int switchMode = choiceBox.getSelectionModel().getSelectedIndex();
                     String configObj = String.format("{\"%s%s\":%s}\n",
-                            _axis.getAxisName().toLowerCase(),
+                            axis.getAxisName().toLowerCase(),
                             MnemonicManager.MNEMONIC_AXIS_MAX_SWITCH_MODE, switchMode);
                     this.write(configObj);
-                } else if (cb.getId().contains("switchModeMin")) {
-                    int switchMode = cb.getSelectionModel().getSelectedIndex();
+                } else if (choiceBox.getId().contains("switchModeMin")) {
+                    int switchMode = choiceBox.getSelectionModel().getSelectedIndex();
                     String configObj = String.format("{\"%s%s\":%s}\n",
-                            _axis.getAxisName().toLowerCase(),
+                            axis.getAxisName().toLowerCase(),
                             MnemonicManager.MNEMONIC_AXIS_MIN_SWITCH_MODE, switchMode);
                     this.write(configObj);
                 }
@@ -211,117 +270,119 @@ public class TinygDriver extends Observable {
         logger.info("[+]Applying Axis Settings...");
     }
 
-    public void applyHardwareMotorSettings(Motor _motor, TextField tf)  {
-        if (tf.getId().contains("StepAngle")) {
-            if (_motor.getStepAngle() != Float.valueOf(tf.getText())) {
-                this.write("{\"" + _motor.getId_number() +
-                        MnemonicManager.MNEMONIC_MOTOR_STEP_ANGLE + "\":" + tf.getText() + "}\n");
+    public void applyHardwareMotorSettings(Motor motor, TextField textField)  {
+        if (textField.getId().contains("StepAngle")) {
+            if (motor.getStepAngle() != Float.valueOf(textField.getText())) {
+                this.write("{\"" + motor.getId_number() +
+                    MnemonicManager.MNEMONIC_MOTOR_STEP_ANGLE + "\":" + textField.getText() + "}\n");
             }
-        } else if (tf.getId().contains("TravelPer")) {
-            if (_motor.getStepAngle() != Float.valueOf(tf.getText())) {
-                this.write("{\"" + _motor.getId_number() +
-                        MnemonicManager.MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION + "\":" + tf.getText() + "}\n");
+        } else if (textField.getId().contains("TravelPer")) {
+            if (motor.getStepAngle() != Float.valueOf(textField.getText())) {
+                this.write("{\"" + motor.getId_number() +
+                    MnemonicManager.MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION + "\":" + textField.getText() + "}\n");
             }
         }
     }
 
-    public void applyHardwareAxisSettings(Axis _axis, TextField tf) {
+    public void applyHardwareAxisSettings(Axis axis, TextField textField) {
         /*
          * Apply Axis Settings to TinyG from GUI
          */
-        if (tf.getId().contains("maxVelocity")) {
-            if (_axis.getVelocityMaximum() != Double.valueOf(tf.getText())) {
+        if (textField.getId().contains("maxVelocity")) {
+            if (axis.getVelocityMaximum() != Double.valueOf(textField.getText())) {
                 //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxisName().toLowerCase() +
-                        MnemonicManager.MNEMONIC_AXIS_VELOCITY_MAXIMUM + "\":" + tf.getText() + "}\n");
+                this.write("{\"" + axis.getAxisName().toLowerCase() +
+                        MnemonicManager.MNEMONIC_AXIS_VELOCITY_MAXIMUM + "\":" + textField.getText() + "}\n");
             }
-        } else if (tf.getId().contains("maxFeed")) {
-            if (_axis.getFeedRateMaximum() != Double.valueOf(tf.getText())) {
+        } else if (textField.getId().contains("maxFeed")) {
+            if (axis.getFeedRateMaximum() != Double.valueOf(textField.getText())) {
                 //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxisName().toLowerCase() +
-                        MnemonicManager.MNEMONIC_AXIS_FEEDRATE_MAXIMUM + "\":" + tf.getText() + "}\n");
+                this.write("{\"" + axis.getAxisName().toLowerCase() +
+                        MnemonicManager.MNEMONIC_AXIS_FEEDRATE_MAXIMUM + "\":" + textField.getText() + "}\n");
             }
-        } else if (tf.getId().contains("maxTravel")) {
-            if (_axis.getTravelMaximum() != Double.valueOf(tf.getText())) {
+        } else if (textField.getId().contains("maxTravel")) {
+            if (axis.getTravelMaximum() != Double.valueOf(textField.getText())) {
                 //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxisName().toLowerCase() +
-                        MnemonicManager.MNEMONIC_AXIS_TRAVEL_MAXIMUM + "\":" + tf.getText() + "}\n");
+                this.write("{\"" + axis.getAxisName().toLowerCase() +
+                        MnemonicManager.MNEMONIC_AXIS_TRAVEL_MAXIMUM + "\":" + textField.getText() + "}\n");
             }
-        } else if (tf.getId().contains("maxJerk")) {
-            if (_axis.getJerkMaximum() != Double.valueOf(tf.getText())) {
+        } else if (textField.getId().contains("maxJerk")) {
+            if (axis.getJerkMaximum() != Double.valueOf(textField.getText())) {
                 //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxisName().toLowerCase() +
-                        MnemonicManager.MNEMONIC_AXIS_JERK_MAXIMUM + "\":" + tf.getText() + "}\n");
+                this.write("{\"" + axis.getAxisName().toLowerCase() +
+                        MnemonicManager.MNEMONIC_AXIS_JERK_MAXIMUM + "\":" + textField.getText() + "}\n");
             }
-        } else if (tf.getId().contains("junctionDeviation")) {
-            if (Double.valueOf(_axis.getJunctionDeviation()).floatValue() != Double.valueOf(tf.getText())) {
+        } else if (textField.getId().contains("junctionDeviation")) {
+            if (Double.valueOf(axis.getJunctionDeviation()).floatValue() != Double.valueOf(textField.getText())) {
                 //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxisName().toLowerCase() +
-                        MnemonicManager.MNEMONIC_AXIS_JUNCTION_DEVIATION + "\":" + tf.getText() + "}\n");
+                this.write("{\"" + axis.getAxisName().toLowerCase() +
+                        MnemonicManager.MNEMONIC_AXIS_JUNCTION_DEVIATION + "\":" + textField.getText() + "}\n");
             }
-        } else if (tf.getId().contains("radius")) {
-            if (_axis.getAxisType().equals(AxisType.ROTATIONAL)) {
+        } else if (textField.getId().contains("radius")) {
+            if (axis.getAxisType().equals(AxisType.ROTATIONAL)) {
                 //Check to see if its a ROTATIONAL AXIS...
-                if (_axis.getRadius() != Double.valueOf(tf.getText())) {
+                if (axis.getRadius() != Double.valueOf(textField.getText())) {
                     //We check to see if the value passed was already set in TinyG
                     //To avoid un-needed EEPROM Writes.
-                    this.write("{\"" + _axis.getAxisName().toLowerCase() +
-                            MnemonicManager.MNEMONIC_AXIS_RADIUS + "\":" + tf.getText() + "}\n");
+                    this.write("{\"" + axis.getAxisName().toLowerCase() +
+                            MnemonicManager.MNEMONIC_AXIS_RADIUS + "\":" + textField.getText() + "}\n");
                 }
             }
-        } else if (tf.getId().contains("searchVelocity")) {
-            if (_axis.getSearchVelocity() != Double.valueOf(tf.getText())) {
+        } else if (textField.getId().contains("searchVelocity")) {
+            if (axis.getSearchVelocity() != Double.valueOf(textField.getText())) {
                 //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxisName().toLowerCase() +
-                        MnemonicManager.MNEMONIC_AXIS_SEARCH_VELOCITY + "\":" + tf.getText() + "}\n");
+                this.write("{\"" + axis.getAxisName().toLowerCase() +
+                        MnemonicManager.MNEMONIC_AXIS_SEARCH_VELOCITY + "\":" + textField.getText() + "}\n");
             }
-        } else if (tf.getId().contains("latchVelocity")) {
-            if (_axis.getLatchVelocity() != Double.valueOf(tf.getText())) {
+        } else if (textField.getId().contains("latchVelocity")) {
+            if (axis.getLatchVelocity() != Double.valueOf(textField.getText())) {
                 //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxisName().toLowerCase() +
-                        MnemonicManager.MNEMONIC_AXIS_LATCH_VELOCITY + "\":" + tf.getText() + "}\n");
+                this.write("{\"" + axis.getAxisName().toLowerCase() +
+                        MnemonicManager.MNEMONIC_AXIS_LATCH_VELOCITY + "\":" + textField.getText() + "}\n");
             }
-        } else if (tf.getId().contains("latchBackoff")) {
-            if (_axis.getLatchBackoff() != Double.valueOf(tf.getText())) {
+        } else if (textField.getId().contains("latchBackoff")) {
+            if (axis.getLatchBackoff() != Double.valueOf(textField.getText())) {
                 //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxisName().toLowerCase() +
-                        MnemonicManager.MNEMONIC_AXIS_LATCH_BACKOFF + "\":" + tf.getText() + "}\n");
+                this.write("{\"" + axis.getAxisName().toLowerCase() +
+                        MnemonicManager.MNEMONIC_AXIS_LATCH_BACKOFF + "\":" + textField.getText() + "}\n");
             }
-        } else if (tf.getId().contains("zeroBackoff")) {
-            if (_axis.getZeroBackoff() != Double.valueOf(tf.getText())) {
+        } else if (textField.getId().contains("zeroBackoff")) {
+            if (axis.getZeroBackoff() != Double.valueOf(textField.getText())) {
                 //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxisName().toLowerCase() +
-                        MnemonicManager.MNEMONIC_AXIS_ZERO_BACKOFF + "\":" + tf.getText() + "}\n");
+                this.write("{\"" + axis.getAxisName().toLowerCase() +
+                        MnemonicManager.MNEMONIC_AXIS_ZERO_BACKOFF + "\":" + textField.getText() + "}\n");
             }
         }
-        logger.info("[+]Applying " + _axis.getAxisName() + " settings");
-
+        logger.info("[+]Applying " + axis.getAxisName() + " settings");
     }
 
+
     public void getMotorSettings(int motorNumber) {
-        try {
-            if (motorNumber == 1) {
+        switch (motorNumber) {
+            case 1:
                 ser.write(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
-            } else if (motorNumber == 2) {
+                break;
+            case 2:
                 ser.write(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
-            } else if (motorNumber == 3) {
+                break;
+            case 3:
                 ser.write(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
-            } else if (motorNumber == 4) {
+                break;
+            case 4:
                 ser.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
-            } else {
+                break;
+            default:
                 logger.error("Invalid Motor Number.. Please try again..");
-            }
-        } catch (Exception ex) {
-            logger.error(ex);
+                break;
         }
     }
 
@@ -329,52 +390,51 @@ public class TinygDriver extends Observable {
         char _ax;
         switch (rc.getSettingKey()) {
             case (MnemonicManager.MNEMONIC_STATUS_REPORT_LINE):
-                TinygDriver.getInstance().machine
-                        .setLineNumber(Integer.valueOf(rc.getSettingValue()));
-                TinygDriver.logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
+                machine.setLineNumber(Integer.valueOf(rc.getSettingValue()));
+                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
             case (MnemonicManager.MNEMONIC_STATUS_REPORT_MOTION_MODE):
                 TinygDriver.logger.debug("[DID NOT APPLY NEED TO CODE THIS IN:" +
                         rc.getSettingParent() + " " + rc.getSettingKey() + ":" + rc.getSettingValue());
-//                TinygDriver.getInstance().m.setMotionMode(Integer.valueOf(rc.getSettingValue()));
+//                getInstance().m.setMotionMode(Integer.valueOf(rc.getSettingValue()));
                 break;
             case (MnemonicManager.MNEMONIC_STATUS_REPORT_POSA):
                 _ax = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                TinygDriver.getInstance().machine.getAxisByName(String.valueOf(_ax))
+                machine.getAxisByName(String.valueOf(_ax))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
-                TinygDriver.logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
+                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
             case (MnemonicManager.MNEMONIC_STATUS_REPORT_POSX):
                 _ax = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                TinygDriver.getInstance().machine.getAxisByName(String.valueOf(_ax))
+                machine.getAxisByName(String.valueOf(_ax))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
-                TinygDriver.logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
+                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
             case (MnemonicManager.MNEMONIC_STATUS_REPORT_POSY):
                 _ax = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                TinygDriver.getInstance().machine.getAxisByName(String.valueOf(_ax))
+                machine.getAxisByName(String.valueOf(_ax))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
-                TinygDriver.logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
+                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
             case (MnemonicManager.MNEMONIC_STATUS_REPORT_POSZ):
                 _ax = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                TinygDriver.getInstance().machine.getAxisByName(String.valueOf(_ax))
+                machine.getAxisByName(String.valueOf(_ax))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
-                TinygDriver.logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
+                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
             case (MnemonicManager.MNEMONIC_STATUS_REPORT_STAT):
                 //TinygDriver.getInstance()(Float.valueOf(rc.getSettingValue()));
-                TinygDriver.logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
+                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
             case (MnemonicManager.MNEMONIC_STATUS_REPORT_VELOCITY):
-                TinygDriver.getInstance().machine.setVelocity(Double.valueOf(rc.getSettingValue()));
-                TinygDriver.logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
+                machine.setVelocity(Double.valueOf(rc.getSettingValue()));
+                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
             default:
@@ -383,32 +443,28 @@ public class TinygDriver extends Observable {
         }
     }
 
-    public void applyHardwareMotorSettings(Tab _tab) {
+    public void applyHardwareMotorSettings(Tab tab) {
         /*
          * Apply Motor Settings to TinyG from GUI
          */
-        Tab selectedTab = _tab.getTabPane().getSelectionModel().getSelectedItem();
-        int _motorNumber = Integer.valueOf(selectedTab.getText().split(" ")[1]);
-        Motor _motor = this.machine.getMotorByNumber(_motorNumber);
+        Tab selectedTab = tab.getTabPane().getSelectionModel().getSelectedItem();
+        int motorNumber = Integer.valueOf(selectedTab.getText().split(" ")[1]);
+        Motor motor = machine.getMotorByNumber(motorNumber);
 
-        GridPane _gp = (GridPane) _tab.getContent();
-        int size = _gp.getChildren().size();
+        GridPane gridPane = (GridPane) tab.getContent();
 
         //Iterate though each gridpane child... Picking out text fields and choice boxes
-        for (int i = 0; i < size; i++) {
-            if (_gp.getChildren().get(i).toString().contains("TextField")) {
-                TextField tf = (TextField) _gp.getChildren().get(i);
-                try {
-                    applyHardwareMotorSettings(_motor, tf);
-                } catch (Exception _ex) {
-                    logger.error("[!]Exception in applyHardwareMotorSettings(Tab _tab)");
-                }
-            } else if (_gp.getChildren().get(i) instanceof ChoiceBox) {
+
+        for(Node node : gridPane.getChildren()){
+            if (node.toString().contains("TextField")) {
+                TextField textField = (TextField) node;
+                applyHardwareMotorSettings(motor, textField);
+            } else if (node instanceof ChoiceBox) {
                 @SuppressWarnings("unchecked")
-                ChoiceBox<Object> _cb = (ChoiceBox<Object>) _gp.getChildren().get(i);
-                if (_cb.getId().contains("MapAxis")) {
+                ChoiceBox<Object> choiceBox = (ChoiceBox<Object>) node;
+                if (choiceBox.getId().contains("MapAxis")) {
                     int mapAxis;
-                    switch (_cb.getSelectionModel().getSelectedItem().toString()) {
+                    switch (choiceBox.getSelectionModel().getSelectedItem().toString()) {
                         case "X":
                             mapAxis = 0;
                             break;
@@ -431,13 +487,13 @@ public class TinygDriver extends Observable {
                             mapAxis = 0;  //Defaults to map to X
                     }
                     String configObj = String.format("{\"%s\":{\"%s\":%s}}\n",
-                            _motorNumber, MnemonicManager.MNEMONIC_MOTOR_MAP_AXIS, mapAxis);
+                            motorNumber, MnemonicManager.MNEMONIC_MOTOR_MAP_AXIS, mapAxis);
                     this.write(configObj);
 
-                } else if (_cb.getId().contains("MicroStepping")) {
+                } else if (choiceBox.getId().contains("MicroStepping")) {
                     //This is the MapAxis Choice Box... Lets apply that
                     int microSteps;
-                    switch (_cb.getSelectionModel().getSelectedIndex()) {
+                    switch (choiceBox.getSelectionModel().getSelectedIndex()) {
                         case 0:
                             microSteps = 1;
                             break;
@@ -454,20 +510,20 @@ public class TinygDriver extends Observable {
                             microSteps = 1;
                     }
                     String configObj = String.format("{\"%s%s\":%s}\n",
-                            _motorNumber, MnemonicManager.MNEMONIC_MOTOR_MICROSTEPS,
+                            motorNumber, MnemonicManager.MNEMONIC_MOTOR_MICROSTEPS,
                             microSteps);
                     this.write(configObj);
 
-                } else if (_cb.getId().contains("Polarity")) {
+                } else if (choiceBox.getId().contains("Polarity")) {
                     String configObj = String.format("{\"%s%s\":%s}\n",
-                            _motorNumber, MnemonicManager.MNEMONIC_MOTOR_POLARITY,
-                            _cb.getSelectionModel().getSelectedIndex());
+                            motorNumber, MnemonicManager.MNEMONIC_MOTOR_POLARITY,
+                            choiceBox.getSelectionModel().getSelectedIndex());
                     this.write(configObj);
 
-                } else if (_cb.getId().contains("PowerMode")) {
+                } else if (choiceBox.getId().contains("PowerMode")) {
                     String configObj = String.format("{\"%s%s\":%s}\n",
-                            _motorNumber, MnemonicManager.MNEMONIC_MOTOR_POWER_MANAGEMENT,
-                            _cb.getSelectionModel().getSelectedIndex());
+                            motorNumber, MnemonicManager.MNEMONIC_MOTOR_POWER_MANAGEMENT,
+                            choiceBox.getSelectionModel().getSelectedIndex());
                     this.write(configObj);
                 }
             }
@@ -475,17 +531,23 @@ public class TinygDriver extends Observable {
     }
 
     public void queryHardwareSingleMotorSettings(int motorNumber) {
-        if (motorNumber == 1) {
-            ser.write(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
-        } else if (motorNumber == 2) {
-            ser.write(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
-        } else if (motorNumber == 3) {
-            ser.write(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
-        } else if (motorNumber == 4) {
-            ser.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
-        } else {
-            logger.warn("Invalid Motor Number.. Please try again..");
-            setChanged();
+        switch (motorNumber) {
+            case 1:
+                ser.write(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
+                break;
+            case 2:
+                ser.write(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
+                break;
+            case 3:
+                ser.write(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
+                break;
+            case 4:
+                ser.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
+                break;
+            default:
+                logger.warn("Invalid Motor Number.. Please try again..");
+                setChanged();
+                break;
         }
     }
 
@@ -503,7 +565,7 @@ public class TinygDriver extends Observable {
         // Add byte arrays to the buffer queue from tinyG's responses.
         try {
             TinygDriver.queue.put(queue);
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             logger.error("ERROR appending to the Response Queue");
         }
     }
@@ -528,21 +590,21 @@ public class TinygDriver extends Observable {
      * Connection Methods
      */
     public void setConnected(boolean choice) {
-        this.ser.setConnected(choice);
+        ser.setConnected(choice);
     }
 
     public boolean initialize(String portName, int dataRate) throws SerialPortException {
-        return this.ser.initialize(portName, dataRate);
+        return ser.initialize(portName, dataRate);
     }
 
     public void disconnect() throws SerialPortException {
-        this.ser.disconnect();
+        ser.disconnect();
     }
 
     public SimpleBooleanProperty isConnected() {
         //Our binding to keep tabs in the us of if we are connected to TinyG or not.
         //This is mostly used to disable the UI if we are not connected.
-        connectionStatus.set(this.ser.isConnected());
+        connectionStatus.set(ser.isConnected());
         return connectionStatus;
     }
 
@@ -551,11 +613,11 @@ public class TinygDriver extends Observable {
      * SerialDriver write methods from here.
      */
     public synchronized void write(String msg) {
-        TinygDriver.getInstance().serialWriter.addCommandToBuffer(msg);
+        serialWriter.addCommandToBuffer(msg);
     }
 
     public void priorityWrite(Byte b) throws SerialPortException {
-        this.ser.priorityWrite(b);
+        ser.priorityWrite(b);
     }
 
     public void priorityWrite(String msg){
@@ -580,6 +642,6 @@ public class TinygDriver extends Observable {
     }
 
     public List<Axis> getInternalAllAxis() {
-        return Machine.getInstance().getAllAxis();
+        return machine.getAllAxis();
     }
 }

@@ -113,7 +113,7 @@ public class CNCMachine extends Pane {
                 MenuItem menuItem1 = new MenuItem("Set Machine Position");
                 menuItem1.setOnAction(t -> {
                     Draw2d.setFirstDraw(true); //We do not want to draw a line from our previous position
-                    TinygDriver.getInstance().cmdManager.setMachinePosition(getNormalizedX(me.getX()), getNormalizedY(me.getY()));
+                    TinygDriver.getInstance().getCommandManager().setMachinePosition(getNormalizedX(me.getX()), getNormalizedY(me.getY()));
                     Draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
                     try {
                         TinygDriver.getInstance().write(CommandManager.CMD_APPLY_SYSTEM_ZERO_ALL_AXES);

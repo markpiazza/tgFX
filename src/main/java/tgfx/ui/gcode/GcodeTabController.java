@@ -48,8 +48,6 @@ import tgfx.tinyg.CommandManager;
 import tgfx.tinyg.TinygDriver;
 import tgfx.ui.tgfxsettings.TgfxSettingsController;
 
-import javax.crypto.Mac;
-
 /**
  * FXML Controller class
  *
@@ -220,7 +218,7 @@ public class GcodeTabController implements Initializable {
                     if (isKeyPressed) {  //We should find out of TinyG's distance mode is set to G90 before just firing this off.
                       CommandManager.stopJogMovement();
                         if (TinygDriver.getInstance().getMachine()
-                                .getGcode_distance_mode()
+                                .getGcodeDistanceMode()
                                 .equals(GcodeDistanceMode.INCREMENTAL)) {
                             //We are in incremental mode we now will enter ABSOLUTE mode
                             CommandManager.setAbsoluteMovementMode();

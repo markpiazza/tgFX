@@ -4,7 +4,6 @@
  */
 package tgfx.system;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,8 +23,11 @@ import tgfx.hardwarePlatforms.HardwarePlatform;
 import tgfx.tinyg.ResponseCommand;
 
 /**
+ * Machine
+ * contains machine specific values (states, switches, acceleration, axises, jog and travel )
  *
  * @author ril3y
+ * @author mpiazza
  */
 public final class Machine {
     private static final Logger logger = LogManager.getLogger();
@@ -34,52 +36,51 @@ public final class Machine {
     //TG Specific
     //Machine EEPROM Values
     //binding
-    public SimpleDoubleProperty longestTravelAxisValue = new SimpleDoubleProperty();
-    public SimpleIntegerProperty xjoggingIncrement = new SimpleIntegerProperty();
-    public SimpleIntegerProperty yjoggingIncrement = new SimpleIntegerProperty();
-    public SimpleIntegerProperty zjoggingIncrement = new SimpleIntegerProperty();
-    public SimpleIntegerProperty ajoggingIncrement = new SimpleIntegerProperty();
-    public SimpleStringProperty m_state = new SimpleStringProperty();
-    public SimpleStringProperty m_mode = new SimpleStringProperty();
-    public SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty();
-    public StringProperty firmwareVersion = new SimpleStringProperty();
-    
+    private SimpleDoubleProperty longestTravelAxisValue = new SimpleDoubleProperty();
+    private SimpleIntegerProperty xjoggingIncrement = new SimpleIntegerProperty();
+    private SimpleIntegerProperty yjoggingIncrement = new SimpleIntegerProperty();
+    private SimpleIntegerProperty zjoggingIncrement = new SimpleIntegerProperty();
+    private SimpleIntegerProperty ajoggingIncrement = new SimpleIntegerProperty();
+
+    private SimpleStringProperty machineState = new SimpleStringProperty();
+    private SimpleStringProperty motionMode = new SimpleStringProperty();
+
+    private StringProperty hardwareId = new SimpleStringProperty("na");
+    private StringProperty hardwareVersion = new SimpleStringProperty("na");
     public HardwarePlatform hardwarePlatform = new HardwarePlatform();
-    
-    public StringProperty hardwareId = new SimpleStringProperty("na");
-    public StringProperty hardwareVersion = new SimpleStringProperty("na");
+    public StringProperty firmwareVersion = new SimpleStringProperty();
+    public SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty();
+
     public SimpleDoubleProperty velocity = new SimpleDoubleProperty();
     private StringProperty gcodeUnitMode = new SimpleStringProperty("mm");
     public SimpleDoubleProperty gcodeUnitDivision = new SimpleDoubleProperty(1);
 //    private SimpleStringProperty gcodeDistanceMode = new SimpleStringProperty();
     private int switchType = 0; //0=normally closed 1 = normally open
-    private int status_report_interval;
+    private int statusReportInterval;
 //    public GcodeUnitMode gcode_startup_units;
-    public GcodeSelectPlane gcode_selectPlane;
-    public GcodeCoordinateSystem gcode_select_coord_system;
-    public GcodePathControl gcode_path_control;
-    public GcodeDistanceMode gcode_distance_mode = GcodeDistanceMode.ABSOLUTE;
-    private boolean enable_acceleration;
-    private float junction_acceleration;
-    private float min_line_segment;
-    private float min_arc_segment;
-    private double min_segment_time;
-    private boolean enable_CR_on_TX;
-    private boolean enable_echo;
-    private boolean enable_xon_xoff;
-    private boolean enable_hashcode;
-    //Misc
-    public SimpleIntegerProperty lineNumber = new SimpleIntegerProperty(0);
-    private String last_message = "";
-//    public static MotionMode motion_mode = new SimpleIntegerProperty();
-    public static MotionMode motion_mode;
-    private final List<Motor> motors = new ArrayList<>();
-    private final  List<Axis> axis = new ArrayList<>();
-    private List<GcodeCoordinateSystem> gcodeCoordinateSystems = new ArrayList<>();
-    public GcodeCoordinateManager gcm = new GcodeCoordinateManager();
-    private SimpleStringProperty coordinateSystem = new SimpleStringProperty();
+    private GcodeSelectPlane gcodeSelectPlane;
+    private GcodeCoordinateSystem gcodeCoordinateSystem;
+    private GcodePathControl gcodePathControl;
+    private GcodeDistanceMode gcodeDistanceMode = GcodeDistanceMode.ABSOLUTE;
+    private boolean enableAcceleration;
+    private float junctionAcceleration;
+    private float minLineSegment;
+    private float minArcSegment;
+    private double minSegmentTime;
+    private boolean enableCrOnTx;
+    private boolean enableEcho;
+    private boolean enableXonXoff;
+    private boolean enableHashcode;
 
-    public static MachineState machine_state;
+    private final List<Motor> motors = new ArrayList<>();
+    private final List<Axis> axis = new ArrayList<>();
+
+    private List<GcodeCoordinateSystem> gcodeCoordinateSystems = new ArrayList<>();
+    private GcodeCoordinateManager coordinateManager = new GcodeCoordinateManager();
+    private SimpleStringProperty coordinateSystem = new SimpleStringProperty();
+    private SimpleIntegerProperty lineNumber = new SimpleIntegerProperty(0);
+    private String lastMessage = "";
+
     private String machineName;
 
     public Machine() {
@@ -108,6 +109,42 @@ public final class Machine {
         return machineInstance;
     }
 
+    public GcodeCoordinateManager getGcodeCoordinateManager(){
+        return coordinateManager;
+    }
+
+    /* MESSAGES */
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    /* HARDWARE ID */
+
+    public StringProperty getHardwareId(){
+        return hardwareId;
+    }
+
+    public void setHardwareId(String hardwareId){
+        this.hardwareId.setValue(hardwareId);
+    }
+
+    /* HARDWARE VERSION */
+
+    public StringProperty getHardwareVersion(){
+        return hardwareVersion;
+    }
+
+    public void setHardwareVersion(String hardwareVersion){
+        this.hardwareVersion.setValue(hardwareVersion);
+    }
+
+    /* SWITCHES */
+
     private void setSwitchType(int swType) {
         this.switchType = swType;
     }
@@ -120,12 +157,20 @@ public final class Machine {
         return switchType == 0 ? "Normally Open" : "Normally Closed";
     }
 
-    public GcodeSelectPlane getGcode_selectPlane() {
-        return gcode_selectPlane;
+    /* TRAVEL */
+
+    public double getLongestTravelAxisValue() {
+        return longestTravelAxisValue.get();
     }
 
-    public GcodeDistanceMode getGcode_distance_mode() {
-        return gcode_distance_mode;
+    public void setLongestTravelAxisValue(double value){
+        longestTravelAxisValue.set(value);
+    }
+
+    /* DISTANCE MODE */
+
+    public GcodeDistanceMode getGcodeDistanceMode() {
+        return gcodeDistanceMode;
     }
 
     private void setGcodeDistanceMode(String gdm) {
@@ -135,70 +180,46 @@ public final class Machine {
     private void setGcodeDistanceMode(int gdm) {
         switch (gdm) {
             case 0:
-                this.gcode_distance_mode = GcodeDistanceMode.ABSOLUTE;
+                this.gcodeDistanceMode = GcodeDistanceMode.ABSOLUTE;
                 break;
             case 1:
-                this.gcode_distance_mode = GcodeDistanceMode.INCREMENTAL;
+                this.gcodeDistanceMode = GcodeDistanceMode.INCREMENTAL;
                 break;
         }
+    }
+
+    /* PLANE */
+
+    public GcodeSelectPlane getGcodeSelectPlane() {
+        return gcodeSelectPlane;
     }
 
     private void setGcodeSelectPlane(String gsp) {
         setGcodeSelectPlane(Integer.valueOf(gsp));
     }
 
-    public String getLast_message() {
-        return last_message;
-    }
-
-    public void setLast_message(String last_message) {
-        this.last_message = last_message;
-    }
-
     private void setGcodeSelectPlane(int gsp) {
         switch (gsp) {
             case 0:
-                this.gcode_selectPlane = GcodeSelectPlane.XY;
+                this.gcodeSelectPlane = GcodeSelectPlane.XY;
                 break;
             case 1:
-                this.gcode_selectPlane = GcodeSelectPlane.XZ;
+                this.gcodeSelectPlane = GcodeSelectPlane.XZ;
                 break;
             case 2:
-                this.gcode_selectPlane = GcodeSelectPlane.YZ;
+                this.gcodeSelectPlane = GcodeSelectPlane.YZ;
                 break;
         }
     }
 
-    public void setGcode_selectPlane(GcodeSelectPlane gcode_selectPlane) {
-        this.gcode_selectPlane = gcode_selectPlane;
+    public void setGcodeSelectPlane(GcodeSelectPlane gcodeSelectPlane) {
+        this.gcodeSelectPlane = gcodeSelectPlane;
     }
 
-    public StringProperty getHardwareId() {
-        return hardwareId;
-    }
+    /* PATH CONTROL */
 
-    private void setHardwareId(String hwIdString) {
-        hardwareId.set(hwIdString);
-    }
-
-    public StringProperty getHardwareVersion() {
-        return hardwareVersion;
-    }
-
-    private void setHardwareVersion(String hardwareVersion) {
-        if(Integer.valueOf(hardwareVersion) == 8 &&
-                hardwarePlatform.getHardwarePlatformVersion() == -1){
-            //We do this beacause early builds of TinyG did not have a $hp value so we assume it is an v8 tinyg
-            TinygDriver.getInstance().hardwarePlatformManager.setHardwarePlatformByVersionNumber(8);
-        }else if(Integer.valueOf(hardwareVersion) == 7 &&
-                hardwarePlatform.getHardwarePlatformVersion() == -1) {  //-1 means we have not set it yet
-            TinygDriver.getInstance().hardwarePlatformManager.setHardwarePlatformByVersionNumber(7);
-        }
-        this.hardwareVersion.set(hardwareVersion);
-    }
-
-    public GcodePathControl getGcode_path_control() {
-        return gcode_path_control;
+    public GcodePathControl getGcodePathControl() {
+        return gcodePathControl;
     }
 
     private void setGcodePathControl(String gpc) {
@@ -208,52 +229,75 @@ public final class Machine {
     private void setGcodePathControl(int gpc) {
         switch (gpc) {
             case 0:
-                this.gcode_path_control = GcodePathControl.G61;
+                this.gcodePathControl = GcodePathControl.G61;
                 break;
             case 1:
-                this.gcode_path_control = GcodePathControl.G61POINT1;
+                this.gcodePathControl = GcodePathControl.G61POINT1;
                 break;
             case 2:
-                this.gcode_path_control = GcodePathControl.G64;
+                this.gcodePathControl = GcodePathControl.G64;
                 break;
         }
     }
 
-    public boolean isEnable_CR_on_TX() {
-        return enable_CR_on_TX;
+    /* CARRIAGE RETURN ON TRANSMIT */
+
+    public boolean isEnableCrOnTx() {
+        return enableCrOnTx;
     }
 
-    public void setEnable_CR_on_TX(boolean enable_CR_on_TX) {
-        this.enable_CR_on_TX = enable_CR_on_TX;
+    public void setEnableCrOnTx(boolean enableCrOnTx) {
+        this.enableCrOnTx = enableCrOnTx;
     }
 
-    public boolean isEnable_hashcode() {
-        return enable_hashcode;
+    /* HASHCODE */
+
+    public boolean isEnableHashcode() {
+        return enableHashcode;
     }
 
-    public void setEnable_hashcode(boolean enable_hashcode) {
-        this.enable_hashcode = enable_hashcode;
+    public void setEnableHashcode(boolean enableHashcode) {
+        this.enableHashcode = enableHashcode;
     }
 
-    public float getJunction_acceleration() {
-        return junction_acceleration;
+    /* ACCELERATION */
+
+    public float getJunctionAcceleration() {
+        return junctionAcceleration;
     }
 
-    public void setJunction_acceleration(float junction_acceleration) {
-        this.junction_acceleration = junction_acceleration;
+    public void setJunctionAcceleration(float junctionAcceleration) {
+        this.junctionAcceleration = junctionAcceleration;
     }
+
+    /* MOTERS */
 
     public List<Motor> getMotors() {
         return this.motors;
     }
 
     public int getNumberOfMotors() {
-        //return how many numbers are in the system
         return this.getMotors().size();
     }
 
+    /* MACHINE NAME */
+
     public String getMachineName() {
         return machineName;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+
+    /* UNITS MODE */
+
+    public StringProperty getGcodeUnitMode() {
+        return gcodeUnitMode;
+    }
+
+    public int getGcodeUnitModeAsInt() {
+        return gcodeUnitMode.get().equals(GcodeUnitMode.MM.toString()) ? 1 : 0;
     }
 
     private void setGcodeUnits(int unitMode) {
@@ -266,89 +310,95 @@ public final class Machine {
         }
     }
 
-    public StringProperty getGcodeUnitMode() {
-        return gcodeUnitMode;
-    }
-
-    public int getGcodeUnitModeAsInt() {
-        return gcodeUnitMode.get().equals(GcodeUnitMode.MM.toString()) ? 1 : 0;
-    }
-
     public void setGcodeUnits(String gcu) {
-        int _tmpgcu = Integer.valueOf(gcu);
-
-        switch (_tmpgcu) {
-            case (0):
+        switch (Integer.valueOf(gcu)) {
+            case 0:
                 gcodeUnitMode.set(GcodeUnitMode.INCHES.toString());
                 break;
-            case (1):
+            case 1:
                 gcodeUnitMode.set(GcodeUnitMode.MM.toString());
                 break;
         }
     }
 
+    /* MOTION MODE */
+
     public SimpleStringProperty getMotionMode() {
-        return (m_mode);
+        return motionMode;
     }
 
     public void setMotionMode(int mode) {
-        if (mode == 0) {
-            m_mode.set(MotionMode.TRAVERSE.toString());
-        } else if (mode == 1) {
-            m_mode.set(MotionMode.FEED.toString());
-        } else if (mode == 2) {
-            m_mode.set(MotionMode.CW_ARC.toString());
-        } else if (mode == 3) {
-            m_mode.set(MotionMode.CCW_ARC.toString());
-        } else {
-            m_mode.set(MotionMode.CANCEL.toString());
+        switch (mode) {
+            case 0:
+                motionMode.set(MotionMode.TRAVERSE.toString());
+                break;
+            case 1:
+                motionMode.set(MotionMode.FEED.toString());
+                break;
+            case 2:
+                motionMode.set(MotionMode.CW_ARC.toString());
+                break;
+            case 3:
+                motionMode.set(MotionMode.CCW_ARC.toString());
+                break;
+            default:
+                motionMode.set(MotionMode.CANCEL.toString());
+                break;
         }
     }
 
-    public int getStatus_report_interval() {
-        return status_report_interval;
+    /* REPORT INTERVAL */
+
+    public int getStatusReportInterval() {
+        return statusReportInterval;
     }
 
-    public void setStatus_report_interval(int status_report_interval) {
-        this.status_report_interval = status_report_interval;
+    public void setStatusReportInterval(int statusReportInterval) {
+        this.statusReportInterval = statusReportInterval;
     }
 
-    public void setMachineName(String machineName) {
-        this.machineName = machineName;
+    /* ACCELERATION ENABLE */
+
+    public boolean isEnableAcceleration() {
+        return enableAcceleration;
     }
 
-    public boolean isEnable_acceleration() {
-        return enable_acceleration;
+    public void setEnableAcceleration(boolean enableAcceleration) {
+        this.enableAcceleration = enableAcceleration;
     }
 
-    public void setEnable_acceleration(boolean enable_acceleration) {
-        this.enable_acceleration = enable_acceleration;
+    /* ECHO ENABLE */
+
+    public boolean isEnableEcho() {
+        return enableEcho;
     }
 
-    public boolean isEnable_echo() {
-        return enable_echo;
+    private void setEnableEcho(boolean enableEcho) {
+        this.enableEcho = enableEcho;
     }
 
-    private void setEnable_echo(boolean enable_echo) {
-        this.enable_echo = enable_echo;
+    /* XON XOFF FLOW CONTROL ENABLE */
+
+    public boolean isEnableXonXoff() {
+        return enableXonXoff;
     }
 
-    public boolean isEnable_xon_xoff() {
-        return enable_xon_xoff;
+    private void setEnableXonXoff(boolean enableXonXoff) {
+        this.enableXonXoff = enableXonXoff;
     }
 
-    private void setEnableXonXoff(boolean enable_xon_xoff) {
-        this.enable_xon_xoff = enable_xon_xoff;
-    }
+    /* FIRMWARE BUILD */
 
     public double getFirmwareBuild() {
         return firmwareBuild.getValue();
     }
 
-    public void setFirmwareBuild(double firmware_build) throws IOException, JSONException {
+    public void setFirmwareBuild(double firmware_build) throws JSONException {
         this.firmwareBuild.set(firmware_build);
         TinygDriver.getInstance().notifyBuildChanged();
     }
+
+    /* FIRMWARE VERISON */
 
     public StringProperty getFirmwareVersion() {
         return firmwareVersion;
@@ -357,6 +407,8 @@ public final class Machine {
     private void setFirmwareVersion(String fv) {
         this.firmwareVersion.setValue(fv);
     }
+
+    /* LINE NUMBER */
 
     public int getLineNumber() {
         return lineNumber.get();
@@ -370,19 +422,45 @@ public final class Machine {
         this.lineNumber.set(lineNumber);
     }
 
-    public SimpleStringProperty getMachineState() {
-        return this.m_state;
-    }
-
-//    public void setCoordinateSystem(String cord) {
-//        setCoordinate_mode(Integer.valueOf(cord));
-//
-//    }
+    /* COORDINATE SYSTEM */
 
     public SimpleStringProperty getCoordinateSystem() {
         return this.coordinateSystem;
     }
 
+    public GcodeCoordinateSystem getCoordinateSystemByName(String name) {
+        for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
+            if (_tmpGCS.getCoordinate().equals(name)) {
+                return _tmpGCS;
+            }
+        }
+        return null;
+    }
+
+    public GcodeCoordinateSystem getCoordinateSystemByNumberMnemonic(int number) {
+        for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
+            if (_tmpGCS.getCoordinateNumberMnemonic() == number) {
+                logger.info("Returned " + _tmpGCS.getCoordinate() + " coord system");
+                return _tmpGCS;
+            }
+        }
+        return null;
+    }
+
+    public GcodeCoordinateSystem getCoordinateSystemByTgNumber(int number) {
+        for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
+            if (_tmpGCS.getCoordinateNumberByTgFormat() == number) {
+                logger.info("Returned " + _tmpGCS.getCoordinate() + " coord system");
+                return _tmpGCS;
+            }
+        }
+        return null;
+    }
+
+    //    public void setCoordinateSystem(String cord) {
+    //        setCoordinate_mode(Integer.valueOf(cord));
+    //    }
+    //
     //    public void setCoordinate_mode(double m) {
     //        int c = (int) (m); //Convert this to a int
     //        setCoordinate_mode(c);
@@ -418,61 +496,75 @@ public final class Machine {
     //        }
     //    }
 
-    private void setMachineState(int state) {
+    /* MACHINE STATE */
+
+    public SimpleStringProperty getMachineState() {
+        return this.machineState;
+    }
+
+    public void setMachineState(int state) {
         switch (state) {
             case 1:
-                m_state.set(MachineState.RESET.toString());
+                machineState.set(MachineState.RESET.toString());
                 break;
             case 2:
-                m_state.set(MachineState.CYCLE.toString());
+                machineState.set(MachineState.CYCLE.toString());
                 break;
             case 3:
-                m_state.set(MachineState.STOP.toString());
+                machineState.set(MachineState.STOP.toString());
                 break;
             case 4:
-                m_state.set(MachineState.END.toString());
+                machineState.set(MachineState.END.toString());
                 break;
             case 5:
-                m_state.set(MachineState.RUN.toString());
+                machineState.set(MachineState.RUN.toString());
                 break;
             case 6:
-                m_state.set(MachineState.HOLD.toString());
+                machineState.set(MachineState.HOLD.toString());
                 break;
             case 7:
-                m_state.set(MachineState.HOMING.toString());
+                machineState.set(MachineState.HOMING.toString());
                 break;
             case 8:
-                m_state.set(MachineState.PROBE.toString());
+                machineState.set(MachineState.PROBE.toString());
                 break;
             case 9:
-                m_state.set(MachineState.JOG.toString());
+                machineState.set(MachineState.JOG.toString());
                 break;
         }
     }
 
-    public float getMin_arc_segment() {
-        return min_arc_segment;
+    /* MIN ARC SEGMENT */
+
+    public float getMinArcSegment() {
+        return minArcSegment;
     }
 
-    public void setMin_arc_segment(float min_arc_segment) {
-        this.min_arc_segment = min_arc_segment;
+    public void setMinArcSegment(float minArcSegment) {
+        this.minArcSegment = minArcSegment;
     }
 
-    public float getMin_line_segment() {
-        return min_line_segment;
+    /* MIN LINE SEGMENT */
+
+    public float getMinLineSegment() {
+        return minLineSegment;
     }
 
-    public void setMin_line_segment(float min_line_segment) {
-        this.min_line_segment = min_line_segment;
+    public void setMinLineSegment(float minLineSegment) {
+        this.minLineSegment = minLineSegment;
     }
 
-    public double getMin_segment_time() {
-        return min_segment_time;
+    /* MIN SEGMENT TIME */
+
+    public double getMinSegmentTime() {
+        return minSegmentTime;
     }
 
-    public void setMin_segment_time(double min_segment_time) {
-        this.min_segment_time = min_segment_time;
+    public void setMinSegmentTime(double minSegmentTime) {
+        this.minSegmentTime = minSegmentTime;
     }
+
+    /* VELOCITY */
 
     public Double getVelocity() {
         return velocity.get();
@@ -482,39 +574,13 @@ public final class Machine {
         velocity.set(vel);
     }
 
+    /* JOGGING INCREMENT TIME */
 
     public double getJoggingIncrementByAxis(String _axisName) {
         return getAxisByName(_axisName).getTravelMaxSimple().get();
     }
 
-    public GcodeCoordinateSystem getCoordinateSystemByName(String name) {
-        for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
-            if (_tmpGCS.getCoordinate().equals(name)) {
-                return _tmpGCS;
-            }
-        }
-        return null;
-    }
-
-    public GcodeCoordinateSystem getCoordinateSystemByNumberMnemonic(int number) {
-        for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
-            if (_tmpGCS.getCoordinateNumberMnemonic() == number) {
-                logger.info("Returned " + _tmpGCS.getCoordinate() + " coord system");
-                return _tmpGCS;
-            }
-        }
-        return null;
-    }
-
-    public GcodeCoordinateSystem getCoordinateSystemByTgNumber(int number) {
-        for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
-            if (_tmpGCS.getCoordinateNumberByTgFormat() == number) {
-                logger.info("Returned " + _tmpGCS.getCoordinate() + " coord system");
-                return (_tmpGCS);
-            }
-        }
-        return null;
-    }
+    /* AXISES */
 
     public List<Axis> getAllAxis() {
         return axis;
@@ -544,6 +610,8 @@ public final class Machine {
         return null;
     }
 
+    /* MOTORS */
+
     public Motor getMotorByNumber(String m) {
         //Little stub method to allow calling getMotorByNumber with String arg.
         return getMotorByNumber(Integer.valueOf(m));
@@ -566,6 +634,8 @@ public final class Machine {
         Motor m = getMotorByNumber(motorNumber);
         m.setMapToAxis(x);
     }
+
+    /* JSON STATUS REPORT */
 
     public void applyJsonStatusReport(ResponseCommand rc) {
         Machine machine = TinygDriver.getInstance().getMachine();
@@ -623,7 +693,7 @@ public final class Machine {
                 machine.setGcodeUnits(Integer.valueOf(rc.getSettingValue()));
                 break;
             case (MnemonicManager.MNEMONIC_STATUS_REPORT_COORDNIATE_MODE):
-                machine.gcm.setCurrentGcodeCoordinateSystem(Integer.valueOf(rc.getSettingValue()));
+                machine.coordinateManager.setCurrentGcodeCoordinateSystem(Integer.valueOf(rc.getSettingValue()));
                 break;
             case (MnemonicManager.MNEMONIC_STATUS_REPORT_VELOCITY):
                 machine.setVelocity(Double.valueOf(rc.getSettingValue()));
@@ -632,7 +702,7 @@ public final class Machine {
     }
 
     //This is the main method to parser a JSON sys object
-    public void applyJsonSystemSetting(JSONObject js, String parent) throws IOException {
+    public void applyJsonSystemSetting(JSONObject js, String parent) {
         Machine machine = TinygDriver.getInstance().getMachine();
         logger.info("Applying JSON Object to System Group");
         Iterator ii = js.keySet().iterator();
@@ -650,7 +720,7 @@ public final class Machine {
                     case (MnemonicManager.MNEMONIC_SYSTEM_HARDWARD_PLATFORM):
                         logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                                 rc.getSettingKey() + ":" + rc.getSettingValue());
-                        TinygDriver.getInstance().hardwarePlatformManager
+                        TinygDriver.getInstance().getHardwarePlatformManager()
                                 .setHardwarePlatformByVersionNumber(
                                         Integer.valueOf(rc.getSettingValue()));
                         break;
@@ -659,14 +729,14 @@ public final class Machine {
                                 rc.getSettingKey() + ":" + rc.getSettingValue());
                         if(Integer.valueOf(rc.getSettingValue()) == 8 ){
                             //We do this because there is no $hp in TinyG v8 in builds sub 380.08
-                            TinygDriver.getInstance().hardwarePlatformManager
+                            TinygDriver.getInstance().getHardwarePlatformManager()
                                     .setHardwarePlatformByVersionNumber(
                                             Integer.valueOf(rc.getSettingValue()));
                         }
                         machine.setHardwareVersion(rc.getSettingValue());
                         break;
                     case (MnemonicManager.MNEMONIC_SYSTEM_ENABLE_ECHO):
-                        machine.setEnable_echo(Boolean.valueOf(rc.getSettingValue()));
+                        machine.setEnableEcho(Boolean.valueOf(rc.getSettingValue()));
                         logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                                 rc.getSettingKey() + ":" + rc.getSettingValue());
                         break;
@@ -705,7 +775,8 @@ public final class Machine {
                         machine.setGcodePathControl(rc.getSettingValue());
                         break;
                     case (MnemonicManager.MNEMONIC_SYSTEM_DEFAULT_GCODE_PLANE):
-                        //TinygDriver.getInstance().m.setGcodeSelectPlane(Float.valueOf(rc.getSettingValue()));
+                        // TinygDriver.getInstance().m.setGcodeSelectPlane(
+                        //   Float.valueOf(rc.getSettingValue()));
                         logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                                 rc.getSettingKey() + ":" + rc.getSettingValue());
                         machine.setGcodeSelectPlane(rc.getSettingValue());

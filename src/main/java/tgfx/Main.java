@@ -5,7 +5,6 @@
  */
 package tgfx;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Observable;
@@ -59,8 +58,6 @@ import tgfx.ui.tinygconfig.TinyGConfigController;
 import tgfx.utility.QueueUsingTimer;
 import tgfx.utility.QueuedTimerable;
 
-import javax.crypto.Mac;
-
 /**
  * The <code>Main</code> class is logically the "main" class of the application,
  * but due to how javaFX's framework is setup, it is not the first class
@@ -69,6 +66,7 @@ import javax.crypto.Mac;
  *
  * @see TgFX
  * @author riley
+ * @author mpiazza
  */
 public class Main extends Stage implements Initializable, Observer, QueuedTimerable<String> {
     private static final Logger logger = LogManager.getLogger();
@@ -191,13 +189,13 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 /*
                  * Query Code gets the regular write method
                  */
-                tg.cmdManager.queryAllMachineSettings();                    //SIXtH
+                tg.getCommandManager().queryAllMachineSettings();                    //SIXtH
                 Thread.sleep(delayValue);
-                tg.cmdManager.queryStatusReport();
+                tg.getCommandManager().queryStatusReport();
                 Thread.sleep(delayValue);
-                tg.cmdManager.queryAllMotorSettings();
+                tg.getCommandManager().queryAllMotorSettings();
                 Thread.sleep(delayValue);
-                tg.cmdManager.queryAllHardwareAxisSettings();
+                tg.getCommandManager().queryAllHardwareAxisSettings();
                 Thread.sleep(delayValue);
                 tg.write(CommandManager.CMD_APPLY_TEXT_VERBOSITY);
 
@@ -264,7 +262,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 machine.setFirmwareBuild(0.0);
                 machine.firmwareBuild.set(0);
                 machine.firmwareVersion.set("");
-                machine.m_state.set("");
+                machine.setMachineState(0);
                 machine.setLineNumber(0);
                 machine.setMotionMode(0);
                 Draw2d.setFirstDraw(true);
@@ -277,7 +275,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 TinygDriver.getInstance().serialWriter.notifyAck();
                 buildChecked = false;
                 GcodeTabController.setGcodeTextTemp("TinyG Disconnected.");
-            } catch (IOException | JSONException ex) {
+            } catch (JSONException ex) {
                 logger.error(ex);
             }
         });
@@ -288,10 +286,10 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     private void handleKeyInput(final InputEvent event) {
     }
 
-    public static void postConsoleMessage(String message) {
+    public static void postConsoleMessage(final String message) {
         //This allows us to send input to the console text area on the Gcode Tab.
-        final String m = message;
-        Platform.runLater(() -> console.appendText(m + "\n"));
+        logger.info(message + "\n");
+        Platform.runLater(() -> console.appendText(message + "\n"));
     }
 
 //    @FXML
@@ -320,14 +318,15 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 ////            };
 //        }
 //    }
+
     @FXML
     private void handleGuiRefresh() {
         //Refreshed all gui settings from TinyG Responses.
         if (tg.isConnected().get()) {
             postConsoleMessage("[+]System GUI Refresh Requested....");
-            tg.cmdManager.queryAllHardwareAxisSettings();
-            tg.cmdManager.queryAllMachineSettings();
-            tg.cmdManager.queryAllMotorSettings();
+            tg.getCommandManager().queryAllHardwareAxisSettings();
+            tg.getCommandManager().queryAllMachineSettings();
+            tg.getCommandManager().queryAllMotorSettings();
         } else {
             postConsoleMessage("[!]TinyG Not Connected.. Ignoring System GUI Refresh Request....");
         }
@@ -642,11 +641,9 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
         //This disables the UI if we are not connected.
         consoleVBox.disableProperty()
-                .bind(TinygDriver.getInstance()
-                        .connectionStatus.not());
+                .bind(TinygDriver.getInstance().getConnectionStatus().not());
         topTabPane.disableProperty()
-                .bind(TinygDriver.getInstance()
-                        .connectionStatus.not());
+                .bind(TinygDriver.getInstance().getConnectionStatus().not());
 
         /*
          * THREAD INITS
@@ -684,10 +681,10 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         srMomo.textProperty().bind(machine.getMotionMode());
         srVer.textProperty().bind(machine.firmwareVersion);
         srBuild.textProperty().bindBidirectional(machine.firmwareBuild, sc);
-        srState.textProperty().bind(machine.m_state);
+        srState.textProperty().bind(machine.getMachineState());
         srCoord.textProperty().bind(machine.getCoordinateSystem());
         srUnits.textProperty().bind(machine.getGcodeUnitMode());
-        srCoord.textProperty().bind(machine.gcm.getCurrentGcodeCoordinateSystemName());
+        srCoord.textProperty().bind(machine.getGcodeCoordinateManager().getCurrentGcodeCoordinateSystemName());
         srGcodeLine.textProperty().bind(machine.getLineNumberSimple().asString());
     }
 }
