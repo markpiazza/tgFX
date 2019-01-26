@@ -28,6 +28,8 @@ import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_MOTOR_4;
 import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_SYSTEM;
 import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_STATUS_REPORT;
 import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_EMERGENCY_SHUTDOWN;
+
+import tgfx.system.Machine;
 import tgfx.tinyg.TinygDriver;
 import tgfx.tinyg.ResponseCommand;
 
@@ -163,7 +165,7 @@ public class ResponseParser extends Observable implements Runnable {
                 String key = o.toString();
 
                 ResponseCommand rc = new ResponseCommand(MNEMONIC_GROUP_SYSTEM, key.toString(), js.get(key).toString());
-                TinygDriver.getInstance().machine.applyJsonStatusReport(rc);
+                TinygDriver.getInstance().getMachine().applyJsonStatusReport(rc);
 //                _applySettings(rc.buildJsonObject(), rc.getSettingParent()); //we will supply the parent object name for each key pair
             }
             setChanged();
@@ -251,10 +253,10 @@ public class ResponseParser extends Observable implements Runnable {
     }
 
     private void _applySettings(JSONObject js, String pg) throws Exception {
-
+        Machine machine = TinygDriver.getInstance().getMachine();
         switch (pg) {
             case (MNEMONIC_GROUP_MOTOR_1):
-                TinygDriver.getInstance().machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_1)
+                machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_1)
                         .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_1), MNEMONIC_GROUP_MOTOR_1);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
@@ -262,7 +264,7 @@ public class ResponseParser extends Observable implements Runnable {
                 notifyObservers(message);
                 break;
             case (MNEMONIC_GROUP_MOTOR_2):
-                TinygDriver.getInstance().machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_2)
+                machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_2)
                         .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_2), MNEMONIC_GROUP_MOTOR_2);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
@@ -270,7 +272,7 @@ public class ResponseParser extends Observable implements Runnable {
                 notifyObservers(message);
                 break;
             case (MNEMONIC_GROUP_MOTOR_3):
-                TinygDriver.getInstance().machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_3)
+                machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_3)
                         .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_3), MNEMONIC_GROUP_MOTOR_3);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
@@ -279,7 +281,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case (MNEMONIC_GROUP_MOTOR_4):
-                TinygDriver.getInstance().machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_4)
+                machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_4)
                         .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_4), MNEMONIC_GROUP_MOTOR_4);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
@@ -288,7 +290,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case (MNEMONIC_GROUP_AXIS_X):
-                TinygDriver.getInstance().machine.getAxisByName(MNEMONIC_GROUP_AXIS_X)
+                machine.getAxisByName(MNEMONIC_GROUP_AXIS_X)
                         .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_X), MNEMONIC_GROUP_AXIS_X);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
@@ -297,7 +299,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case (MNEMONIC_GROUP_AXIS_Y):
-                TinygDriver.getInstance().machine.getAxisByName(MNEMONIC_GROUP_AXIS_Y)
+                machine.getAxisByName(MNEMONIC_GROUP_AXIS_Y)
                         .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_Y), MNEMONIC_GROUP_AXIS_Y);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
@@ -306,7 +308,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case (MNEMONIC_GROUP_AXIS_Z):
-                TinygDriver.getInstance().machine.getAxisByName(MNEMONIC_GROUP_AXIS_Z)
+                machine.getAxisByName(MNEMONIC_GROUP_AXIS_Z)
                         .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_Z), MNEMONIC_GROUP_AXIS_Z);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
@@ -315,7 +317,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case (MNEMONIC_GROUP_AXIS_A):
-                TinygDriver.getInstance().machine.getAxisByName(MNEMONIC_GROUP_AXIS_A)
+                machine.getAxisByName(MNEMONIC_GROUP_AXIS_A)
                         .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_A), MNEMONIC_GROUP_AXIS_A);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
@@ -323,7 +325,7 @@ public class ResponseParser extends Observable implements Runnable {
                 notifyObservers(message);
                 break;
             case (MNEMONIC_GROUP_AXIS_B):
-                TinygDriver.getInstance().machine.getAxisByName(MNEMONIC_GROUP_AXIS_B)
+                machine.getAxisByName(MNEMONIC_GROUP_AXIS_B)
                         .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_B), MNEMONIC_GROUP_AXIS_B);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
@@ -332,7 +334,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case (MNEMONIC_GROUP_AXIS_C):
-                TinygDriver.getInstance().machine.getAxisByName(MNEMONIC_GROUP_AXIS_C)
+                machine.getAxisByName(MNEMONIC_GROUP_AXIS_C)
                         .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_C), MNEMONIC_GROUP_AXIS_C);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
@@ -349,7 +351,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case (MNEMONIC_GROUP_SYSTEM):
-                TinygDriver.getInstance().machine.applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_SYSTEM), MNEMONIC_GROUP_SYSTEM);
+                machine.applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_SYSTEM), MNEMONIC_GROUP_SYSTEM);
                 /*
                  * UNCOMMENT THIS BELOW WHEN WE HAVE MACHINE SETTINGS THAT NEED
                  * TO UPDATE THE GU
@@ -368,10 +370,8 @@ public class ResponseParser extends Observable implements Runnable {
                 notifyObservers(message);
                 break;
             case (MNEMONIC_GROUP_EMERGENCY_SHUTDOWN):
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        Main.postConsoleMessage("TinyG Alarm " + line);
+                Platform.runLater(() -> {
+                    Main.postConsoleMessage("TinyG Alarm " + line);
 //
 //                        MonologFXButton btnYes = MonologFXButtonBuilder.create()
 //                                .defaultButton(true)
@@ -411,12 +411,9 @@ public class ResponseParser extends Observable implements Runnable {
 //                                Main.postConsoleMessage("TinyG will remain in diabled mode until you power cycle or click the reset button.");
 //                                break;
 //                        }
-                    }
                 });
-
-
+                break;
             default:
-
                 //This is for single settings xfr, 1tr etc...
                 //This is pretty ugly but it gets the key and the value. For single values.
                 ResponseCommand rc = TinygDriver.getInstance().mneManager.lookupSingleGroup(pg);
@@ -432,49 +429,37 @@ public class ResponseParser extends Observable implements Runnable {
                     this.applySetting(rc.buildJsonObject()); //We pass the new json object we created from the string above
                 }
         }
-
-
     }
 
     public void applySettings(String newJsObjString) {
         //When a single key value pair is sent without the group object
         //We use this method to create a new json object
-        try {
-            JSONObject newJs = new JSONObject(newJsObjString);
-            applySetting(newJs);
-        } catch (Exception ex) {
-            logger.error("Invalid Attempt to create newJs object");
-        }
+        JSONObject newJs = new JSONObject(newJsObjString);
+        applySetting(newJs);
     }
 
     private void parseFooter(JSONArray footerValues) {
-        try {
+        //Checking to see if we have a footer response
+        //Status reports will not have a footer so this is for everything else
 
+        responseFooter.setProtocolVersion(footerValues.getInt(FOOTER_ELEMENT_PROTOCOL_VERSION));
+        responseFooter.setStatusCode(footerValues.getInt(FOOTER_ELEMENT_STATUS_CODE));
+        responseFooter.setRxRecvd(footerValues.getInt(FOOTER_ELEMENT_RX_RECVD));
+        responseFooter.setCheckSum(footerValues.getInt(FOOTER_ELEMENT_STATUS_CODE));
+        //Out footer object is not populated
 
-            //Checking to see if we have a footer response
-            //Status reports will not have a footer so this is for everything else
-
-            responseFooter.setProtocolVersion(footerValues.getInt(FOOTER_ELEMENT_PROTOCOL_VERSION));
-            responseFooter.setStatusCode(footerValues.getInt(FOOTER_ELEMENT_STATUS_CODE));
-            responseFooter.setRxRecvd(footerValues.getInt(FOOTER_ELEMENT_RX_RECVD));
-            responseFooter.setCheckSum(footerValues.getInt(FOOTER_ELEMENT_STATUS_CODE));
-            //Out footer object is not populated
-
-            int beforeBytesReturned = TinygDriver.getInstance().serialWriter.getBufferValue();
-            //Make sure we do not add bytes to a already full buffer
-            if (beforeBytesReturned != TinygDriver.MAX_BUFFER) {
-                TinygDriver.getInstance().serialWriter.addBytesReturnedToBuffer(responseFooter.getRxRecvd());
-                int afterBytesReturned = TinygDriver.getInstance().serialWriter.getBufferValue();
-                logger.debug("Returned " + responseFooter.getRxRecvd() + " to buffer... Buffer was " + beforeBytesReturned + " is now " + afterBytesReturned);
-                TinygDriver.getInstance().serialWriter.notifyAck();  //We let our serialWriter thread know we have added some space to the buffer.
-                //Lets tell the UI the new size of the buffer
-                message[0] = "BUFFER_UPDATE";
-                message[1] = String.valueOf(afterBytesReturned);
-                setChanged();
-                notifyObservers(message);
-            }
-        } catch (Exception ex) {
-            logger.error("Error parsing json footer");
+        int beforeBytesReturned = TinygDriver.getInstance().serialWriter.getBufferValue();
+        //Make sure we do not add bytes to a already full buffer
+        if (beforeBytesReturned != TinygDriver.MAX_BUFFER) {
+            TinygDriver.getInstance().serialWriter.addBytesReturnedToBuffer(responseFooter.getRxRecvd());
+            int afterBytesReturned = TinygDriver.getInstance().serialWriter.getBufferValue();
+            logger.debug("Returned " + responseFooter.getRxRecvd() + " to buffer... Buffer was " + beforeBytesReturned + " is now " + afterBytesReturned);
+            TinygDriver.getInstance().serialWriter.notifyAck();  //We let our serialWriter thread know we have added some space to the buffer.
+            //Lets tell the UI the new size of the buffer
+            message[0] = "BUFFER_UPDATE";
+            message[1] = String.valueOf(afterBytesReturned);
+            setChanged();
+            notifyObservers(message);
         }
     }
 
@@ -526,7 +511,7 @@ public class ResponseParser extends Observable implements Runnable {
             });
 
         } else if (js.has("qr")) {
-            TinygDriver.getInstance().qr.parse(js);
+            TinygDriver.getInstance().getQueryReport().parse(js);
         } else if (js.has("er")) {
             applySetting(js);
         }

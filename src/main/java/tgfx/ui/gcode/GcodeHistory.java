@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tgfx.Main;
 
 /**
  *
@@ -35,40 +34,32 @@ public final class GcodeHistory {
     }
 
     public String getNextHistoryCommand() {
+        String nextHistory;
         if (commandIndex == 0) {
             commandIndex++; //Edge case when you are at the 0th command
-            String _tmpHistory = commandHistory.get(commandIndex);
-//            Main.print(" Get Next History got " + _tmpHistory + " at index " + commandIndex);
-            return (_tmpHistory);
+            nextHistory = commandHistory.get(commandIndex);
+        } else if (commandIndex == commandHistory.size() - 1) {
+            nextHistory = commandHistory.get(commandIndex);
         } else {
-            if (commandIndex == commandHistory.size() - 1) {
-                String _tmpHistory = commandHistory.get(commandIndex);
-//                Main.print(" Get Next History got " + _tmpHistory + " at index " + commandIndex);
-                return (_tmpHistory);
-            } else {
-                commandIndex++;
-                String _tmpHistory = commandHistory.get(commandIndex);
-//                Main.print(" Get Next History got " + _tmpHistory + " at index " + commandIndex);
-                return (_tmpHistory);
-            }
+            commandIndex++;
+            nextHistory = commandHistory.get(commandIndex);
         }
+        logger.info(" Get Next History got {} at index {}", nextHistory, commandIndex);
+        return nextHistory;
     }
 
     public String getPreviousHistoryCommand() {
+        String previousHistory;
         if (commandIndex == commandHistory.size() - 1) {
             commandIndex--; //Edge case when you are at the last command in the history
-            String _tmpHistory = commandHistory.get(commandIndex);
-//            Main.print(" Get Next History got " + _tmpHistory + " at index " + commandIndex);
-            return (_tmpHistory);
+            previousHistory = commandHistory.get(commandIndex);
+        } else if (commandIndex == 0) {
+                previousHistory = commandHistory.get(commandIndex);
         } else {
-            String _tmpHistory = commandHistory.get(commandIndex);
-//            Main.print("Get Previous History got " + _tmpHistory + " at index " + commandIndex);
-            if (commandIndex == 0) {
-                return (_tmpHistory);
-            } else {
-                commandIndex--; //increment the command history index..
-                return (_tmpHistory);
-            }
+            commandIndex--;
+            previousHistory = commandHistory.get(commandIndex);
         }
+        logger.info("Get Previous History got {} at index {}", previousHistory, commandIndex);
+        return previousHistory;
     }
 }

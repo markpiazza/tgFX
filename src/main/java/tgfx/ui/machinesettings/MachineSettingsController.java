@@ -54,9 +54,9 @@ public class MachineSettingsController implements Initializable {
 
     public static void updateGuiMachineSettings() {
         machineUnitMode.getSelectionModel().select(
-                TinygDriver.getInstance().machine.getGcodeUnitModeAsInt());
+                TinygDriver.getInstance().getMachine().getGcodeUnitModeAsInt());
         machineSwitchType.getSelectionModel().select(
-                TinygDriver.getInstance().machine.getSwitchType());
+                TinygDriver.getInstance().getMachine().getSwitchType());
     }
 
     /**

@@ -85,7 +85,7 @@ public class FirmwareUpdaterController implements Initializable {
                 //Download TinyG.hex
                 URL url;
                 try {
-                    url = new URL(TinygDriver.getInstance().machine.hardwarePlatform.getFirmwareUrl());
+                    url = new URL(TinygDriver.getInstance().getMachine().hardwarePlatform.getFirmwareUrl());
                     URLConnection urlConnection = url.openConnection();
                     logger.info("Opened Connection to Github");
                     Main.postConsoleMessage("Downloading tinyg.hex file from github.com");
@@ -107,7 +107,7 @@ public class FirmwareUpdaterController implements Initializable {
                 } catch (MalformedURLException ex) {
                     logger.error(ex);
                     Main.postConsoleMessage("Error downloading the TinyG update from: " +
-                            TinygDriver.getInstance().machine.hardwarePlatform.getFirmwareUrl());
+                            TinygDriver.getInstance().getMachine().hardwarePlatform.getFirmwareUrl());
                     Main.postConsoleMessage("Check your internetion connection and try again. " +
                             "Firmware update aborted...");
                 } catch (IOException ex) {
@@ -136,7 +136,7 @@ public class FirmwareUpdaterController implements Initializable {
 
                 } catch (MalformedURLException ex) {
                     Main.postConsoleMessage("TinyG update URL: " +
-                            TinygDriver.getInstance().machine.hardwarePlatform.getFirmwareUrl() +
+                            TinygDriver.getInstance().getMachine().hardwarePlatform.getFirmwareUrl() +
                             " is invalid, check the platform config "
                             + "file you are using in the configs directory.");
                     Main.postConsoleMessage("Firmware update aborted...");
@@ -164,13 +164,13 @@ public class FirmwareUpdaterController implements Initializable {
     @FXML
     public static void handleUpdateFirmware(ActionEvent event) {
 
-        if (TinygDriver.getInstance().machine.hardwarePlatform.getHardwarePlatformVersion() == -1) {
+        if (TinygDriver.getInstance().getMachine().hardwarePlatform.getHardwarePlatformVersion() == -1) {
             //This code checks to see if a hardware platform has been applied.
             //if the hpv is -1 then it has not.  So we guess that the board is a v8 TinyG.
             TinygDriver.getInstance().hardwarePlatformManager.setPlatformByName("TinyG");
         }
 
-        if (TinygDriver.getInstance().isTimedout() || TinygDriver.getInstance().machine.
+        if (TinygDriver.getInstance().isTimedout() || TinygDriver.getInstance().getMachine().
                 hardwarePlatform.isIsUpgradeable()) {
             //This platform can be upgraded  
             
@@ -190,7 +190,7 @@ public class FirmwareUpdaterController implements Initializable {
         logger.info("Checking current Firmware Version");
         Platform.runLater(() -> {
             try {
-                URL url = new URL(TinygDriver.getInstance().machine
+                URL url = new URL(TinygDriver.getInstance().getMachine()
                         .hardwarePlatform.getLatestVersionUrl());
                 URLConnection urlConnection = url.openConnection();
 
@@ -202,7 +202,7 @@ public class FirmwareUpdaterController implements Initializable {
                 String _currentVersionString = new String(buffer);
                 latestFirmwareBuild.setText(_currentVersionString);
                 Double currentVal;
-                if (TinygDriver.getInstance().machine.getFirmwareBuild() <
+                if (TinygDriver.getInstance().getMachine().getFirmwareBuild() <
                         Double.parseDouble(_currentVersionString)) {
                     //We need to update your firmware
                     Platform.runLater(() -> {
@@ -251,7 +251,8 @@ public class FirmwareUpdaterController implements Initializable {
 
                 } else {
                     Main.postConsoleMessage("Your " + TinygDriver.getInstance()
-                            .machine.hardwarePlatform.getPlatformName() + "'s firmware is up to date...\n");
+                            .getMachine().hardwarePlatform.getPlatformName() +
+                            "'s firmware is up to date...\n");
                 }
 
             } catch (MalformedURLException ex) {
@@ -265,12 +266,13 @@ public class FirmwareUpdaterController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        NumberExpression ne = new SimpleDoubleProperty(_currentVersionString.doubleValue()).subtract(TinygDriver.getInstance().machine.getFirmwareBuild());
-        hardwareId.textProperty().bind(TinygDriver.getInstance().machine.hardwareId); //Bind the tinyg hardware id to the tg driver value
+        NumberExpression ne = new SimpleDoubleProperty(_currentVersionString.doubleValue())
+                .subtract(TinygDriver.getInstance().getMachine().getFirmwareBuild());
+        hardwareId.textProperty().bind(TinygDriver.getInstance().getMachine().hardwareId); //Bind the tinyg hardware id to the tg driver value
         //hwVersion.textProperty().bind(TinygDriver.getInstance().machine.hardwareVersion); //Bind the tinyg version  to the tg driver value
-        hwVersion.textProperty().bind(TinygDriver.getInstance().machine.hardwareVersion); //Bind the tinyg version  to the tg driver value
+        hwVersion.textProperty().bind(TinygDriver.getInstance().getMachine().hardwareVersion); //Bind the tinyg version  to the tg driver value
 //        firmwareVersion.textProperty().bind(TinygDriver.getInstance().machine.firmwareVersion);
-        buildNumb.textProperty().bind(TinygDriver.getInstance().machine.firmwareBuild.asString());
+        buildNumb.textProperty().bind(TinygDriver.getInstance().getMachine().firmwareBuild.asString());
 
     }
 

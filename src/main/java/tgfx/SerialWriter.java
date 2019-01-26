@@ -132,7 +132,7 @@ public class SerialWriter implements Runnable {
 //                } else {
 //                    this.setBuffer(getBufferValue() - str.length());
 //                }
-                int _currentPlanningBuffer = TinygDriver.getInstance().qr.getPba();
+                int _currentPlanningBuffer = TinygDriver.getInstance().getQueryReport().getPba();
                 
                 if(_currentPlanningBuffer < 28){
                     //if we have less that 28 moves in the planning buffer send a line

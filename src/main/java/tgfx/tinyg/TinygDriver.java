@@ -40,8 +40,17 @@ public class TinygDriver extends Observable {
     public MnemonicManager mneManager = new MnemonicManager();
     public ResponseManager resManager = new ResponseManager();
     public CommandManager cmdManager = new CommandManager();
-    public QueueReport qr = QueueReport.getInstance();
-    public Machine machine = Machine.getInstance();
+
+    private QueueReport qr = QueueReport.getInstance();
+    private Machine machine = Machine.getInstance();
+
+    public QueueReport getQueryReport(){
+        return qr;
+    }
+
+    public Machine getMachine(){
+        return machine;
+    }
 
     /**
      * Static commands for TinyG to get settings from the TinyG Driver Board
@@ -72,7 +81,7 @@ public class TinygDriver extends Observable {
     public void setAsyncTimer(AsyncTimer value){
         connectionTimer = value;
     }
-    
+
     public AsyncTimer getAsyncTimer(){
         return connectionTimer;
     }
@@ -114,7 +123,7 @@ public class TinygDriver extends Observable {
             notifyObservers(message);
         }
     }
-    
+
     public void sendReconnectRequest(){
         Main.postConsoleMessage("Attempting to reconnecto to TinyG...");
         logger.info("Reconnect Request Sent.");
@@ -181,19 +190,19 @@ public class TinygDriver extends Observable {
                 if (cb.getId().contains("AxisMode")) {
                     int axisMode = cb.getSelectionModel().getSelectedIndex();
                     String configObj = String.format("{\"%s%s\":%s}\n",
-                            _axis.getAxis_name().toLowerCase(),
+                            _axis.getAxisName().toLowerCase(),
                             MnemonicManager.MNEMONIC_AXIS_AXIS_MODE, axisMode);
                     this.write(configObj);
                 } else if (cb.getId().contains("switchModeMax")) {
                     int switchMode = cb.getSelectionModel().getSelectedIndex();
                     String configObj = String.format("{\"%s%s\":%s}\n",
-                            _axis.getAxis_name().toLowerCase(),
+                            _axis.getAxisName().toLowerCase(),
                             MnemonicManager.MNEMONIC_AXIS_MAX_SWITCH_MODE, switchMode);
                     this.write(configObj);
                 } else if (cb.getId().contains("switchModeMin")) {
                     int switchMode = cb.getSelectionModel().getSelectedIndex();
                     String configObj = String.format("{\"%s%s\":%s}\n",
-                            _axis.getAxis_name().toLowerCase(),
+                            _axis.getAxisName().toLowerCase(),
                             MnemonicManager.MNEMONIC_AXIS_MIN_SWITCH_MODE, switchMode);
                     this.write(configObj);
                 }
@@ -204,12 +213,12 @@ public class TinygDriver extends Observable {
 
     public void applyHardwareMotorSettings(Motor _motor, TextField tf)  {
         if (tf.getId().contains("StepAngle")) {
-            if (_motor.getStep_angle() != Float.valueOf(tf.getText())) {
+            if (_motor.getStepAngle() != Float.valueOf(tf.getText())) {
                 this.write("{\"" + _motor.getId_number() +
                         MnemonicManager.MNEMONIC_MOTOR_STEP_ANGLE + "\":" + tf.getText() + "}\n");
             }
         } else if (tf.getId().contains("TravelPer")) {
-            if (_motor.getStep_angle() != Float.valueOf(tf.getText())) {
+            if (_motor.getStepAngle() != Float.valueOf(tf.getText())) {
                 this.write("{\"" + _motor.getId_number() +
                         MnemonicManager.MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION + "\":" + tf.getText() + "}\n");
             }
@@ -222,79 +231,79 @@ public class TinygDriver extends Observable {
          */
         if (tf.getId().contains("maxVelocity")) {
             if (_axis.getVelocityMaximum() != Double.valueOf(tf.getText())) {
-                //We check to see if the value passed was already set in TinyG 
+                //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxis_name().toLowerCase() +
+                this.write("{\"" + _axis.getAxisName().toLowerCase() +
                         MnemonicManager.MNEMONIC_AXIS_VELOCITY_MAXIMUM + "\":" + tf.getText() + "}\n");
             }
         } else if (tf.getId().contains("maxFeed")) {
-            if (_axis.getFeed_rate_maximum() != Double.valueOf(tf.getText())) {
-                //We check to see if the value passed was already set in TinyG 
+            if (_axis.getFeedRateMaximum() != Double.valueOf(tf.getText())) {
+                //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxis_name().toLowerCase() +
+                this.write("{\"" + _axis.getAxisName().toLowerCase() +
                         MnemonicManager.MNEMONIC_AXIS_FEEDRATE_MAXIMUM + "\":" + tf.getText() + "}\n");
             }
         } else if (tf.getId().contains("maxTravel")) {
-            if (_axis.getTravel_maximum() != Double.valueOf(tf.getText())) {
-                //We check to see if the value passed was already set in TinyG 
+            if (_axis.getTravelMaximum() != Double.valueOf(tf.getText())) {
+                //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxis_name().toLowerCase() +
+                this.write("{\"" + _axis.getAxisName().toLowerCase() +
                         MnemonicManager.MNEMONIC_AXIS_TRAVEL_MAXIMUM + "\":" + tf.getText() + "}\n");
             }
         } else if (tf.getId().contains("maxJerk")) {
             if (_axis.getJerkMaximum() != Double.valueOf(tf.getText())) {
-                //We check to see if the value passed was already set in TinyG 
+                //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxis_name().toLowerCase() +
+                this.write("{\"" + _axis.getAxisName().toLowerCase() +
                         MnemonicManager.MNEMONIC_AXIS_JERK_MAXIMUM + "\":" + tf.getText() + "}\n");
             }
         } else if (tf.getId().contains("junctionDeviation")) {
-            if (Double.valueOf(_axis.getJunction_devation()).floatValue() != Double.valueOf(tf.getText())) {
-                //We check to see if the value passed was already set in TinyG 
+            if (Double.valueOf(_axis.getJunctionDeviation()).floatValue() != Double.valueOf(tf.getText())) {
+                //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxis_name().toLowerCase() +
+                this.write("{\"" + _axis.getAxisName().toLowerCase() +
                         MnemonicManager.MNEMONIC_AXIS_JUNCTION_DEVIATION + "\":" + tf.getText() + "}\n");
             }
         } else if (tf.getId().contains("radius")) {
             if (_axis.getAxisType().equals(AxisType.ROTATIONAL)) {
-                //Check to see if its a ROTATIONAL AXIS... 
+                //Check to see if its a ROTATIONAL AXIS...
                 if (_axis.getRadius() != Double.valueOf(tf.getText())) {
-                    //We check to see if the value passed was already set in TinyG 
+                    //We check to see if the value passed was already set in TinyG
                     //To avoid un-needed EEPROM Writes.
-                    this.write("{\"" + _axis.getAxis_name().toLowerCase() +
+                    this.write("{\"" + _axis.getAxisName().toLowerCase() +
                             MnemonicManager.MNEMONIC_AXIS_RADIUS + "\":" + tf.getText() + "}\n");
                 }
             }
         } else if (tf.getId().contains("searchVelocity")) {
-            if (_axis.getSearch_velocity() != Double.valueOf(tf.getText())) {
-                //We check to see if the value passed was already set in TinyG 
+            if (_axis.getSearchVelocity() != Double.valueOf(tf.getText())) {
+                //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxis_name().toLowerCase() +
+                this.write("{\"" + _axis.getAxisName().toLowerCase() +
                         MnemonicManager.MNEMONIC_AXIS_SEARCH_VELOCITY + "\":" + tf.getText() + "}\n");
             }
         } else if (tf.getId().contains("latchVelocity")) {
-            if (_axis.getLatch_velocity() != Double.valueOf(tf.getText())) {
-                //We check to see if the value passed was already set in TinyG 
+            if (_axis.getLatchVelocity() != Double.valueOf(tf.getText())) {
+                //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxis_name().toLowerCase() +
+                this.write("{\"" + _axis.getAxisName().toLowerCase() +
                         MnemonicManager.MNEMONIC_AXIS_LATCH_VELOCITY + "\":" + tf.getText() + "}\n");
             }
         } else if (tf.getId().contains("latchBackoff")) {
-            if (_axis.getLatch_backoff() != Double.valueOf(tf.getText())) {
-                //We check to see if the value passed was already set in TinyG 
+            if (_axis.getLatchBackoff() != Double.valueOf(tf.getText())) {
+                //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxis_name().toLowerCase() +
+                this.write("{\"" + _axis.getAxisName().toLowerCase() +
                         MnemonicManager.MNEMONIC_AXIS_LATCH_BACKOFF + "\":" + tf.getText() + "}\n");
             }
         } else if (tf.getId().contains("zeroBackoff")) {
-            if (_axis.getZero_backoff() != Double.valueOf(tf.getText())) {
-                //We check to see if the value passed was already set in TinyG 
+            if (_axis.getZeroBackoff() != Double.valueOf(tf.getText())) {
+                //We check to see if the value passed was already set in TinyG
                 //To avoid un-needed EEPROM Writes.
-                this.write("{\"" + _axis.getAxis_name().toLowerCase() +
+                this.write("{\"" + _axis.getAxisName().toLowerCase() +
                         MnemonicManager.MNEMONIC_AXIS_ZERO_BACKOFF + "\":" + tf.getText() + "}\n");
             }
         }
-        logger.info("[+]Applying " + _axis.getAxis_name() + " settings");
+        logger.info("[+]Applying " + _axis.getAxisName() + " settings");
 
     }
 

@@ -134,30 +134,26 @@ public class CNCMachine extends Pane {
          * Bindings
          */
         maxHeightProperty().bind(
-                TinygDriver.getInstance()
-                .machine.getAxisByName("y")
+                TinygDriver.getInstance().getMachine().getAxisByName("y")
                 .getTravelMaxSimple()
-                .multiply(TinygDriver.getInstance().machine.gcodeUnitDivision)
+                .multiply(TinygDriver.getInstance().getMachine().gcodeUnitDivision)
         );
 
         maxWidthProperty().bind(
-                TinygDriver.getInstance()
-                .machine.getAxisByName("x")
+                TinygDriver.getInstance().getMachine().getAxisByName("x")
                 .getTravelMaxSimple()
-                .multiply(TinygDriver.getInstance().machine.gcodeUnitDivision)
+                .multiply(TinygDriver.getInstance().getMachine().gcodeUnitDivision)
         );
 
         cursorPoint.translateYProperty().bind(
             this.heightProperty()
                 .subtract(
-                    TinygDriver.getInstance()
-                    .machine.getAxisByName("y")
+                    TinygDriver.getInstance().getMachine().getAxisByName("y")
                     .getMachinePositionSimple())
         );
 
         cursorPoint.layoutXProperty().bind(
-            TinygDriver.getInstance()
-                .machine.getAxisByName("x")
+            TinygDriver.getInstance().getMachine().getAxisByName("x")
                 .getMachinePositionSimple());
 //             cncHeight.bind(this.heightProperty());
 //             cncWidth.bind(this.widthProperty());
@@ -182,11 +178,11 @@ public class CNCMachine extends Pane {
     }
 
     private double getNormalizedX(double x) {
-        return x / TinygDriver.getInstance().machine.gcodeUnitDivision.get();
+        return x / TinygDriver.getInstance().getMachine().gcodeUnitDivision.get();
     }
 
     private double getNormalizedY(double y) {
-        return (getHeight() - y) / TinygDriver.getInstance().machine.gcodeUnitDivision.get();
+        return (getHeight() - y) / TinygDriver.getInstance().getMachine().gcodeUnitDivision.get();
     }
 
     public String getNormalizedYasString(double y) {
@@ -252,11 +248,9 @@ public class CNCMachine extends Pane {
 //            gcodeWindow.setScaleY(scale);
 //        }
 //        Main.print(gcodePane.getHeight() - TinygDriver.getInstance().m.getAxisByName("y").getWork_position().get());
-        double newX = TinygDriver.getInstance()
-                .machine.getAxisByName("x")
+        double newX = TinygDriver.getInstance().getMachine().getAxisByName("x")
                 .getMachinePositionSimple().get();  // + magnification;
-        double newY = this.getHeight() - TinygDriver.getInstance()
-                .machine.getAxisByName("y")
+        double newY = this.getHeight() - TinygDriver.getInstance().getMachine().getAxisByName("y")
                 .getMachinePositionSimple().get();  //(gcodePane.getHeight() - (Double.valueOf(TinygDriver.getInstance().m.getAxisByName("y").getWork_position().get())));// + magnification;
        
         if (Draw2d.isFirstDraw()) {
@@ -271,7 +265,7 @@ public class CNCMachine extends Pane {
         xPrevious = newX;
         yPrevious = newY; //TODO Pull these out to CNC machine or Draw2d these are out of place
 
-        if (TinygDriver.getInstance().machine.getMotionMode().get().equals("traverse")) {
+        if (TinygDriver.getInstance().getMachine().getMotionMode().get().equals("traverse")) {
             //G0 Moves
             l.getStrokeDashArray().addAll(1d, 5d);
             l.setStroke(Draw2d.TRAVERSE);

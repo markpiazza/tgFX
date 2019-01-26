@@ -15,24 +15,23 @@ import org.apache.logging.log4j.Logger;
 public class GcodeLine {
     private static final Logger logger = LogManager.getLogger();
 
-    private SimpleStringProperty codeLine;// = new SimpleStringProperty();// = new SimpleStringProperty("<gcodeLine>");
+    private SimpleStringProperty codeLine;
     private int gcodeLineNumber;
     
-    GcodeLine(String gc, int gcl_number){
-        this.codeLine = new SimpleStringProperty(gc);
-        this.gcodeLineNumber = gcl_number;
+    GcodeLine(String codeLine, int codeLineNum){
+        this.codeLine = new SimpleStringProperty(codeLine);
+        this.gcodeLineNumber = codeLineNum;
     }
     
     public int getGcodeLineNumber(){
         return this.gcodeLineNumber;
     }
     
-    String getCodeLine(){
+    public String getCodeLine(){
         return codeLine.get();
     } 
     
-    String getGcodeLineJsonified(){
+    public String getGcodeLineJsonified(){
         return("{\"gc\":\""+codeLine.get()+"\"}\n");
     }
-
 }
