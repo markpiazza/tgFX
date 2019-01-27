@@ -33,40 +33,42 @@ public final class Machine {
     private static final Logger logger = LogManager.getLogger();
     private static Machine machineInstance;
 
-    //TG Specific
-    //Machine EEPROM Values
-    //binding
+    public HardwarePlatform hardwarePlatform = new HardwarePlatform();
+
+    //TG Specific Machine EEPROM Values binding
     private SimpleDoubleProperty longestTravelAxisValue = new SimpleDoubleProperty();
     private SimpleIntegerProperty xjoggingIncrement = new SimpleIntegerProperty();
     private SimpleIntegerProperty yjoggingIncrement = new SimpleIntegerProperty();
     private SimpleIntegerProperty zjoggingIncrement = new SimpleIntegerProperty();
     private SimpleIntegerProperty ajoggingIncrement = new SimpleIntegerProperty();
 
-    private SimpleStringProperty machineState = new SimpleStringProperty();
-    private SimpleStringProperty motionMode = new SimpleStringProperty();
-
     private StringProperty hardwareId = new SimpleStringProperty("na");
     private StringProperty hardwareVersion = new SimpleStringProperty("na");
-    public HardwarePlatform hardwarePlatform = new HardwarePlatform();
     public StringProperty firmwareVersion = new SimpleStringProperty();
     public SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty();
+
+    private SimpleStringProperty machineState = new SimpleStringProperty();
+    private SimpleStringProperty motionMode = new SimpleStringProperty();
 
     public SimpleDoubleProperty velocity = new SimpleDoubleProperty();
     private StringProperty gcodeUnitMode = new SimpleStringProperty("mm");
     public SimpleDoubleProperty gcodeUnitDivision = new SimpleDoubleProperty(1);
 //    private SimpleStringProperty gcodeDistanceMode = new SimpleStringProperty();
+
     private int switchType = 0; //0=normally closed 1 = normally open
     private int statusReportInterval;
+
 //    public GcodeUnitMode gcode_startup_units;
     private GcodeSelectPlane gcodeSelectPlane;
     private GcodeCoordinateSystem gcodeCoordinateSystem;
     private GcodePathControl gcodePathControl;
     private GcodeDistanceMode gcodeDistanceMode = GcodeDistanceMode.ABSOLUTE;
-    private boolean enableAcceleration;
+
     private float junctionAcceleration;
     private float minLineSegment;
     private float minArcSegment;
     private double minSegmentTime;
+    private boolean enableAcceleration;
     private boolean enableCrOnTx;
     private boolean enableEcho;
     private boolean enableXonXoff;
@@ -79,8 +81,8 @@ public final class Machine {
     private GcodeCoordinateManager coordinateManager = new GcodeCoordinateManager();
     private SimpleStringProperty coordinateSystem = new SimpleStringProperty();
     private SimpleIntegerProperty lineNumber = new SimpleIntegerProperty(0);
-    private String lastMessage = "";
 
+    private String lastMessage = "";
     private String machineName;
 
     public Machine() {
@@ -389,7 +391,11 @@ public final class Machine {
 
     /* FIRMWARE BUILD */
 
-    public double getFirmwareBuild() {
+    public SimpleDoubleProperty getFirmwareBuild(){
+        return firmwareBuild;
+    }
+
+    public double getFirmwareBuildVersion(){
         return firmwareBuild.getValue();
     }
 

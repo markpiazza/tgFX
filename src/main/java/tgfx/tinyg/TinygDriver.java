@@ -158,26 +158,26 @@ public class TinygDriver extends Observable {
     }
 
     public void notifyBuildChanged() throws JSONException {
-        if(machine.hardwarePlatform.getMinimalBuildVersion() < this.machine.getFirmwareBuild()){
+        if(machine.hardwarePlatform.getMinimalBuildVersion() < this.machine.getFirmwareBuildVersion()){
             // This checks to see if the current build version on
             // TinyG is greater than what tgFX's hardware profile needs.
         }
 
-        if (machine.getFirmwareBuild() < TinygDriver.getInstance().machine
+        if (machine.getFirmwareBuildVersion() < machine
                 .hardwarePlatform.getMinimalBuildVersion() &&
-                this.machine.getFirmwareBuild() != 0.0) {
+                this.machine.getFirmwareBuildVersion() != 0.0) {
             // too old of a build  we need to tell the GUI about this...
             // This is where PUB/SUB will fix this
             // bad way of alerting the gui about model changes.
             message[0] = "BUILD_ERROR";
-            message[1] = Double.toString(machine.getFirmwareBuild());
+            message[1] = Double.toString(machine.getFirmwareBuildVersion());
             setChanged();
             notifyObservers(message);
-            logger.debug("Build Version: " + machine.getFirmwareBuild() + " is NOT OK");
-        } else if(machine.getFirmwareBuild() == 0.0){
+            logger.debug("Build Version: " + machine.getFirmwareBuildVersion() + " is NOT OK");
+        } else if(machine.getFirmwareBuildVersion() == 0.0){
             // FIXME: remove no op
         } else {
-            logger.debug("Build Version: " + machine.getFirmwareBuild() + " is OK");
+            logger.debug("Build Version: " + machine.getFirmwareBuildVersion() + " is OK");
             message[0] = "BUILD_OK";
             message[1] = null;
             setChanged();

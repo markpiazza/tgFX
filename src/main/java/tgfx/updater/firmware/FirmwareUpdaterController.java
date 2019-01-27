@@ -202,7 +202,7 @@ public class FirmwareUpdaterController implements Initializable {
                 String _currentVersionString = new String(buffer);
                 latestFirmwareBuild.setText(_currentVersionString);
                 Double currentVal;
-                if (TinygDriver.getInstance().getMachine().getFirmwareBuild() <
+                if (TinygDriver.getInstance().getMachine().getFirmwareBuildVersion() <
                         Double.parseDouble(_currentVersionString)) {
                     //We need to update your firmware
                     Platform.runLater(() -> {
@@ -255,8 +255,6 @@ public class FirmwareUpdaterController implements Initializable {
                             "'s firmware is up to date...\n");
                 }
 
-            } catch (MalformedURLException ex) {
-                logger.error(ex);
             } catch (IOException ex) {
                 logger.error(ex);
             }

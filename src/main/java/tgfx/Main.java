@@ -679,8 +679,8 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
          */
         Machine machine = TinygDriver.getInstance().getMachine();
         srMomo.textProperty().bind(machine.getMotionMode());
-        srVer.textProperty().bind(machine.firmwareVersion);
-        srBuild.textProperty().bindBidirectional(machine.firmwareBuild, sc);
+        srVer.textProperty().bind(machine.getFirmwareVersion());
+        srBuild.textProperty().bindBidirectional(machine.getFirmwareBuild(), sc);
         srState.textProperty().bind(machine.getMachineState());
         srCoord.textProperty().bind(machine.getCoordinateSystem());
         srUnits.textProperty().bind(machine.getGcodeUnitMode());
