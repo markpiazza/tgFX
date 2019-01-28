@@ -78,7 +78,6 @@ public final class Axis {
         this.currentAxisJsonObject = currentAxisJsonObject;
     }
 
-
 //    public Axis() {
 //        axisMode = AxisMode.STANDARD;
 ////        latchVelocity = 0;
@@ -88,17 +87,59 @@ public final class Axis {
 ////        jerk_maximum = 0;
 //
 //    }
-    public void setHomed(boolean choice) {
-        homed.set(choice);
+
+
+    public Axis(AxisName axisName, AxisType axisType, AxisMode axisMode) {
+        this.axisMode = axisMode;
+        if (axisName == AxisName.X) {
+            this.setAxisName("X");
+            this.setAxisType(axisType);
+
+        } else if (axisName == AxisName.Y) {
+            this.setAxisName("Y");
+            this.setAxisType(axisType);
+
+        } else if (axisName == AxisName.Z) {
+            this.setAxisName("Z");
+            this.setAxisType(axisType);
+
+        } else if (axisName == AxisName.A) {
+            this.setAxisName("A");
+            this.setAxisType(axisType);
+
+        } else if (axisName == AxisName.B) {
+            this.setAxisName("B");
+            this.setAxisType(axisType);
+
+        } else if (axisName == AxisName.C) {
+            this.setAxisName("C");
+            this.setAxisType(axisType);
+        } else {
+            logger.info("[!]Invalid Axis Name Specified.\n");
+        }
+
+        homed = new SimpleBooleanProperty(false);
+        workPosition = new SimpleDoubleProperty();
+        machinePosition = new SimpleDoubleProperty();
+        travelMaximum = new SimpleDoubleProperty();
+        offset = new SimpleDoubleProperty();
+        decimalFormat = new DecimalFormat("#.000");
+        decimalFormatJunctionDeviation = new DecimalFormat("0.000000");
+        decimalFormatMaximumJerk = new DecimalFormat("################################.############################");
     }
 
+
+    // FIXME: All of the logging in here can be moved to their respective functions
     public void setAxisCommand(String cmd, String value) {
-        //This is a blind commmand mode...  meaning that
-        //if 2 strings (key, val) are passed to the axis class
-        //Then we parse the command and set the value.
+        // https://github.com/synthetos/TinyG/wiki/TinyG-Command-Line
+
+        // This is a blind commmand mode...  meaning that
+        // if 2 strings (key, val) are passed to the axis class
+        // Then we parse the command and set the value.
         switch (cmd) {
-            case "am": {
+            case "am": { // access mode
                 int val = Double.valueOf(value).intValue();
+                // FIXME: this switch statement is unnecessary and is only to provide logger info
                 String _axisMode;
                 switch (val) {
                     case 0:
@@ -140,45 +181,73 @@ public final class Axis {
                 }
                 this.setAxisMode(val);
                 logger.info("\t[+]Set Axis: " + this.getAxisName() + " Axis Mode to: " + _axisMode);
-                return;
+                break;
             }
-            case "vm": {
+            case "vm": { // maximum velocity
                 int val = (int) Double.parseDouble(value);
                 this.setVelocityMaximum(val);
                 logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Velocity Max to: " + this.getVelocityMaximum());
-                return;
+                break;
             }
-            case "fr": {
+            case "fr": { // maximum feed rate
                 int val = (int) Double.parseDouble(value);
-                this.setFeed_rate_maximum(val);
-                logger.info("\t[+]Set Axis: " + this.getFeedRateMaximum() +
+                this.setFeedRateMaximum(val);
+                logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Feed Rate Max to: " + this.getFeedRateMaximum());
-                return;
+                break;
             }
-            case "tm": {
+            case "tm": { // travel maximum
                 int val = (int) Double.parseDouble(value);
                 this.setTravelMaximum(val);
                 logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Travel Max to: " + this.getTravelMaximum());
-                return;
+                break;
             }
-            case "jm": {
+            case "jm": { // jerk maximum
                 int val = (int) Double.parseDouble(value);
                 this.setJerkMaximum(val);
-                logger.info("\t[+]Set Axis: " + this.getJerkMaximum() +
+                logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Jerk Max to: " + this.getJerkMaximum());
-                return;
+                break;
             }
-            case "jd": {
+            case "jh": { // jerk homing
+                int val = (int) Double.parseDouble(value);
+                this.setJerkHomingMaximum(val);
+                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                        " Jerk Homing to: " + this.getJerkHomingMaximum());
+                break;
+            }
+            case "jd": { // junction deviation
                 int val = (int) Double.parseDouble(value);
                 this.setJunctionDeviation(val);
-                logger.info("\t[+]Set Axis: " + this.getJunctionDeviation() +
+                logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Junction Deviation Max to: " + this.getJunctionDeviation());
-                return;
+                break;
             }
-            case "sx": {
+            case "sn": { // switch min
                 int val = Double.valueOf(value).intValue();
+                // FIXME: this switch statement is unnecessary and is only to provide logger info
+                String _switchMode = "UNKNOWN";
+                switch (val) {
+                    case 0:
+                        _switchMode = "DISABLED";
+                        break;
+                    case 1:
+                        _switchMode = "HOMING ONLY";
+                        break;
+                    case 2:
+                        _switchMode = "HOMING AND LIMIT";
+                        break;
+                }
+                this.setMinSwitchMode(val);
+                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                        " Axis Mode to: " + _switchMode);
+                break;
+            }
+            case "sx": { // switch max
+                int val = Double.valueOf(value).intValue();
+                // FIXME: this switch statement is unnecessary and is only to provide logger info
                 String _switchMode = "UNKNOWN";
                 switch (val) {
                     case 0:
@@ -194,61 +263,42 @@ public final class Axis {
                 this.setMaxSwitchMode(val);
                 logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Axis Mode to: " + _switchMode);
-                return;
+                break;
             }
-            case "sn": {
-                int val = Double.valueOf(value).intValue();
-                String _switchMode = "UNKNOWN";
-                switch (val) {
-                    case 0:
-                        _switchMode = "DISABLED";
-                        break;
-                    case 1:
-                        _switchMode = "HOMING ONLY";
-                        break;
-                    case 2:
-                        _switchMode = "HOMING AND LIMIT";
-                        break;
-                }
-                this.setMaxSwitchMode(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
-                        " Axis Mode to: " + _switchMode);
-                return;
-            }
-            case "sv": {
+            case "sv": { // search velocity
                 int val = (int) Double.parseDouble(value);
                 this.setSearchVelocity(val);
                 logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Search Velocity to: " + this.getSearchVelocity());
-                return;
+                break;
             }
-            case "lv": {
+            case "lv": { // latch velocity
                 int val = (int) Double.parseDouble(value);
                 this.setLatchVelocity(val);
                 logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Latch Velocity to: " + this.getLatchVelocity());
-                return;
+                break;
             }
-            case "lb": {
+            case "lb": { // latch backoff
                 int val = (int) Double.parseDouble(value);
                 this.setLatchBackoff(val);
                 logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Latch Back Off to: " + this.getLatchBackoff());
-                return;
+                break;
             }
-            case "zb": {
+            case "zb": { // zero backoff
                 int val = (int) Double.parseDouble(value);
                 this.setZeroBackoff(val);
                 logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Zero Back Off to: " + this.getZeroBackoff());
-                return;
+                break;
             }
             case "ra": {
                 int val = (int) Double.parseDouble(value);
                 this.setRadius(val);
                 logger.info("\t[+]Set Axis: " + this.getAxisName() +
                         " Radius to: " + this.getRadius());
-                return;
+                break;
             }
             default: {
                 logger.info("[!]Error... No such setting: " + value + " in Axis Settings...");
@@ -256,57 +306,14 @@ public final class Axis {
         }
     }
 
-    public double getLatchBackoff() {
-        return formatDoubleValue(latchBackoff);
+    public String getAxisName() {
+        return axisName;
     }
 
-    public double getRadius() {
-        return formatDoubleValue(radius);
+    private void setAxisName(String axisName) {
+        this.axisName = axisName;
     }
 
-//    public void setRadius(int radius) {
-//        this.radius = radius;
-//    }
-
-    private void setLatchBackoff(float latchBackoff) {
-        this.latchBackoff = latchBackoff;
-    }
-
-    public float getLatchVelocity() {
-        return formatFloatValue(latchVelocity);
-    }
-
-//    public float getSeekRateMaximum() {
-//        return seekRateMaximum;
-//    }
-
-//    public void setSeekRateMaximum(float seekRateMaximum) {
-//        this.seekRateMaximum = seekRateMaximum;
-//    }
-
-    public double getSearchVelocity() {
-        return formatDoubleValue(searchVelocity);
-    }
-
-    private void setSearchVelocity(double searchVelocity) {
-        this.searchVelocity = searchVelocity;
-    }
-
-    private void setLatchVelocity(float latchVelocity) {
-        this.latchVelocity = latchVelocity;
-    }
-
-    public double getZeroBackoff() {
-        return formatDoubleValue(zeroBackoff);
-    }
-
-    private void setZeroBackoff(float zeroBackoff) {
-        this.zeroBackoff = zeroBackoff;
-    }
-
-    private void setRadius(double radius) {
-        this.radius = radius;
-    }
 
     private void setAxisType(AxisType axisType) {
         this.axisType = axisType;
@@ -316,84 +323,9 @@ public final class Axis {
         return this.axisType;
     }
 
-    public Axis(AxisName axisName, AxisType axisType, AxisMode axisMode) {
-        this.axisMode = axisMode;
-        if (axisName == AxisName.X) {
-            this.setAxisName("X");
-            this.setAxisType(axisType);
-
-        } else if (axisName == AxisName.Y) {
-            this.setAxisName("Y");
-            this.setAxisType(axisType);
-
-        } else if (axisName == AxisName.Z) {
-            this.setAxisName("Z");
-            this.setAxisType(axisType);
-
-        } else if (axisName == AxisName.A) {
-            this.setAxisName("A");
-            this.setAxisType(axisType);
-
-        } else if (axisName == AxisName.B) {
-            this.setAxisName("B");
-            this.setAxisType(axisType);
-
-        } else if (axisName == AxisName.C) {
-            this.setAxisName("C");
-            this.setAxisType(axisType);
-        } else {
-            logger.info("[!]Invalid Axis Name Specified.\n");
-        }
-
-        homed = new SimpleBooleanProperty(false);
-        workPosition = new SimpleDoubleProperty();
-        machinePosition = new SimpleDoubleProperty();
-        travelMaximum = new SimpleDoubleProperty();
-        offset = new SimpleDoubleProperty();
-        decimalFormat = new DecimalFormat("#.000");
-        decimalFormatJunctionDeviation = new DecimalFormat("0.000000");
-        decimalFormatMaximumJerk = new DecimalFormat("################################.############################");
-    }
-
     public AxisMode getAxisMode() {
         return axisMode;
     }
-
-//    public boolean setMotorCommand(String cmd, String value) {
-//        //Generic command parser when a single axis command has been given.
-//        //IE: $xsr=1200
-//        //cmd would be sr and value would be 1200
-//        switch (cmd) {
-//            case MnemonicManager.MNEMONIC_AXIS_AXIS_MODE: {
-//                int val = (int) Double.parseDouble(value);
-//                return (this.setAxisMode(val));
-//            }
-//            case MnemonicManager.MNEMONIC_AXIS_VELOCITY_MAXIMUM:
-//                return (this.setVelocityMaximum(Float.valueOf(value)));
-//            case MnemonicManager.MNEMONIC_AXIS_FEEDRATE_MAXIMUM:
-//                return (this.setFeed_rate_maximum(Float.valueOf(value)));
-//            case MnemonicManager.MNEMONIC_AXIS_TRAVEL_MAXIMUM:
-//                return (this.setTravelMaximum(Float.valueOf(value)));
-//            case MnemonicManager.MNEMONIC_AXIS_JERK_MAXIMUM:
-//                return (this.setJerkMaximum(Double.valueOf(value)));
-//            case MnemonicManager.MNEMONIC_AXIS_JUNCTION_DEVIATION:
-//                return (this.setJunctionDeviation(Float.valueOf(value)));
-//            case "sn": {
-//                int val = (int) Double.parseDouble(value);
-//                return (this.setMaxSwitchMode(val));
-//            }
-//            case MnemonicManager.MNEMONIC_AXIS_SEARCH_VELOCITY:
-//                return (this.setSearchVelocity(Double.parseDouble(value)));
-//            case MnemonicManager.MNEMONIC_AXIS_LATCH_VELOCITY:
-//                return (this.setLatchVelocity(Float.parseFloat(value)));
-//            case MnemonicManager.MNEMONIC_AXIS_LATCH_BACKOFF:
-//                return (this.setLatchBackoff(Float.parseFloat(value)));
-//            case MnemonicManager.MNEMONIC_AXIS_ZERO_BACKOFF:
-//                return (this.setZeroBackoff(Float.parseFloat(value)));
-//            default:
-//                return false;
-//        }
-//    }
 
     private void setAxisMode(int axMode) {
         switch (axMode) {
@@ -432,27 +364,58 @@ public final class Axis {
                 return;
             default:
         }
-//        if (axMode == 0) {
-//            this.axisMode =AxisMode.DISABLE;
-//        }else if( axMode == 1){
-//            this.axisMode = AxisMode.
-//        }
     }
 
-    public String getAxisName() {
-        return axisName;
+    public double getVelocityMaximum() {
+        return formatDoubleValue(velocityMaximum);
     }
 
-    private void setAxisName(String axisName) {
-        this.axisName = axisName;
+    private void setVelocityMaximum(double velocityMaximum) {
+        this.velocityMaximum = velocityMaximum;
     }
 
     public double getFeedRateMaximum() {
         return formatDoubleValue(feedRateMaximum);
     }
 
-    private void setFeed_rate_maximum(float feedRateMaximum) {
+    private void setFeedRateMaximum(float feedRateMaximum) {
         this.feedRateMaximum = feedRateMaximum;
+    }
+
+    public SimpleDoubleProperty getTravelMaxSimple() {
+        return travelMaximum;
+    }
+
+    public double getTravelMaximum() {
+        return formatDoubleValue(travelMaximum.getValue());
+    }
+
+    private void setTravelMaximum(float travelMaximum) {
+        //Stub to always track the largest travel axis
+        List allAxis = TinygDriver.getInstance().getMachine().getAllLinearAxis();
+        Iterator iterator = allAxis.iterator();
+        double maxTravel = 0;
+        Axis axis;
+
+        while (iterator.hasNext()) {
+            axis = (Axis) iterator.next();
+            if (axis.getTravelMaximum() > maxTravel) {
+                //This is the largest travel max so far.. lets set it.
+                maxTravel = axis.getTravelMaximum();
+            }
+            // We set this binding now to the largest value
+            TinygDriver.getInstance().getMachine().setLongestTravelAxisValue(maxTravel);
+        }
+        this.travelMaximum.set(travelMaximum);
+    }
+
+
+    public double getJerkMaximum() {
+        return jerkMaximum;
+    }
+
+    private void setJerkMaximum(double jerkMaximum) {
+        this.jerkMaximum = jerkMaximum;
     }
 
     public double getJerkHomingMaximum() {
@@ -463,20 +426,166 @@ public final class Axis {
         this.jerkHomingMaximum = jerkHomingMaximum;
     }
 
-    public double getJerkMaximum() {
-        return jerkMaximum;
-    }
-
-    private void setJerkMaximum(double jerkMaximum) {
-        this.jerkMaximum = jerkMaximum;
-    }
-
     public double getJunctionDeviation() {
         return formatJunctionDeviation(junctionDeviation);
     }
 
     private void setJunctionDeviation(float junctionDevation) {
         this.junctionDeviation = junctionDevation;
+    }
+
+    public SwitchMode getMaxSwitchMode() {
+        return maxSwitchMode;
+    }
+
+    private void setMaxSwitchMode(int maxSwitchMode) {
+        switch (maxSwitchMode) {
+            case 0:
+                this.maxSwitchMode = SwitchMode.DISABLED;
+                return;
+            case 1:
+                this.maxSwitchMode = SwitchMode.HOMING_ONLY;
+                return;
+            case 2:
+                this.maxSwitchMode = SwitchMode.LIMIT_ONLY;
+                return;
+            case 3:
+                this.maxSwitchMode = SwitchMode.HOMING_AND_LIMIT;
+                return;
+            default:
+        }
+    }
+
+    public SwitchMode getMinSwitchMode() {
+        return minSwitchMode;
+    }
+
+    private void setMinSwitchMode(int minSwitchMode) {
+        switch (minSwitchMode) {
+            case 0:
+                this.minSwitchMode = SwitchMode.DISABLED;
+                return;
+            case 1:
+                this.minSwitchMode = SwitchMode.HOMING_ONLY;
+                return;
+            case 2:
+                this.minSwitchMode = SwitchMode.LIMIT_ONLY;
+                return;
+            case 3:
+                this.minSwitchMode = SwitchMode.HOMING_AND_LIMIT;
+                return;
+            default:
+        }
+    }
+
+    public double getSearchVelocity() {
+        return formatDoubleValue(searchVelocity);
+    }
+
+    private void setSearchVelocity(double searchVelocity) {
+        this.searchVelocity = searchVelocity;
+    }
+
+    private void setLatchVelocity(float latchVelocity) {
+        this.latchVelocity = latchVelocity;
+    }
+
+    public float getLatchVelocity() {
+        return formatFloatValue(latchVelocity);
+    }
+
+    public double getLatchBackoff() {
+        return formatDoubleValue(latchBackoff);
+    }
+
+    private void setLatchBackoff(float latchBackoff) {
+        this.latchBackoff = latchBackoff;
+    }
+
+    public double getZeroBackoff() {
+        return formatDoubleValue(zeroBackoff);
+    }
+
+    private void setZeroBackoff(float zeroBackoff) {
+        this.zeroBackoff = zeroBackoff;
+    }
+
+    public double getRadius() {
+        return formatDoubleValue(radius);
+    }
+
+    private void setRadius(double radius) {
+        this.radius = radius;
+    }
+
+
+//    public float getSeekRateMaximum() {
+//        return seekRateMaximum;
+//    }
+
+//    public void setSeekRateMaximum(float seekRateMaximum) {
+//        this.seekRateMaximum = seekRateMaximum;
+//    }
+
+//    public void setHomed(boolean choice) {
+//        homed.set(choice);
+//    }
+
+
+
+
+
+//    public boolean setMotorCommand(String cmd, String value) {
+//        //Generic command parser when a single axis command has been given.
+//        //IE: $xsr=1200
+//        //cmd would be sr and value would be 1200
+//        switch (cmd) {
+//            case MnemonicManager.MNEMONIC_AXIS_AXIS_MODE: {
+//                int val = (int) Double.parseDouble(value);
+//                return (this.setAxisMode(val));
+//            }
+//            case MnemonicManager.MNEMONIC_AXIS_VELOCITY_MAXIMUM:
+//                return (this.setVelocityMaximum(Float.valueOf(value)));
+//            case MnemonicManager.MNEMONIC_AXIS_FEEDRATE_MAXIMUM:
+//                return (this.setFeedRateMaximum(Float.valueOf(value)));
+//            case MnemonicManager.MNEMONIC_AXIS_TRAVEL_MAXIMUM:
+//                return (this.setTravelMaximum(Float.valueOf(value)));
+//            case MnemonicManager.MNEMONIC_AXIS_JERK_MAXIMUM:
+//                return (this.setJerkMaximum(Double.valueOf(value)));
+//            case MnemonicManager.MNEMONIC_AXIS_JUNCTION_DEVIATION:
+//                return (this.setJunctionDeviation(Float.valueOf(value)));
+//            case "sn": {
+//                int val = (int) Double.parseDouble(value);
+//                return (this.setMaxSwitchMode(val));
+//            }
+//            case MnemonicManager.MNEMONIC_AXIS_SEARCH_VELOCITY:
+//                return (this.setSearchVelocity(Double.parseDouble(value)));
+//            case MnemonicManager.MNEMONIC_AXIS_LATCH_VELOCITY:
+//                return (this.setLatchVelocity(Float.parseFloat(value)));
+//            case MnemonicManager.MNEMONIC_AXIS_LATCH_BACKOFF:
+//                return (this.setLatchBackoff(Float.parseFloat(value)));
+//            case MnemonicManager.MNEMONIC_AXIS_ZERO_BACKOFF:
+//                return (this.setZeroBackoff(Float.parseFloat(value)));
+//            default:
+//                return false;
+//        }
+//    }
+
+
+    public SimpleDoubleProperty getWorkPosition() {
+        return workPosition;
+    }
+
+    public void setWorkPosition(double workPosition) {
+        this.workPosition.set(workPosition);
+    }
+
+    public SimpleDoubleProperty getMachinePositionSimple() {
+        return machinePosition;
+    }
+
+    void setMachinePosition(double machinePosition) {
+        this.machinePosition.set(machinePosition);
     }
 
     public double getMachinePosition() {
@@ -512,53 +621,8 @@ public final class Axis {
         this.motors = motors;
     }
 
-    public SwitchMode getMaxSwitchMode() {
-        return maxSwitchMode;
-    }
 
-    public SwitchMode getMinSwitchMode() {
-        return minSwitchMode;
-    }
 
-    private void setMaxSwitchMode(int maxSwitchMode) {
-        switch (maxSwitchMode) {
-            case 0:
-                this.maxSwitchMode = SwitchMode.DISABLED;
-                return;
-            case 1:
-                this.maxSwitchMode = SwitchMode.HOMING_ONLY;
-                return;
-            case 2:
-                this.maxSwitchMode = SwitchMode.LIMIT_ONLY;
-                return;
-            case 3:
-                this.maxSwitchMode = SwitchMode.HOMING_AND_LIMIT;
-                return;
-            default:
-        }
-    }
-
-    private void setMinSwitchMode(int minSwitchMode) {
-        switch (minSwitchMode) {
-            case 0:
-                this.minSwitchMode = SwitchMode.DISABLED;
-                return;
-            case 1:
-                this.minSwitchMode = SwitchMode.HOMING_ONLY;
-                return;
-            case 2:
-                this.minSwitchMode = SwitchMode.LIMIT_ONLY;
-                return;
-            case 3:
-                this.minSwitchMode = SwitchMode.HOMING_AND_LIMIT;
-                return;
-            default:
-        }
-    }
-
-    public SimpleDoubleProperty getTravelMaxSimple() {
-        return travelMaximum;
-    }
 
     private double formatDoubleValue(double val) {
         //Utility Method to cleanly trim doubles for display in the UI
@@ -580,52 +644,8 @@ public final class Axis {
         return Float.parseFloat(decimalFormat.format(val));
     }
 
-    public double getTravelMaximum() {
-        return formatDoubleValue(travelMaximum.getValue());
-    }
 
-    private void setTravelMaximum(float travelMaximum) {
-        //Stub to always track the largest travel axis
-        List allAxis = TinygDriver.getInstance().getMachine().getAllLinearAxis();
-        Iterator iterator = allAxis.iterator();
-        double maxTravel = 0;
-        Axis axis;
 
-        while (iterator.hasNext()) {
-            axis = (Axis) iterator.next();
-            if (axis.getTravelMaximum() > maxTravel) {
-                //This is the largest travel max so far.. lets set it.
-                maxTravel = axis.getTravelMaximum();
-            }
-            // We set this binding now to the largest value
-            TinygDriver.getInstance().getMachine().setLongestTravelAxisValue(maxTravel);
-        }
-        this.travelMaximum.set(travelMaximum);
-    }
-
-    public double getVelocityMaximum() {
-        return formatDoubleValue(velocityMaximum);
-    }
-
-    private void setVelocityMaximum(double velocityMaximum) {
-        this.velocityMaximum = velocityMaximum;
-    }
-
-    public SimpleDoubleProperty getWorkPosition() {
-        return workPosition;
-    }
-
-    public void setWorkPosition(double workPosition) {
-        this.workPosition.set(workPosition);
-    }
-
-    void setMachinePosition(double machinePosition) {
-        this.machinePosition.set(machinePosition);
-    }
-
-    public SimpleDoubleProperty getMachinePositionSimple() {
-        return machinePosition;
-    }
 
     public void applyJsonSystemSetting(ResponseCommand rc) {
         _applyJsonSystemSetting(rc);
@@ -662,7 +682,7 @@ public final class Axis {
 
             case (MnemonicManager.MNEMONIC_AXIS_FEEDRATE_MAXIMUM):
                 machine.getAxisByName(rc.getSettingParent())
-                        .setFeed_rate_maximum(Float.valueOf(rc.getSettingValue()));
+                        .setFeedRateMaximum(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " "
                         + rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
