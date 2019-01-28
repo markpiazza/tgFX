@@ -59,7 +59,7 @@ public class Motor {
         return isPower_management() ? 1 : 0;
     }
 
-    public int getId_number() {
+    public int getIdNumber() {
         return id_number;
     }
 
@@ -141,51 +141,49 @@ public class Motor {
         Machine machine = TinygDriver.getInstance().getMachine();
 
         logger.info("Applying JSON Object to " + parent + " Group");
-        Iterator ii = js.keySet().iterator();
-        while (ii.hasNext()) {
-            String _key = ii.next().toString();
+        for (Object o : js.keySet()) {
+            String _key = o.toString();
             String _val = js.get(_key).toString();
             ResponseCommand rc = new ResponseCommand(parent, _key, _val);
+            Motor motor = machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()));
+            if(motor==null){
+                logger.error("Invalid Motor number");
+                continue;
+            }
 
             switch (_key) {
                 case (MnemonicManager.MNEMONIC_MOTOR_MAP_AXIS):
-                    machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()))
-                            .setMapToAxis(Integer.valueOf(rc.getSettingValue()));
+                    motor.setMapToAxis(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
                 case (MnemonicManager.MNEMONIC_MOTOR_MICROSTEPS):
-                    machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()))
-                            .setMicrosteps(Integer.valueOf(rc.getSettingValue()));
+                    motor.setMicrosteps(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
                 case (MnemonicManager.MNEMONIC_MOTOR_POLARITY):
-                    machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()))
-                            .setPolarity(Integer.valueOf(rc.getSettingValue()));
+                    motor.setPolarity(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
                 case (MnemonicManager.MNEMONIC_MOTOR_POWER_MANAGEMENT):
-                    machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()))
-                            .setPowerManagement(Integer.valueOf(rc.getSettingValue()));
+                    motor.setPowerManagement(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
                 case (MnemonicManager.MNEMONIC_MOTOR_STEP_ANGLE):
-                    machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()))
-                            .setStepAngle(Float.valueOf(rc.getSettingValue()));
+                    motor.setStepAngle(Float.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
                 case (MnemonicManager.MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION):
-                    machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()))
-                            .setTravelPerRevolution(Float.valueOf(rc.getSettingValue()));
+                    motor.setTravelPerRevolution(Float.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;

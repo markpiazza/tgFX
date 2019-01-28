@@ -118,7 +118,7 @@ public class TinyGConfigController implements Initializable {
                 if (MOTOR_ARGUMENT == null) {
                     //Update ALL motor's gui settings
                     for (Motor m : TinygDriver.getInstance().getMachine().getMotors()) {
-                        _updateGuiMotorSettings(String.valueOf(m.getId_number()));
+                        _updateGuiMotorSettings(String.valueOf(m.getIdNumber()));
                     }
                 } else {
                     //Update only ONE motor's gui settings
@@ -128,64 +128,47 @@ public class TinyGConfigController implements Initializable {
         });
     }
     
-    private static void _updateGuiMotorSettings(String motor) {
+    private static void _updateGuiMotorSettings(String motorNumber) {
         Machine machine = TinygDriver.getInstance().getMachine();
-        switch (machine.getMotorByNumber(Integer.valueOf(motor)).getId_number()) {
+        Motor motor = machine.getMotorByNumber(Integer.valueOf(motorNumber));
+
+        if (motor == null) {
+            logger.error("Invalid Motor number");
+            return;
+        }
+
+        switch (motor.getIdNumber()) {
             case 1:
-                motor1ConfigMapAxis.getSelectionModel().select(
-                        machine.getMotorByNumber(1).getMapToAxis());
-                motor1ConfigMicroSteps.getSelectionModel().select(
-                        machine.getMotorByNumber(1).getMicrosteps());
-                motor1ConfigPolarity.getSelectionModel().select(
-                        machine.getMotorByNumber(1).isPolarityInt());
-                motor1ConfigPowerMode.getSelectionModel().select(
-                        machine.getMotorByNumber(1).isPowerManagementInt());
-                motor1ConfigStepAngle.setText(String.valueOf(
-                        machine.getMotorByNumber(1).getStepAngle()));
-                motor1ConfigTravelPerRev.setText(String.valueOf(
-                        machine.getMotorByNumber(1).getTravelPerRevolution()));
+                motor1ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
+                motor1ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
+                motor1ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
+                motor1ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
+                motor1ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
+                motor1ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
                 break;
             case 2:
-                motor2ConfigMapAxis.getSelectionModel().select(
-                         machine.getMotorByNumber(2).getMapToAxis());
-                motor2ConfigMicroSteps.getSelectionModel().select(
-                        machine.getMotorByNumber(2).getMicrosteps());
-                motor2ConfigPolarity.getSelectionModel().select(
-                        machine.getMotorByNumber(2).isPolarityInt());
-                motor2ConfigPowerMode.getSelectionModel().select(
-                        machine.getMotorByNumber(2).isPowerManagementInt());
-                motor2ConfigStepAngle.setText(String.valueOf(
-                        machine.getMotorByNumber(2).getStepAngle()));
-                motor2ConfigTravelPerRev.setText(String.valueOf(
-                        machine.getMotorByNumber(2).getTravelPerRevolution()));
+                motor2ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
+                motor2ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
+                motor2ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
+                motor2ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
+                motor2ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
+                motor2ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
                 break;
             case 3:
-                motor3ConfigMapAxis.getSelectionModel().select(
-                        machine.getMotorByNumber(3).getMapToAxis());
-                motor3ConfigMicroSteps.getSelectionModel().select(
-                        machine.getMotorByNumber(3).getMicrosteps());
-                motor3ConfigPolarity.getSelectionModel().select(
-                        machine.getMotorByNumber(3).isPolarityInt());
-                motor3ConfigPowerMode.getSelectionModel().select(
-                        machine.getMotorByNumber(3).isPowerManagementInt());
-                motor3ConfigStepAngle.setText(String.valueOf(
-                        machine.getMotorByNumber(3).getStepAngle()));
-                motor3ConfigTravelPerRev.setText(String.valueOf(
-                        machine.getMotorByNumber(3).getTravelPerRevolution()));
+                motor3ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
+                motor3ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
+                motor3ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
+                motor3ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
+                motor3ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
+                motor3ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
                 break;
             case 4:
-                motor4ConfigMapAxis.getSelectionModel().select(
-                        machine.getMotorByNumber(4).getMapToAxis());
-                motor4ConfigMicroSteps.getSelectionModel().select(
-                        machine.getMotorByNumber(4).getMicrosteps());
-                motor4ConfigPolarity.getSelectionModel().select(
-                        machine.getMotorByNumber(4).isPolarityInt());
-                motor4ConfigPowerMode.getSelectionModel().select(
-                        machine.getMotorByNumber(4).isPowerManagementInt());
-                motor4ConfigStepAngle.setText(String.valueOf(
-                        machine.getMotorByNumber(4).getStepAngle()));
-                motor4ConfigTravelPerRev.setText(String.valueOf(
-                        machine.getMotorByNumber(4).getTravelPerRevolution()));
+                motor4ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
+                motor4ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
+                motor4ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
+                motor4ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
+                motor4ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
+                motor4ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
                 break;
         }
     }
@@ -342,59 +325,35 @@ public class TinyGConfigController implements Initializable {
                 //Perhaps by passing a routing message as to which motor was updated then not all have to be updated
                 //every time one is.
                 Machine machine = TinygDriver.getInstance().getMachine();
-                for (Motor m : TinygDriver.getInstance().getMachine().getMotors()) {
-                    if (m.getId_number() == 1) {
-                        motor1ConfigMapAxis.getSelectionModel().select(
-                                machine.getMotorByNumber(1).getMapToAxis());
-                        motor1ConfigMicroSteps.getSelectionModel().select(
-                                machine.getMotorByNumber(1).getMicrosteps());
-                        motor1ConfigPolarity.getSelectionModel().select(
-                                machine.getMotorByNumber(1).isPolarityInt());
-                        motor1ConfigPowerMode.getSelectionModel().select(
-                                machine.getMotorByNumber(1).isPowerManagementInt());
-                        motor1ConfigStepAngle.setText(String.valueOf(
-                                machine.getMotorByNumber(1).getStepAngle()));
-                        motor1ConfigTravelPerRev.setText(String.valueOf(
-                                machine.getMotorByNumber(1).getTravelPerRevolution()));
-                    } else if (m.getId_number() == 2) {
-                        motor2ConfigMapAxis.getSelectionModel().select(
-                                machine.getMotorByNumber(2).getMapToAxis());
-                        motor2ConfigMicroSteps.getSelectionModel().select(
-                                machine.getMotorByNumber(2).getMicrosteps());
-                        motor2ConfigPolarity.getSelectionModel().select(
-                                machine.getMotorByNumber(2).isPolarityInt());
-                        motor2ConfigPowerMode.getSelectionModel().select(
-                                machine.getMotorByNumber(2).isPowerManagementInt());
-                        motor2ConfigStepAngle.setText(String.valueOf(
-                                machine.getMotorByNumber(2).getStepAngle()));
-                        motor2ConfigTravelPerRev.setText(String.valueOf(
-                                machine.getMotorByNumber(2).getTravelPerRevolution()));
-                    } else if (m.getId_number() == 3) {
-                        motor3ConfigMapAxis.getSelectionModel().select(
-                                machine.getMotorByNumber(3).getMapToAxis());
-                        motor3ConfigMicroSteps.getSelectionModel().select(
-                                machine.getMotorByNumber(3).getMicrosteps());
-                        motor3ConfigPolarity.getSelectionModel().select(
-                                machine.getMotorByNumber(3).isPolarityInt());
-                        motor3ConfigPowerMode.getSelectionModel().select(
-                                machine.getMotorByNumber(3).isPowerManagementInt());
-                        motor3ConfigStepAngle.setText(String.valueOf(
-                                machine.getMotorByNumber(3).getStepAngle()));
-                        motor3ConfigTravelPerRev.setText(String.valueOf(
-                                machine.getMotorByNumber(3).getTravelPerRevolution()));
-                    } else if (m.getId_number() == 4) {
-                        motor4ConfigMapAxis.getSelectionModel().select(
-                                machine.getMotorByNumber(4).getMapToAxis());
-                        motor4ConfigMicroSteps.getSelectionModel().select(
-                                machine.getMotorByNumber(4).getMicrosteps());
-                        motor4ConfigPolarity.getSelectionModel().select(
-                                machine.getMotorByNumber(4).isPolarityInt());
-                        motor4ConfigPowerMode.getSelectionModel().select(
-                                machine.getMotorByNumber(4).isPowerManagementInt());
-                        motor4ConfigStepAngle.setText(String.valueOf(
-                                machine.getMotorByNumber(4).getStepAngle()));
-                        motor4ConfigTravelPerRev.setText(String.valueOf(
-                                machine.getMotorByNumber(4).getTravelPerRevolution()));
+                for (Motor motor : machine.getMotors()) {
+                    if (motor.getIdNumber() == 1) {
+                        motor1ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
+                        motor1ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
+                        motor1ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
+                        motor1ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
+                        motor1ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
+                        motor1ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
+                    } else if (motor.getIdNumber() == 2) {
+                        motor2ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
+                        motor2ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
+                        motor2ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
+                        motor2ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
+                        motor2ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
+                        motor2ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
+                    } else if (motor.getIdNumber() == 3) {
+                        motor3ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
+                        motor3ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
+                        motor3ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
+                        motor3ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
+                        motor3ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
+                        motor3ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
+                    } else if (motor.getIdNumber() == 4) {
+                        motor4ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
+                        motor4ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
+                        motor4ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
+                        motor4ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
+                        motor4ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
+                        motor4ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
                     }
                 }
             }
@@ -445,7 +404,7 @@ public class TinyGConfigController implements Initializable {
     }
     
     @FXML
-    private void handleMotorEnter(final InputEvent event) throws Exception {
+    private void handleMotorEnter(final InputEvent event) {
         //private void handleEnter(ActionEvent event) throws Exception {
         final KeyEvent keyEvent = (KeyEvent) event;
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
@@ -464,7 +423,7 @@ public class TinyGConfigController implements Initializable {
                         " is an invalid Setting Entered.. Ignoring.");
                 logger.error(ex.getMessage());
                 // This will reset the input that was bad to the current settings
-                TinygDriver.getInstance().queryHardwareSingleMotorSettings(_motor.getId_number());
+                TinygDriver.getInstance().queryHardwareSingleMotorSettings(_motor.getIdNumber());
             }
         }
     }
@@ -488,6 +447,7 @@ public class TinyGConfigController implements Initializable {
                     tgfx.Main.postConsoleMessage("[!]Invalid Setting Entered.. Ignoring.");
                     logger.error(ex.getMessage());
                     // This will reset the input that was bad to the current settings
+                    // FIXME: Possible NPE
                     TinygDriver.getInstance().queryHardwareSingleAxisSettings(_axis.getAxisName());
                 }
             }

@@ -40,7 +40,7 @@ public class StatusCode {
 // Gcode and machining errors
     private static final int TG_ZERO_LENGTH_MOVE = 60;          // move is zero length
     private static final int TG_GCODE_BLOCK_SKIPPED = 61;       // block is too short - was skipped
-    private static final int TG_GCODE_INPUT_ERROR = 62;         // general error for gcode input 
+    private static final int TG_GCODE_INPUT_ERROR = 62;         // general error for gcode input
     private static final int TG_GCODE_FEEDRATE_ERROR = 63;      // move has no feedrate
     private static final int TG_GCODE_AXIS_WORD_MISSING = 64;   // command requires at least one axis present
     private static final int TG_MODAL_GROUP_VIOLATION = 65;     // gcode modal group error
@@ -66,7 +66,7 @@ public class StatusCode {
         return statusType;
     }
 
-    public int getStatusNUmber() {
+    public int getStatusNumber() {
         return statusNUmber;
     }
 

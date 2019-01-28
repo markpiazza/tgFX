@@ -21,7 +21,7 @@ public class MnemonicManager {
     private static final ArrayList<String> AXIS_MNEMONICS = new ArrayList<>();
     private static final ArrayList<String> SYS_MNEMONICS = new ArrayList<>();
     private static final ArrayList<String> MOTOR_MNEMONICS = new ArrayList<>();
-    private static final ArrayList<String> STATUS_MNEMONICS = new ArrayList<>(); //is this needed?
+    private static final ArrayList<String> STATUS_MNEMONICS = new ArrayList<>();
 
     //Group Mnemonics
     public static final String MNEMONIC_GROUP_SYSTEM = "sys";

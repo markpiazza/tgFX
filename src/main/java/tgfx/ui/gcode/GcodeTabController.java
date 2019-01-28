@@ -734,6 +734,7 @@ public class GcodeTabController implements Initializable {
     /*
      * EVENT LISTENERS CODE
      */
+    //FIXME: possible NPEs
     private void handleMaxHeightChange() {
         Machine machine = TinygDriver.getInstance().getMachine();
         if (gcodePane.getWidth() - machine.getAxisByName("x")
@@ -775,6 +776,7 @@ public class GcodeTabController implements Initializable {
 //        .m.getGcodeUnitMode().getValue());
     }
 
+    //FIXME: possible NPEs
     private void handleMaxWithChange() {
         Machine machine = TinygDriver.getInstance().getMachine();
         //This is for the change listener to call for Max Width Change on the CNC Machine
@@ -817,6 +819,7 @@ public class GcodeTabController implements Initializable {
             // Show elapsed and remaining time
             Date currentTimeDt = new Date();  // Get current time
             long elapsed = currentTimeDt.getTime() - timeStartDt.getTime();
+            // FIXME: integer division
             float rate = elapsed / lineNum;
             long remain = (long) ((totalGcodeLines - lineNum) * rate);  // remaining lines * secs per line
 

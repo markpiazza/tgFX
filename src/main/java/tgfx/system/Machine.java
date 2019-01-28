@@ -625,7 +625,7 @@ public final class Machine {
 
     public Motor getMotorByNumber(int i) {
         for (Motor m : motors) {
-            if (m.getId_number() == i) {
+            if (m.getIdNumber() == i) {
                 return m;
             }
         }
@@ -633,7 +633,7 @@ public final class Machine {
     }
 
     public int getMotorAxis(Motor m) {
-        return m.getId_number();
+        return m.getIdNumber();
     }
 
     public void setMotorAxis(int motorNumber, int x) {

@@ -7,6 +7,7 @@ package tgfx.ui.machinesettings;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -78,6 +79,7 @@ public class MachineSettingsController implements Initializable {
             if (listOfFile.isFile()) {
                 String files = listOfFile.getName();
                 if (files.endsWith(".config") || files.endsWith(".json")) {
+                    // FIXME: unchecked assignment
                     configsListView.getItems().add(files);
                 }
             }
@@ -130,14 +132,13 @@ public class MachineSettingsController implements Initializable {
         if (j.has("name")) { //We do not want the name of the config to count as stuff to write.
             return 0;
         } else {
-            String topLevelParent = new String();
-            topLevelParent = (String) j.names().get(0);
+            String topLevelParent = (String) j.names().get(0);
             return j.getJSONObject(topLevelParent).length();
         }
     }
 
     @FXML
-    private void handleLoadConfig(ActionEvent event) throws Exception {
+    private void handleLoadConfig(ActionEvent event) throws FileNotFoundException {
         //This function gets the config file selected and applys the settings onto tinyg.
         InputStream fis, fis2;
         final BufferedReader br, br2;
@@ -161,7 +162,7 @@ public class MachineSettingsController implements Initializable {
         Task task;
         task = new Task<Void>() {
             @Override
-            public Void call() throws IOException, Exception {
+            public Void call() throws IOException, InterruptedException {
             String line;
             int maxElements = 0;
             int currentElement = 0;
@@ -189,7 +190,7 @@ public class MachineSettingsController implements Initializable {
 
                         while (it.hasNext()) {
                             String k = (String) it.next();
-                            Double value = (Double) j.getJSONObject(topLevelParent).getDouble(k);
+                            Double value = j.getJSONObject(topLevelParent).getDouble(k);
                             System.out.println("This is the value " + k + " " + decimalFormat.format(value));
                             Main.postConsoleMessage("Applied: " + k + ":" + decimalFormat.format(value));
                             //value = Double.valueOf(decimalFormatjunctionDeviation.format(value));

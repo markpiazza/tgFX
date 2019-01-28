@@ -327,6 +327,7 @@ public final class Axis {
         return axisMode;
     }
 
+    //TODO: this could use the enum's 'functions'
     private void setAxisMode(int axMode) {
         switch (axMode) {
             case 0:
@@ -438,6 +439,7 @@ public final class Axis {
         return maxSwitchMode;
     }
 
+    //TODO: this could use the enum's 'functions'
     private void setMaxSwitchMode(int maxSwitchMode) {
         switch (maxSwitchMode) {
             case 0:
@@ -460,6 +462,7 @@ public final class Axis {
         return minSwitchMode;
     }
 
+    //TODO: this could use the enum's 'functions'
     private void setMinSwitchMode(int minSwitchMode) {
         switch (minSwitchMode) {
             case 0:
@@ -672,94 +675,88 @@ public final class Axis {
     private void _applyJsonSystemSetting(ResponseCommand rc) {
         Machine machine = TinygDriver.getInstance().getMachine();
 
+        Axis axis = machine.getAxisByName(rc.getSettingParent());
+        if(axis == null){
+            logger.error("Invalid Axis");
+            return;
+        }
+
         switch (rc.getSettingKey()) {
             case (MnemonicManager.MNEMONIC_AXIS_AXIS_MODE):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setAxisMode(Double.valueOf(rc.getSettingValue()).intValue());
+
+                axis.setAxisMode(Double.valueOf(rc.getSettingValue()).intValue());
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_FEEDRATE_MAXIMUM):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setFeedRateMaximum(Float.valueOf(rc.getSettingValue()));
+                axis.setFeedRateMaximum(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " "
                         + rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_JERK_MAXIMUM):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setJerkMaximum(Float.valueOf(rc.getSettingValue()));
+                axis.setJerkMaximum(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_JUNCTION_DEVIATION):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setJunctionDeviation(Float.valueOf(rc.getSettingValue()));
+                axis.setJunctionDeviation(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_LATCH_BACKOFF):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setLatchBackoff(Float.valueOf(rc.getSettingValue()));
+                axis.setLatchBackoff(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_LATCH_VELOCITY):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setLatchVelocity(Float.valueOf(rc.getSettingValue()));
+                axis.setLatchVelocity(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_MAX_SWITCH_MODE):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setMaxSwitchMode(Integer.valueOf(rc.getSettingValue()));
+                axis.setMaxSwitchMode(Integer.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_MIN_SWITCH_MODE):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setMinSwitchMode(Integer.valueOf(rc.getSettingValue()));
+                axis.setMinSwitchMode(Integer.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_RADIUS):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setRadius(Float.valueOf(rc.getSettingValue()));
+                axis.setRadius(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_SEARCH_VELOCITY):
-                machine.getAxisByName(rc.getSettingParent()).
-                        setSearchVelocity(Float.valueOf(rc.getSettingValue()));
+                axis.setSearchVelocity(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_TRAVEL_MAXIMUM):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setTravelMaximum(Float.valueOf(rc.getSettingValue()));
+                axis.setTravelMaximum(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_VELOCITY_MAXIMUM):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setVelocityMaximum(Float.valueOf(rc.getSettingValue()));
+                axis.setVelocityMaximum(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;
 
             case (MnemonicManager.MNEMONIC_AXIS_ZERO_BACKOFF):
-                machine.getAxisByName(rc.getSettingParent())
-                        .setZeroBackoff(Float.valueOf(rc.getSettingValue()));
+                axis.setZeroBackoff(Float.valueOf(rc.getSettingValue()));
                 logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                         rc.getSettingKey() + ":" + rc.getSettingValue());
                 break;

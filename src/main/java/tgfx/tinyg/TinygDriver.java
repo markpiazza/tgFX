@@ -236,6 +236,11 @@ public class TinygDriver extends Observable {
         GridPane gridPane = (GridPane) tab.getContent();
         Axis axis = this.machine.getAxisByName(String.valueOf(gridPane.getId().charAt(0)));
 
+        if(axis==null){
+            logger.error("Invalid Axis)");
+            return;
+        }
+
         for(Node node : gridPane.getChildren()) {
             // FIXME: something not right about this..
             if (node.getClass().toString().contains("TextField")) {
@@ -273,12 +278,12 @@ public class TinygDriver extends Observable {
     public void applyHardwareMotorSettings(Motor motor, TextField textField)  {
         if (textField.getId().contains("StepAngle")) {
             if (motor.getStepAngle() != Float.valueOf(textField.getText())) {
-                this.write("{\"" + motor.getId_number() +
+                this.write("{\"" + motor.getIdNumber() +
                     MnemonicManager.MNEMONIC_MOTOR_STEP_ANGLE + "\":" + textField.getText() + "}\n");
             }
         } else if (textField.getId().contains("TravelPer")) {
             if (motor.getStepAngle() != Float.valueOf(textField.getText())) {
-                this.write("{\"" + motor.getId_number() +
+                this.write("{\"" + motor.getIdNumber() +
                     MnemonicManager.MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION + "\":" + textField.getText() + "}\n");
             }
         }
