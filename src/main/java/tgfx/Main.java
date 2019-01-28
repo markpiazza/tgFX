@@ -17,11 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -29,18 +25,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import jfxtras.labs.dialogs.MonologFX;
-import jfxtras.labs.dialogs.MonologFXBuilder;
 import jfxtras.labs.dialogs.MonologFXButton;
-import jfxtras.labs.dialogs.MonologFXButtonBuilder;
 import jfxtras.labs.scene.control.gauge.Lcd;
-import jfxtras.labs.scene.control.gauge.LcdBuilder;
-import jfxtras.labs.scene.control.gauge.LcdDesign;
 import jfxtras.labs.scene.control.gauge.StyleModel;
 import javafx.stage.Stage;
 
@@ -78,6 +69,11 @@ import tgfx.utility.QueuedTimerable;
  */
 public class Main extends Stage implements Initializable, Observer, QueuedTimerable<String> {
     private static final Logger logger = LogManager.getLogger();
+
+    // This disables the serial connection check so we can debug things
+    // when there's no machine available.
+    // TODO: need to write mock serial interface
+    private static final boolean DISABLE_UI_CONNECTION_CHECK = true;
 
     private int oldRspLine = 0;
     //Time between config set'ers.
@@ -510,18 +506,16 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         });
     }
 
-    private Lcd buildSingleDRO(Lcd tmpLcd, StyleModel sm, String title, String units) {
+    private Lcd buildSingleDRO(Lcd lcd, StyleModel sm, String title, String units) {
         // FIXME: does this need to be a parameter?
-        // TODO: Rewrite this to remove builder pattern
-        tmpLcd = LcdBuilder.create()
-                .styleModel(sm)
-                .threshold(30)
-                .title(title)
-                .unit(units)
-                .prefHeight(70)
-                .prefWidth(200)
-                .build();
-        return tmpLcd;
+        lcd = new Lcd();
+        lcd.setStyleModel(sm);
+        lcd.setThreshold(30);
+        lcd.setTitle(title);
+        lcd.setUnit(units);
+        lcd.setPrefHeight(70);
+        lcd.setPrefWidth(200);
+        return lcd;
 
     }
 
@@ -639,7 +633,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         logger.info("[+]tgFX is starting....");
 
         /*
-         * MISC INIT CODE 
+         * MISC INIT CODE
          */
         tg.resParse.addObserver(this);  //Add the tinygdriver to this observer
         tg.addObserver(this);
@@ -648,11 +642,12 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 //        GcodeTabController.setGcodeText("TinyG Disconnected.");
 
         //This disables the UI if we are not connected.
-        consoleVBox.disableProperty()
-                .bind(TinygDriver.getInstance().getConnectionStatus().not());
-        topTabPane.disableProperty()
-                .bind(TinygDriver.getInstance().getConnectionStatus().not());
-
+        if (!DISABLE_UI_CONNECTION_CHECK){
+            consoleVBox.disableProperty()
+                    .bind(TinygDriver.getInstance().getConnectionStatus().not());
+            topTabPane.disableProperty()
+                    .bind(TinygDriver.getInstance().getConnectionStatus().not());
+        }
         /*
          * THREAD INITS
          */

@@ -45,7 +45,7 @@
                 <Font size="15.0" fx:id="x1"/>
               </font>
             </Label>
-            <Label id="motorTxt" font="$x1" text="Harware Version:" GridPane.columnIndex="0"
+            <Label id="motorTxt" font="$x1" text="Hardware Version:" GridPane.columnIndex="0"
                    GridPane.rowIndex="1"/>
             <Label id="motorTxt" fx:id="hwVersion" text="unknown" GridPane.columnIndex="1"
                    GridPane.rowIndex="1"/>

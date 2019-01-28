@@ -28,9 +28,6 @@ public class TgFX extends Application {
         Scene scene = new Scene(root);
         scene.setRoot(root);
 
-        //FXMLLoader fxmlLoader = new FXMLLoader();
-        //TgFX TgFXController = fxmlLoader.getController();
-
         stage.setMinHeight(TgFXConstants.STAGE_MIN_HEIGHT);
         stage.setMinWidth(TgFXConstants.STAGE_MIN_WIDTH);
         stage.setScene(scene);

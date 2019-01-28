@@ -207,9 +207,8 @@
                     </ContextMenu>
                 </contextMenu>
             </Lcd>
-            <Lcd fx:id="zLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true"
-                 lcdValueFont="LCD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                 minWidth="-Infinity"
+            <Lcd fx:id="zLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true" lcdValueFont="LCD"
+                 maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                  onMousePressed="#handleDroMouseClick" prefHeight="40.0" prefWidth="120.0" title="Z Axis Position"
                  unit="mm">
                 <contextMenu>
@@ -223,9 +222,8 @@
                     </ContextMenu>
                 </contextMenu>
             </Lcd>
-            <Lcd fx:id="aLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true"
-                 lcdValueFont="LCD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                 minWidth="-Infinity"
+            <Lcd fx:id="aLcd" lcdDecimals="3" lcdDesign="BLACK" lcdUnitVisible="true" lcdValueFont="LCD"
+                 maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                  onMousePressed="#handleDroMouseClick" prefHeight="40.0" prefWidth="120.0" title="A Axis Position"
                  unit="mm">
                 <contextMenu>
@@ -237,9 +235,8 @@
                     </ContextMenu>
                 </contextMenu>
             </Lcd>
-            <Lcd fx:id="velLcd" lcdDecimals="0" lcdDesign="RED_DARKRED" lcdUnitVisible="true"
-                 lcdValueFont="LCD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                 minWidth="-Infinity"
+            <Lcd fx:id="velLcd" lcdDecimals="0" lcdDesign="RED_DARKRED" lcdUnitVisible="true" lcdValueFont="LCD"
+                 maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                  prefHeight="40.0" prefWidth="120.0" title="Velocity" unit="mm/min"/>
             <Button fx:id="gcodeZero" focusTraversable="false"
                     onAction="#handleZeroSystem" text="Zero Axes" VBox.vgrow="NEVER"/>
