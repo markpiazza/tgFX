@@ -7,7 +7,6 @@ package tgfx;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.*;
-import java.util.Iterator;
 import java.util.Observable;
 import javafx.application.Platform;
 import jfxtras.labs.dialogs.MonologFX;
@@ -43,13 +42,18 @@ public class ResponseParser extends Observable implements Runnable {
     private boolean TEXT_MODE = false;
     private String[] message = new String[2];
     private boolean RUN = true;
-    String buf = "";
-    private ResponseFooter responseFooter = new ResponseFooter();  //our holder for ResponseFooter Data
-    //These values are for mapping what n'Th element inthe json footer array maps to which values.
+    private String buf = "";
+
+    //our holder for ResponseFooter Data
+    private ResponseFooter responseFooter = new ResponseFooter();
+
+    // These values are for mapping what element in the json
+    // footer array maps to which values.
     private static final int FOOTER_ELEMENT_PROTOCOL_VERSION = 0;
     private static final int FOOTER_ELEMENT_STATUS_CODE = 1;
     private static final int FOOTER_ELEMENT_RX_RECVD = 2;
     private static final int FOOTER_ELEMENT_CHECKSUM = 3;
+
     private JSONArray footerValues;
     private String line;
 
@@ -76,17 +80,20 @@ public class ResponseParser extends Observable implements Runnable {
                 if (line.startsWith("{")) {
                     if (isTEXT_MODE()) {
                         setTEXT_MODE(false);
-                        //This checks to see if we WERE in textmode.  If we were we notify the user that we are not longer and update the system state.
+                        // This checks to see if we WERE in textmode. If we were we notify
+                        // the user that we are not longer and update the system state.
                         setChanged();
                         message[0] = "TEXTMODE_REPORT";
-                        message[1] = "[+]JSON Response Detected... Leaving Text mode..  Querying System State....\n";
+                        message[1] = "[+]JSON Response Detected... Leaving Text mode..  " +
+                                        "Querying System State....\n";
                         notifyObservers(message);
                         try {
                             TinygDriver.getInstance().getCommandManager().queryAllMachineSettings();
                             TinygDriver.getInstance().getCommandManager().queryAllHardwareAxisSettings();
                             TinygDriver.getInstance().getCommandManager().queryAllMotorSettings();
                         } catch (Exception ex) {
-                            logger.error("Error leaving Text mode and querying Motor, Machine and Axis Settings.");
+                            logger.error("Error leaving Text mode and querying Motor, " +
+                                            "Machine and Axis Settings.");
                         }
 
                     }
@@ -100,7 +107,8 @@ public class ResponseParser extends Observable implements Runnable {
                         setTEXT_MODE(true);
                         setChanged();
                         message[0] = "TEXTMODE_REPORT";
-                        message[1] = "[+]User has entered text mode.  To exit type \"{\" and hit enter.\n";
+                        message[1] = "[+]User has entered text mode.  " +
+                                        "To exit type \"{\" and hit enter.\n";
                         notifyObservers(message);
                     }
                     setChanged();
@@ -119,7 +127,6 @@ public class ResponseParser extends Observable implements Runnable {
     }
 
     private void applySettingMasterGroup(JSONObject js, String pg) throws Exception {
-
         if (pg.equals(MNEMONIC_GROUP_STATUS_REPORT)) {
             //This is a status report master object that came in through a response object.
             //meaning that the response was asked for like this {"sr":""} and returned like this.
@@ -131,16 +138,19 @@ public class ResponseParser extends Observable implements Runnable {
         } else {
             if (js.keySet().size() > 1) {
                 //This is a special multi single value response object
+                // TODO: Loop over entities instead of using a key
                 for (Object o : js.keySet()) {
                     String key = o.toString();
                     if (key.equals("f")) {
-                        parseFooter(js.getJSONArray("f"));  //This is very important.  We break out our response footer.. error codes.. bytes availble in hardware buffer etc.               
+                        parseFooter(js.getJSONArray("f"));  //This is very important.  We break out our response footer.. error codes.. bytes availble in hardware buffer etc.
                     } else {
                         ResponseCommand rc = TinygDriver.getInstance().getMnemonicManager()
                                 .lookupSingleGroupMaster(key, pg);
                         if (rc == null) { //This happens when a new mnemonic has been added to the tinyG firmware but not added to tgFX's MnemonicManger
                             //This is the error case
-                            logger.error("Mnemonic Lookup Failed in applySettingsMasterGroup. \n\tMake sure there are not new elements added to TinyG and not to the MnemonicManager Class.\n\tMNEMONIC FAILED: " + key);
+                            logger.error("Mnemonic Lookup Failed in applySettingsMasterGroup.\n\t" +
+                                    "Make sure there are not new elements added to TinyG and not " +
+                                    "to the MnemonicManager Class.\n\tMNEMONIC FAILED: " + key);
                         } else {
                             //This is the normal case
                             rc.setSettingValue(js.get(key).toString());
@@ -162,10 +172,10 @@ public class ResponseParser extends Observable implements Runnable {
          */
         try {
             //This is a special multi single value response object
+            // TODO: Loop over entities instead of using a key
             for (Object o : js.keySet()) {
                 String key = o.toString();
-
-                ResponseCommand rc = new ResponseCommand(MNEMONIC_GROUP_SYSTEM, key.toString(), js.get(key).toString());
+                ResponseCommand rc = new ResponseCommand(MNEMONIC_GROUP_SYSTEM, key, js.get(key).toString());
                 TinygDriver.getInstance().getMachine().applyJsonStatusReport(rc);
 //                _applySettings(rc.buildJsonObject(), rc.getSettingParent()); //we will supply the parent object name for each key pair
             }
@@ -184,7 +194,7 @@ public class ResponseParser extends Observable implements Runnable {
         }
     }
 
-    public void set_Changed() {
+    public void setChanged() {
         this.setChanged();
     }
 
@@ -199,8 +209,9 @@ public class ResponseParser extends Observable implements Runnable {
                     switch (key) {
                         case "f":
                             parseFooter(js.getJSONArray("f"));
-                            //This is very important.  
-                            //We break out our response footer.. error codes.. bytes availble in hardware buffer etc.
+                            // This is very important.
+                            // We break out our response footer.. error codes..
+                            // bytes available in hardware buffer etc.
                             break;
 
                         case "msg":
@@ -243,15 +254,15 @@ public class ResponseParser extends Observable implements Runnable {
                      * Contains a single object in the json response I am not
                      * sure this else is needed any longer.
                      */
-                    _applySettings(js, js.keys().next().toString());
+                    _applySettings(js, js.keys().next());
                 }
             }
         } catch (JSONException ex) {
-            logger.error("[!] Error in applySetting(JsonOBject js) : " + ex.getMessage());
+            logger.error("[!] Error in applySetting(JsonObject js) : " + ex.getMessage());
             logger.error("[!]JSON String Was: " + js.toString());
             logger.error("Error in Line: " + js);
         } catch (Exception ex) {
-            logger.error("[!] Error in applySetting(JsonOBject js) : " + ex.getMessage());
+            logger.error("[!] Error in applySetting(JsonObject js) : " + ex.getMessage());
             logger.error(ex.getClass().toString());
         }
     }
@@ -261,7 +272,9 @@ public class ResponseParser extends Observable implements Runnable {
         switch (pg) {
             case (MNEMONIC_GROUP_MOTOR_1):
                 machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_1)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_1), MNEMONIC_GROUP_MOTOR_1);
+                        .applyJsonSystemSetting(
+                                js.getJSONObject(MNEMONIC_GROUP_MOTOR_1),
+                                MNEMONIC_GROUP_MOTOR_1);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
                 message[1] = MNEMONIC_GROUP_MOTOR_1;
@@ -269,7 +282,9 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
             case (MNEMONIC_GROUP_MOTOR_2):
                 machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_2)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_2), MNEMONIC_GROUP_MOTOR_2);
+                        .applyJsonSystemSetting(
+                                js.getJSONObject(MNEMONIC_GROUP_MOTOR_2),
+                                MNEMONIC_GROUP_MOTOR_2);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
                 message[1] = MNEMONIC_GROUP_MOTOR_2;
@@ -277,7 +292,9 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
             case (MNEMONIC_GROUP_MOTOR_3):
                 machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_3)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_3), MNEMONIC_GROUP_MOTOR_3);
+                        .applyJsonSystemSetting(
+                                js.getJSONObject(MNEMONIC_GROUP_MOTOR_3),
+                                MNEMONIC_GROUP_MOTOR_3);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
                 message[1] = MNEMONIC_GROUP_MOTOR_3;
@@ -286,7 +303,8 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_MOTOR_4):
                 machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_4)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_4), MNEMONIC_GROUP_MOTOR_4);
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_4)
+                                , MNEMONIC_GROUP_MOTOR_4);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
                 message[1] = MNEMONIC_GROUP_MOTOR_4;
@@ -295,7 +313,9 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_AXIS_X):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_X)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_X), MNEMONIC_GROUP_AXIS_X);
+                        .applyJsonSystemSetting(
+                                js.getJSONObject(MNEMONIC_GROUP_AXIS_X),
+                                MNEMONIC_GROUP_AXIS_X);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_X;
@@ -304,7 +324,9 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_AXIS_Y):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_Y)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_Y), MNEMONIC_GROUP_AXIS_Y);
+                        .applyJsonSystemSetting(
+                                js.getJSONObject(MNEMONIC_GROUP_AXIS_Y),
+                                MNEMONIC_GROUP_AXIS_Y);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_Y;
@@ -313,7 +335,9 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_AXIS_Z):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_Z)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_Z), MNEMONIC_GROUP_AXIS_Z);
+                        .applyJsonSystemSetting(
+                                js.getJSONObject(MNEMONIC_GROUP_AXIS_Z),
+                                MNEMONIC_GROUP_AXIS_Z);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_Z;
@@ -322,7 +346,9 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_AXIS_A):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_A)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_A), MNEMONIC_GROUP_AXIS_A);
+                        .applyJsonSystemSetting(
+                                js.getJSONObject(MNEMONIC_GROUP_AXIS_A),
+                                MNEMONIC_GROUP_AXIS_A);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_A;
@@ -330,7 +356,9 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
             case (MNEMONIC_GROUP_AXIS_B):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_B)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_B), MNEMONIC_GROUP_AXIS_B);
+                        .applyJsonSystemSetting(
+                                js.getJSONObject(MNEMONIC_GROUP_AXIS_B),
+                                MNEMONIC_GROUP_AXIS_B);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_B;
@@ -339,7 +367,9 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_AXIS_C):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_C)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_C), MNEMONIC_GROUP_AXIS_C);
+                        .applyJsonSystemSetting(
+                                js.getJSONObject(MNEMONIC_GROUP_AXIS_C),
+                                MNEMONIC_GROUP_AXIS_C);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_C;
@@ -355,7 +385,9 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case (MNEMONIC_GROUP_SYSTEM):
-                machine.applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_SYSTEM), MNEMONIC_GROUP_SYSTEM);
+                machine.applyJsonSystemSetting(
+                        js.getJSONObject(MNEMONIC_GROUP_SYSTEM),
+                        MNEMONIC_GROUP_SYSTEM);
                 /*
                  * UNCOMMENT THIS BELOW WHEN WE HAVE MACHINE SETTINGS THAT NEED
                  * TO UPDATE THE GU
@@ -376,45 +408,43 @@ public class ResponseParser extends Observable implements Runnable {
             case (MNEMONIC_GROUP_EMERGENCY_SHUTDOWN):
                 Platform.runLater(() -> {
                     Main.postConsoleMessage("TinyG Alarm " + line);
-//
-//                        MonologFXButton btnYes = MonologFXButtonBuilder.create()
-//                                .defaultButton(true)
-//                                .icon("/testmonologfx/dialog_apply.png")
-//                                .type(MonologFXButton.Type.YES)
-//                                .build();
-//
-//                        MonologFXButton btnNo = MonologFXButtonBuilder.create()
-//                                .cancelButton(true)
-//                                .icon("/testmonologfx/dialog_cancel.png")
-//                                .type(MonologFXButton.Type.CANCEL)
-//                                .build();
-//
-//                        MonologFX mono = MonologFXBuilder.create()
-//                                .titleText("Error Occured")
-//                                .message("You have triggered a limit switch.  TinyG is now in DISABLED mode. \n"
-//                                + "Manually back your machine off of its limit switches.\n  Once done, if you would like to re-enable TinyG click yes.")
-//                                .button(btnYes)
-//                                .button(btnNo)
-//                                .type(MonologFX.Type.ERROR)
-//                                .build();
 
-//                        MonologFXButton.Type retval = mono.showDialog();
-//
-//                        switch (retval) {
-//                            case YES:
-//                                logger.info("Clicked Yes");
-//
-//                                try {
-//                                    TinygDriver.getInstance().priorityWrite((byte) 0x18);
-//                                } catch (Exception ex) {
-//                                    logger.error(ex);
-//                                }
-//                                break;
-//                            case CANCEL:
-//                                logger.info("Clicked No");
-//                                Main.postConsoleMessage("TinyG will remain in diabled mode until you power cycle or click the reset button.");
-//                                break;
-//                        }
+                    MonologFXButton btnYes = new MonologFXButton();
+                    btnYes.setDefaultButton(true);
+                    btnYes.setIcon("/testmonologfx/dialog_apply.png");
+                    btnYes.setType(MonologFXButton.Type.YES);
+
+                    MonologFXButton btnNo = new MonologFXButton();
+                    btnNo.setCancelButton(true);
+                    btnNo.setIcon("/testmonologfx/dialog_cancel.png");
+                    btnNo.setType(MonologFXButton.Type.CANCEL);
+
+                    MonologFX mono = new MonologFX();
+                    mono.setTitleText("Error Occurred");
+                    mono.setMessage("You have triggered a limit switch. " +
+                                    "TinyG is now in DISABLED mode. \n " +
+                                    "Manually back your machine off of its " +
+                                    "limit switches.\n  Once done, if you would" +
+                                    "like to re-enable TinyG click yes.");
+                    mono.addButton(btnYes);
+                    mono.addButton(btnNo);
+                    mono.setType(MonologFX.Type.ERROR);
+
+                    switch (mono.show()) {
+                        case YES:
+                            logger.info("Clicked Yes");
+                            try {
+                                TinygDriver.getInstance().priorityWrite((byte) 0x18);
+                            } catch (Exception ex) {
+                                logger.error(ex);
+                            }
+                            break;
+                        case CANCEL:
+                            logger.info("Clicked No");
+                            Main.postConsoleMessage("TinyG will remain in disabled " +
+                                    "mode until you power cycle or click the reset button.");
+                            break;
+                    }
                 });
                 break;
             default:

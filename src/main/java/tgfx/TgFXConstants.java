@@ -10,6 +10,7 @@ public class TgFXConstants {
     public static final int CONNECTION_TIMEOUT = 10000;
 
     public static final String CONNECTION_TIMEOUT_STRING = "{\"tgfx\": \"TinyG Connection Timeout\"}";
+    public static final String FIRMWARE_UPDATE_URL = "https://github.com/synthetos/TinyG/wiki/TinyG-Boot-Loaderwiki-updating";
 
     public static final String OS = System.getProperty("os.name").toLowerCase();
 

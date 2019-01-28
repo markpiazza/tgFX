@@ -66,7 +66,7 @@ public class QueueUsingTimerTest implements QueuedTimerable<String> {
                 }
             }
             if (i % 50 == 1) {
-                System.out.print(".");
+                System.out.print("");
             }
             if (i % 1000 == 1) {
                 System.out.println(i);

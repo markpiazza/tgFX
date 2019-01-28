@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -26,14 +27,20 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
+import jfxtras.labs.dialogs.MonologFX;
+import jfxtras.labs.dialogs.MonologFXBuilder;
+import jfxtras.labs.dialogs.MonologFXButton;
+import jfxtras.labs.dialogs.MonologFXButtonBuilder;
 import jfxtras.labs.scene.control.gauge.Lcd;
 import jfxtras.labs.scene.control.gauge.LcdBuilder;
+import jfxtras.labs.scene.control.gauge.LcdDesign;
 import jfxtras.labs.scene.control.gauge.StyleModel;
 import javafx.stage.Stage;
 
@@ -55,6 +62,7 @@ import tgfx.ui.gcode.GcodeHistory;
 import tgfx.ui.gcode.GcodeTabController;
 import tgfx.ui.machinesettings.MachineSettingsController;
 import tgfx.ui.tinygconfig.TinyGConfigController;
+import tgfx.updater.firmware.FirmwareUpdaterController;
 import tgfx.utility.QueueUsingTimer;
 import tgfx.utility.QueuedTimerable;
 
@@ -448,65 +456,63 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         TinygDriver.getInstance().setTimedout(true);  //we set this to tell the firmware updater that we have no clue what platform we are dealing with because it timed out.
         Platform.runLater(() -> {
             Connect.setText("Connect"); //set the text back to "connect" since we are disconnected
-//            MonologFXButton btnYes = MonologFXButtonBuilder.create()
-//                    .defaultButton(true)
-//                    .icon("/testmonologfx/dialog_apply.png")
-//                    .type(MonologFXButton.Type.CUSTOM2)
-//                    .label("Auto Upgrade")
-//                    .build();
-//
-//            MonologFXButton btnNo = MonologFXButtonBuilder.create()
-//                    .cancelButton(true)
-//                    .icon("/testmonologfx/dialog_cancel.png")
-//                    .type(MonologFXButton.Type.CUSTOM1)
-//                    .label("Skip")
-//                    .build();
-//
-//            MonologFX mono = MonologFXBuilder.create()
-//                    .titleText("TinyG Connection Timeout")
-//                    .message("tgFX timed out while trying to connect to your TinyG.\nYour TinyG might have a version of firmware that is too old or"
-//                            + " you might have selected the wrong serial port.  \nClick Auto Upgrade to attempt to upgrade your TinyG. This feature only works for TinyG boards not the Arduino Due port of TinyG."
-//                            + "\nA Internet Connection is Required.  Clicking No will allow you to select a different serial port to try to connect to a different serial port.")
-//                    .button(btnYes)
-//                    .button(btnNo)
-//                    .type(MonologFX.Type.ERROR)
-//                    .build();
+            MonologFXButton btnYes = new MonologFXButton();
+            btnYes.setDefaultButton(true);
+            btnYes.setIcon("/testmonologfx/dialog_apply.png");
+            btnYes.setType(MonologFXButton.Type.CUSTOM2);
+            btnYes.setLabel("Auto Upgrade");
 
-//            MonologFXButton.Type retval = mono.showDialog();
-//
-//            switch (retval) {
-//                case CUSTOM2:
-//                    logger.info("Clicked Auto Upgrade");
-//
-//                    Platform.runLater(
-//                            () -> {
-//                                FirmwareUpdaterController.handleUpdateFirmware(null);
-//                                try {
-//                                    tg.disconnect();
-//                                } catch (SerialPortException ex) {
-//                                    logger.error(ex);
-//                                }
-//
-//                            });
-//                    break;
-//
-//                case CUSTOM1:
-//                    logger.info("Clicked No");
-//                    try {
-//                        if (TinygDriver.getInstance().isConnected().get()) {
-//                            TinygDriver.getInstance().disconnect(); //free up the serial port to be able to try another one.
-//                        }
-//
-//                    } catch (SerialPortException ex) {
-//                        java.util.logging.Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                    break;
-//            }
+            MonologFXButton btnNo = new MonologFXButton();
+            btnNo.setCancelButton(true);
+            btnNo.setIcon("/testmonologfx/dialog_cancel.png");
+            btnNo.setType(MonologFXButton.Type.CUSTOM1);
+            btnNo.setLabel("Skip");
+
+            MonologFX mono = new MonologFX();
+            mono.setTitleText("TinyG Connection Timeout");
+            mono.setMessage("tgFX timed out while trying to connect to your TinyG.\n" +
+                            " Your TinyG might have a version of firmware that is too old or" +
+                            " you might have selected the wrong serial port.\n" +
+                            " Click Auto Upgrade to attempt to upgrade your TinyG." +
+                            " This feature only works for TinyG boards not the Arduino" +
+                            " Due port of TinyG.\n A Internet Connection is Required." +
+                            " Clicking No will allow you to select a different serial" +
+                            " port to try to connect to a different serial port.");
+            mono.addButton(btnYes);
+            mono.addButton(btnNo);
+            mono.setType(MonologFX.Type.ERROR);
+
+            switch (mono.show()) {
+                case CUSTOM2:
+                    logger.info("Clicked Auto Upgrade");
+                    Platform.runLater(() -> {
+                        FirmwareUpdaterController.handleUpdateFirmware(null);
+                        try {
+                            tg.disconnect();
+                        } catch (SerialPortException ex) {
+                            logger.error(ex);
+                        }
+                    });
+                    break;
+
+                case CUSTOM1:
+                    logger.info("Clicked No");
+                    try {
+                        if (TinygDriver.getInstance().isConnected().get()) {
+                            //free up the serial port to be able to try another one.
+                            TinygDriver.getInstance().disconnect();
+                        }
+                    } catch (SerialPortException ex) {
+                        logger.error(ex);
+                    }
+                    break;
+            }
         });
     }
 
     private Lcd buildSingleDRO(Lcd tmpLcd, StyleModel sm, String title, String units) {
         // FIXME: does this need to be a parameter?
+        // TODO: Rewrite this to remove builder pattern
         tmpLcd = LcdBuilder.create()
                 .styleModel(sm)
                 .threshold(30)
@@ -565,63 +571,65 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         console.appendText("Your TinyG firmware is too old.  Please update your TinyG Firmware.\n");
         Platform.runLater(() -> {
 
-//            MonologFXButton btnYes = MonologFXButtonBuilder.create()
-//                    .defaultButton(true)
-//                    .icon("/testmonologfx/dialog_apply.png")
-//                    .type(MonologFXButton.Type.YES)
-//                    .build();
-//
-//            MonologFXButton btnNo = MonologFXButtonBuilder.create()
-//                    .cancelButton(true)
-//                    .icon("/testmonologfx/dialog_cancel.png")
-//                    .type(MonologFXButton.Type.NO)
-//                    .build();
-//
-//            MonologFX mono = MonologFXBuilder.create()
-//                    .titleText("TinyG Firware Build Outdated...")
-//                    .message("Your TinyG firmware is too old to be used with tgFX. \nYour build version: " + tg.machine.getFirmwareBuild() + "\n"
-//                            + "Minmal Needed Version: " + tg.machine.hardwarePlatform.getMinimalBuildVersion().toString() + "\n\n"
-//                            + "Click ok to attempt to auto upgrade your TinyG. \nA Internet Connection is Required."
-//                            + "\nClicking No will exit tgFX.")
-//                    .button(btnYes)
-//                    .button(btnNo)
-//                    .type(MonologFX.Type.ERROR)
-//                    .build();
-//
-//            switch (mono.showDialog()) {
-//                case YES:
-//                    logger.info("Clicked Yes");
-//
-//                    WebView firwareUpdate = new WebView();
-//                    final WebEngine webEngFirmware = firwareUpdate.getEngine();
-//                    Stage stage = new Stage();
-//                    stage.setTitle("TinyG Firmware Update Guide");
-//                    Scene s = new Scene(firwareUpdate, 1280, 800);
-//
-//                    stage.setScene(s);
-//                    stage.show();
-//
-//                    Platform.runLater(
-//                            () -> {
-//                                webEngFirmware.load("https://github.com/synthetos/TinyG/wiki/TinyG-Boot-Loaderwiki-updating");
-//                                try {
-//                                    tg.disconnect();
-//                                } catch (SerialPortException ex) {
-//                                    java.util.logging.Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//                                }
-//                                Connect.setText("Connect");
-//                            });
-//                    break;
-//                case NO:
-//                    logger.info("Clicked No");
-//                    try {
-//                        tg.disconnect();
-//                    } catch (SerialPortException ex) {
-//                        java.util.logging.Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                    System.exit(0);
-//                    break;
-//            }
+            MonologFXButton btnYes =  new MonologFXButton();
+            btnYes.setDefaultButton(true);
+            btnYes.setIcon("/testmonologfx/dialog_apply.png");
+            btnYes.setType(MonologFXButton.Type.YES);
+
+
+            MonologFXButton btnNo =  new MonologFXButton();
+            btnNo.setCancelButton(true);
+            btnNo.setIcon("/testmonologfx/dialog_cancel.png");
+            btnNo.setType(MonologFXButton.Type.NO);
+
+            MonologFX mono = new MonologFX();
+            mono.setTitleText("TinyG Firware Build Outdated...");
+            mono.setMessage("Your TinyG firmware is too old to be used with tgFX. \n" +
+                            "Your build version: " +
+                            TinygDriver.getInstance().getMachine()
+                                .getFirmwareBuild() + "\n" +
+                            "Minimal Needed Version: " +
+                            TinygDriver.getInstance().getMachine().hardwarePlatform
+                                .getMinimalBuildVersion().toString() + "\n\n" +
+                            "Click ok to attempt to auto upgrade your TinyG. \n" +
+                            " A Internet Connection is Required. \n." +
+                            "Clicking No will exit tgFX.");
+            mono.addButton(btnYes);
+            mono.addButton(btnNo);
+            mono.setType(MonologFX.Type.ERROR);
+
+            switch (mono.show()) {
+                case YES:
+                    logger.info("Clicked Yes");
+                    WebView firmwareUpdate = new WebView();
+                    final WebEngine webEngFirmware = firmwareUpdate.getEngine();
+                    Stage stage = new Stage();
+                    stage.setTitle("TinyG Firmware Update Guide");
+                    Scene s = new Scene(firmwareUpdate, 1280, 800);
+
+                    stage.setScene(s);
+                    stage.show();
+
+                    Platform.runLater(() -> {
+                        webEngFirmware.load(TgFXConstants.FIRMWARE_UPDATE_URL);
+                        try {
+                            tg.disconnect();
+                        } catch (SerialPortException ex) {
+                            logger.error(ex);
+                        }
+                        Connect.setText("Connect");
+                    });
+                    break;
+                case NO:
+                    logger.info("Clicked No");
+                    try {
+                        tg.disconnect();
+                    } catch (SerialPortException ex) {
+                        logger.error(ex);
+                    }
+                    System.exit(0);
+                    break;
+            }
         });
     }
 
@@ -684,7 +692,8 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         srState.textProperty().bind(machine.getMachineState());
         srCoord.textProperty().bind(machine.getCoordinateSystem());
         srUnits.textProperty().bind(machine.getGcodeUnitMode());
-        srCoord.textProperty().bind(machine.getGcodeCoordinateManager().getCurrentGcodeCoordinateSystemName());
+        srCoord.textProperty().bind(machine.getGcodeCoordinateManager()
+                .getCurrentGcodeCoordinateSystemName());
         srGcodeLine.textProperty().bind(machine.getLineNumberSimple().asString());
     }
 }

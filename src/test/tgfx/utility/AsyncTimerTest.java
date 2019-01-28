@@ -57,7 +57,7 @@ public class AsyncTimerTest {
                 break;
             }
             if (i % 50 == 1) {
-                System.out.print(".");
+                System.out.print("");
             }
             if (i % 1000 == 1) {
                 System.out.println(i);

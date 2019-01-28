@@ -29,7 +29,7 @@ public class ResponseFooter {
         return rxRecvd;
     }
 
-    public long getCheckSum() {
+    long getCheckSum() {
         return checkSum;
     }
 
@@ -49,15 +49,15 @@ public class ResponseFooter {
         ResponseFooter.checkSum = checkSum;
     }
 
-    public int getProtocolVersion() {
+    int getProtocolVersion() {
         return protocolVersion;
     }
     
-    public int getBufferAvailable() {
+    int getBufferAvailable() {
         return rxRecvd;
     }
   
-    public static int getStatusCode() {
+    static int getStatusCode() {
         return statusCode;
     }
 
