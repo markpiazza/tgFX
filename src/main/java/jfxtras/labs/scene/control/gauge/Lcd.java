@@ -27,10 +27,13 @@
 
 package jfxtras.labs.scene.control.gauge;
 
+import com.sun.javafx.scene.control.skin.ButtonSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
 
 
 /**
@@ -79,6 +82,10 @@ public class Lcd extends Gauge {
         getStyleClass().setAll(DEFAULT_STYLE_CLASS);
     }
 
+    @Override protected Skin<?> createDefaultSkin() {
+        System.err.println("----------get default skin");
+        return new SkinBase<javafx.scene.control.Control>(this) {};
+    }
 
     // ******************** Methods *******************************************
     @Override public final void setPrefSize(final double WIDTH, final double HEIGHT) {

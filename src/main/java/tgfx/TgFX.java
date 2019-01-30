@@ -32,6 +32,20 @@ public class TgFX extends Application {
         stage.setMinWidth(TgFXConstants.STAGE_MIN_WIDTH);
         stage.setScene(scene);
         stage.show();
+//
+//        Lcd lcd = new Lcd();
+//        lcd.setId("lcd");
+//        lcd.setLcdDecimals(3);
+//        lcd.setLcdDesign(LcdDesign.BLACK);
+//        lcd.setUnitVisible(true);
+//        lcd.prefHeight(40);
+//        lcd.prefWidth(120);
+//        lcd.setTitle("Lcd");
+//        lcd.setUnit("mm");
+//        StackPane root = new StackPane();
+//        root.getChildren().add(lcd);
+//        stage.setScene(new Scene(root,400,200));
+//        stage.show();
     }
 
     public static void main(String[] args) {
