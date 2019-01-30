@@ -8,6 +8,8 @@ import java.io.*;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
+
+import eu.hansolo.medusa.Gauge;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -35,7 +37,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
-import jfxtras.labs.scene.control.gauge.Lcd;
 import jssc.SerialPortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -88,7 +89,7 @@ public class GcodeTabController implements Initializable {
     @FXML
     private static Text timeLeftTxt;
     @FXML
-    private Lcd xLcd, yLcd, zLcd, aLcd, velLcd; //DRO Lcds
+    private Gauge xLcd, yLcd, zLcd, aLcd, velLcd; //DRO Lcds
     @FXML
     StackPane machineWorkspace;
     @FXML
@@ -336,7 +337,7 @@ public class GcodeTabController implements Initializable {
     private void handleDroMouseClick(MouseEvent me) {
         if (me.isSecondaryButtonDown()) { //Check to see if its a Right Click
             String _axis;
-            Lcd l = (Lcd) me.getSource();
+            Gauge l = (Gauge) me.getSource();
             String t = String.valueOf(l.idProperty().get().charAt(0));
         }
     }
@@ -425,11 +426,11 @@ public class GcodeTabController implements Initializable {
                 // we hide them if they are not mm
                 lcdVisible = false;
             }
-            xLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
-            yLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
-            zLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
-            aLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
-            velLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
+//            xLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
+//            yLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
+//            zLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
+//            aLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
+//            velLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
 
             Main.postConsoleMessage("[+]Gcode Unit Mode Changed to: " + tmp + "\n");
 
@@ -501,7 +502,7 @@ public class GcodeTabController implements Initializable {
 //        });
     }
 
-    private Lcd getLcdByAxisName(String _axis) {
+    private Gauge getLcdByAxisName(String _axis) {
         switch (_axis) {
             case "x":
                 return xLcd;

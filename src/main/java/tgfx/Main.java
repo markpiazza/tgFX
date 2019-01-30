@@ -31,8 +31,6 @@ import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import jfxtras.labs.dialogs.MonologFX;
 import jfxtras.labs.dialogs.MonologFXButton;
-import jfxtras.labs.scene.control.gauge.Lcd;
-import jfxtras.labs.scene.control.gauge.StyleModel;
 import javafx.stage.Stage;
 
 import static tgfx.TgFXConstants.CONNECTION_TIMEOUT;
@@ -292,8 +290,14 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     public static void postConsoleMessage(final String message) {
         //This allows us to send input to the console text area on the Gcode Tab.
-        logger.info(message + "\n");
-        Platform.runLater(() -> console.appendText(message + "\n"));
+        if(message!=null) {
+            logger.info(message + "\n");
+            if(console!=null) {
+                Platform.runLater(() -> console.appendText(message + "\n"));
+            } else {
+                logger.error("console not initialized");
+            }
+        }
     }
 
 //    @FXML
@@ -506,18 +510,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         });
     }
 
-    private Lcd buildSingleDRO(Lcd lcd, StyleModel sm, String title, String units) {
-        // FIXME: does this need to be a parameter?
-        lcd = new Lcd();
-        lcd.setStyleModel(sm);
-        lcd.setThreshold(30);
-        lcd.setTitle(title);
-        lcd.setUnit(units);
-        lcd.setPrefHeight(70);
-        lcd.setPrefWidth(200);
-        return lcd;
-
-    }
 
     private void doTinyGUserMessage(String keyArgument) throws SerialPortException {
         if (keyArgument.trim().equals("SYSTEM READY")) {

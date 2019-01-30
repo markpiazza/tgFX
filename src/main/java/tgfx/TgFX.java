@@ -4,10 +4,12 @@
  */
 package tgfx;
 
+import eu.hansolo.medusa.Gauge;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +34,7 @@ public class TgFX extends Application {
         stage.setMinWidth(TgFXConstants.STAGE_MIN_WIDTH);
         stage.setScene(scene);
         stage.show();
-//
+
 //        Lcd lcd = new Lcd();
 //        lcd.setId("lcd");
 //        lcd.setLcdDecimals(3);
@@ -46,6 +48,13 @@ public class TgFX extends Application {
 //        root.getChildren().add(lcd);
 //        stage.setScene(new Scene(root,400,200));
 //        stage.show();
+
+//        Gauge lcd = new Gauge();
+//        StackPane root = new StackPane();
+//        root.getChildren().add(lcd);
+//        stage.setScene(new Scene(root,400,200));
+//        stage.show();
+
     }
 
     public static void main(String[] args) {
