@@ -16,7 +16,6 @@ import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javafx.event.ActionEvent;
@@ -24,7 +23,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
-import javafx.stage.FileChooser;
 import org.json.JSONObject;
 import tgfx.Main;
 import tgfx.tinyg.CommandManager;
@@ -69,7 +67,8 @@ public class MachineSettingsController implements Initializable {
     }
 
     private void populateConfigFiles() {
-        File folder = new File("hardwarePlatforms");
+        // FIXME: THis needs to not be a absolute/relative path (should be resource path)
+        File folder = new File("src/main/resources/configs");
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles==null) {
             logger.warn("Error loading platform configs, "+folder.getName()+" not found");

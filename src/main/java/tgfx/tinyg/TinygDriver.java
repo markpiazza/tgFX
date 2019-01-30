@@ -51,18 +51,24 @@ public class TinygDriver extends Observable {
     /**
      * Static commands for TinyG to get settings from the TinyG Driver Board
      */
-    private final SerialDriver ser = SerialDriver.getInstance();
+    private final SerialDriver serialDriver = SerialDriver.getInstance();
     private final AtomicBoolean connectionSemaphore = new AtomicBoolean(false);
+    private static ArrayBlockingQueue<GcodeLine[]> writerQueue = new ArrayBlockingQueue<>(50000);
+    private static ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(30);
+
+    public static ArrayBlockingQueue<String> jsonQueue = new ArrayBlockingQueue<>(10000);
+    public final static int MAX_BUFFER = 1024;
+
     private AsyncTimer connectionTimer;
+
+    private ArrayList<String> connections = new ArrayList<>();
     private boolean PAUSED = false;
     private boolean timedout = false;
-    public final static int MAX_BUFFER = 1024;
-    public static ArrayBlockingQueue<String> jsonQueue = new ArrayBlockingQueue<>(10000);
-    public static ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(30);
-    public static ArrayBlockingQueue<GcodeLine[]> writerQueue = new ArrayBlockingQueue<>(50000);
-    public ArrayList<String> connections = new ArrayList<>();
+
     public ResponseParser resParse = new ResponseParser();
     public SerialWriter serialWriter = new SerialWriter(writerQueue);
+
+
 
     /**
      * make TingygDriver private so the caller needs to call get instance
@@ -212,22 +218,22 @@ public class TinygDriver extends Observable {
             case "x":
                 // this was serialWriter, not sure why it
                 // wasn't the same as everything else
-                ser.write(CommandManager.CMD_QUERY_AXIS_X);
+                serialDriver.write(CommandManager.CMD_QUERY_AXIS_X);
                 break;
             case "y":
-                ser.write(CommandManager.CMD_QUERY_AXIS_Y);
+                serialDriver.write(CommandManager.CMD_QUERY_AXIS_Y);
                 break;
             case "z":
-                ser.write(CommandManager.CMD_QUERY_AXIS_Z);
+                serialDriver.write(CommandManager.CMD_QUERY_AXIS_Z);
                 break;
             case "a":
-                ser.write(CommandManager.CMD_QUERY_AXIS_A);
+                serialDriver.write(CommandManager.CMD_QUERY_AXIS_A);
                 break;
             case "b":
-                ser.write(CommandManager.CMD_QUERY_AXIS_B);
+                serialDriver.write(CommandManager.CMD_QUERY_AXIS_B);
                 break;
             case "c":
-                ser.write(CommandManager.CMD_QUERY_AXIS_C);
+                serialDriver.write(CommandManager.CMD_QUERY_AXIS_C);
                 break;
         }
     }
@@ -374,16 +380,16 @@ public class TinygDriver extends Observable {
     public void getMotorSettings(int motorNumber) {
         switch (motorNumber) {
             case 1:
-                ser.write(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
+                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
                 break;
             case 2:
-                ser.write(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
+                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
                 break;
             case 3:
-                ser.write(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
+                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
                 break;
             case 4:
-                ser.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
+                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
                 break;
             default:
                 logger.error("Invalid Motor Number.. Please try again..");
@@ -538,16 +544,16 @@ public class TinygDriver extends Observable {
     public void queryHardwareSingleMotorSettings(int motorNumber) {
         switch (motorNumber) {
             case 1:
-                ser.write(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
+                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
                 break;
             case 2:
-                ser.write(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
+                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
                 break;
             case 3:
-                ser.write(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
+                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
                 break;
             case 4:
-                ser.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
+                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
                 break;
             default:
                 logger.warn("Invalid Motor Number.. Please try again..");
@@ -581,12 +587,12 @@ public class TinygDriver extends Observable {
 
     public void setPAUSED(boolean choice) throws SerialPortException {
         if (choice) { // if set to pause
-            ser.priorityWrite(CommandManager.CMD_APPLY_PAUSE);
+            serialDriver.priorityWrite(CommandManager.CMD_APPLY_PAUSE);
             PAUSED = choice;
         } else { // set to resume
-            ser.priorityWrite(CommandManager.CMD_QUERY_OK_PROMPT);
-            ser.priorityWrite(CommandManager.CMD_APPLY_RESUME);
-            ser.priorityWrite(CommandManager.CMD_QUERY_OK_PROMPT);
+            serialDriver.priorityWrite(CommandManager.CMD_QUERY_OK_PROMPT);
+            serialDriver.priorityWrite(CommandManager.CMD_APPLY_RESUME);
+            serialDriver.priorityWrite(CommandManager.CMD_QUERY_OK_PROMPT);
             PAUSED = false;
         }
     }
@@ -595,21 +601,21 @@ public class TinygDriver extends Observable {
      * Connection Methods
      */
     public void setConnected(boolean choice) {
-        ser.setConnected(choice);
+        serialDriver.setConnected(choice);
     }
 
     public boolean initialize(String portName, int dataRate) throws SerialPortException {
-        return ser.initialize(portName, dataRate);
+        return serialDriver.initialize(portName, dataRate);
     }
 
     public void disconnect() throws SerialPortException {
-        ser.disconnect();
+        serialDriver.disconnect();
     }
 
     public SimpleBooleanProperty isConnected() {
         //Our binding to keep tabs in the us of if we are connected to TinyG or not.
         //This is mostly used to disable the UI if we are not connected.
-        connectionStatus.set(ser.isConnected());
+        connectionStatus.set(serialDriver.isConnected());
         return connectionStatus;
     }
 
@@ -622,14 +628,14 @@ public class TinygDriver extends Observable {
     }
 
     public void priorityWrite(Byte b) throws SerialPortException {
-        ser.priorityWrite(b);
+        serialDriver.priorityWrite(b);
     }
 
     public void priorityWrite(String msg){
         if (!msg.contains("\n")) {
             msg = msg + "\n";
         }
-        ser.write(msg);
+        serialDriver.write(msg);
         logger.info("+" + msg);
     }
 
@@ -643,7 +649,7 @@ public class TinygDriver extends Observable {
 
     public String getPortName() {
         // Return the serial port name that is connected.
-        return ser.serialPort.getPortName();
+        return serialDriver.getSerialPort().getPortName();
     }
 
     public List<Axis> getInternalAllAxis() {

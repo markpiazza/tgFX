@@ -40,9 +40,9 @@
                         <VBox.margin>
                             <Insets fx:id="x77"/>
                         </VBox.margin>
-                        <Tab id="" fx:id="motor1" closable="false" style="" text="Motor 1">
+                        <Tab fx:id="motor1" closable="false" text="Motor 1">
                             <GridPane id="motor1" hgap="15.0"
-                                      style="-fx-padding: 10; &#10;"
+                                      style="-fx-padding: 10;"
                                       vgap="15.0">
                                 <Label id="motorTxt" text="Mapped to axis"
                                        GridPane.columnIndex="0"
@@ -122,7 +122,7 @@
                                 </HBox>
                             </GridPane>
                         </Tab>
-                        <Tab id="" fx:id="motor2" closable="false" text="Motor 2">
+                        <Tab fx:id="motor2" closable="false" text="Motor 2">
                             <GridPane id="motor2" hgap="15.0" style="-fx-padding: 10" vgap="15.0">
                                 <Label id="motorTxt" text="Mapped to axis"
                                        GridPane.columnIndex="0"
@@ -202,7 +202,7 @@
                                 </HBox>
                             </GridPane>
                         </Tab>
-                        <Tab id="" fx:id="motor3" closable="false" text="Motor 3">
+                        <Tab fx:id="motor3" closable="false" text="Motor 3">
                             <GridPane id="motor3" hgap="15.0" style="-fx-padding: 10" vgap="15.0">
                                 <Label id="motorTxt" text="Mapped to axis"
                                        GridPane.columnIndex="0"

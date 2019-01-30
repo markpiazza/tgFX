@@ -21,14 +21,11 @@ public class SerialWriter implements Runnable {
     private BlockingQueue<String> queue;
     private boolean RUN = true;
     private boolean cleared  = false;
-    private String tmpCmd;
     private int BUFFER_SIZE = 180;
     private AtomicInteger buffer_available = new AtomicInteger(BUFFER_SIZE);
     private SerialDriver ser = SerialDriver.getInstance();
     private static final Object mutex = new Object();
     private static boolean throttled = false;
-    private int pbaChamberedRounds = 0;
-    // public Condition clearToSend = lock.newCondition();
 
     public SerialWriter(BlockingQueue q) {
         this.queue = q;
@@ -115,23 +112,10 @@ public class SerialWriter implements Runnable {
     }
     
     
-//    private int getChamberCount(int currentPlanningBuffer){
-//        //This function takes the current planning buffer and determines how many
-//        //"rounds" or lines of gcode should be "chambered" or loaded before re read the pba
-//        //and recalculating.
-//        if(24 - currentPlanningBuffer > 3){
-//            
-//        }
-//    }
-    
+
     public void write(String str) {
         try {
             synchronized (mutex) {
-//                if (str.length() > getBufferValue()) {
-//                    setThrottled(true);
-//                } else {
-//                    this.setBuffer(getBufferValue() - str.length());
-//                }
                 int _currentPlanningBuffer = TinygDriver.getInstance().getQueryReport().getPba();
                 
                 if(_currentPlanningBuffer < 28){
@@ -154,7 +138,7 @@ public class SerialWriter implements Runnable {
                     mutex.wait();
                     if(cleared){
                        //clear out the line we were waiting to send.. we were asked to clear our buffer
-                        //includeing this line that is waiting to be sent.
+                        //including this line that is waiting to be sent.
                         cleared = false;  //Reset this flag now...
                         return;
                     }
@@ -178,7 +162,7 @@ public class SerialWriter implements Runnable {
         logger.info("[+]Serial Writer Thread Running...");
         while (RUN) {
             try {
-                tmpCmd = queue.take();  //Grab the line
+                String tmpCmd = queue.take();  //Grab the line
                 if(tmpCmd.equals("**FILEDONE**")){
                     //Our end of file sending token has been detected.
                     //We will not enable jogging by setting isSendingFile to false

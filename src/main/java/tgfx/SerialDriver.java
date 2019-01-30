@@ -10,11 +10,8 @@ import tgfx.tinyg.TinygDriver;
 import jssc.SerialPort;
 import jssc.*;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  *
@@ -29,16 +26,8 @@ public class SerialDriver implements SerialPortEventListener {
     private static int lineIdx = 0;
 
     private boolean connectionState = false;
-    private boolean CANCELLED = false;
 
-    public SerialPort serialPort;
-    public InputStream input;
-    public OutputStream output;
-    public String[] portArray = null;
-    public String debugFileBuffer = "";
-    public List<String> lastRes = new ArrayList<>();
-    public byte[] debugBuffer = new byte[1024];
-    public double offsetPointer = 0;
+    private SerialPort serialPort;
 
     /**
      * private constructor since this is a singleton
@@ -53,10 +42,13 @@ public class SerialDriver implements SerialPortEventListener {
         return serialDriverInstance;
     }
 
+    public SerialPort getSerialPort(){
+        return serialPort;
+    }
+
     public void write(String str) {
         try {
             serialPort.writeBytes(str.getBytes());
-            //this.output.write(str.getBytes());
             logger.debug("Wrote Line: " + str);
         } catch (Exception ex) {
             logger.error("Error in SerialDriver Write");
@@ -66,13 +58,11 @@ public class SerialDriver implements SerialPortEventListener {
 
     public void priorityWrite(String str) throws SerialPortException {
         serialPort.writeBytes(str.getBytes());
-        //this.output.write(str.getBytes());
     }
 
     public void priorityWrite(Byte b) throws SerialPortException {
         logger.debug("[*] Priority Write Sent\n");
         serialPort.writeByte(b);
-        //this.output.write(b);
     }
 
     public synchronized void disconnect() throws SerialPortException {
@@ -82,45 +72,31 @@ public class SerialDriver implements SerialPortEventListener {
         }
     }
 
-    public boolean isCANCELLED() {
-        return CANCELLED;
-    }
-
-    public void setCANCELLED(boolean choice) {
-        this.CANCELLED = choice;
-    }
-
     public void setConnected(boolean c) {
-        this.connectionState = c;
-    }
-
-    public String getDebugFileString() {
-        return (debugFileBuffer);
+        connectionState = c;
     }
 
     public boolean isConnected() {
-        return this.connectionState;
+        return connectionState;
     }
 
     @Override
     public void serialEvent(SerialPortEvent event) {
-        byte[] inbuffer = new byte[1024];
         int bytesToRead;
         byte[] tmpBuffer = null;
 
         bytesToRead = event.getEventValue();
-        //tmpBuffer = serialPort.readBytes(bytesToRead);
 
         if (event.isRXCHAR()) {
             try {
-//                int bytesToRead = input.read(inbuffer, 0, inbuffer.length);
                 tmpBuffer = serialPort.readBytes(bytesToRead, serialPort.getInputBufferBytesCount());
             } catch (SerialPortException | SerialPortTimeoutException ex) {
                 logger.error(ex);
             }
             
             for (int i = 0; i < bytesToRead; i++) {
-//                if (tmpBuffer[i] == 0x11 || tmpBuffer[i] == 0x13) {  //We have to filter our XON or XOFF charaters from JSON
+                //  We have to filter our XON or XOFF charaters from JSON
+//                if (tmpBuffer[i] == 0x11 || tmpBuffer[i] == 0x13) {
 //                    continue;
 //                }
                 if (tmpBuffer[i] == 0xA) { // inbuffer[i] is a \n
@@ -142,7 +118,6 @@ public class SerialDriver implements SerialPortEventListener {
         List<String> portList = new ArrayList<>();
 
         for (String port : ports) {
-//            CommPortIdentifier port = (CommPortIdentifier) ports.nextElement();
             SerialPort _tmpPort = new SerialPort(port);
             if (!_tmpPort.getPortName().contains("Bluetooth")) {
 
@@ -150,7 +125,8 @@ public class SerialDriver implements SerialPortEventListener {
 
 //            if (UtilityFunctions.getOperatingSystem().equals("mac")) {
 //                if (_tmpPort.getPortName().contains("tty")) {
-//                    continue; //We want to remove the the duplicate tty's and just provide the "cu" ports in the drop down.
+//                    continue; // We want to remove the the duplicate tty's and just
+//                              // provide the "cu" ports in the drop down.
 //                }
 //            }
 
@@ -162,17 +138,12 @@ public class SerialDriver implements SerialPortEventListener {
     }
 
     public boolean initialize(String port, int DATA_RATE) throws SerialPortException {
-        int TIME_OUT = 2000;
-
         if (isConnected()) {
             String returnMsg = "[*] Port Already Connected.\n";
             logger.info(returnMsg);
-            return (true);
+            return true;
         }
 
-//            CommPortIdentifier portId = CommPortIdentifier.getPortIdentifier(port);
-        // Get the port's ownership
-//            serialPort = (SerialPort) portId("TG", TIME_OUT);
         // set port parameters
         serialPort = new SerialPort(port);
         serialPort.openPort();
@@ -182,14 +153,12 @@ public class SerialDriver implements SerialPortEventListener {
             SerialPort.PARITY_NONE);
 
         // open the streams
-        //input = serialPort.getInputBufferBytesCount;
-        //output = serialPort.getOutputStream();
         serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT);
         serialPort.setRTS(true);
 
         // add event listeners
         serialPort.addEventListener(this);
-        //            serialPort.addEventListener(this);notifyOnDataAvailable(true);
+        // notifyOnDataAvailable(true);
         
         logger.debug("[+]Opened " + port + " successfully.");
         setConnected(true); //Register that this is connectionState.

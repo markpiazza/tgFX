@@ -89,6 +89,12 @@
             <version>8.0-r6</version>
         </dependency>
 
+        <!--<dependency>-->
+            <!--<groupId>eu.hansolo</groupId>-->
+            <!--<artifactId>medusa</artifactId>-->
+            <!--<version>4.1</version>-->
+        <!--</dependency>-->
+
         <!-- JSON in Java -->
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>

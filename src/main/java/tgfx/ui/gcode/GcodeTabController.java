@@ -13,6 +13,8 @@ import eu.hansolo.medusa.Gauge;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -108,14 +110,13 @@ public class GcodeTabController implements Initializable {
     private Button Run, Connect, gcodeZero, btnClearScreen, pauseResume, btnTest, btnHandleInhibitAllAxis;
     @FXML
     private GridPane coordLocationGridPane;
-    private float zScale = 0.1f;
-    String cmd;
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
     @FXML // fx:id="zMoveScale"
     private ChoiceBox<?> zMoveScale; // Value injected by FXMLLoader
+    private float zScale = 0.1f;
     @FXML
     private HBox gcodeTabControllerHBox;
 
@@ -348,32 +349,33 @@ public class GcodeTabController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /* add support for zmove
-         * 
+        /*
+         * add support for zmove
          */
 //        assert zMoveScale != null : "fx:id=\"zMoveScale\" was not injected: check your FXML file 'Position.fxml'.";
 //
 //        // Set up ChoiceBox selection handler
-//        zMoveScale.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number result) {
-//                switch ((int) result) {
-//                    case 0:
-//                        zScale = 10.0f;
-//                        break;
-//                    case 1:
-//                        zScale = 1.0f;
-//                        break;
-//                    case 2:
-//                        zScale = 0.1f;
-//                        break;
-//                }
+//        zMoveScale.getSelectionModel().selectedIndexProperty()
+//                .addListener((observableValue, number, result) -> {
+//            switch ((int) result) {
+//                case 0:
+//                    zScale = 10.0f;
+//                    break;
+//                case 1:
+//                    zScale = 1.0f;
+//                    break;
+//                case 2:
+//                    zScale = 0.1f;
+//                    break;
 //            }
 //        });
 
         timeStartDt = new Date();
 
-        setCNCMachineVisible(false);  //We default to NOT display the CNC machine pane.  Once the serial port is connected we will show this.
+        //We default to NOT display the CNC machine pane.
+        // Once the serial port is connected we will show this.
+        setCNCMachineVisible(false);
+
         //This adds our CNC Machine (2d preview) to our display window
         if (!gcodePane.getChildren().contains(cncMachine)) {
             gcodePane.getChildren().add(cncMachine); // Add the cnc machine to the gcode pane
@@ -399,7 +401,7 @@ public class GcodeTabController implements Initializable {
          * BINDINGS CODE
          */
         // FIXME
-        // gcodeTabControllerHBox.disableProperty().bind(TinygDriver.getInstance().connectionStatus.not());
+        // gcodeTabControllerHBox.disableProperty().bind(TinygDriver.getInstance().getConnectionStatus().not());
 
         /*
          * CHANGE LISTENERS
@@ -418,19 +420,6 @@ public class GcodeTabController implements Initializable {
         TinygDriver.getInstance().getMachine().getGcodeUnitMode()
                 .addListener((ov, oldValue, newValue) -> {
             String tmp = TinygDriver.getInstance().getMachine().getGcodeUnitMode().get();
-
-//            gcodeUnitMode.getSelectionModel().select(TinygDriver.getInstance().m.getGcodeUnitModeAsInt());
-            boolean lcdVisible = true;
-            if (TinygDriver.getInstance().getMachine().getGcodeUnitModeAsInt() == 0) {
-                // A bug in the jfxtras does not allow for units to be updated..
-                // we hide them if they are not mm
-                lcdVisible = false;
-            }
-//            xLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
-//            yLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
-//            zLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
-//            aLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
-//            velLcd.lcdUnitVisibleProperty().setValue(lcdVisible);
 
             Main.postConsoleMessage("[+]Gcode Unit Mode Changed to: " + tmp + "\n");
 
@@ -658,7 +647,6 @@ public class GcodeTabController implements Initializable {
     @FXML
     private void handleOpenFile(ActionEvent event) {
         Platform.runLater(() -> {
-//            logger.debug("handleOpenFile");
             try {
                 Main.postConsoleMessage("[+]Loading a gcode file.....\n");
                 FileChooser fc = new FileChooser();

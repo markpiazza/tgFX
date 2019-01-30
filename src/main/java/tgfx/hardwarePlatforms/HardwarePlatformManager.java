@@ -60,7 +60,14 @@ public class HardwarePlatformManager {
     }
 
     private void loadPlatformConfigs() {
-        File folder = new File("hardwarePlatforms");
+        File file = new File("src/main/resources");
+        System.err.println("hardware config: "+file.getPath());
+        for(File file1 : file.listFiles() ){
+            System.err.println(" - "+file1.getName());
+        }
+
+        // FIXME: THis needs to not be a absolute/relative path (should be resource path)
+        File folder = new File("src/main/resources/hardwarePlatforms");
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles==null) {
             logger.warn("Error loading hardware platforms, '"+folder.getName()+"' not found");

@@ -11,7 +11,14 @@
 <Tab fx:id="gcode_tab" closable="false" text="Gcode" xmlns:fx="http://javafx.com/fxml/1"
      xmlns="http://javafx.com/javafx/2.2" fx:controller="tgfx.ui.gcode.GcodeTabController">
     <HBox id="gcodeTabHbox" fx:id="gcodeTabControllerHBox" alignment="TOP_CENTER" minHeight="450.0"
-          style="-fx-background-color: rgba(0,0,0,0.08), linear-gradient(#9a9a9a, #909090), linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);&#10;-fx-background-insets: 0 0 -1 0,0,1;&#10;-fx-background-radius: 5,5,4;&#10;-fx-padding: 3 30 3 30;&#10;-fx-text-fill: #242d35;&#10;-fx-font-size: 14px;">
+          style="-fx-background-color: rgba(0,0,0,0.08),
+                    linear-gradient(#9a9a9a, #909090),
+                    linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+                 -fx-background-insets: 0 0 -1 0,0,1;
+                 -fx-background-radius: 5,5,4;
+                 -fx-padding: 3 30 3 30;
+                 -fx-text-fill: #242d35;
+                 -fx-font-size: 14px;">
         <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x66"/>
         </padding>

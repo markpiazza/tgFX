@@ -71,7 +71,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     // This disables the serial connection check so we can debug things
     // when there's no machine available.
     // TODO: need to write mock serial interface
-    private static final boolean DISABLE_UI_CONNECTION_CHECK = true;
+    private static final boolean DISABLE_UI_CONNECTION_CHECK = !false;
 
     private int oldRspLine = 0;
     //Time between config set'ers.
