@@ -1,7 +1,70 @@
-/*
- * Empty Stylesheet file.
- */
-
-.mainFxmlClass {
-
+#xGP
+{
+    -fx-padding: 10;
+    -fx-background-color:
+            #090a0c, linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+            linear-gradient(#20262b, #191d22),
+            radial-gradient(center 50% 0%, radius 100%, rgba(014,131,148,0.9), rgba(255,255,255,0));
 }
+
+
+#yGP
+{
+    -fx-padding: 10;
+    -fx-background-color:
+        #090a0c,linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(255, 66, 66,0.9), rgba(255,255,255,0));
+}
+
+#zGP
+{
+    -fx-padding: 10;
+    -fx-background-color:
+        #090a0c,linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(82, 255, 66,0.9), rgba(255,255,255,0));
+}
+
+#aGP
+{
+    -fx-padding: 10;
+    -fx-background-color:
+        #090a0c, linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(2, 85, 126, 0.9), rgba(255, 255, 255, 0));
+}
+
+#bGP
+{
+    -fx-padding: 10;
+    -fx-background-color:
+        #090a0c,linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(182, 055, 166,0.9), rgba(255,255,255,0));
+}
+
+#cGP
+{
+    -fx-padding: 10;
+    -fx-background-color:
+        #090a0c,linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(01, 5, 226,0.9), rgba(255,255,255,0));
+}
+
+
+#machine_settings_bottom
+{
+    -fx-background-color:#777785
+}
+
+#motor1,
+#motor2,
+#motor3,
+#motor4
+{
+    -fx-padding: 10;
+    /*-fx-background-image: url("../../background.jpg");*/
+}
+

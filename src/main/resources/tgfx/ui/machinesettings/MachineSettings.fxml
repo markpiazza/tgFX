@@ -18,7 +18,7 @@
                 <HBox>
                     <VBox id="machineSettingsVbox" HBox.hgrow="ALWAYS">
                         <HBox spacing="5.0" VBox.vgrow="ALWAYS">
-                            <VBox id="VBox" alignment="TOP_CENTER" blendMode="SRC_OVER" spacing="5.0" HBox.hgrow="NEVER">
+                            <VBox id="VBox" alignment="TOP_CENTER"  HBox.hgrow="NEVER">
                                 <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0"/>
                                 <VBox alignment="CENTER">
                                     <HBox id="motor_config_hbox" alignment="TOP_CENTER"  VBox.vgrow="NEVER">
@@ -77,8 +77,10 @@
                                     <Button mnemonicParsing="false" onAction="#handleApplyMachineSettings" text="Apply"/>
                                 </HBox>
                             </VBox>
+
                             <fx:include source="../../updater/firmware/firmwareUpdater.fxml" HBox.hgrow="ALWAYS"/>
-                            <VBox id="vBox2" alignment="CENTER" minWidth="250.0" style="&#10; " HBox.hgrow="NEVER">
+
+                            <VBox id="vBox2" alignment="CENTER" minWidth="250.0" HBox.hgrow="NEVER">
                                 <padding>
                                     <Insets bottom="5.0" fx:id="x53"/>
                                 </padding>

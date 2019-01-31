@@ -1,11 +1,6 @@
-#motor_config_hbox
+#machineSettingsVbox
 {
-    -fx-background-color: black;
-}
-
-#machineConfigLoaderLabel
-{
-    -fx-text-fill: white;
+    -fx-background-image: url("../../carbongcode.png");
 }
 
 #miscGP
@@ -13,11 +8,3 @@
     -fx-padding: 10;
 }
 
-#hBox4
-{
-    -fx-background-color: black;
-}
-
-#machineConfigLoaderLabel{
-    -fx-text-fill: white;
-}

@@ -3,55 +3,9 @@ root
     display: block;
 }
 
-#motorTxt
-{
-    -fx-text-fill: white;
-}
-
-#motor1,
-#motor2,
-#motor3,
-#motor4
-{
-    -fx-background-image: url("background.jpg");
-    -fx-padding: 10
-}
-
-
-#gcodeWindow
-{
-    -fx-background-color: darkslategray;
-}
-
-#gcodeTabHbox
-{
-    -fx-background-image: url("carbon.png");
-}
-
-#previewVbox
-{
-   -fx-background-image: url("background.jpg");
-}
-
-#machineSettingsVbox
-{
-    -fx-background-image: url("carbongcode.png");
-}
-
-#flowpanel
-{
-    -fx-background-color: black;
-}
-
 #consoleHBox
 {
-    -fx-background-color: grey;
-}
-
-#lblMachine,
-#lblAxis
-{
-    -fx-text-fill: white;
+    -fx-background-color: slategray;
 }
 
 #srText
@@ -63,15 +17,6 @@ root
     -fx-text-overrun: clip;
 }
 
-#tgfxTitle
-{
-    -fx-font-family: "Helvetica";
-    -fx-font-size: 40px;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-
-}
-
 #serialTitle
 {
     -fx-font-family: "Helvetica";
@@ -80,38 +25,52 @@ root
     -fx-text-fill: linear-gradient(white, #d0d0d0);
 }
 
-#settingsContent
-{
-     -fx-background-image: url("carbon.png");
-}
-
 #topMainTitle {
     -fx-background-image: url("carbon.png");
     -fx-background-color:
-        #090a0c,linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
         linear-gradient(#20262b, #191d22);
 }
 
-#dro,
-#droTitle {
-    -fx-background-radius: 9,8,5,4;
-    -fx-padding: 5 10 5 10;
-    -fx-font-family: "Helvetica";
-    -fx-font-size: 54px;
-    -fx-font-weight: bold;
-    -fx-text-overrun: clip;
-    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+#machineConfigLoaderLabel
+{
+    -fx-text-fill: white;
+}
+
+#motor_config_hbox
+{
+    -fx-background-color: black;
+}
+
+#motorTxt
+{
+    -fx-text-fill: white;
+}
+
+#hBox4
+{
+    -fx-background-color: black;
 }
 
 
-#dro {
-    -fx-background-color: white;
+#machineConfigLoaderLabel
+{
+    -fx-text-fill: white;
 }
 
+#lblMachine,
+#lblAxis
+{
+    -fx-text-fill: white;
+}
 
 .button
 {
-    -fx-background-color: #c3c4c4, linear-gradient(#d6d6d6 50%, white 100%),radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
+    -fx-background-color:
+            #c3c4c4,
+            linear-gradient(#d6d6d6 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
     -fx-background-radius: 30;
     -fx-background-insets: 0,1,1;
     -fx-text-fill: black;
@@ -136,11 +95,10 @@ root
 {
     -fx-border-color: white, white;
     -fx-border-width: 1, 1;
-    -fx-border-style: solid, segments(1, 1);
+    -fx-border-style: solid; /*, segments(1, 1);*/
     -fx-border-radius: 0, 0;
     -fx-border-insets: 1 1 1 1, 0;
 }
-
 
 .button:disabled,
 .button:default:disabled

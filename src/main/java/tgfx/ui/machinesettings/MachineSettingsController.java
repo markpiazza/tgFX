@@ -67,11 +67,10 @@ public class MachineSettingsController implements Initializable {
     }
 
     private void populateConfigFiles() {
-        // FIXME: THis needs to not be a absolute/relative path (should be resource path)
-        File folder = new File("src/main/resources/configs");
+        File folder = new File(System.getProperty("user.dir"));
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles==null) {
-            logger.warn("Error loading platform configs, "+folder.getName()+" not found");
+            logger.warn("Error loading platform configs, '"+folder.getName()+"' not found");
             return;
         }
         for (File listOfFile : listOfFiles) {
@@ -111,13 +110,13 @@ public class MachineSettingsController implements Initializable {
 
 
     private void writeConfigValue(JSONObject j) throws InterruptedException {
-        String topLevelParent = new String();
+        String topLevelParent;
         topLevelParent = (String) j.names().get(0);
         Iterator it = j.getJSONObject(topLevelParent).keys();
 
         while (it.hasNext()) {
             String k = (String) it.next();
-            Double value = (Double) j.getJSONObject(topLevelParent).getDouble(k);
+            Double value = j.getJSONObject(topLevelParent).getDouble(k);
             System.out.println("This is the value " + k + " " + decimalFormat.format(value));
             //value = Double.valueOf(decimalFormatjunctionDeviation.format(value));
             String singleJsonSetting = "{\"" + topLevelParent + k + "\":" + value + "}\n";

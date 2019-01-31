@@ -58,7 +58,7 @@
                 <Insets bottom="10.0" top="10.0"/>
             </padding>
             <!--<Window title="Gcode Preview" prefHeight="400" prefWidth="700"/>-->
-            <VBox id="previewVbox" fx:id="tester" alignment="BOTTOM_CENTER" rotate="180.0" spacing="5.0" style="-fx-background-radius: 10;&#10;" translateZ="1.0" HBox.hgrow="ALWAYS">
+            <VBox id="previewVbox" fx:id="tester" alignment="BOTTOM_CENTER" rotate="180.0" spacing="5.0" translateZ="1.0" HBox.hgrow="ALWAYS">
                 <effect>
                     <DropShadow color="WHITE" height="8.857142857142861" radius="3.9285714285714297" spread="0.49206349206349204" width="8.857142857142858"/>
                 </effect>

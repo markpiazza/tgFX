@@ -4,11 +4,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import java.net.URL?>
 <Tab closable="false" text="tgFX Settings" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tgfx.ui.tgfxsettings.TgfxSettingsController">
-    <AnchorPane id="settingsContent" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style=" -fx-background-color:&#10;        #090a0c,linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),&#10;        linear-gradient(#20262b, #191d22),&#10;        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));">
-        <HBox blendMode="SRC_ATOP" spacing="5.0" style="&#10;" AnchorPane.leftAnchor="0.0">
-            <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black&#10;">
+    <AnchorPane id="settingsContent" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <stylesheets>
+            <URL value="@tgfxsettings.css"/>
+        </stylesheets>
+        <HBox blendMode="SRC_ATOP" spacing="5.0" AnchorPane.leftAnchor="0.0">
+
+
+            <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS" HBox.margin="$x5">
+                <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
                     <Label text="Render" textFill="WHITE" />
                 </HBox>
                 <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
@@ -17,8 +23,13 @@
                         <ToggleButton fx:id="settingDrawBtn" maxWidth="77.0" minWidth="77.0" mnemonicParsing="false" onAction="#handleTogglePreview" prefWidth="77.0" text="Enabled" />
                       </graphic>
                     </Label>
+                    <VBox.margin>
+                        <Insets top="5.0" fx:id="x5" />
+                    </VBox.margin>
                 </HBox>
             </VBox>
+
+
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS" HBox.margin="$x5">
                 <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
                     <Label text="Build Info" textFill="WHITE" />
@@ -48,6 +59,8 @@
                     </Label>
                 </HBox>
             </VBox>
+
+
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
                     <Label text="Debug" textFill="WHITE" />

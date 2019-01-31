@@ -62,8 +62,7 @@ public class HardwarePlatformManager {
     }
 
     private void loadPlatformConfigs() {
-        // FIXME: This needs to not be a absolute/relative path (should be resource path)
-        File folder = new File(TgFXConstants.PATH_HAREWAREE_PLATFORMS);
+        File folder = new File(System.getProperty("user.dir"));
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles==null) {
             logger.error("Error loading hardware platforms, '{}' not found", folder.getName());
