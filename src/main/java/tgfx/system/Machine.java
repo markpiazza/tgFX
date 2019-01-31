@@ -33,7 +33,7 @@ public final class Machine {
     private static final Logger logger = LogManager.getLogger();
     private static Machine machineInstance;
 
-    public HardwarePlatform hardwarePlatform = new HardwarePlatform();
+    private HardwarePlatform hardwarePlatform = new HardwarePlatform();
 
     //TG Specific Machine EEPROM Values binding
     private SimpleDoubleProperty longestTravelAxisValue = new SimpleDoubleProperty();
@@ -109,6 +109,14 @@ public final class Machine {
             machineInstance = new Machine();
         }
         return machineInstance;
+    }
+
+    public HardwarePlatform getHardwarePlatform() {
+        return hardwarePlatform;
+    }
+
+    public void setHardwarePlatform(HardwarePlatform hardwarePlatform) {
+        this.hardwarePlatform = hardwarePlatform;
     }
 
     public GcodeCoordinateManager getGcodeCoordinateManager(){

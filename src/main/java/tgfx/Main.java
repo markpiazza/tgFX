@@ -575,7 +575,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                             TinygDriver.getInstance().getMachine()
                                 .getFirmwareBuild() + "\n" +
                             "Minimal Needed Version: " +
-                            TinygDriver.getInstance().getMachine().hardwarePlatform
+                            TinygDriver.getInstance().getMachine().getHardwarePlatform()
                                 .getMinimalBuildVersion().toString() + "\n\n" +
                             "Click ok to attempt to auto upgrade your TinyG. \n" +
                             " A Internet Connection is Required. \n." +

@@ -34,7 +34,7 @@ public class HardwarePlatformManager {
     }
 
     public static HardwarePlatformManager getInstance() {
-        if(hardwarePlatformManagerInstance==null){
+        if(hardwarePlatformManagerInstance == null){
             hardwarePlatformManagerInstance = new HardwarePlatformManager();
         }
         return hardwarePlatformManagerInstance;
@@ -44,7 +44,7 @@ public class HardwarePlatformManager {
     public void setPlatformByName(String name) {
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getPlatformName().equals(name)) {
-                TinygDriver.getInstance().getMachine().hardwarePlatform = platform;
+                TinygDriver.getInstance().getMachine().setHardwarePlatform(platform);
                 logger.info("Applied {} hardware Profile to System", name);
                 return;
             }
@@ -54,7 +54,7 @@ public class HardwarePlatformManager {
     public void setHardwarePlatformByVersionNumber(int verNumber) {
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getHardwarePlatformVersion() == verNumber) {
-                TinygDriver.getInstance().getMachine().hardwarePlatform = platform;
+                TinygDriver.getInstance().getMachine().setHardwarePlatform(platform);
                 logger.info("Applied {} hardware platform id number to System", verNumber);
                 return;
             }

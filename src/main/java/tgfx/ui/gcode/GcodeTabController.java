@@ -23,6 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -101,7 +102,8 @@ public class GcodeTabController implements Initializable {
 //    @FXML
 //    private static TextArea console;
     @FXML
-    private Button Run, Connect, gcodeZero, btnClearScreen, pauseResume, btnTest, btnHandleInhibitAllAxis;
+    private Button pauseResume;
+//    private Button Run, Connect, gcodeZero, btnClearScreen, pauseResume, btnTest, btnHandleInhibitAllAxis;
     @FXML
     private GridPane coordLocationGridPane;
 //    @FXML // ResourceBundle that was given to the FXMLLoader
@@ -331,7 +333,6 @@ public class GcodeTabController implements Initializable {
     @FXML
     private void handleDroMouseClick(MouseEvent me) {
         if (me.isSecondaryButtonDown()) { //Check to see if its a Right Click
-            String _axis;
             Gauge l = (Gauge) me.getSource();
             String t = String.valueOf(l.idProperty().get().charAt(0));
         }
@@ -471,12 +472,8 @@ public class GcodeTabController implements Initializable {
 //                        GcodeLine gcl = (GcodeLine) gcodeView.getSelectionModel().getSelectedItem();
 //                        if (TinygDriver.getInstance().isConnected().get()) {
 //                            logger.info("Double Clicked gcodeView " + gcl.getCodeLine());
-//                            try {
-//                                TinygDriver.getInstance().write(gcl.getGcodeLineJsonified());
-//                                tgfx.Main.postConsoleMessage(gcl.getGcodeLineJsonified());
-//                            } catch (Exception ex) {
-//                                java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//                            }
+//                            TinygDriver.getInstance().write(gcl.getGcodeLineJsonified());
+//                            tgfx.Main.postConsoleMessage(gcl.getGcodeLineJsonified());
 //                        } else {
 //                            logger.info("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
 //                            tgfx.Main.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());

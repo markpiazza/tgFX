@@ -164,13 +164,13 @@ public class TinygDriver extends Observable {
     }
 
     public void notifyBuildChanged() throws JSONException {
-        if(machine.hardwarePlatform.getMinimalBuildVersion() < this.machine.getFirmwareBuildVersion()){
+        if(machine.getHardwarePlatform().getMinimalBuildVersion() < this.machine.getFirmwareBuildVersion()){
             // This checks to see if the current build version on
             // TinyG is greater than what tgFX's hardware profile needs.
         }
 
         if (machine.getFirmwareBuildVersion() < machine
-                .hardwarePlatform.getMinimalBuildVersion() &&
+                .getHardwarePlatform().getMinimalBuildVersion() &&
                 this.machine.getFirmwareBuildVersion() != 0.0) {
             // too old of a build  we need to tell the GUI about this...
             // This is where PUB/SUB will fix this

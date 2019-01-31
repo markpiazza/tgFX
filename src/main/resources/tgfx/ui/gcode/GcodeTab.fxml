@@ -196,8 +196,11 @@
             </Gauge>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Velocity" GridPane.columnIndex="1" GridPane.rowIndex="0" textAlignment="RIGHT"/>
             <Gauge fx:id="velLcd" lcdDesign="RED_DARKRED" skinType="LCD" title="Velocity" unit="mm/min" oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false" decimals="3"/>
-            <HBox HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                 <Button fx:id="gcodeZero" focusTraversable="false" onAction="#handleZeroSystem" text="Zero All" VBox.vgrow="NEVER" alignment="BASELINE_LEFT"/>
+                <HBox.margin>
+                    <Insets fx:id="x727"/>
+                </HBox.margin>
                 <Button fx:id="gcodeHome" focusTraversable="false" onAction="#handleHomeXYZ" text="Home All" VBox.vgrow="NEVER" alignment="BASELINE_RIGHT"/>
             </HBox>
         </VBox>
