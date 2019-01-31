@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 /**
+ * ResponseCommand
  *
- * @author ril3y
  */
 public class ResponseCommand {
     private static final Logger logger = LogManager.getLogger();

@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2014 Synthetos LLC. All Rights reserved.
- * http://www.synthetos.com
- */
 package tgfx.utility;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +9,7 @@ import org.apache.logging.log4j.Logger;
  * timer expires, adds an entry to a queue
  *
  * @see AsyncTimer
- * @author pfarrell Created on Jan 27, 2014 12:36:51 AM
+ *
  */
 public class QueueUsingTimer<T> extends Thread {
 

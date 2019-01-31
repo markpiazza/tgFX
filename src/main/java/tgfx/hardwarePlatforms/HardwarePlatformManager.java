@@ -11,15 +11,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tgfx.TgFXConstants;
 import tgfx.tinyg.TinygDriver;
 
 /**
- * @author ril3y
+ * HardwarePlatformManager
+ *
  */
 public class HardwarePlatformManager {
     private static final Logger logger = LogManager.getLogger();
@@ -62,7 +63,13 @@ public class HardwarePlatformManager {
     }
 
     private void loadPlatformConfigs() {
-        File folder = new File(System.getProperty("user.dir"));
+        // FIXME: god damned java file loading
+        File folder = null;
+        try {
+            folder = new File(HardwarePlatformManager.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()+"/hardwarePlatforms");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles==null) {
             logger.error("Error loading hardware platforms, '{}' not found", folder.getName());
@@ -83,7 +90,6 @@ public class HardwarePlatformManager {
             }
         }
         logger.info("Loaded " + availablePlatforms.size() + " platform files");
-        availablePlatforms.size();
     }
 
     private void updatePlatformFiles() {

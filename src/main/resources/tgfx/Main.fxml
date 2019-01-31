@@ -28,7 +28,7 @@
                 <BorderPane.margin>
                     <Insets fx:id="x77"/>
                 </BorderPane.margin>
-                <TextArea fx:id="console" editable="false" focusTraversable="false" maxHeight="300.0" minHeight="50.0" wrapText="true" VBox.vgrow="ALWAYS">
+                <TextArea fx:id="console" editable="false" focusTraversable="false" maxHeight="300.0" minHeight="50.0" wrapText="true" VBox.vgrow="ALWAYS" >
                     <prefHeight>
                         <Long fx:value="75"/>
                     </prefHeight>

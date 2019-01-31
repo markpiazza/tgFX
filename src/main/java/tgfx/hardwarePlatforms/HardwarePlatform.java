@@ -1,23 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.hardwarePlatforms;
 
-import java.util.ArrayList;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
+ * HardwarePlatform
  *
- * @author ril3y
  */
 public class HardwarePlatform {
-    private static final Logger logger = LogManager.getLogger();
-
     private static HardwarePlatform hardwarePlatformInstance;
-
-    private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
 
     private String platformName;
     private Double minimalBuildVersion;
@@ -27,7 +15,7 @@ public class HardwarePlatform {
     private int hardwarePlatformVersion = -1;
     private boolean isUpgradeable;
 
-    public HardwarePlatform() {
+    private HardwarePlatform() {
     }
 
     public static HardwarePlatform getInstance() {

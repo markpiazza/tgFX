@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.system;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -10,8 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * GcodeCoordinateSystem
  *
- * @author rileyporter
  */
 public final class GcodeCoordinateSystem {
     private static final Logger logger = LogManager.getLogger();

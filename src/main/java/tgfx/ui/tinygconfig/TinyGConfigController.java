@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.ui.tinygconfig;
 
 import java.net.URL;
@@ -25,9 +21,10 @@ import tgfx.system.Motor;
 import tgfx.tinyg.TinygDriver;
 
 /**
+ * TinyGConfigController
+ *
  * FXML Controller class
  *
- * @author rileyporter
  */
 public class TinyGConfigController implements Initializable {
     private static final Logger logger = LogManager.getLogger();

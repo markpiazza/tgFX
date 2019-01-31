@@ -29,8 +29,8 @@ import tgfx.tinyg.TinygDriver;
 import tgfx.ui.gcode.GcodeTabController;
 
 /**
+ * CNCMachine pane
  *
- * @author rileyporter
  */
 public class CNCMachine extends Pane {
     private static final Logger logger = LogManager.getLogger();
@@ -63,6 +63,7 @@ public class CNCMachine extends Pane {
         /*
          * CSS
          */
+        // FIXME: no no no. no programmatically set css we have css files for that
         this.setStyle("-fx-background-color: black; -fx-border-color: orange;  -fx-border-width: .5;");
 
         /*
@@ -217,6 +218,7 @@ public class CNCMachine extends Pane {
         double scale = 1;
         double unitMagnication = 1;
 
+        // FIXME: commented out code
 //        if (TinygDriver.getInstance().m.getGcodeUnitMode().get().equals(GcodeUnitMode.inches.toString())) {
 //            unitMagnication = 5;  //INCHES
 //        } else {
@@ -261,9 +263,10 @@ public class CNCMachine extends Pane {
             l = new Line(xPrevious, yPrevious, newX, newY);
             l.setStrokeWidth(.5);
         }
-        
+
+        // TODO: Pull these out to CNC machine or Draw2d these are out of place
         xPrevious = newX;
-        yPrevious = newY; //TODO Pull these out to CNC machine or Draw2d these are out of place
+        yPrevious = newY;
 
         if (TinygDriver.getInstance().getMachine().getMotionMode().get().equals("traverse")) {
             //G0 Moves

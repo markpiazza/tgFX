@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.ui.gcode;
 
 import java.io.*;
@@ -23,7 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -47,9 +43,10 @@ import tgfx.tinyg.TinygDriver;
 import tgfx.ui.tgfxsettings.TgfxSettingsController;
 
 /**
+ * GcodeTabController
+ *
  * FXML Controller class
  *
- * @author rileyporter
  */
 public class GcodeTabController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
@@ -93,28 +90,22 @@ public class GcodeTabController implements Initializable {
 //    private Pane previewPane;
     @FXML
     private TableColumn<GcodeLine, String> gcodeCol;
-//    @FXML
-//    private static TableView gcodeView;
+    @FXML
+    private static TableView gcodeView;
     @FXML
     private Text xAxisLocation, yAxisLocation;
     @FXML
     private static Text gcodeStatusMessage;  //Cursor location on the cncMachine Canvas
-//    @FXML
-//    private static TextArea console;
     @FXML
     private Button pauseResume;
 //    private Button Run, Connect, gcodeZero, btnClearScreen, pauseResume, btnTest, btnHandleInhibitAllAxis;
     @FXML
     private GridPane coordLocationGridPane;
-//    @FXML // ResourceBundle that was given to the FXMLLoader
-//    private ResourceBundle resources;
-//    @FXML // URL location of the FXML file that was given to the FXMLLoader
-//    private URL location;
 //    @FXML // fx:id="zMoveScale"
 //    private ChoiceBox<?> zMoveScale; // Value injected by FXMLLoader
 //    private float zScale = 0.1f;
-//    @FXML
-//    private HBox gcodeTabControllerHBox;
+    @FXML
+    private HBox gcodeTabControllerHBox;
 
     /**
      * Initializes the controller class.
@@ -302,7 +293,7 @@ public class GcodeTabController implements Initializable {
                     break;
             }
         }
-        tgfx.Main.postConsoleMessage("Homing " + _axis.toUpperCase() + " Axis...\n");
+        Main.postConsoleMessage("Homing " + _axis.toUpperCase() + " Axis...\n");
     }
 
     @FXML
@@ -327,7 +318,7 @@ public class GcodeTabController implements Initializable {
                     break;
             }
         }
-        tgfx.Main.postConsoleMessage("Zeroed " + _axis.toUpperCase() + " Axis...\n");
+        Main.postConsoleMessage("Zeroed " + _axis.toUpperCase() + " Axis...\n");
     }
 
     @FXML
@@ -395,8 +386,9 @@ public class GcodeTabController implements Initializable {
         /*
          * BINDINGS CODE
          */
-        // FIXME
-        // gcodeTabControllerHBox.disableProperty().bind(TinygDriver.getInstance().getConnectionStatus().not());
+        // FIXME: java.lang.RuntimeException: HBox.disable : A bound value cannot be set.
+        //gcodeTabControllerHBox.disableProperty().bind(TinygDriver.getInstance().getConnectionStatus().not());
+
 
         /*
          * CHANGE LISTENERS
@@ -457,7 +449,8 @@ public class GcodeTabController implements Initializable {
         gcodeCol.setCellValueFactory(new PropertyValueFactory<>("codeLine"));
         GcodeLine n = new GcodeLine("Click open to load..", 0);
 
-        // FIXME
+
+        // FIXME: gcodeView == null here for some reason
 //        gcodeView.getItems().setAll(data);
 //        data.add(n);
 
@@ -473,10 +466,10 @@ public class GcodeTabController implements Initializable {
 //                        if (TinygDriver.getInstance().isConnected().get()) {
 //                            logger.info("Double Clicked gcodeView " + gcl.getCodeLine());
 //                            TinygDriver.getInstance().write(gcl.getGcodeLineJsonified());
-//                            tgfx.Main.postConsoleMessage(gcl.getGcodeLineJsonified());
+//                            Main.postConsoleMessage(gcl.getGcodeLineJsonified());
 //                        } else {
 //                            logger.info("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
-//                            tgfx.Main.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
+//                            Main.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
 //                        }
 //
 //                    }
@@ -520,7 +513,7 @@ public class GcodeTabController implements Initializable {
 
     @FXML
     private void handleClearScreen(ActionEvent evt) {
-        tgfx.Main.postConsoleMessage("Clearing Screen...\n");
+        Main.postConsoleMessage("Clearing Screen...\n");
         cncMachine.clearScreen();
         //clear this so our first line added draws correctly
         Draw2d.setFirstDraw(true);
@@ -534,7 +527,7 @@ public class GcodeTabController implements Initializable {
                 //This sends the 0x18 byte
                 TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_RESET);
 
-                //We disable everything while waiting for theboard to reset
+                //We disable everything while waiting for the board to reset
 //                 topAnchorPane.setDisable(true);
 //                 topTabPane.setDisable(true);
 
@@ -567,7 +560,7 @@ public class GcodeTabController implements Initializable {
         updateProgress(test);
         test += 5;
 
-        //tgfx.Main.postConsoleMessage("Test!");
+        //Main.postConsoleMessage("Test!");
         //timeElapsedTxt.setText("hello");
 
 //        Iterator ii = null;
@@ -596,7 +589,7 @@ public class GcodeTabController implements Initializable {
                     }
                     if (gcodeLine.getCodeLine().toLowerCase().contains("(")) {
                         TinygDriver.getInstance().write("**COMMENT**" + gcodeLine.getCodeLine());
-//                            tgfx.Main.postConsoleMessage("GCODE COMMENT:" + gcodeLine.getCodeLine());
+//                            Main.postConsoleMessage("GCODE COMMENT:" + gcodeLine.getCodeLine());
                         continue;
                     }
 
@@ -651,7 +644,7 @@ public class GcodeTabController implements Initializable {
                     HOME_DIR = System.getProperty("user.home");  //Get Home DIR in Windows
                 }
 
-                fc.setInitialDirectory(new File(HOME_DIR));  //This will find osx users home dir
+                fc.setInitialDirectory(new File(HOME_DIR));
                 File f = fc.showOpenDialog(null);
                 FileInputStream fstream = new FileInputStream(f);
                 DataInputStream in = new DataInputStream((fstream));

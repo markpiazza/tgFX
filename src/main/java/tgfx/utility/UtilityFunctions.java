@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.utility;
 
 import java.util.MissingResourceException;
@@ -12,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import tgfx.TgFXConstants;
 
 /**
+ * UtilityFunctions
  *
- * @author ril3y
  */
 public class UtilityFunctions {
     private static final Logger logger = LogManager.getLogger();

@@ -1,8 +1,3 @@
-/*
- * Copyright (C) 2014 Synthetos LLC. All Rights reserved.
- * http://www.synthetos.com
- */
-
 package tgfx.utility;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,8 +7,7 @@ import org.apache.logging.log4j.Logger;
  * The <code>AsyncTimer</code> class implements a timer that will fire off asynchronously
  * and set the callback's semaphore variable.
  * @see Timeable
- * @author pfarrell
- * Created on Jan 24, 2014 4:23:40 PM
+ *
  */
 public class AsyncTimer extends Thread {
     /** logger instance */

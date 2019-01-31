@@ -1,19 +1,13 @@
-/*
- * Copyright (C) 2013-2014 Synthetos LLC. All Rights reserved.
- * http://www.synthetos.com
- */
 package tgfx;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tgfx.tinyg.TinygDriver;
 import tgfx.ui.gcode.GcodeTabController;
 
 /**
- *
- * @author ril3y
+ * SerialWriter
  */
 public class SerialWriter implements Runnable {
     private static final Logger logger = LogManager.getLogger();

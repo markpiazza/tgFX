@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2013-2014 Synthetos LLC. All Rights reserved.
- * http://www.synthetos.com
- */
 package tgfx;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * SerialDriver
  *
- * @author ril3y
  */
 public class SerialDriver implements SerialPortEventListener {
     private static final Logger logger = LogManager.getLogger();

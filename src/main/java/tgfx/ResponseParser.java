@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2013-2014 Synthetos LLC. All Rights reserved.
- * http://www.synthetos.com
- */
 package tgfx;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,9 +6,7 @@ import org.json.*;
 import java.util.Observable;
 import javafx.application.Platform;
 import jfxtras.labs.dialogs.MonologFX;
-import jfxtras.labs.dialogs.MonologFXBuilder;
 import jfxtras.labs.dialogs.MonologFXButton;
-import jfxtras.labs.dialogs.MonologFXButtonBuilder;
 
 import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_A;
 import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_B;
@@ -33,8 +27,7 @@ import tgfx.tinyg.TinygDriver;
 import tgfx.tinyg.ResponseCommand;
 
 /**
- *
- * @author ril3y
+ * ResponseParser
  */
 public class ResponseParser extends Observable implements Runnable {
     private static final Logger logger = LogManager.getLogger();
@@ -70,7 +63,7 @@ public class ResponseParser extends Observable implements Runnable {
 
     @Override
     public void run() {
-        logger.info("Response Parser Running");
+        logger.info("Response Parser Thread Running...");
         while (RUN) {
             try {
                 line = TinygDriver.jsonQueue.take();

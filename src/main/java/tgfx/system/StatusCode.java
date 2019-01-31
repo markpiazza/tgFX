@@ -9,8 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * StatusCode
  *
- * @author ril3y
+ * TODO: Any reason this shouldn't be an enum?
  */
 public class StatusCode {
     private static final Logger logger = LogManager.getLogger();
@@ -18,8 +19,6 @@ public class StatusCode {
     private int statusNUmber;
     private String message;
     private String statusType;
-    
-    
 
 //    private emum
 //    "INTERNAL","GCODE","INPUT","LOW-LEVEL"

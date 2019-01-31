@@ -9,8 +9,7 @@ import org.apache.logging.log4j.Logger;
 import tgfx.Main;
 
 /**
- *
- * @author ril3y
+ * CommandManager
  *
  */
 public class CommandManager {

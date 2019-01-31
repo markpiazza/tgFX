@@ -1,7 +1,3 @@
-/*
- * tgFX Socket Monitor Class
- * Copyright Synthetos.com
- */
 package tgfx.external;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,8 +8,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
+ * ConnectionHandler
  *
- * @author ril3y
+ * TODO: is this class ever used?
  */
 public class SocketMonitor {
     private static final Logger logger = LogManager.getLogger();

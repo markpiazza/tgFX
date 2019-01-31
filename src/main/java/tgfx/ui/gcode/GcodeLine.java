@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.ui.gcode;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -9,8 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * GcodeLine
  *
- * @author ril3y
  */
 public class GcodeLine {
     private static final Logger logger = LogManager.getLogger();

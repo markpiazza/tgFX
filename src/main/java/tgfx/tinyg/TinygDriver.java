@@ -1,9 +1,3 @@
-/**
- * tgFX Driver Class 
- * Copyright (C) 2014 Synthetos LLC. All Rights reserved.
- * http://www.synthetos.com
- * 
- */
 package tgfx.tinyg;
 
 import java.util.*;
@@ -31,6 +25,10 @@ import tgfx.system.Motor;
 import tgfx.hardwarePlatforms.HardwarePlatformManager;
 import tgfx.utility.AsyncTimer;
 
+/**
+ * TinygDriver
+ *
+ */
 public class TinygDriver extends Observable {
     private static final Logger logger = LogManager.getLogger();
 

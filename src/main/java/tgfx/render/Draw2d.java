@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.render;
 
 import javafx.scene.paint.Color;
@@ -10,7 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * @author ril3y
+ * Draw2d
+ *
  */
 public class Draw2d {
     private static final Logger logger = LogManager.getLogger();

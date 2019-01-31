@@ -38,3 +38,14 @@
     -fx-background-image: url("../../background.jpg");
     -fx-background-radius: 10;
 }
+
+Gauge
+{
+    -fx-background-radius: 9,8,5,4;
+    -fx-padding: 5 10 5 10;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 54px;
+    -fx-font-weight: bold;
+    -fx-text-overrun: clip;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+}

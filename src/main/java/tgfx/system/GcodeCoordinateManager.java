@@ -1,18 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.system;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import javafx.beans.property.StringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * GcodeCoordinateManager
  *
- * @author rileyporter
  */
 public class GcodeCoordinateManager {
     private static final Logger logger = LogManager.getLogger();

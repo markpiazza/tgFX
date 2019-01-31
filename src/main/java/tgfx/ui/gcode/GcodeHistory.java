@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.ui.gcode;
 
 import java.util.ArrayList;
@@ -10,8 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * GcodeHistory
  *
- * @author rileyporter
  */
 public final class GcodeHistory {
     private static final Logger logger = LogManager.getLogger();

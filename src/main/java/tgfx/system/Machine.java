@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.system;
 
 import java.util.ArrayList;
@@ -26,14 +22,12 @@ import tgfx.tinyg.ResponseCommand;
  * Machine
  * contains machine specific values (states, switches, acceleration, axises, jog and travel )
  *
- * @author ril3y
- * @author mpiazza
  */
 public final class Machine {
     private static final Logger logger = LogManager.getLogger();
     private static Machine machineInstance;
 
-    private HardwarePlatform hardwarePlatform = new HardwarePlatform();
+    private HardwarePlatform hardwarePlatform = HardwarePlatform.getInstance();
 
     //TG Specific Machine EEPROM Values binding
     private SimpleDoubleProperty longestTravelAxisValue = new SimpleDoubleProperty();
@@ -85,6 +79,10 @@ public final class Machine {
     private String lastMessage = "";
     private String machineName;
 
+    /**
+     * Machine
+     *
+     */
     public Machine() {
         motors.add(new Motor(1));
         motors.add(new Motor(2));

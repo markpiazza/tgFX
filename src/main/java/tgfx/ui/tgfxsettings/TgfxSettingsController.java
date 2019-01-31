@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.ui.tgfxsettings;
 
 import java.net.URL;
@@ -16,9 +12,10 @@ import org.apache.logging.log4j.Logger;
 import tgfx.utility.UtilityFunctions;
 
 /**
+ * TgfxSettingsController
+
  * FXML Controller class
  *
- * @author rileyporter
  */
 public class TgfxSettingsController implements Initializable {
 

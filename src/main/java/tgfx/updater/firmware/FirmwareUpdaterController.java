@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.updater.firmware;
 
 import java.io.File;
@@ -24,9 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import jfxtras.labs.dialogs.MonologFX;
-import jfxtras.labs.dialogs.MonologFXBuilder;
 import jfxtras.labs.dialogs.MonologFXButton;
-import jfxtras.labs.dialogs.MonologFXButtonBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tgfx.Main;
@@ -34,9 +28,10 @@ import tgfx.tinyg.*;
 import tgfx.utility.UtilityFunctions;
 
 /**
- * FXML Controller class
+ * FirmwareUpdaterController
  *
- * @author ril3y
+ * FXML Controller class
+
  */
 public class FirmwareUpdaterController implements Initializable {
     private static final Logger logger = LogManager.getLogger();

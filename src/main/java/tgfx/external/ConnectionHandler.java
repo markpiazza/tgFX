@@ -12,6 +12,10 @@ import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * ConnectionHandler
+ *
+ */
 class ConnectionHandler implements Runnable, Observer {
     private static final Logger logger = LogManager.getLogger();
 
@@ -23,7 +27,7 @@ class ConnectionHandler implements Runnable, Observer {
         SerialDriver ser = SerialDriver.getInstance();
         logger.info("Opening Remote Listener Socket");
 //        ser.addObserver(this);
-        Thread t = new Thread(this);
+//        Thread t = new Thread(this);
 //        t.start();
     }
 

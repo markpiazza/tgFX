@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.tinyg;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 
 /**
+ * MnemonicManager
  *
- * @author ril3y
  */
 public class MnemonicManager {
     private static final Logger logger = LogManager.getLogger();

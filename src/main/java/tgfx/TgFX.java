@@ -1,34 +1,32 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx;
 
-import eu.hansolo.medusa.Gauge;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
-
 /**
+ * TgFX
  *
- * @author ril3y
  */
 public class TgFX extends Application {
     private static final Logger logger = LogManager.getLogger();
 
+    private static Main mainController;
+
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource(TgFXConstants.STAGE_FXML_MAIN));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(TgFXConstants.STAGE_FXML_MAIN));
+        Parent root = loader.load();
         Scene scene = new Scene(root);
         scene.setRoot(root);
+
+        mainController = loader.getController();
 
         stage.setMinHeight(TgFXConstants.STAGE_MIN_HEIGHT);
         stage.setMinWidth(TgFXConstants.STAGE_MIN_WIDTH);
@@ -39,5 +37,9 @@ public class TgFX extends Application {
     public static void main(String[] args) {
         logger.info("Starting up TgFX");
         Application.launch(TgFX.class, args);
+    }
+
+    static Main getMainController(){
+        return mainController;
     }
 }

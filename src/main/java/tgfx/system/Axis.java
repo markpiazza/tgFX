@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.system;
 
 import java.text.DecimalFormat;
@@ -31,6 +27,11 @@ import tgfx.tinyg.ResponseCommand;
  * x_homing_search_velocity 2400.000 mm/min [xhl] x_homing_latch_velocity
  * 100.000 mm/min [xhz] x_homing_zero_offset 5.000 mm [xhw] x_homing_work_offset
  * 200.000 mm
+ *
+ */
+
+/**
+ * Axis
  *
  */
 public final class Axis {

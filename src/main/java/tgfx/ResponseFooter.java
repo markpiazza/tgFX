@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * ResponseFooter
  *
- * @author ril3y
  */
 public class ResponseFooter {
     private static final Logger logger = LogManager.getLogger();

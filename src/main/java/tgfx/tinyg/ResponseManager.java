@@ -1,12 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.tinyg;
 
 /**
+ * ResponseManager
  *
- * @author ril3y
+ * TODO: any reason this shouldn't be a enum?
  */
 public class ResponseManager {
     public static final String RESPONSE_FOOTER = "\"f\":[";

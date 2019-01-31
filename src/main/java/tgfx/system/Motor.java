@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.system;
 
 import java.util.Iterator;
@@ -14,8 +10,9 @@ import tgfx.tinyg.TinygDriver;
 import tgfx.tinyg.ResponseCommand;
 
 /**
+ * Motor
  *
- * @author ril3y
+ * TODO: this should be a POJO, move the json conversion out into an impl
  */
 public class Motor {
     private static final Logger logger = LogManager.getLogger();

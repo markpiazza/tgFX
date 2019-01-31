@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2013 Synthetos LLC. All Rights reserved.
- * http://www.synthetos.com
- */
 package tgfx.utility;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +9,7 @@ import java.util.logging.Logger;
 /**
  * The <class>TimerTest</code> class is a simple test driver for AsyncTimer
  * It should be a JUnit test, but that server is down right now.
- * @author pfarrell
+ *
  */
 public class TimerTest implements Timeable {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger();

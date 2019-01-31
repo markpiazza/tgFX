@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.ui.machinesettings;
 
 import java.io.BufferedReader;
@@ -11,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
@@ -25,6 +22,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import org.json.JSONObject;
 import tgfx.Main;
+import tgfx.hardwarePlatforms.HardwarePlatformManager;
 import tgfx.tinyg.CommandManager;
 import tgfx.tinyg.TinygDriver;
 
@@ -32,10 +30,12 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import org.json.JSONException;
+
 /**
+ * MachineSettingsController
+ *
  * FXML Controller class
  *
- * @author rileyporter
  */
 public class MachineSettingsController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
@@ -67,7 +67,13 @@ public class MachineSettingsController implements Initializable {
     }
 
     private void populateConfigFiles() {
-        File folder = new File(System.getProperty("user.dir"));
+        // FIXME: god damned java file loading
+        File folder = null;
+        try {
+            folder = new File(HardwarePlatformManager.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()+"/configs");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles==null) {
             logger.warn("Error loading platform configs, '"+folder.getName()+"' not found");
@@ -82,6 +88,7 @@ public class MachineSettingsController implements Initializable {
                 }
             }
         }
+        logger.info("Loaded " + configsListView.getItems().size() + " platform files");
     }
 
     @FXML
@@ -146,7 +153,14 @@ public class MachineSettingsController implements Initializable {
         }
         // Why are we reading the file 2x?  It is to get the count of elements
         // we need to write.. then writing each line... so we just do it 2x.
-        File selected_config = new File(System.getProperty("user.dir") +
+        // FIXME: god damned java file loading
+        File folder = null;
+        try {
+            folder = new File(MachineSettingsController.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        File selected_config = new File(folder.getPath() +
                 System.getProperty("file.separator") + "configs" +
                 System.getProperty("file.separator") +
                 configsListView.getSelectionModel().getSelectedItem());
