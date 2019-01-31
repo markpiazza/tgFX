@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="AnchorPane" fx:id="topAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="1280.0" style="&#10;"
+<VBox id="AnchorPane" fx:id="topAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="1280.0"
       xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tgfx.Main">
     <layoutX>
         <Long fx:value="0"/>
@@ -16,11 +16,9 @@
     <stylesheets>
         <URL value="@main.css"/>
     </stylesheets>
-    <BorderPane AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <bottom>
-            <VBox id="consoleHBox" fx:id="consoleVBox" alignment="CENTER" prefHeight="120.0"
-                  style="-fx-background-color: GREY;" BorderPane.alignment="CENTER">
+            <VBox id="consoleHBox" fx:id="consoleVBox" alignment="CENTER" prefHeight="120.0" BorderPane.alignment="CENTER">
                 <padding>
                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x66"/>
                 </padding>
@@ -30,8 +28,7 @@
                 <BorderPane.margin>
                     <Insets fx:id="x77"/>
                 </BorderPane.margin>
-                <TextArea fx:id="console" editable="false" focusTraversable="false" maxHeight="300.0" minHeight="50.0"
-                          wrapText="true" VBox.vgrow="ALWAYS">
+                <TextArea fx:id="console" editable="false" focusTraversable="false" maxHeight="300.0" minHeight="50.0" wrapText="true" VBox.vgrow="ALWAYS">
                     <prefHeight>
                         <Long fx:value="75"/>
                     </prefHeight>
@@ -44,9 +41,7 @@
                         <Long fx:value="-1"/>
                     </prefWidth>
                 </TextField>
-                <FlowPane id="flowPane1" alignment="CENTER_RIGHT" columnHalignment="CENTER" maxHeight="22.0"
-                          minHeight="22.0"
-                          prefHeight="22.0" style="-fx-background-color:black;" VBox.vgrow="ALWAYS">
+                <FlowPane id="flowPane1" alignment="CENTER_RIGHT" columnHalignment="CENTER" maxHeight="22.0" minHeight="22.0" prefHeight="22.0" VBox.vgrow="ALWAYS">
                     <hgap>
                         <Long fx:value="0"/>
                     </hgap>
@@ -61,28 +56,24 @@
                     </Label>
                     <Separator id="separatorVertical4" orientation="VERTICAL"/>
                     <Label id="srText" text="Units" textFill="WHITE"/>
-                    <Label id="srText" fx:id="srUnits" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"
-                           textFill="$x1"/>
+                    <Label id="srText" fx:id="srUnits" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?" textFill="$x1"/>
                     <Separator id="separatorVertical4" orientation="VERTICAL"/>
                     <Label id="srText" text="Ver" textFill="WHITE"/>
-                    <Label id="srText" fx:id="srVer" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"
-                           textFill="$x1">
+                    <Label id="srText" fx:id="srVer" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?" textFill="$x1">
                         <graphicTextGap>
                             <Long fx:value="4"/>
                         </graphicTextGap>
                     </Label>
                     <Separator id="separatorVertical4" orientation="VERTICAL"/>
                     <Label id="srText" text="Build" textFill="WHITE"/>
-                    <Label id="srText" fx:id="srBuild" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"
-                           textFill="$x1"/>
+                    <Label id="srText" fx:id="srBuild" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?" textFill="$x1"/>
                     <Separator id="separatorVertical4" orientation="VERTICAL"/>
                     <Label id="srText" text="Motion Mode" textFill="WHITE">
                         <FlowPane.margin>
                             <Insets left="5.0" right="5.0" fx:id="x6_x0"/>
                         </FlowPane.margin>
                     </Label>
-                    <Label id="srText" fx:id="srMomo" alignment="CENTER" maxWidth="78.0" prefWidth="78.0" text="?"
-                           textFill="$x1">
+                    <Label id="srText" fx:id="srMomo" alignment="CENTER" maxWidth="78.0" prefWidth="78.0" text="?" textFill="$x1">
                         <FlowPane.margin>
                             <Insets right="5.0" fx:id="x2"/>
                         </FlowPane.margin>
@@ -93,8 +84,7 @@
                             <Insets left="5.0" fx:id="x3"/>
                         </FlowPane.margin>
                     </Label>
-                    <Label id="srText" fx:id="srState" alignment="CENTER" maxWidth="-Infinity" prefWidth="55.0" text="?"
-                           FlowPane.margin="$x2">
+                    <Label id="srText" fx:id="srState" alignment="CENTER" maxWidth="-Infinity" prefWidth="55.0" text="?" FlowPane.margin="$x2">
                         <textFill>
                             <Color blue="0.750" green="0.750" red="0.750" fx:id="x4"/>
                         </textFill>
@@ -105,12 +95,10 @@
                         </FlowPane.margin>
                     </Separator>
                     <Label id="srText" text="Coord System" textFill="WHITE"/>
-                    <Label id="srText" fx:id="srCoord" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"
-                           textFill="$x1"/>
+                    <Label id="srText" fx:id="srCoord" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?" textFill="$x1"/>
                     <Separator id="separatorVertical4" orientation="VERTICAL"/>
                     <Label id="srText" text="Buffer" textFill="WHITE" visible="false"/>
-                    <Label id="srText" fx:id="srBuffer" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"
-                           textFill="$x1"/>
+                    <Label id="srText" fx:id="srBuffer" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?" textFill="$x1"/>
                 </FlowPane>
             </VBox>
         </bottom>
@@ -140,20 +128,16 @@
                     <padding>
                         <Insets right="5.0" fx:id="x2"/>
                     </padding>
-                    <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0"
-                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <spacing>
                             <Long fx:value="5"/>
                         </spacing>
-                        <Label fx:id="serialTitle" alignment="CENTER_RIGHT"
-                               text="Serial Ports: " HBox.hgrow="ALWAYS"/>
-                        <ChoiceBox fx:id="serialPorts" focusTraversable="false" minHeight="21.0" minWidth="120.0"
-                                   HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="serialTitle" alignment="CENTER_RIGHT" text="Serial Ports: " HBox.hgrow="ALWAYS"/>
+                        <ChoiceBox fx:id="serialPorts" focusTraversable="false" minHeight="21.0" minWidth="120.0" HBox.hgrow="ALWAYS"/>
                         <Button fx:id="Connect" focusTraversable="false" onAction="#handleConnect" text="Connect"/>
                         <Button fx:id="reScan" focusTraversable="false" onAction="#FXreScanSerial" text="Re-Scan"/>
                     </HBox>
-                    <Text fill="WHITE" layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                          text="tgFX - TinyG Controller"/>
+                    <Text fill="WHITE" layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="tgFX - TinyG Controller"/>
                 </AnchorPane>
             </HBox>
         </top>

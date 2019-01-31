@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tgfx.TgFXConstants;
 import tgfx.tinyg.TinygDriver;
 
 /**
@@ -28,6 +29,7 @@ public class HardwarePlatformManager {
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
 
     public HardwarePlatformManager() {
+        logger.info("Starting HardwarePlatformManager");
         this.loadPlatformConfigs();
     }
 
@@ -43,7 +45,7 @@ public class HardwarePlatformManager {
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getPlatformName().equals(name)) {
                 TinygDriver.getInstance().getMachine().hardwarePlatform = platform;
-                logger.info("Applied " + name + " hardware Profile to System");
+                logger.info("Applied {} hardware Profile to System", name);
                 return;
             }
         }
@@ -53,24 +55,18 @@ public class HardwarePlatformManager {
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getHardwarePlatformVersion() == verNumber) {
                 TinygDriver.getInstance().getMachine().hardwarePlatform = platform;
-                logger.info("Applied " + verNumber + " hardware platform id number to System");
+                logger.info("Applied {} hardware platform id number to System", verNumber);
                 return;
             }
         }
     }
 
     private void loadPlatformConfigs() {
-        File file = new File("src/main/resources");
-        System.err.println("hardware config: "+file.getPath());
-        for(File file1 : file.listFiles() ){
-            System.err.println(" - "+file1.getName());
-        }
-
-        // FIXME: THis needs to not be a absolute/relative path (should be resource path)
-        File folder = new File("src/main/resources/hardwarePlatforms");
+        // FIXME: This needs to not be a absolute/relative path (should be resource path)
+        File folder = new File(TgFXConstants.PATH_HAREWAREE_PLATFORMS);
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles==null) {
-            logger.warn("Error loading hardware platforms, '"+folder.getName()+"' not found");
+            logger.error("Error loading hardware platforms, '{}' not found", folder.getName());
             return;
         }
         for (File listOfFile : listOfFiles) {
@@ -81,10 +77,8 @@ public class HardwarePlatformManager {
                         BufferedReader br = new BufferedReader(new FileReader(listOfFile));
                         HardwarePlatform hp = gson.fromJson(br, HardwarePlatform.class);
                         availablePlatforms.add(hp);
-                    } catch (FileNotFoundException | JsonIOException ex) {
-                        logger.error("Error loading hardware platforms: " + ex.getMessage());
-                    }catch (JsonSyntaxException ex){
-                        logger.error(ex.getMessage());
+                    } catch (FileNotFoundException | JsonSyntaxException | JsonIOException ex) {
+                        logger.error("Error loading hardware platforms: {}", ex.getMessage());
                     }
                 }
             }
@@ -94,6 +88,6 @@ public class HardwarePlatformManager {
     }
 
     private void updatePlatformFiles() {
-        //todo code in support for updating platform files from remote server
+        // TODO: code in support for updating platform files from remote server
     }
 }

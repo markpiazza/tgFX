@@ -215,22 +215,22 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     private void handleConnect(ActionEvent event) {
         Platform.runLater(() -> {
             if (serialPorts.getSelectionModel().getSelectedItem() == (null)) {
-                postConsoleMessage("[!]Error Connecting to Serial Port please select a valid port.\n");
+                postConsoleMessage("Error Connecting to Serial Port please select a valid port.\n");
                 return;
             }
             if (Connect.getText().equals("Connect") && serialPorts.getSelectionModel().getSelectedItem() != null) {
                 try {
                     String serialPortSelected = serialPorts.getSelectionModel().getSelectedItem();
 
-                    logger.info("[*]Attempting to Connect to TinyG.");
+                    logger.info("Attempting to Connect to TinyG.");
 
                     //This will be true if we connected when we tried to!
                     if (!tg.initialize(serialPortSelected, TgFXConstants.SERIAL_DATA_RATE)) {
-                        postConsoleMessage("[!]There was an error connecting to " +
+                        postConsoleMessage("There was an error connecting to " +
                                 serialPortSelected + " please verify that the port is not in use.");
                     }
                     if (tg.isConnected().get()) {
-                        postConsoleMessage("[*]Opened Port: " + serialPortSelected +
+                        postConsoleMessage("Opened Port: " + serialPortSelected +
                                 " Attempting to get TinyG Build Version Now...\n");
                         Connect.setText("Disconnect");
                         onConnectActions();
@@ -242,7 +242,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 try {
                     onDisconnectActions();
                     if (!tg.isConnected().get()) {
-                        postConsoleMessage("[+]Disconnected from " + tg.getPortName()
+                        postConsoleMessage("Disconnected from " + tg.getPortName()
                                 + " Serial Port Successfully.\n");
                         Connect.setText("Connect");
                     }
@@ -331,12 +331,12 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     private void handleGuiRefresh() {
         //Refreshed all gui settings from TinyG Responses.
         if (tg.isConnected().get()) {
-            postConsoleMessage("[+]System GUI Refresh Requested....");
+            postConsoleMessage("System GUI Refresh Requested....");
             tg.getCommandManager().queryAllHardwareAxisSettings();
             tg.getCommandManager().queryAllMachineSettings();
             tg.getCommandManager().queryAllMotorSettings();
         } else {
-            postConsoleMessage("[!]TinyG Not Connected.. Ignoring System GUI Refresh Request....");
+            postConsoleMessage("TinyG Not Connected.. Ignoring System GUI Refresh Request....");
         }
     }
 
@@ -349,7 +349,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
             logger.info("Entered Command: " + command);
             if (!tg.isConnected().get()) {
                 logger.error("TinyG is not connected....\n");
-                postConsoleMessage("[!]TinyG is not connected....\n");
+                postConsoleMessage("TinyG is not connected....\n");
                 input.setPromptText(TgFXConstants.PROMPT);
                 return;
             }
@@ -443,7 +443,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                         handleConnect(new ActionEvent());
                         break;
                     default:
-                        logger.error("[!]Invalid Routing Key: " + keyArgument);
+                        logger.error("Invalid Routing Key: " + keyArgument);
                 }
             } catch (SerialPortException ex) {
                 logger.error(ex);
@@ -622,7 +622,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        logger.info("[+]tgFX is starting....");
+        logger.info("tgFX is starting....");
 
         /*
          * MISC INIT CODE

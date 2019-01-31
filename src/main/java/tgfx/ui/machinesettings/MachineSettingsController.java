@@ -177,7 +177,7 @@ public class MachineSettingsController implements Initializable {
                     if (line.startsWith("{\"name")) {
                         //This is the name of the CONFIG lets not write this to TinyG
                         filename = line.split(":")[1];
-                        tgfx.Main.postConsoleMessage("[+]Loading " + filename +
+                        tgfx.Main.postConsoleMessage("Loading " + filename +
                                 " config into TinyG... Please Wait...");
                     } else {
 
@@ -245,7 +245,7 @@ public class MachineSettingsController implements Initializable {
         if (TinygDriver.getInstance().isConnected().get()) {
             return ("true");
         } else {
-            return ("[!]TinyG is Not Connected");
+            return ("TinyG is Not Connected");
         }
     }
 }

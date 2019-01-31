@@ -13,8 +13,6 @@ import eu.hansolo.medusa.Gauge;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -23,18 +21,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -92,33 +86,33 @@ public class GcodeTabController implements Initializable {
     private static Text timeLeftTxt;
     @FXML
     private Gauge xLcd, yLcd, zLcd, aLcd, velLcd; //DRO Lcds
-    @FXML
-    StackPane machineWorkspace;
-    @FXML
-    private Pane previewPane;
+//    @FXML
+//    StackPane machineWorkspace;
+//    @FXML
+//    private Pane previewPane;
     @FXML
     private TableColumn<GcodeLine, String> gcodeCol;
-    @FXML
-    private static TableView gcodeView;
+//    @FXML
+//    private static TableView gcodeView;
     @FXML
     private Text xAxisLocation, yAxisLocation;
     @FXML
     private static Text gcodeStatusMessage;  //Cursor location on the cncMachine Canvas
-    @FXML
-    private static TextArea console;
+//    @FXML
+//    private static TextArea console;
     @FXML
     private Button Run, Connect, gcodeZero, btnClearScreen, pauseResume, btnTest, btnHandleInhibitAllAxis;
     @FXML
     private GridPane coordLocationGridPane;
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
-    @FXML // fx:id="zMoveScale"
-    private ChoiceBox<?> zMoveScale; // Value injected by FXMLLoader
-    private float zScale = 0.1f;
-    @FXML
-    private HBox gcodeTabControllerHBox;
+//    @FXML // ResourceBundle that was given to the FXMLLoader
+//    private ResourceBundle resources;
+//    @FXML // URL location of the FXML file that was given to the FXMLLoader
+//    private URL location;
+//    @FXML // fx:id="zMoveScale"
+//    private ChoiceBox<?> zMoveScale; // Value injected by FXMLLoader
+//    private float zScale = 0.1f;
+//    @FXML
+//    private HBox gcodeTabControllerHBox;
 
     /**
      * Initializes the controller class.
@@ -306,7 +300,7 @@ public class GcodeTabController implements Initializable {
                     break;
             }
         }
-        tgfx.Main.postConsoleMessage("[+]Homing " + _axis.toUpperCase() + " Axis...\n");
+        tgfx.Main.postConsoleMessage("Homing " + _axis.toUpperCase() + " Axis...\n");
     }
 
     @FXML
@@ -331,7 +325,7 @@ public class GcodeTabController implements Initializable {
                     break;
             }
         }
-        tgfx.Main.postConsoleMessage("[+]Zeroed " + _axis.toUpperCase() + " Axis...\n");
+        tgfx.Main.postConsoleMessage("Zeroed " + _axis.toUpperCase() + " Axis...\n");
     }
 
     @FXML
@@ -421,7 +415,7 @@ public class GcodeTabController implements Initializable {
                 .addListener((ov, oldValue, newValue) -> {
             String tmp = TinygDriver.getInstance().getMachine().getGcodeUnitMode().get();
 
-            Main.postConsoleMessage("[+]Gcode Unit Mode Changed to: " + tmp + "\n");
+            Main.postConsoleMessage("Gcode Unit Mode Changed to: " + tmp + "\n");
 
             try {
                 TinygDriver.getInstance().serialWriter.setThrottled(true);
@@ -455,6 +449,9 @@ public class GcodeTabController implements Initializable {
          * GCODE FILE CODE
          */
         data = FXCollections.observableArrayList();
+        for(GcodeLine line : data){
+            System.err.println("----"+line);
+        }
 
         gcodeCol.setCellValueFactory(new PropertyValueFactory<>("codeLine"));
         GcodeLine n = new GcodeLine("Click open to load..", 0);
@@ -526,7 +523,7 @@ public class GcodeTabController implements Initializable {
 
     @FXML
     private void handleClearScreen(ActionEvent evt) {
-        tgfx.Main.postConsoleMessage("[+]Clearing Screen...\n");
+        tgfx.Main.postConsoleMessage("Clearing Screen...\n");
         cncMachine.clearScreen();
         //clear this so our first line added draws correctly
         Draw2d.setFirstDraw(true);
@@ -546,7 +543,7 @@ public class GcodeTabController implements Initializable {
 
 //                Thread.sleep(8000);
 //                onConnectActions();
-                Main.postConsoleMessage("[!]Resetting TinyG....\n.");
+                Main.postConsoleMessage("Resetting TinyG....\n.");
                 TinygDriver.getInstance().serialWriter.notifyAck();
                 TinygDriver.getInstance().serialWriter.clearQueueBuffer();
                 cncMachine.clearScreen();
@@ -561,7 +558,7 @@ public class GcodeTabController implements Initializable {
     @FXML
     private void handleStop(ActionEvent evt) {
         Platform.runLater(() -> {
-            logger.info("[!]Stopping Job Clearing Serial Queue...\n");
+            logger.info("Stopping Job Clearing Serial Queue...\n");
             CommandManager.stopTinyGMovement();
             isSendingFile.set(false); //We set this to false to allow us to jog again
         });
@@ -593,7 +590,7 @@ public class GcodeTabController implements Initializable {
             for (GcodeLine gcodeLine : data) {
                 if (!isTaskActive()) {
                     //Cancel Button was pushed
-                    Main.postConsoleMessage("[!]File Sending Task Killed....\n");
+                    Main.postConsoleMessage("File Sending Task Killed....\n");
                     break;
                 } else {
                     if (gcodeLine.getCodeLine().equals("")) {
@@ -648,7 +645,7 @@ public class GcodeTabController implements Initializable {
     private void handleOpenFile(ActionEvent event) {
         Platform.runLater(() -> {
             try {
-                Main.postConsoleMessage("[+]Loading a gcode file.....\n");
+                Main.postConsoleMessage("Loading a gcode file.....\n");
                 FileChooser fc = new FileChooser();
                 fc.setTitle("Open GCode File");
 

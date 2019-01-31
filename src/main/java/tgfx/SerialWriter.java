@@ -42,14 +42,10 @@ public class SerialWriter implements Runnable {
         // We set this to tell the mutex with waiting for an ack to
         // send a line that it should not send a line.. we were asked to be cleared.
         this.cleared = true;
-        try {
-            //This is done in resetBuffer is this needed?
-            buffer_available.set(BUFFER_SIZE);
-            this.setThrottled(false);
-            this.notifyAck();
-        } catch (Exception ex) {
-            logger.error(ex);
-        }
+        //This is done in resetBuffer is this needed?
+        buffer_available.set(BUFFER_SIZE);
+        this.setThrottled(false);
+        this.notifyAck();
     }
 
     public boolean isRUN() {
@@ -111,16 +107,14 @@ public class SerialWriter implements Runnable {
         Main.postConsoleMessage(" Gcode Comment << " + gcodeComment);
     }
     
-    
-
     public void write(String str) {
         try {
             synchronized (mutex) {
-                int _currentPlanningBuffer = TinygDriver.getInstance().getQueryReport().getPba();
-                
-                if(_currentPlanningBuffer < 28){
-                    //if we have less that 28 moves in the planning buffer send a line
-                }
+//                int _currentPlanningBuffer = TinygDriver.getInstance().getQueryReport().getPba();
+
+//                if(_currentPlanningBuffer < 28){
+//                    //if we have less that 28 moves in the planning buffer send a line
+//                }
 
                 while (throttled) {
                     if (str.length() > getBufferValue()) {
@@ -159,7 +153,7 @@ public class SerialWriter implements Runnable {
 
     @Override
     public void run() {
-        logger.info("[+]Serial Writer Thread Running...");
+        logger.info("Serial Writer Thread Running...");
         while (RUN) {
             try {
                 String tmpCmd = queue.take();  //Grab the line
@@ -173,10 +167,10 @@ public class SerialWriter implements Runnable {
                     continue;
                 }
                 this.write(tmpCmd);
-            } catch (Exception ex) {
-                logger.error("[!]Exception in SerialWriter Thread");
+            } catch (InterruptedException ex) {
+                logger.error("Exception in SerialWriter Thread");
             }
         }
-        logger.info("[+]SerialWriter thread exiting...");
+        logger.info("SerialWriter thread exiting...");
     }
 }

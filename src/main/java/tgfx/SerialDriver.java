@@ -160,7 +160,7 @@ public class SerialDriver implements SerialPortEventListener {
         serialPort.addEventListener(this);
         // notifyOnDataAvailable(true);
         
-        logger.debug("[+]Opened " + port + " successfully.");
+        logger.debug("Opened " + port + " successfully.");
         setConnected(true); //Register that this is connectionState.
 
         return true;

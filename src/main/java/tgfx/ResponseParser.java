@@ -84,7 +84,7 @@ public class ResponseParser extends Observable implements Runnable {
                         // the user that we are not longer and update the system state.
                         setChanged();
                         message[0] = "TEXTMODE_REPORT";
-                        message[1] = "[+]JSON Response Detected... Leaving Text mode..  " +
+                        message[1] = "JSON Response Detected... Leaving Text mode..  " +
                                         "Querying System State....\n";
                         notifyObservers(message);
                         try {
@@ -107,7 +107,7 @@ public class ResponseParser extends Observable implements Runnable {
                         setTEXT_MODE(true);
                         setChanged();
                         message[0] = "TEXTMODE_REPORT";
-                        message[1] = "[+]User has entered text mode.  " +
+                        message[1] = "User has entered text mode.  " +
                                         "To exit type \"{\" and hit enter.\n";
                         notifyObservers(message);
                     }
@@ -117,7 +117,7 @@ public class ResponseParser extends Observable implements Runnable {
                     notifyObservers(message);
                 }
             } catch (InterruptedException | JSONException ex) {
-                logger.error("[!]Error in responseParser run(): " + ex.getMessage());
+                logger.error("Error in responseParser run(): " + ex.getMessage());
             }
         }
     }
@@ -185,8 +185,8 @@ public class ResponseParser extends Observable implements Runnable {
             notifyObservers(message);
 
         } catch (Exception ex) {
-            logger.error("[!] Error in applySettingStatusReport(JsonOBject js) : " + ex.getMessage());
-            logger.error("[!]js.tostring " + js.toString());
+            logger.error("Error in applySettingStatusReport(JsonOBject js) : " + ex.getMessage());
+            logger.error("js.tostring " + js.toString());
             setChanged();
             message[0] = "STATUS_REPORT";
             message[1] = null;
@@ -217,7 +217,7 @@ public class ResponseParser extends Observable implements Runnable {
                         case "msg":
                             message[0] = "TINYG_USER_MESSAGE";
                             message[1] = (String) js.get(key) + "\n";
-                            logger.info("[+]TinyG Message Sent:  " + js.get(key) + "\n");
+                            logger.info("TinyG Message Sent:  " + js.get(key) + "\n");
                             setChanged();
                             notifyObservers(message);
                             break;
@@ -258,11 +258,11 @@ public class ResponseParser extends Observable implements Runnable {
                 }
             }
         } catch (JSONException ex) {
-            logger.error("[!] Error in applySetting(JsonObject js) : " + ex.getMessage());
-            logger.error("[!]JSON String Was: " + js.toString());
+            logger.error(" Error in applySetting(JsonObject js) : " + ex.getMessage());
+            logger.error("JSON String Was: " + js.toString());
             logger.error("Error in Line: " + js);
         } catch (Exception ex) {
-            logger.error("[!] Error in applySetting(JsonObject js) : " + ex.getMessage());
+            logger.error("Error in applySetting(JsonObject js) : " + ex.getMessage());
             logger.error(ex.getClass().toString());
         }
     }

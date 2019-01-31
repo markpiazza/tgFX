@@ -115,7 +115,7 @@ public final class Axis {
             this.setAxisName("C");
             this.setAxisType(axisType);
         } else {
-            logger.info("[!]Invalid Axis Name Specified.\n");
+            logger.info("Invalid Axis Name Specified.\n");
         }
 
         homed = new SimpleBooleanProperty(false);
@@ -180,48 +180,48 @@ public final class Axis {
                         break;
                 }
                 this.setAxisMode(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() + " Axis Mode to: " + _axisMode);
+                logger.info("\tSet Axis: " + this.getAxisName() + " Axis Mode to: " + _axisMode);
                 break;
             }
             case "vm": { // maximum velocity
                 int val = (int) Double.parseDouble(value);
                 this.setVelocityMaximum(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Velocity Max to: " + this.getVelocityMaximum());
                 break;
             }
             case "fr": { // maximum feed rate
                 int val = (int) Double.parseDouble(value);
                 this.setFeedRateMaximum(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Feed Rate Max to: " + this.getFeedRateMaximum());
                 break;
             }
             case "tm": { // travel maximum
                 int val = (int) Double.parseDouble(value);
                 this.setTravelMaximum(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Travel Max to: " + this.getTravelMaximum());
                 break;
             }
             case "jm": { // jerk maximum
                 int val = (int) Double.parseDouble(value);
                 this.setJerkMaximum(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Jerk Max to: " + this.getJerkMaximum());
                 break;
             }
             case "jh": { // jerk homing
                 int val = (int) Double.parseDouble(value);
                 this.setJerkHomingMaximum(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Jerk Homing to: " + this.getJerkHomingMaximum());
                 break;
             }
             case "jd": { // junction deviation
                 int val = (int) Double.parseDouble(value);
                 this.setJunctionDeviation(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Junction Deviation Max to: " + this.getJunctionDeviation());
                 break;
             }
@@ -241,7 +241,7 @@ public final class Axis {
                         break;
                 }
                 this.setMinSwitchMode(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Axis Mode to: " + _switchMode);
                 break;
             }
@@ -261,47 +261,47 @@ public final class Axis {
                         break;
                 }
                 this.setMaxSwitchMode(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Axis Mode to: " + _switchMode);
                 break;
             }
             case "sv": { // search velocity
                 int val = (int) Double.parseDouble(value);
                 this.setSearchVelocity(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Search Velocity to: " + this.getSearchVelocity());
                 break;
             }
             case "lv": { // latch velocity
                 int val = (int) Double.parseDouble(value);
                 this.setLatchVelocity(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Latch Velocity to: " + this.getLatchVelocity());
                 break;
             }
             case "lb": { // latch backoff
                 int val = (int) Double.parseDouble(value);
                 this.setLatchBackoff(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Latch Back Off to: " + this.getLatchBackoff());
                 break;
             }
             case "zb": { // zero backoff
                 int val = (int) Double.parseDouble(value);
                 this.setZeroBackoff(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Zero Back Off to: " + this.getZeroBackoff());
                 break;
             }
             case "ra": {
                 int val = (int) Double.parseDouble(value);
                 this.setRadius(val);
-                logger.info("\t[+]Set Axis: " + this.getAxisName() +
+                logger.info("\tSet Axis: " + this.getAxisName() +
                         " Radius to: " + this.getRadius());
                 break;
             }
             default: {
-                logger.info("[!]Error... No such setting: " + value + " in Axis Settings...");
+                logger.info("Error... No such setting: " + value + " in Axis Settings...");
             }
         }
     }

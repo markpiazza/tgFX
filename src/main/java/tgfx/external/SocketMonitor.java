@@ -46,16 +46,16 @@ public class SocketMonitor {
     }
 
     private void handleConnections() {
-        logger.info("[+]Remote Monitor Listening for Connections....");
+        logger.info("Remote Monitor Listening for Connections....");
 //        while (ser.isConnected()) {
             try {
                 final Socket socket = server.accept();
                 ConnectionHandler connectionHandler = new ConnectionHandler(socket);
             } catch (IOException ex) {
-                logger.error("[!]Error: " + ex.getMessage());
+                logger.error("Error: " + ex.getMessage());
             }
 //        }
-        logger.info("[!]Socket Monitor Terminated...");
+        logger.info("Socket Monitor Terminated...");
     }
 
 }

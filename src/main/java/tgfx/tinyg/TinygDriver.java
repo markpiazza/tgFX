@@ -278,7 +278,7 @@ public class TinygDriver extends Observable {
                 }
             }
         }
-        logger.info("[+]Applying Axis Settings...");
+        logger.info("Applying Axis Settings...");
     }
 
     public void applyHardwareMotorSettings(Motor motor, TextField textField)  {
@@ -373,7 +373,7 @@ public class TinygDriver extends Observable {
                         MnemonicManager.MNEMONIC_AXIS_ZERO_BACKOFF + "\":" + textField.getText() + "}\n");
             }
         }
-        logger.info("[+]Applying " + axis.getAxisName() + " settings");
+        logger.info("Applying " + axis.getAxisName() + " settings");
     }
 
 

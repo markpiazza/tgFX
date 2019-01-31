@@ -21,7 +21,7 @@ class ConnectionHandler implements Runnable, Observer {
     ConnectionHandler(Socket socket) {
         this.socket = socket;
         SerialDriver ser = SerialDriver.getInstance();
-        logger.info("[+]Opening Remote Listener Socket");
+        logger.info("Opening Remote Listener Socket");
 //        ser.addObserver(this);
         Thread t = new Thread(this);
 //        t.start();
@@ -53,7 +53,7 @@ class ConnectionHandler implements Runnable, Observer {
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 //            Main.print("GOT: " + stdIn.readLine());
 //            try {
-//                this.write("[+]Connected to tgFX\n");
+//                this.write("Connected to tgFX\n");
 //            } catch (Exception ex) {
 //            }
             TinygDriver tg = TinygDriver.getInstance();
@@ -70,7 +70,7 @@ class ConnectionHandler implements Runnable, Observer {
                     break;
                 }
             }
-            logger.info("[+]Closing Remote Listener Socket");
+            logger.info("Closing Remote Listener Socket");
             socket.close();
 
         } catch (IOException e) {

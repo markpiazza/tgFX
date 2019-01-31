@@ -1,7 +1,23 @@
-/*
- * Empty Stylesheet file.
- */
+#motor_config_hbox
+{
+    -fx-background-color: black;
+}
 
-.mainFxmlClass {
+#machineConfigLoaderLabel
+{
+    -fx-text-fill: white;
+}
 
+#miscGP
+{
+    -fx-padding: 10;
+}
+
+#hBox4
+{
+    -fx-background-color: black;
+}
+
+#machineConfigLoaderLabel{
+    -fx-text-fill: white;
 }

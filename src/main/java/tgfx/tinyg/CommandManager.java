@@ -95,11 +95,11 @@ public class CommandManager {
     }
 
     public static void stopTinyGMovement() {
-        logger.info("[!]Stopping Job Clearing Serial Queue...\n");
+        logger.info("Stopping Job Clearing Serial Queue...\n");
         TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_PAUSE);
         TinygDriver.getInstance().serialWriter.clearQueueBuffer();
         TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_QUEUE_FLUSH);
-        tgfx.Main.postConsoleMessage("[!]Stopping Job Clearing Serial Queue...\n");
+        tgfx.Main.postConsoleMessage("Stopping Job Clearing Serial Queue...\n");
     }
 
     public static void stopJogMovement() throws InterruptedException {
@@ -108,7 +108,7 @@ public class CommandManager {
         TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_PAUSE);
         Thread.sleep(40);
         TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_QUEUE_FLUSH);
-//        tgfx.Main.postConsoleMessage("[!]Stopping Job Clearing Serial Queue...\n");
+//        tgfx.Main.postConsoleMessage("Stopping Job Clearing Serial Queue...\n");
     }
 
     public static void setIncrementalMovementMode() {
@@ -130,23 +130,23 @@ public class CommandManager {
     public void queryAllMotorSettings() {
         try {
             TinygDriver.getInstance().write(CMD_QUERY_MOTOR_1_SETTINGS);
-            logger.info("[+]Getting Motor 1 Settings");
+            logger.info("Getting Motor 1 Settings");
             Main.postConsoleMessage("Getting TinyG Motor 1 Settings...");
 
             TinygDriver.getInstance().write(CMD_QUERY_MOTOR_2_SETTINGS);
-            logger.info("[+]Getting Motor 2 Settings");
+            logger.info("Getting Motor 2 Settings");
             Main.postConsoleMessage("Getting TinyG Motor 2 Settings...");
 
             TinygDriver.getInstance().write(CMD_QUERY_MOTOR_3_SETTINGS);
-            logger.info("[+]Getting Motor 3 Settings");
+            logger.info("Getting Motor 3 Settings");
             Main.postConsoleMessage("Getting TinyG Motor 3 Settings...");
 
             TinygDriver.getInstance().write(CMD_QUERY_MOTOR_4_SETTINGS);
-            logger.info("[+]Getting Motor 4 Settings");
+            logger.info("Getting Motor 4 Settings");
             Main.postConsoleMessage("Getting TinyG Motor 4 Settings...");
 
         } catch (Exception ex) {
-            logger.error("[!]Exception in queryAllMotorSettings()...");
+            logger.error("Exception in queryAllMotorSettings()...");
             logger.error(ex.getMessage());
         }
     }
@@ -175,7 +175,7 @@ public class CommandManager {
     }
 
     public void queryStatusReport() {
-        logger.info("[+]Querying Status Report");
+        logger.info("Querying Status Report");
         TinygDriver.getInstance().write(CommandManager.CMD_QUERY_STATUS_REPORT);
         Main.postConsoleMessage("Getting TinyG Status Report...");
     }
@@ -201,7 +201,7 @@ public class CommandManager {
     }
 
     public void queryAllMachineSettings() {
-        logger.info("[+]Getting All Machine Settings");
+        logger.info("Getting All Machine Settings");
         TinygDriver.getInstance().write(CommandManager.CMD_QUERY_SYSTEM_SETTINGS);
         Main.postConsoleMessage("Getting TinyG System Settings...");
     }
@@ -210,28 +210,28 @@ public class CommandManager {
      * writes the commands to query current hardware settings on the tinyg board
      */
     public void queryAllHardwareAxisSettings() {
-        logger.info("[+]Getting A AXIS Settings");
+        logger.info("Getting A AXIS Settings");
         TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_A);
         Main.postConsoleMessage("Getting TinyG Axis A Settings...");
 
-        logger.info("[+]Getting B AXIS Settings");
+        logger.info("Getting B AXIS Settings");
         TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_B);
         Main.postConsoleMessage("Getting TinyG Axis B Settings...");
 
-        logger.info("[+]Getting C AXIS Settings");
+        logger.info("Getting C AXIS Settings");
         TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_C);
         Main.postConsoleMessage("Getting TinyG Axis C Settings...");
 
         TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_X);
-        logger.info("[+]Getting X AXIS Settings");
+        logger.info("Getting X AXIS Settings");
         Main.postConsoleMessage("Getting TinyG Axis X Settings...");
 
         TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_Y);
-        logger.info("[+]Getting Y AXIS Settings");
+        logger.info("Getting Y AXIS Settings");
         Main.postConsoleMessage("Getting TinyG Axis Y Settings...");
 
         TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_Z);
-        logger.info("[+]Getting Z AXIS Settings");
+        logger.info("Getting Z AXIS Settings");
         Main.postConsoleMessage("Getting TinyG Axis Z Settings...");
     }
 }

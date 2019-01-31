@@ -75,12 +75,12 @@ public class TinyGConfigController implements Initializable {
     @FXML
     void handleEnableAllAxis(ActionEvent evt) throws Exception {
         if (TinygDriver.getInstance().isConnected().get()) {
-            tgfx.Main.postConsoleMessage("[+]Enabling All Axis.... Motors Live!.\n");
+            tgfx.Main.postConsoleMessage("Enabling All Axis.... Motors Live!.\n");
             logger.info("Enabling All Axis");
             TinygDriver.getInstance().getCommandManager().enableAllAxis();
 
         } else {
-            tgfx.Main.postConsoleMessage("[!]TinyG is Not Connected...\n");
+            tgfx.Main.postConsoleMessage("TinyG is Not Connected...\n");
         }
 
     }
@@ -88,12 +88,12 @@ public class TinyGConfigController implements Initializable {
     @FXML
     void handleInhibitAllAxis(ActionEvent evt) throws Exception {
         if (TinygDriver.getInstance().isConnected().get()) {
-            tgfx.Main.postConsoleMessage("[+]Inhibiting All Axis.... " +
+            tgfx.Main.postConsoleMessage("Inhibiting All Axis.... " +
                     "Motors Inhibited... However always verify!\n");
             logger.info("Inhibiting All Axis");
             TinygDriver.getInstance().getCommandManager().inhibitAllAxis();
         } else {
-            tgfx.Main.postConsoleMessage("[!]TinyG is Not Connected...\n");
+            tgfx.Main.postConsoleMessage("TinyG is Not Connected...\n");
         }
     }
 
@@ -362,7 +362,7 @@ public class TinyGConfigController implements Initializable {
 
     @FXML
     void handleMotorQuerySettings(ActionEvent evt) {
-        logger.info("[+]Querying Motor Config...");
+        logger.info("Querying Motor Config...");
         // Detect what motor tab is "active"...
 //        updateGuiAxisSettings();
         switch (motorTabPane.getSelectionModel().getSelectedItem().getText()) {
@@ -383,7 +383,7 @@ public class TinyGConfigController implements Initializable {
 
     @FXML
     private void handleAxisApplySettings(ActionEvent evt) {
-        tgfx.Main.postConsoleMessage("[+]Applying Axis...\n");
+        tgfx.Main.postConsoleMessage("Applying Axis...\n");
         try {
             TinygDriver.getInstance().applyHardwareAxisSettings(
                     axisTabPane.getSelectionModel().getSelectedItem());
@@ -399,7 +399,7 @@ public class TinyGConfigController implements Initializable {
     @FXML
     private void handleAxisQuerySettings(ActionEvent evt) {
         String _axisSelected = axisTabPane.getSelectionModel().getSelectedItem().getText().toLowerCase();
-        tgfx.Main.postConsoleMessage("[+]Querying Axis: " + _axisSelected + "\n");
+        tgfx.Main.postConsoleMessage("Querying Axis: " + _axisSelected + "\n");
         TinygDriver.getInstance().queryHardwareSingleAxisSettings(_axisSelected.charAt(0));
     }
     
@@ -415,11 +415,11 @@ public class TinyGConfigController implements Initializable {
 
             //TODO: move the applyHardwareMotorSettings to this controller vs TinyGDriver.
              try {
-                tgfx.Main.postConsoleMessage("[+]Applying "+ tf.getId()+ ":" +
+                tgfx.Main.postConsoleMessage("Applying "+ tf.getId()+ ":" +
                         tf.getText()+"... \n");
                 TinygDriver.getInstance().applyHardwareMotorSettings(_motor, tf);
             } catch (NumberFormatException ex) {
-                tgfx.Main.postConsoleMessage("[!]" + tf.getText() +
+                tgfx.Main.postConsoleMessage(tf.getText() +
                         " is an invalid Setting Entered.. Ignoring.");
                 logger.error(ex.getMessage());
                 // This will reset the input that was bad to the current settings
@@ -441,10 +441,10 @@ public class TinyGConfigController implements Initializable {
                 //Object Returned is a TextField Object
                 TextField tf = (TextField) event.getSource();
                 try {
-                    tgfx.Main.postConsoleMessage("[+]Applying Axis.......\n");
+                    tgfx.Main.postConsoleMessage("Applying Axis.......\n");
                     TinygDriver.getInstance().applyHardwareAxisSettings(_axis, tf);
                 } catch (NumberFormatException ex) {
-                    tgfx.Main.postConsoleMessage("[!]Invalid Setting Entered.. Ignoring.");
+                    tgfx.Main.postConsoleMessage("Invalid Setting Entered.. Ignoring.");
                     logger.error(ex.getMessage());
                     // This will reset the input that was bad to the current settings
                     // FIXME: Possible NPE
@@ -456,7 +456,7 @@ public class TinyGConfigController implements Initializable {
 
     @FXML
     void handleMotorApplySettings(ActionEvent evt) {
-        tgfx.Main.postConsoleMessage("[+]Applying Motor.......\n");
+        tgfx.Main.postConsoleMessage("Applying Motor.......\n");
         TinygDriver.getInstance().applyHardwareMotorSettings(
                 motorTabPane.getSelectionModel().getSelectedItem());
     }

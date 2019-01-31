@@ -186,16 +186,16 @@ public class CNCMachine extends Pane {
     }
 
     public String getNormalizedYasString(double y) {
-        return (df.format(getNormalizedY(y)));
+        return df.format(getNormalizedY(y));
     }
 
     public String getNormalizedXasString(double x) {
-        return (df.format(getNormalizedX(x)));
+        return df.format(getNormalizedX(x));
     }
 
     private boolean checkBoundsY(Line l) {
-        return (this.getHeight() - l.getEndY()) >= 0
-                && (this.getHeight() - l.getEndY()) <= this.getHeight() + 1;
+        return this.getHeight() - l.getEndY() >= 0
+                && this.getHeight() - l.getEndY() <= this.getHeight() + 1;
     }
 
     private boolean checkBoundsX(Line l) {
@@ -243,7 +243,7 @@ public class CNCMachine extends Pane {
 //                }
 
 //            }
-//            console.appendText("[+]Finished Drawing Prevew Scale Change.\n");
+//            console.appendText("Finished Drawing Prevew Scale Change.\n");
 //            gcodeWindow.setScaleX(scale);
 //            gcodeWindow.setScaleY(scale);
 //        }
