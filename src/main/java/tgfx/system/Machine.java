@@ -410,13 +410,13 @@ public final class Machine {
         TinygDriver.getInstance().notifyBuildChanged();
     }
 
-    /* FIRMWARE VERISON */
+    /* FIRMWARE VERSION */
 
     public StringProperty getFirmwareVersion() {
         return firmwareVersion;
     }
 
-    private void setFirmwareVersion(String fv) {
+    public void setFirmwareVersion(String fv) {
         this.firmwareVersion.setValue(fv);
     }
 

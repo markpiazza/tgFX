@@ -78,7 +78,7 @@
                                 </HBox>
                             </VBox>
 
-                            <fx:include source="../../updater/firmware/firmwareUpdater.fxml" HBox.hgrow="ALWAYS"/>
+                            <fx:include source="../firmware/firmwareUpdater.fxml" HBox.hgrow="ALWAYS"/>
 
                             <VBox id="vBox2" alignment="CENTER" minWidth="250.0" HBox.hgrow="NEVER">
                                 <padding>

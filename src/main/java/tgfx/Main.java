@@ -41,7 +41,7 @@ import tgfx.ui.gcode.GcodeHistory;
 import tgfx.ui.gcode.GcodeTabController;
 import tgfx.ui.machinesettings.MachineSettingsController;
 import tgfx.ui.tinygconfig.TinyGConfigController;
-import tgfx.updater.firmware.FirmwareUpdaterController;
+import tgfx.ui.firmware.FirmwareUpdaterController;
 import tgfx.utility.QueueUsingTimer;
 import tgfx.utility.QueuedTimerable;
 
@@ -709,8 +709,8 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 Connect.setText("Connect");
                 Machine machine = TinygDriver.getInstance().getMachine();
                 machine.setFirmwareBuild(0.0);
-                machine.firmwareBuild.set(0);
-                machine.firmwareVersion.set("");
+                machine.setFirmwareBuild(0);
+                machine.setFirmwareVersion("");
                 machine.setMachineState(0);
                 machine.setLineNumber(0);
                 machine.setMotionMode(0);

@@ -1,0 +1,14 @@
+#motor_config_hbox
+{
+    -fx-background-color: black;
+}
+
+#machineConfigLoaderLabel
+{
+    -fx-text-fill: white;
+}
+
+#movementGP
+{
+    -fx-padding: 10
+}

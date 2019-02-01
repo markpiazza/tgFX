@@ -152,7 +152,7 @@
                 <Insets top="15.0"/>
             </padding>
 
-            <Gauge fx:id="xLcd" skinType="LCD" onMousePressed="#handleDroMouseClick" title="X Axis Position" subTitle="X Axis Position" unit="mm"  oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false" decimals="3">
+            <Gauge fx:id="xLcd" lcdDesign="BLACK" skinType="LCD" onMousePressed="#handleDroMouseClick" title="X Axis Position" subTitle="X Axis Position" unit="mm"  oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false" decimals="3">
                 <contextMenu>
                     <ContextMenu fx:id="xAxisContextMenu">
                         <items>
