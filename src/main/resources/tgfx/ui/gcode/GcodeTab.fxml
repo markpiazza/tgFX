@@ -9,7 +9,7 @@
 <?import eu.hansolo.medusa.*?>
 
 <?import java.net.URL?>
-<Tab fx:id="gcode_tab" closable="false" text="Gcode" xmlns:fx="http://javafx.com/fxml/1"
+<Tab fx:id="gcodeTab" closable="false" text="Gcode" xmlns:fx="http://javafx.com/fxml/1"
      xmlns="http://javafx.com/javafx/2.2" fx:controller="tgfx.ui.gcode.GcodeTabController">
     <HBox id="gcodeTabHbox" fx:id="gcodeTabControllerHBox" alignment="TOP_CENTER" minHeight="450.0">
         <stylesheets>
@@ -76,7 +76,7 @@
                         <Insets right="5.0"/>
                     </VBox.margin>
                     <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Text fx:id="gcodeStatusMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="JOGGING ENABLED">
+                        <Text fx:id="gcodeStatusMessageTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="JOGGING ENABLED">
                             <font>
                                 <Font name="Arial Black" size="16.0"/>
                             </font>
@@ -139,9 +139,9 @@
                                 <Insets right="10.0" fx:id="x1"/>
                             </HBox.margin>
                             <Label fx:id="heightLabel" text="Y:" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                            <Text fx:id="yAxisLocation" fill="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            <Text fx:id="yAxisLocationTxt" fill="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                             <Label text="X:" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                            <Text fx:id="xAxisLocation" fill="BLACK" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            <Text fx:id="xAxisLocationTxt" fill="BLACK" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                         </GridPane>
                     </HBox>
                 </HBox>

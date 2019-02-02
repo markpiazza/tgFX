@@ -7,6 +7,9 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -66,6 +69,8 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     private GcodeHistory gcodeCommandHistory;
     private QueueUsingTimer<String> connectionTimer;
 
+    private static StringProperty consoleText =  new SimpleStringProperty();
+
     private int oldRspLine = 0;
     //Time between config set'ers.
     private int delayValue = 150;
@@ -104,7 +109,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     VBox consoleVBox; //topvbox, positionsVbox, tester
     @FXML
     private TabPane topTabPane;
-
 
 
     /* ********************
@@ -289,6 +293,10 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
             topTabPane.disableProperty()
                     .bind(TinygDriver.getInstance().getConnectionStatus().not());
         }
+
+        // console binding
+        console.textProperty().bindBidirectional(consoleText);
+
         /*
          * THREAD INITS
          */
@@ -420,7 +428,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
      * Public/Private methods
      * **********************/
 
-
     /**
      *
      */
@@ -430,7 +437,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         tg = TinygDriver.getInstance();
     }
 
-
     /**
      * can't access the console from a static context due to the way JavaFX8 works
      * so we need to save the root instance of the Main controller (this class)
@@ -438,13 +444,14 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
      * Another possibility is using eventing on the console and just send it message events
      *
-     * @param message message to send to the Main windows console
+     * @param message mesvsage to send to the Main windows console
      */
-    public static void postConsoleMessage(final String message) {
-        logger.info("postConsoleMessage: {}", message );
-        Platform.runLater(() -> TgFX.getMainController().console.appendText(message + "\n"));
+    public static void postConsoleMessage(String message){
+        logger.info("postConsoleMessage : {}", message);
+        StringBuilder sb = new StringBuilder();
+        sb.append(consoleText.getValueSafe()).append(message);
+        consoleText.setValue(sb.toString());
     }
-
 
     private void doTinyGConnectionTimeout() {
         Main.postConsoleMessage("ERROR! - tgFX timed out while attempting to connect to TinyG.  \nVerify the port you selected and that power is applied to your TinyG.");
@@ -532,7 +539,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         int rspLine = TinygDriver.getInstance().getMachine().getLineNumber();
 
         // Scroll Gcode view to stay in synch with TinyG acks during file send
-        if (rspLine != oldRspLine && GcodeTabController.isSendingFile.get()) {
+        if (rspLine != oldRspLine && GcodeTabController.isSendingFile().get()) {
             GcodeTabController.updateProgress(rspLine);
             // Check for gaps in TinyG acks - Note comments are not acked
             if (rspLine != oldRspLine + 1) {
