@@ -19,6 +19,14 @@
 #previewVbox
 {
     -fx-background-image: url("../../background.jpg");
-    -fx-background-radius: 10;
 }
 
+#topPreviewPane
+{
+    -fx-background-color: black
+}
+
+#cancelBtn
+{
+    -fx-background-color: red;
+}

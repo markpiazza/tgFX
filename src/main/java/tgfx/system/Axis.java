@@ -59,11 +59,11 @@ public final class Axis {
     private double junctionDeviation;
     private SwitchMode maxSwitchMode = SwitchMode.DISABLED;
     private SwitchMode minSwitchMode = SwitchMode.DISABLED;
-    //    private float homing_travel;
-//    private float homing_search_velocity;
-//    private float homing_latch_velocity;
-//    private float homing_zero_offset;
-//    private float homing_work_offset;
+    private float homing_travel;
+    private float homing_search_velocity;
+    private float homing_latch_velocity;
+    private float homing_zero_offset;
+    private float homing_work_offset;
     private String axisName;
     private List<Motor> motors = new ArrayList<>();
 
@@ -140,48 +140,9 @@ public final class Axis {
         switch (cmd) {
             case "am": { // access mode
                 int val = Double.valueOf(value).intValue();
-                // FIXME: this switch statement is unnecessary and is only to provide logger info
-                String _axisMode;
-                switch (val) {
-                    case 0:
-                        _axisMode = "DISABLED";
-                        break;
-                    case 1:
-                        _axisMode = "STANDARD";
-                        break;
-                    case 2:
-                        _axisMode = "INHIBITED";
-                        break;
-                    case 3:
-                        _axisMode = "RADIUS";
-                        break;
-                    case 4:
-                        _axisMode = "SLAVE_X";
-                        break;
-                    case 5:
-                        _axisMode = "SLAVE_Y";
-                        break;
-                    case 6:
-                        _axisMode = "SLAVE_Z";
-                        break;
-                    case 7:
-                        _axisMode = "SLAVE_XY";
-                        break;
-                    case 8:
-                        _axisMode = "SLAVE_XZ";
-                        break;
-                    case 9:
-                        _axisMode = "SLAVE_YZ";
-                        break;
-                    case 10:
-                        _axisMode = "SLAVE_XYZ";
-                        break;
-                    default:
-                        _axisMode = "UKNOWN";
-                        break;
-                }
                 this.setAxisMode(val);
-                logger.info("\tSet Axis: " + this.getAxisName() + " Axis Mode to: " + _axisMode);
+                logger.info("\tSet Axis: " + this.getAxisName() +
+                        " Axis Mode to: " + AxisMode.getAxisMode(val).name());
                 break;
             }
             case "vm": { // maximum velocity
@@ -328,44 +289,8 @@ public final class Axis {
         return axisMode;
     }
 
-    //TODO: this could use the enum's 'functions'
     private void setAxisMode(int axMode) {
-        switch (axMode) {
-            case 0:
-                this.axisMode = AxisMode.DISABLE;
-                return;
-            case 1:
-                this.axisMode = AxisMode.STANDARD;
-                return;
-            case 2:
-                this.axisMode = AxisMode.INHIBITED;
-                return;
-            case 3:
-                this.axisMode = AxisMode.RADIUS;
-                return;
-            case 4:
-                this.axisMode = AxisMode.SLAVE_X;
-                return;
-            case 5:
-                this.axisMode = AxisMode.SLAVE_Y;
-                return;
-            case 6:
-                this.axisMode = AxisMode.SLAVE_Z;
-                return;
-            case 7:
-                this.axisMode = AxisMode.SLAVE_XY;
-                return;
-            case 8:
-                this.axisMode = AxisMode.SLAVE_XZ;
-                return;
-            case 9:
-                this.axisMode = AxisMode.SLAVE_YZ;
-                return;
-            case 10:
-                this.axisMode = AxisMode.SLAVE_XYZ;
-                return;
-            default:
-        }
+        this.axisMode = AxisMode.getAxisMode(axMode);
     }
 
     public double getVelocityMaximum() {

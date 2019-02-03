@@ -89,11 +89,12 @@
             <version>8.0-r6</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>eu.hansolo</groupId>-->
-            <!--<artifactId>medusa</artifactId>-->
-            <!--<version>4.1</version>-->
-        <!--</dependency>-->
+        <!-- https://mvnrepository.com/artifact/eu.hansolo/Medusa -->
+        <dependency>
+            <groupId>eu.hansolo</groupId>
+            <artifactId>Medusa</artifactId>
+            <version>8.2</version>
+        </dependency>
 
         <!-- JSON in Java -->
         <!-- https://mvnrepository.com/artifact/org.json/json -->
@@ -134,16 +135,21 @@
             <artifactId>log4j-core</artifactId>
             <version>2.8.2</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
         <dependency>
-            <groupId>eu.hansolo</groupId>
-            <artifactId>medusa</artifactId>
-            <version>4.1</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

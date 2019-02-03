@@ -25,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import jssc.SerialPortException;
@@ -76,6 +77,9 @@ public class GcodeTabController implements Initializable {
     private static SimpleStringProperty gcodeStatusMessageValue = new SimpleStringProperty("");
     private static SimpleBooleanProperty gcodeStatusMessageVisible = new SimpleBooleanProperty(false);
 
+    private static SimpleStringProperty timeElapsed = new SimpleStringProperty("00:00");
+    private static SimpleStringProperty timeLeft = new SimpleStringProperty("00:00");
+
     //List to store the gcode file
     public ObservableList<GcodeLine> data;
 
@@ -94,8 +98,7 @@ public class GcodeTabController implements Initializable {
             aLcd,
             velLcd;
     @FXML
-    private StackPane machineWorkspacePane,
-            gcodePane;
+    private StackPane gcodePane;
     @FXML
     private GridPane coordLocationGridPane;
     @FXML
@@ -105,13 +108,7 @@ public class GcodeTabController implements Initializable {
     @FXML
     private TableView gcodeView;
     @FXML
-    private Button runBtn,
-            connectBtn,
-            gcodeZeroBtn,
-            btnClearScreenBtn,
-            pauseResumeBtn,
-            btnTestBtn,
-            btnHandleInhibitAllAxisBtn;
+    private Button pauseResumeBtn;
     @FXML
     private ChoiceBox<?> zMoveScaleChoiceBox; // commented out
     @FXML
@@ -136,6 +133,7 @@ public class GcodeTabController implements Initializable {
          * TODO: Jogging needs to be broken into a new class
          */
         EventHandler<KeyEvent> keyPress = keyEvent -> {
+            logger.info("Start jogging.");
             //If we are sending a file.. Do NOT jog right now
             if (!isSendingFile.get()) {
                 // Initialize to no valid axis set
@@ -213,6 +211,7 @@ public class GcodeTabController implements Initializable {
          * keyRelease event handler
          */
         EventHandler<KeyEvent> keyRelease = keyEvent -> {
+            logger.info("End jogging.");
             if (!isSendingFile().get()) {
                 try {
                     setGcodeText("");
@@ -337,23 +336,29 @@ public class GcodeTabController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        logger.info("initialize");
+        logger.info("Initializing GcodeTabController.");
 
         cncMachinePane.visibleProperty().bind(cncMachineVisible);
-        //This shows the coords when the cncMachinePane is visible.
+        // This shows the coords when the cncMachinePane is visible.
         coordLocationGridPane.visibleProperty().bind(cncMachinePane.visibleProperty());
         gcodeStatusMessageTxt.textProperty().bind(gcodeStatusMessageValue);
         gcodeStatusMessageTxt.visibleProperty().bind(gcodeStatusMessageVisible);
 
         xLcd.valueProperty().bind(machine.getAxisByName("x").getMachinePositionSimple()
-                .subtract(machine.getAxisByName("x").getOffset()).divide(machine.gcodeUnitDivision));
+                .subtract(machine.getAxisByName("x").getOffset())
+                .divide(machine.gcodeUnitDivision));
         yLcd.valueProperty().bind(machine.getAxisByName("y").getMachinePositionSimple()
-                .subtract(machine.getAxisByName("y").getOffset()).divide(machine.gcodeUnitDivision));
+                .subtract(machine.getAxisByName("y").getOffset())
+                .divide(machine.gcodeUnitDivision));
         zLcd.valueProperty().bind(machine.getAxisByName("z").getMachinePositionSimple()
-                .subtract(machine.getAxisByName("z").getOffset()).divide(machine.gcodeUnitDivision));
+                .subtract(machine.getAxisByName("z").getOffset())
+                .divide(machine.gcodeUnitDivision));
         aLcd.valueProperty().bind(machine.getAxisByName("a").getMachinePositionSimple()
                 .subtract(machine.getAxisByName("a").getOffset()));
         velLcd.valueProperty().bind(machine.velocity);
+
+        timeElapsedTxt.textProperty().bind(timeElapsed);
+        timeLeftTxt.textProperty().bind(timeLeft);
 
         // FIXME: java.lang.RuntimeException: HBox.disable : A bound value cannot be set.
         // gcodeTabControllerHBox.disableProperty().bind(driver.getConnectionStatus().not());
@@ -479,17 +484,19 @@ public class GcodeTabController implements Initializable {
      */
     @FXML
     private void handleZeroSystem(ActionEvent evt) {
+        logger.info("handleSystemZero");
         cncMachinePane.zeroSystem();
     }
 
 
     /**
-     * handlePauseResumeAct
+     * handlePauseResume
      *
      * @param evt action event
      */
     @FXML
-    private void handlePauseResumeAct(ActionEvent evt) {
+    private void handlePauseResume(ActionEvent evt) {
+        logger.info("handlePauseResume");
         if ("Pause".equals(pauseResumeBtn.getText())) {
             pauseResumeBtn.setText("Resume");
             driver.priorityWrite(CommandManager.CMD_APPLY_PAUSE);
@@ -507,6 +514,7 @@ public class GcodeTabController implements Initializable {
      */
     @FXML
     private void handleClearScreen(ActionEvent evt) {
+        logger.info("handleClearScreen");
         Main.postConsoleMessage("Clearing Screen...\n");
         cncMachinePane.clearScreen();
         //clear this so our first line added draws correctly
@@ -521,6 +529,7 @@ public class GcodeTabController implements Initializable {
      */
     @FXML
     private void handleReset(ActionEvent evt) {
+        logger.info("handleReset");
         Platform.runLater(() -> {
             try {
                 driver.serialWriter.clearQueueBuffer();
@@ -540,7 +549,7 @@ public class GcodeTabController implements Initializable {
                 // We set this to false to allow us to jog again
                 isSendingFile.set(false);
             } catch (SerialPortException ex) {
-                logger.error("handleReset " + ex.getMessage());
+                logger.error(ex);
             }
         });
     }
@@ -553,22 +562,24 @@ public class GcodeTabController implements Initializable {
      */
     @FXML
     private void handleStop(ActionEvent evt) {
+        logger.info("handleStop");
         Platform.runLater(() -> {
             logger.info("Stopping Job Clearing Serial Queue...\n");
             CommandManager.stopTinyGMovement();
-            isSendingFile.set(false); //We set this to false to allow us to jog again
+            // We set this to false to allow us to jog again
+            isSendingFile.set(false);
         });
     }
 
 
     /**
-     * handleTestButton
+s     * handleTestButton
      *
      * @param evt action event
      */
     @FXML
     static void handleTestButton(ActionEvent evt) {
-        logger.info("Test Button....");
+        logger.info("handleTestButton");
         updateProgress(test);
         test += 5;
 
@@ -592,6 +603,7 @@ public class GcodeTabController implements Initializable {
      */
     @FXML
     private void handleOpenFile(ActionEvent event) {
+        logger.info("handleOpenFile");
         Platform.runLater(() -> {
             try {
                 Main.postConsoleMessage("Loading a gcode file.....\n");
@@ -651,6 +663,7 @@ public class GcodeTabController implements Initializable {
      */
     @FXML
     private void handleRunFile(ActionEvent evt) {
+        logger.info("handleRunFile");
         if (!isSendingFile.get()) {
             isSendingFile.set(true); //disables jogging while file is running
             taskActive = true; //Set the thread condition to start
@@ -671,6 +684,7 @@ public class GcodeTabController implements Initializable {
      * @return Lcd Gauge
      */
     private Gauge getLcdByAxisName(String axis) {
+        logger.info("getLcdByAxisName");
         switch (axis) {
             case "x":
                 return xLcd;
@@ -694,9 +708,11 @@ public class GcodeTabController implements Initializable {
      * @return task
      */
     private Task fileSenderTask() {
+        logger.info("fileSenderTask");
         return new Task() {
             @Override
             protected Object call()  {
+                logger.info("call");
                 StringBuilder line = new StringBuilder();
                 for (GcodeLine gcodeLine : data) {
                     if (!isTaskActive()) {
@@ -710,7 +726,7 @@ public class GcodeTabController implements Initializable {
                         }
                         if (gcodeLine.getCodeLine().toLowerCase().contains("(")) {
                             driver.write("**COMMENT**" + gcodeLine.getCodeLine());
-    //                            Main.postConsoleMessage("GCODE COMMENT:" + gcodeLine.getCodeLine());
+//                            Main.postConsoleMessage("GCODE COMMENT:" + gcodeLine.getCodeLine());
                             continue;
                         }
 
@@ -733,6 +749,7 @@ public class GcodeTabController implements Initializable {
      * @return task status
      */
     private synchronized boolean isTaskActive() {
+        logger.info("isTaskActive: {}", taskActive);
         return taskActive;
     }
 
@@ -743,6 +760,7 @@ public class GcodeTabController implements Initializable {
      * @param boolTask task status
      */
     public synchronized void setTaskActive(boolean boolTask) {
+        logger.info("setTaskActive: {}", boolTask);
         taskActive = boolTask;
     }
 
@@ -754,6 +772,7 @@ public class GcodeTabController implements Initializable {
      * @return isSendingFile property
      */
     public static SimpleBooleanProperty isSendingFile(){
+        logger.info("isSendingFile: {}", isSendingFile);
         return isSendingFile;
     }
 
@@ -777,7 +796,7 @@ public class GcodeTabController implements Initializable {
      * @param text message
      */
     public static void setGcodeText(String text) {
-        logger.info("setGcodeText: {}",text);
+        logger.info("setGcodeText: {}", text);
         gcodeStatusMessageVisible.setValue(true);
     }
 
@@ -825,6 +844,7 @@ public class GcodeTabController implements Initializable {
      * @return boolean, false if bad bytes
      */
     private boolean normalizeGcodeLine(String gcl) {
+        logger.info("normalizeGcodeLine");
         // These are considered bad bytes in gcode files.
         // These will trigger tinyg to throw interrupts
         // 0x21 = !
@@ -850,6 +870,7 @@ public class GcodeTabController implements Initializable {
      * FIXME: possible NPEs
      */
     private void handleMaxHeightChange() {
+        logger.info("handleMaxHeightChange");
         if (gcodePane.getWidth() - machine.getAxisByName("x")
                 .getTravelMaxSimple().get() < gcodePane.getHeight() -
                 machine.getAxisByName("y").getTravelMaxSimple().get()) {
@@ -891,30 +912,28 @@ public class GcodeTabController implements Initializable {
      *
      */
     private void handleMaxWidthChange() {
+        logger.info("handleMaxWidthChange");
+
         //This is for the change listener to call for Max Width Change on the CNC Machine
-        if (gcodePane.getWidth() - machine.getAxisByName("x")
-                .getTravelMaxSimple().get() < gcodePane.getHeight() -
-                machine.getAxisByName("y").getTravelMaxSimple().get()) {
+        if (gcodePane.getWidth() - machine.getAxisByName("x").getTravelMaxSimple().get() <
+            gcodePane.getHeight() - machine.getAxisByName("y").getTravelMaxSimple().get()) {
+
             //X is longer use this code
             if (machine.getGcodeUnitModeAsInt() == 0) {  //INCHES
                 scaleAmount = (gcodePane.heightProperty().get() /
-                                machine.getAxisByName("y")
-                                    .getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
+                        machine.getAxisByName("y").getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
             } else { //MM
                 scaleAmount = (gcodePane.heightProperty().get() /
-                                machine.getAxisByName("y")
-                                    .getTravelMaxSimple().get()) * .80;  //%80 of the scale;
+                        machine.getAxisByName("y").getTravelMaxSimple().get()) * .80;  //%80 of the scale;
             }
         } else {
             //Y is longer use this code
             if (machine.getGcodeUnitModeAsInt() == 0) {  //INCHES
                 scaleAmount = (gcodePane.heightProperty().get() /
-                                machine.getAxisByName("y")
-                                    .getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
+                        machine.getAxisByName("y").getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
             } else { //MM
                 scaleAmount = (gcodePane.heightProperty().get() /
-                                machine.getAxisByName("y")
-                                    .getTravelMaxSimple().get()) * .80;  //%80 of the scale;
+                        machine.getAxisByName("y").getTravelMaxSimple().get()) * .80;  //%80 of the scale;
             }
         }
         cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
@@ -927,20 +946,22 @@ public class GcodeTabController implements Initializable {
     /**
      * setCNCMachineVisible
      *
-     * @param t update cnc machine visibility
+     * @param visible update cnc machine visibility
      */
-    public static void setCNCMachineVisible(boolean t) {
-        cncMachineVisible.setValue(t);
+    public static void setCNCMachineVisible(boolean visible) {
+        logger.info("setCNCMachineVisible: {}", visible);
+        cncMachineVisible.setValue(visible);
     }
 
 
     /**
      * setIsFileSending
      *
-     * @param flag set is sending
+     * @param isFileSending set is sending
      */
-    public static void setIsFileSending(boolean flag) {
-        isSendingFile.set(flag);
+    public static void setIsFileSending(boolean isFileSending) {
+        logger.info("setIsFileSending: {}", isFileSending);
+        isSendingFile.set(isFileSending);
     }
 
 
@@ -951,18 +972,19 @@ public class GcodeTabController implements Initializable {
      * @param lineNum line number
      */
     public static void updateProgress(int lineNum) {
+        logger.info("updateProgress: {}", lineNum);
         if (isSendingFile.get() && lineNum > 0) {
 //            gcodeView.scrollTo(lineNum);
 
             // Show elapsed and remaining time
             Date currentTimeDt = new Date();  // Get current time
             long elapsed = currentTimeDt.getTime() - timeStartDt.getTime();
-            // FIXME: integer division
-            float rate = elapsed / lineNum;
+
+            float rate = elapsed / (float) lineNum;
             long remain = (long) ((totalGcodeLines - lineNum) * rate);  // remaining lines * secs per line
 
-            //timeElapsedTxt.setText(String.format("%02d:%02d", elapsed / 60000, (elapsed / 1000) % 60));
-            //timeLeftTxt.setText(String.format("%02d:%02d", remain / 60000, (remain / 1000) % 60));
+            timeElapsed.setValue(String.format("%02d:%02d", elapsed / 60000, (elapsed / 1000) % 60));
+            timeLeft.setValue(String.format("%02d:%02d", remain / 60000, (remain / 1000) % 60));
         }
     }
 }
