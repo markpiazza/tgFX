@@ -39,6 +39,8 @@ public class TgFXConstants {
 
     public static final int SERIAL_DATA_RATE = 115200;
 
-
-
+    // This disables the serial connection check so we can debug things
+    // when there's no machine available.
+    // TODO: need to write mock serial interface
+    public static final boolean DISABLE_UI_CONNECTION_CHECK = true;
 }

@@ -1,7 +1,5 @@
 package tgfx.system;
 
-import java.util.Iterator;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
@@ -12,19 +10,18 @@ import tgfx.tinyg.ResponseCommand;
 /**
  * Motor
  *
- * TODO: this should be a POJO, move the json conversion out into an impl
  */
 public class Motor {
     private static final Logger logger = LogManager.getLogger();
     
-    private String CURRENT_MOTOR_JSON_OBJECT;
-    private int id_number; //On TinyG the motor ports are 1-4
-    private int ma;// map_to_axis
-    private int mi; //Microsteps
-    private float sa; //step angle
-    private float tr; //travel revolution
-    private boolean po; //polarity
-    private boolean pm; //power management
+    private String currentMotorJsonObject;
+    private int idNumber; //On TinyG the motor ports are 1-4
+    private int mapToAxis;// map_to_axis
+    private int microsteps; //Microsteps
+    private float stepAngle; //step angle
+    private float travelPerRevolution; //travel revolution
+    private boolean polarity; //polarity
+    private boolean powerManagement; //power management
 
     /**
      *
@@ -35,51 +32,51 @@ public class Motor {
      *
      */
     public Motor(int id) {
-        id_number = id;
+        idNumber = id;
     }
 
-    public String getCURRENT_MOTOR_JSON_OBJECT() {
-        return CURRENT_MOTOR_JSON_OBJECT;
+    public String getCurrentMotorJsonObject() {
+        return currentMotorJsonObject;
     }
 
-    public void setCURRENT_MOTOR_JSON_OBJECT(String CURRENT_MOTOR_JSON_OBJECT) {
-        this.CURRENT_MOTOR_JSON_OBJECT = CURRENT_MOTOR_JSON_OBJECT;
+    public void setCurrentMotorJsonObject(String currentMotorJsonObject) {
+        this.currentMotorJsonObject = currentMotorJsonObject;
     }
 
     //Small wrappers to return int's vs bools
     public int isPolarityInt() {
         return isPolarity() ? 1 : 0;
     }
-    //Small wrappers to return int's vs bools
 
+    //Small wrappers to return int's vs bools
     public int isPowerManagementInt() {
-        return isPower_management() ? 1 : 0;
+        return isPowerManagement() ? 1 : 0;
     }
 
     public int getIdNumber() {
-        return id_number;
+        return idNumber;
     }
 
-    public void setId_number(int id_number) {
-        this.id_number = id_number;
+    public void setIdNumber(int idNumber) {
+        this.idNumber = idNumber;
     }
 
     public int getMapToAxis() {
-        return ma;
+        return mapToAxis;
     }
 
     public void setMapToAxis(int m) {
-        ma = m;
+        mapToAxis = m;
     }
 
-    public void setMicrosteps(int ms) {
-
-        mi = ms;
+    public void setMicrosteps(int microsteps) {
+        this.microsteps = microsteps;
     }
 
     public int getMicrosteps() {
-        //This is really ugly looking but this is how it works with combo boxes or selection models.. ugh
-        switch (mi) {
+        // This is really ugly looking but this is how it works
+        // with combo boxes or selection models.. ugh
+        switch (microsteps) {
             case 1:
                 return 0;
             case 2:
@@ -94,43 +91,43 @@ public class Motor {
     }
 
     private boolean isPolarity() {
-        return po;
+        return polarity;
     }
 
     public void setPolarity(boolean polarity) {
-        this.po = polarity;
+        this.polarity = polarity;
     }
 
     private void setPolarity(int polarity) {
-        this.po = polarity != 0;
+        this.polarity = polarity != 0;
     }
 
-    private boolean isPower_management() {
-        return pm;
-    }
-
-    private void setPowerManagement(int power_management) {
-        this.pm = power_management != 0;
+    private boolean isPowerManagement() {
+        return powerManagement;
     }
 
     public void setPowerManagement(boolean power_management) {
-        this.pm = power_management;
+        this.powerManagement = power_management;
+    }
+
+    private void setPowerManagement(int power_management) {
+        this.powerManagement = power_management != 0;
     }
 
     public float getStepAngle() {
-        return sa;
+        return stepAngle;
     }
 
-    private void setStepAngle(float step_angle) {
-        this.sa = step_angle;
+    private void setStepAngle(float stepAngle) {
+        this.stepAngle = stepAngle;
     }
 
     public float getTravelPerRevolution() {
-        return tr;
+        return travelPerRevolution;
     }
 
     private void setTravelPerRevolution(float travel_per_revolution) {
-        this.tr = travel_per_revolution;
+        this.travelPerRevolution = travel_per_revolution;
     }
 
     //This is the main method to parser a JSON Motor object
@@ -139,47 +136,47 @@ public class Motor {
 
         logger.info("Applying JSON Object to " + parent + " Group");
         for (Object o : js.keySet()) {
-            String _key = o.toString();
-            String _val = js.get(_key).toString();
-            ResponseCommand rc = new ResponseCommand(parent, _key, _val);
+            String key = o.toString();
+            String val = js.get(key).toString();
+            ResponseCommand rc = new ResponseCommand(parent, key, val);
             Motor motor = machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()));
-            if(motor==null){
+            if(motor == null){
                 logger.error("Invalid Motor number");
                 continue;
             }
 
-            switch (_key) {
-                case (MnemonicManager.MNEMONIC_MOTOR_MAP_AXIS):
+            switch (key) {
+                case MnemonicManager.MNEMONIC_MOTOR_MAP_AXIS:
                     motor.setMapToAxis(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
-                case (MnemonicManager.MNEMONIC_MOTOR_MICROSTEPS):
+                case MnemonicManager.MNEMONIC_MOTOR_MICROSTEPS:
                     motor.setMicrosteps(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
-                case (MnemonicManager.MNEMONIC_MOTOR_POLARITY):
+                case MnemonicManager.MNEMONIC_MOTOR_POLARITY:
                     motor.setPolarity(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
-                case (MnemonicManager.MNEMONIC_MOTOR_POWER_MANAGEMENT):
+                case MnemonicManager.MNEMONIC_MOTOR_POWER_MANAGEMENT:
                     motor.setPowerManagement(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
-                case (MnemonicManager.MNEMONIC_MOTOR_STEP_ANGLE):
+                case MnemonicManager.MNEMONIC_MOTOR_STEP_ANGLE:
                     motor.setStepAngle(Float.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
-                case (MnemonicManager.MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION):
+                case MnemonicManager.MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION:
                     motor.setTravelPerRevolution(Float.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());

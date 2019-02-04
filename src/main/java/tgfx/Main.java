@@ -60,11 +60,6 @@ import tgfx.utility.QueuedTimerable;
 public class Main extends Stage implements Initializable, Observer, QueuedTimerable<String> {
     private static final Logger logger = LogManager.getLogger();
 
-    // This disables the serial connection check so we can debug things
-    // when there's no machine available.
-    // TODO: need to write mock serial interface
-    private static final boolean DISABLE_UI_CONNECTION_CHECK = !false;
-
     private TinygDriver tg;
     private GcodeHistory gcodeCommandHistory;
     private QueueUsingTimer<String> connectionTimer;
@@ -284,10 +279,10 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         tg.addObserver(this);
         this.reScanSerial(); //Populate our serial ports
 
-//        GcodeTabController.setGcodeText("TinyG Disconnected.");
+        GcodeTabController.setGcodeText("TinyG Disconnected.");
 
         //This disables the UI if we are not connected.
-        if (!DISABLE_UI_CONNECTION_CHECK){
+        if (!TgFXConstants.DISABLE_UI_CONNECTION_CHECK){
             consoleVBox.disableProperty()
                     .bind(TinygDriver.getInstance().getConnectionStatus().not());
             topTabPane.disableProperty()
@@ -535,7 +530,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     }
 
     private void doStatusReport() {
-        tgfx.ui.gcode.GcodeTabController.drawCanvasUpdate();
+        GcodeTabController.drawCanvasUpdate();
         int rspLine = TinygDriver.getInstance().getMachine().getLineNumber();
 
         // Scroll Gcode view to stay in synch with TinyG acks during file send
@@ -558,7 +553,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         logger.error("Your TinyG firmware is too old.  System is exiting.");
         //console.appendText("Your TinyG firmware is too old.  Please update your TinyG Firmware.\n");
         Platform.runLater(() -> {
-
             MonologFXButton btnYes =  new MonologFXButton();
             btnYes.setDefaultButton(true);
             btnYes.setIcon("/testmonologfx/dialog_apply.png");

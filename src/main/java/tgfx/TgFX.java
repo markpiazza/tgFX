@@ -28,6 +28,15 @@ public class TgFX extends Application {
         stage.setMinWidth(TgFXConstants.STAGE_MIN_WIDTH);
         stage.setScene(scene);
         stage.show();
+
+//        Gauge root = new Gauge(Gauge.SkinType.LCD);
+//        root.setMaxMeasuredValueVisible(false);
+//        root.setMinMeasuredValueVisible(false);
+//        root.setOldValueVisible(false);
+//        root.setTitle("A Axis Position");
+//        root.setSubTitle("mm/min");
+//        stage.setScene(new Scene(root,200,75));
+//        stage.show();
     }
 
     public static void main(String[] args) {

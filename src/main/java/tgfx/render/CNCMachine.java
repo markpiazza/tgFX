@@ -24,6 +24,8 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tgfx.Main;
+import tgfx.system.Machine;
+import tgfx.system.enums.GcodeUnitMode;
 import tgfx.tinyg.CommandManager;
 import tgfx.tinyg.TinygDriver;
 import tgfx.ui.gcode.GcodeTabController;
@@ -217,44 +219,45 @@ public class CNCMachine extends Pane {
         //Code to make mm's look the same size as inches
         double scale = 1;
         double unitMagnication = 1;
+        Machine machine = TinygDriver.getInstance().getMachine();
 
-        // FIXME: commented out code
-//        if (TinygDriver.getInstance().m.getGcodeUnitMode().get().equals(GcodeUnitMode.inches.toString())) {
-//            unitMagnication = 5;  //INCHES
-//        } else {
-//            unitMagnication = 2; //MM
-//        }
-//        double newX = unitMagnication * (Double.valueOf(TinygDriver.getInstance().m.getAxisByName("X").getWork_position().get()) + 80);// + magnification;
-//        double newY = unitMagnication * (Double.valueOf(TinygDriver.getInstance().m.getAxisByName("Y").getWork_position().get()) + 80);// + magnification;
+        if (machine.getGcodeUnitMode().get().equals(GcodeUnitMode.INCHES.toString())) {
+            unitMagnication = 5;  //INCHES
+        } else {
+            unitMagnication = 2; //MM
+        }
+        double newX = unitMagnication * (machine.getAxisByName("X").getWorkPosition().get() + 80);// + magnification;
+        double newY = unitMagnication * (machine.getAxisByName("Y").getWorkPosition().get() + 80);// + magnification;
 
-//        if (newX > gcodePane.getWidth() || newX > gcodePane.getWidth()) {
-//            scale = scale / 2;
-//            Line line = new Line();
-//            Iterator ii = gcodePane.getChildren().iterator();
-//            gcodePane.getChildren().clear(); //remove them after we have the iterator
-//            while (ii.hasNext()) {
-//                if (ii.next().getClass().toString().contains("Line")) {
-//                    //This is a line.
-//                    line = (Line) ii.next();
-//                    line.setStartX(line.getStartX() / 2);
-//                    line.setStartY(line.getStartY() / 2);
-//                    line.setEndX(line.getEndX() / 2);
-//                    line.setEndY(line.getEndY() / 2);
-//                    gcodePane.getChildren().add(line);
-//
-//                }
+        if (newX > gcodePane.getWidth() || newX > gcodePane.getWidth()) {
+            scale = scale / 2;
+            Line line = new Line();
+            Iterator ii = gcodePane.getChildren().iterator();
+            gcodePane.getChildren().clear(); //remove them after we have the iterator
+            while (ii.hasNext()) {
+                if (ii.next().getClass().toString().contains("Line")) {
+                    //This is a line.
+                    line = (Line) ii.next();
+                    line.setStartX(line.getStartX() / 2);
+                    line.setStartY(line.getStartY() / 2);
+                    line.setEndX(line.getEndX() / 2);
+                    line.setEndY(line.getEndY() / 2);
+                    gcodePane.getChildren().add(line);
 
-//            }
-//            console.appendText("Finished Drawing Prevew Scale Change.\n");
-//            gcodeWindow.setScaleX(scale);
-//            gcodeWindow.setScaleY(scale);
-//        }
+                }
+
+            }
+            Main.postConsoleMessage("Finished Drawing Preview Scale Change.\n");
+            gcodePane.setScaleX(scale);
+            gcodePane.setScaleY(scale);
+        }
+
 //        Main.print(gcodePane.getHeight() - TinygDriver.getInstance().m.getAxisByName("y").getWork_position().get());
-        double newX = TinygDriver.getInstance().getMachine().getAxisByName("x")
-                .getMachinePositionSimple().get();  // + magnification;
-        double newY = this.getHeight() - TinygDriver.getInstance().getMachine().getAxisByName("y")
-                .getMachinePositionSimple().get();  //(gcodePane.getHeight() - (Double.valueOf(TinygDriver.getInstance().m.getAxisByName("y").getWork_position().get())));// + magnification;
-       
+//        double newX = TinygDriver.getInstance().getMachine().getAxisByName("x")
+//                .getMachinePositionSimple().get();  // + magnification;
+//        double newY = this.getHeight() - TinygDriver.getInstance().getMachine().getAxisByName("y")
+//                .getMachinePositionSimple().get();  //(gcodePane.getHeight() - (Double.valueOf(TinygDriver.getInstance().m.getAxisByName("y").getWork_position().get())));// + magnification;
+//
         if (Draw2d.isFirstDraw()) {
             //This is to not have us draw a line on the first connect.
             l = new Line(newX, this.getHeight(), newX, this.getHeight());
