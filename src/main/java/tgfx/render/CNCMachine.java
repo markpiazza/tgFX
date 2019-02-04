@@ -247,7 +247,7 @@ public class CNCMachine extends Pane {
                 }
 
             }
-            Main.postConsoleMessage("Finished Drawing Prevew Scale Change.\n");
+            Main.postConsoleMessage("Finished Drawing Preview Scale Change.\n");
             gcodePane.setScaleX(scale);
             gcodePane.setScaleY(scale);
         }

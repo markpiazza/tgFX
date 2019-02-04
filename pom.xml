@@ -50,42 +50,12 @@
         <!-- https://mvnrepository.com/search?q=org.jfxtras -->
         <dependency>
             <groupId>org.jfxtras</groupId>
-            <artifactId>jfxtras-common</artifactId>
-            <version>8.0-r6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jfxtras</groupId>
             <artifactId>jfxtras-labs</artifactId>
             <version>8.0-r6</version>
         </dependency>
         <dependency>
             <groupId>org.jfxtras</groupId>
-            <artifactId>jfxtras-controls</artifactId>
-            <version>8.0-r6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jfxtras</groupId>
             <artifactId>jfxtras-all</artifactId>
-            <version>8.0-r6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jfxtras</groupId>
-            <artifactId>jfxtras-agenda</artifactId>
-            <version>8.0-r6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jfxtras</groupId>
-            <artifactId>jfxtras-menu</artifactId>
-            <version>8.0-r6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jfxtras</groupId>
-            <artifactId>jfxtras-window</artifactId>
-            <version>8.0-r6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jfxtras</groupId>
-            <artifactId>jfxtras-icalendarfx</artifactId>
             <version>8.0-r6</version>
         </dependency>
 

@@ -530,8 +530,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     }
 
     private void doStatusReport() {
-
-          tgfx.ui.gcode.GcodeTabController.drawCanvasUpdate();
+        GcodeTabController.drawCanvasUpdate();
         int rspLine = TinygDriver.getInstance().getMachine().getLineNumber();
 
         // Scroll Gcode view to stay in synch with TinyG acks during file send
@@ -554,7 +553,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         logger.error("Your TinyG firmware is too old.  System is exiting.");
         //console.appendText("Your TinyG firmware is too old.  Please update your TinyG Firmware.\n");
         Platform.runLater(() -> {
-
             MonologFXButton btnYes =  new MonologFXButton();
             btnYes.setDefaultButton(true);
             btnYes.setIcon("/testmonologfx/dialog_apply.png");
