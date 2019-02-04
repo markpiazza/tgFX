@@ -32,7 +32,16 @@ import tgfx.utility.AsyncTimer;
 public class TinygDriver extends Observable {
     private static final Logger logger = LogManager.getLogger();
 
+    public final static int MAX_BUFFER = 1024;
+
     private static TinygDriver instance;
+
+    private final SerialDriver serialDriver = SerialDriver.getInstance();
+    private final AtomicBoolean connectionSemaphore = new AtomicBoolean(false);
+
+    private static ArrayBlockingQueue<GcodeLine[]> writerQueue = new ArrayBlockingQueue<>(50000);
+    private static ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(30);
+    private static ArrayBlockingQueue<String> jsonQueue = new ArrayBlockingQueue<>(10000);
 
     private String[] message = new String[2];
 
@@ -46,26 +55,14 @@ public class TinygDriver extends Observable {
     private QueueReport queueReport = QueueReport.getInstance();
     private Machine machine = Machine.getInstance();
 
-    /**
-     * Static commands for TinyG to get settings from the TinyG Driver Board
-     */
-    private final SerialDriver serialDriver = SerialDriver.getInstance();
-    private final AtomicBoolean connectionSemaphore = new AtomicBoolean(false);
-    private static ArrayBlockingQueue<GcodeLine[]> writerQueue = new ArrayBlockingQueue<>(50000);
-    private static ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(30);
-
-    public static ArrayBlockingQueue<String> jsonQueue = new ArrayBlockingQueue<>(10000);
-    public final static int MAX_BUFFER = 1024;
-
     private AsyncTimer connectionTimer;
 
     private ArrayList<String> connections = new ArrayList<>();
     private boolean PAUSED = false;
     private boolean timedout = false;
 
-    public ResponseParser resParse = new ResponseParser();
-    public SerialWriter serialWriter = new SerialWriter(writerQueue);
-
+    private ResponseParser resParse = new ResponseParser();
+    private SerialWriter serialWriter = new SerialWriter(writerQueue);
 
 
     /**
@@ -83,6 +80,14 @@ public class TinygDriver extends Observable {
             instance = new TinygDriver();
         }
         return instance;
+    }
+
+    public static ArrayBlockingQueue<String> getJsonQueue() {
+        return jsonQueue;
+    }
+
+    public static void setJsonQueue(ArrayBlockingQueue<String> jsonQueue) {
+        TinygDriver.jsonQueue = jsonQueue;
     }
 
     /**
@@ -567,7 +572,7 @@ public class TinygDriver extends Observable {
 
     public void appendJsonQueue(String line) {
         // This adds full normalized json objects to our jsonQueue.
-        TinygDriver.jsonQueue.add(line);
+        TinygDriver.getJsonQueue().add(line);
     }
 
     public synchronized void appendResponseQueue(byte[] queue) {
@@ -622,7 +627,7 @@ public class TinygDriver extends Observable {
      * SerialDriver write methods from here.
      */
     public synchronized void write(String msg) {
-        serialWriter.addCommandToBuffer(msg);
+        getSerialWriter().addCommandToBuffer(msg);
     }
 
     public void priorityWrite(Byte b) throws SerialPortException {
@@ -652,5 +657,21 @@ public class TinygDriver extends Observable {
 
     public List<Axis> getInternalAllAxis() {
         return machine.getAllAxis();
+    }
+
+    public SerialWriter getSerialWriter() {
+        return serialWriter;
+    }
+
+    public void setSerialWriter(SerialWriter serialWriter) {
+        this.serialWriter = serialWriter;
+    }
+
+    public ResponseParser getResParse() {
+        return resParse;
+    }
+
+    public void setResParse(ResponseParser resParse) {
+        this.resParse = resParse;
     }
 }

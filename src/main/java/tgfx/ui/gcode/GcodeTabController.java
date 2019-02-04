@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -419,7 +418,7 @@ public class GcodeTabController implements Initializable {
             Main.postConsoleMessage("Gcode Unit Mode Changed to: " + gcodeUnitMode + "\n");
 
             try {
-                DRIVER.serialWriter.setThrottled(true);
+                DRIVER.getSerialWriter().setThrottled(true);
                 DRIVER.priorityWrite(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
                 DRIVER.priorityWrite(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
                 DRIVER.priorityWrite(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
@@ -432,7 +431,7 @@ public class GcodeTabController implements Initializable {
                 DRIVER.priorityWrite(CommandManager.CMD_QUERY_AXIS_B);
                 DRIVER.priorityWrite(CommandManager.CMD_QUERY_AXIS_C);
                 Thread.sleep(400);
-                DRIVER.serialWriter.setThrottled(false);
+                DRIVER.getSerialWriter().setThrottled(false);
             } catch (InterruptedException ex) {
                 logger.error("Error querying tg model state on gcode unit change.  " +
                         "Main.java binding section.");
@@ -540,7 +539,7 @@ public class GcodeTabController implements Initializable {
         logger.info("handleReset");
         Platform.runLater(() -> {
             try {
-                DRIVER.serialWriter.clearQueueBuffer();
+                DRIVER.getSerialWriter().clearQueueBuffer();
                 //This sends the 0x18 byte
                 DRIVER.priorityWrite(CommandManager.CMD_APPLY_RESET);
 
@@ -551,8 +550,8 @@ public class GcodeTabController implements Initializable {
 //                Thread.sleep(8000);
 //                onConnectActions();
                 Main.postConsoleMessage("Resetting TinyG....\n.");
-                DRIVER.serialWriter.notifyAck();
-                DRIVER.serialWriter.clearQueueBuffer();
+                DRIVER.getSerialWriter().notifyAck();
+                DRIVER.getSerialWriter().clearQueueBuffer();
                 cncMachinePane.clearScreen();
                 // We set this to false to allow us to jog again
                 isSendingFile.set(false);

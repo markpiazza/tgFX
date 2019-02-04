@@ -7,7 +7,6 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -275,7 +274,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         /*
          * MISC INIT CODE
          */
-        tg.resParse.addObserver(this);  //Add the tinygdriver to this observer
+        tg.getResParse().addObserver(this);  //Add the tinygdriver to this observer
         tg.addObserver(this);
         this.reScanSerial(); //Populate our serial ports
 
@@ -295,12 +294,12 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         /*
          * THREAD INITS
          */
-        Thread serialWriterThread = new Thread(tg.serialWriter);
+        Thread serialWriterThread = new Thread(tg.getSerialWriter());
 
         serialWriterThread.setName("SerialWriter");
         serialWriterThread.setDaemon(true);
         serialWriterThread.start();
-        Thread threadResponseParser = new Thread(tg.resParse);
+        Thread threadResponseParser = new Thread(tg.getResParse());
 
         threadResponseParser.setDaemon(true);
         threadResponseParser.setName("ResponseParser");
@@ -634,7 +633,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         connectionTimer = new QueueUsingTimer<>(CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
         Platform.runLater(() -> {
             GcodeTabController.setGcodeTextTemp("Attempting to Connect to TinyG.");
-            TinygDriver.getInstance().serialWriter.notifyAck(); //If the serialWriter is in a wait state.. wake it up
+            TinygDriver.getInstance().getSerialWriter().notifyAck(); //If the serialWriter is in a wait state.. wake it up
             TinygDriver.getInstance().write(CommandManager.CMD_APPLY_NOOP); //Just waking things up.
             TinygDriver.getInstance().write(CommandManager.CMD_APPLY_NOOP);
             TinygDriver.getInstance().write(CommandManager.CMD_APPLY_NOOP);
@@ -720,9 +719,9 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 GcodeTabController.setCNCMachineVisible(false);
 
                 //Reset this so we can enable checking the build again on disconnect
-                TinygDriver.getInstance().serialWriter.resetBuffer();
-                TinygDriver.getInstance().serialWriter.clearQueueBuffer();
-                TinygDriver.getInstance().serialWriter.notifyAck();
+                TinygDriver.getInstance().getSerialWriter().resetBuffer();
+                TinygDriver.getInstance().getSerialWriter().clearQueueBuffer();
+                TinygDriver.getInstance().getSerialWriter().notifyAck();
                 buildChecked = false;
                 GcodeTabController.setGcodeTextTemp("TinyG Disconnected.");
             } catch (JSONException ex) {

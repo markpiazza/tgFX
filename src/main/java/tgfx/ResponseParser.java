@@ -66,7 +66,7 @@ public class ResponseParser extends Observable implements Runnable {
         logger.info("Response Parser Thread Running...");
         while (RUN) {
             try {
-                line = TinygDriver.jsonQueue.take();
+                line = TinygDriver.getJsonQueue().take();
                 if (line.equals("")) {
                     continue;
                 }
@@ -215,7 +215,7 @@ public class ResponseParser extends Observable implements Runnable {
                             notifyObservers(message);
                             break;
                         case "rx":
-                            TinygDriver.getInstance().serialWriter.setBuffer(js.getInt(key));
+                            TinygDriver.getInstance().getSerialWriter().setBuffer(js.getInt(key));
                             break;
                         default:
                             if (TinygDriver.getInstance().getMnemonicManager()
@@ -479,13 +479,13 @@ public class ResponseParser extends Observable implements Runnable {
         responseFooter.setCheckSum(footerValues.getInt(FOOTER_ELEMENT_STATUS_CODE));
         //Out footer object is not populated
 
-        int beforeBytesReturned = TinygDriver.getInstance().serialWriter.getBufferValue();
+        int beforeBytesReturned = TinygDriver.getInstance().getSerialWriter().getBufferValue();
         //Make sure we do not add bytes to a already full buffer
         if (beforeBytesReturned != TinygDriver.MAX_BUFFER) {
-            TinygDriver.getInstance().serialWriter.addBytesReturnedToBuffer(responseFooter.getRxRecvd());
-            int afterBytesReturned = TinygDriver.getInstance().serialWriter.getBufferValue();
+            TinygDriver.getInstance().getSerialWriter().addBytesReturnedToBuffer(responseFooter.getRxRecvd());
+            int afterBytesReturned = TinygDriver.getInstance().getSerialWriter().getBufferValue();
             logger.debug("Returned " + responseFooter.getRxRecvd() + " to buffer... Buffer was " + beforeBytesReturned + " is now " + afterBytesReturned);
-            TinygDriver.getInstance().serialWriter.notifyAck();  //We let our serialWriter thread know we have added some space to the buffer.
+            TinygDriver.getInstance().getSerialWriter().notifyAck();  //We let our serialWriter thread know we have added some space to the buffer.
             //Lets tell the UI the new size of the buffer
             message[0] = "BUFFER_UPDATE";
             message[1] = String.valueOf(afterBytesReturned);
