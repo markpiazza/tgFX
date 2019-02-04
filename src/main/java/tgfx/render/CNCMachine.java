@@ -232,14 +232,14 @@ public class CNCMachine extends Pane {
 
             while (ii.hasNext()) {
                 if (ii.next().getClass().toString().contains("Line")) {
-                //This is a line.
-                line = (Line) ii.next();
-                line.setStartX(line.getStartX() / 2);
-                line.setStartY(line.getStartY() / 2);
-                line.setEndX(line.getEndX() / 2);
-                line.setEndY(line.getEndY() / 2);
-                getGcodePane().getChildren().add(line);
-
+                    //This is a line.
+                    line = (Line) ii.next();
+                    line.setStartX(line.getStartX() / 2);
+                    line.setStartY(line.getStartY() / 2);
+                    line.setEndX(line.getEndX() / 2);
+                    line.setEndY(line.getEndY() / 2);
+                    getGcodePane().getChildren().add(line);
+                }
             }
             Main.postConsoleMessage("Finished Drawing Preview Scale Change.\n");
             getGcodePane().setScaleX(scale);
@@ -247,8 +247,8 @@ public class CNCMachine extends Pane {
         }
 
 //        Main.print(gcodePane.getHeight() - MACHINE.getAxisByName("y").getWorkPosition().get());
-//        double newX = MACHINE.getAxisByName("x").getMachinePositionSimple().get();
-//        double newY = this.getHeight() - MACHINE.getAxisByName("y").getMachinePositionSimple().get();
+//        double newX = MACHINE.getAxisByName("x").getMachinePositionSimple().get(); // + magnification;
+//        double newY = this.getHeight() - MACHINE.getAxisByName("y").getMachinePositionSimple().get(); // + magnification;
 //
         if (Draw2d.isFirstDraw()) {
             //This is to not have us draw a line on the first connect.
