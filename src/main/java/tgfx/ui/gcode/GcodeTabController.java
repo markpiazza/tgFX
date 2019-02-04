@@ -32,6 +32,8 @@ import jssc.SerialPortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tgfx.Main;
+import tgfx.TgFX;
+import tgfx.TgFXConstants;
 import tgfx.render.CNCMachine;
 import tgfx.render.Draw2d;
 import tgfx.system.Machine;
@@ -106,7 +108,7 @@ public class GcodeTabController implements Initializable {
     @FXML
     private TableColumn<GcodeLine, String> gcodeCol;
     @FXML
-    private TableView gcodeView;
+    private TableView<GcodeLine> gcodeView;
     @FXML
     private Button pauseResumeBtn;
     @FXML
@@ -202,7 +204,7 @@ public class GcodeTabController implements Initializable {
             } //end if isSendingFile
             else {
                 //We are sending a file... We need to post a messages
-                setGcodeTextTemp("Jogging Disabled... Sending File.");
+                setGcodeTextTemp("Jogging sd... Sending File.");
             }
         };
 
@@ -360,6 +362,7 @@ public class GcodeTabController implements Initializable {
         timeElapsedTxt.textProperty().bind(timeElapsed);
         timeLeftTxt.textProperty().bind(timeLeft);
 
+
         // FIXME: java.lang.RuntimeException: HBox.disable : A bound value cannot be set.
         // gcodeTabControllerHBox.disableProperty().bind(driver.getConnectionStatus().not());
 
@@ -390,9 +393,12 @@ public class GcodeTabController implements Initializable {
 
         // This adds our CNC Machine (2d preview) to our display window
         if (!gcodePane.getChildren().contains(cncMachinePane)) {
+            logger.info("no cncMachinePane, making one");
             // Add the cnc machine to the gcode pane
             gcodePane.getChildren().add(cncMachinePane);
         }
+
+
 
         /*
          * CHANGE LISTENERS
@@ -448,12 +454,10 @@ public class GcodeTabController implements Initializable {
         }
 
         gcodeCol.setCellValueFactory(new PropertyValueFactory<>("codeLine"));
-        GcodeLine n = new GcodeLine("Click open to load..", 0);
 
-//        gcodeView.getItems().setAll(data);
-//        data.add(n);
-
-//        gcodeView.setItems(data);
+        gcodeView.getItems().clear();
+        data.add(new GcodeLine("Click open to load..", 0));
+        gcodeView.setItems(data);
 
 //        gcodeView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 //            @Override
@@ -474,6 +478,11 @@ public class GcodeTabController implements Initializable {
 //                }
 //            }
 //        });
+
+        if(TgFXConstants.DISABLE_UI_CONNECTION_CHECK) {
+            setCNCMachineVisible(true);
+        }
+
     }
 
 
@@ -949,7 +958,6 @@ s     * handleTestButton
      * @param visible update cnc machine visibility
      */
     public static void setCNCMachineVisible(boolean visible) {
-        logger.info("setCNCMachineVisible: {}", visible);
         cncMachineVisible.setValue(visible);
     }
 

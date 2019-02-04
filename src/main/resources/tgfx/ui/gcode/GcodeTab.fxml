@@ -167,7 +167,8 @@
             </padding>
 
             <Gauge fx:id="xLcd" skinType="LCD"
-                   title="X Axis Position" unit="mm" decimals="3"
+                   title="Title" unit="mm" decimals="3"
+                   subTitle="Subtitle"
                    minWidth="200" prefWidth="200" maxWidth="200"
                    minHeight="75" prefHeight="75" maxHeight="75"
                    oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
