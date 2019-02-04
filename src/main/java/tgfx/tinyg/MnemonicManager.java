@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * MnemonicManager
  *
  */
+@SuppressWarnings("WeakerAccess")
 public class MnemonicManager {
     private static final Logger logger = LogManager.getLogger();
 
