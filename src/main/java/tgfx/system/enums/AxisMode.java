@@ -1,7 +1,5 @@
 package tgfx.system.enums;
 
-import tgfx.system.Axis;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

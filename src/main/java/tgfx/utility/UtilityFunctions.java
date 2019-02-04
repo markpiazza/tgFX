@@ -47,10 +47,6 @@ public class UtilityFunctions {
         return TgFXConstants.OS.contains("nux");
     }
 
-    public void testMessage(String message) {
-        logger.info("Message Hit");
-    }
-
     public static String getBuildInfo(String propToken) {
         String msg = "";
         try {

@@ -38,8 +38,8 @@ public final class Machine {
 
     private StringProperty hardwareId = new SimpleStringProperty("na");
     private StringProperty hardwareVersion = new SimpleStringProperty("na");
-    public StringProperty firmwareVersion = new SimpleStringProperty();
-    public SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty();
+    private StringProperty firmwareVersion = new SimpleStringProperty();
+    private SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty();
 
     private SimpleStringProperty machineState = new SimpleStringProperty();
     private SimpleStringProperty motionMode = new SimpleStringProperty();

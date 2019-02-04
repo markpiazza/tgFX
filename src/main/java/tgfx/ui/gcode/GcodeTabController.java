@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -362,7 +363,7 @@ public class GcodeTabController implements Initializable {
 
 
         // FIXME: java.lang.RuntimeException: HBox.disable : A bound value cannot be set.
-        // gcodeTabControllerHBox.disableProperty().bind(DRIVER.getConnectionStatus().not());
+        //gcodeTabControllerHBox.disableProperty().bind(DRIVER.getConnectionStatus().not());
 
         // add support for zmove
 //        assert zMoveScale != null : "fx:id=\"zMoveScale\" was not injected: check your FXML file 'Position.fxml'.";
@@ -457,25 +458,22 @@ public class GcodeTabController implements Initializable {
         data.add(new GcodeLine("Click open to load..", 0));
         gcodeView.setItems(data);
 
-//        gcodeView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent me) {
-//                if (me.getButton().equals(me.getButton().PRIMARY)) {
-//                    if (me.getClickCount() == 2) {
-//                        GcodeLine gcl = (GcodeLine) gcodeView.getSelectionModel().getSelectedItem();
-//                        if (DRIVER.isConnected().get()) {
-//                            logger.info("Double Clicked gcodeView " + gcl.getCodeLine());
-//                            DRIVER.write(gcl.getGcodeLineJsonified());
-//                            Main.postConsoleMessage(gcl.getGcodeLineJsonified());
-//                        } else {
-//                            logger.info("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
-//                            Main.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
-//                        }
-//
-//                    }
-//                }
-//            }
-//        });
+        gcodeView.addEventHandler(MouseEvent.MOUSE_CLICKED, me -> {
+            if (me.getButton().equals(MouseButton.PRIMARY)) {
+                if (me.getClickCount() == 2) {
+                    GcodeLine gcl = gcodeView.getSelectionModel().getSelectedItem();
+                    if (DRIVER.isConnected().get()) {
+                        logger.info("Double Clicked gcodeView " + gcl.getCodeLine());
+                        DRIVER.write(gcl.getGcodeLineJsonified());
+                        Main.postConsoleMessage(gcl.getGcodeLineJsonified());
+                    } else {
+                        logger.info("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
+                        Main.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
+                    }
+
+                }
+            }
+        });
 
         if(TgFXConstants.DISABLE_UI_CONNECTION_CHECK) {
             setCNCMachineVisible(true);

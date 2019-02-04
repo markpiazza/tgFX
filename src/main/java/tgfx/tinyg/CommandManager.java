@@ -12,6 +12,7 @@ import tgfx.Main;
  * CommandManager
  *
  */
+@SuppressWarnings("WeakerAccess")
 public class CommandManager {
     private static final Logger logger = LogManager.getLogger();
 
@@ -89,24 +90,25 @@ public class CommandManager {
     public static final String CMD_APPLY_FLOWCONTROL = "{\"ex\":2}\n";
     public static final String CMD_ZERO_ALL_AXIS = "{\"gc\":G920g0x0y0z0}\n";
     public static final String CMD_APPLY_BOOTLOADER_MODE = "{\"boot\":1}\n";
-    
-    CommandManager() {
+
+
+    public CommandManager() {
     }
 
     public static void stopTinyGMovement() {
         logger.info("Stopping Job Clearing Serial Queue...\n");
-        TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_PAUSE);
+        TinygDriver.getInstance().priorityWrite(CMD_APPLY_PAUSE);
         TinygDriver.getInstance().getSerialWriter().clearQueueBuffer();
-        TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_QUEUE_FLUSH);
+        TinygDriver.getInstance().priorityWrite(CMD_APPLY_QUEUE_FLUSH);
         tgfx.Main.postConsoleMessage("Stopping Job Clearing Serial Queue...\n");
     }
 
     public static void stopJogMovement() throws InterruptedException {
         //Do not mess with this order.
         TinygDriver.getInstance().getSerialWriter().clearQueueBuffer();
-        TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_PAUSE);
+        TinygDriver.getInstance().priorityWrite(CMD_APPLY_PAUSE);
         Thread.sleep(40);
-        TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_QUEUE_FLUSH);
+        TinygDriver.getInstance().priorityWrite(CMD_APPLY_QUEUE_FLUSH);
 //        tgfx.Main.postConsoleMessage("Stopping Job Clearing Serial Queue...\n");
     }
 
@@ -175,7 +177,7 @@ public class CommandManager {
 
     public void queryStatusReport() {
         logger.info("Querying Status Report");
-        TinygDriver.getInstance().write(CommandManager.CMD_QUERY_STATUS_REPORT);
+        TinygDriver.getInstance().write(CMD_QUERY_STATUS_REPORT);
         Main.postConsoleMessage("Getting TinyG Status Report...");
     }
 
@@ -201,7 +203,7 @@ public class CommandManager {
 
     public void queryAllMachineSettings() {
         logger.info("Getting All Machine Settings");
-        TinygDriver.getInstance().write(CommandManager.CMD_QUERY_SYSTEM_SETTINGS);
+        TinygDriver.getInstance().write(CMD_QUERY_SYSTEM_SETTINGS);
         Main.postConsoleMessage("Getting TinyG System Settings...");
     }
 
@@ -210,26 +212,26 @@ public class CommandManager {
      */
     public void queryAllHardwareAxisSettings() {
         logger.info("Getting A AXIS Settings");
-        TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_A);
+        TinygDriver.getInstance().write(CMD_QUERY_AXIS_A);
         Main.postConsoleMessage("Getting TinyG Axis A Settings...");
 
         logger.info("Getting B AXIS Settings");
-        TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_B);
+        TinygDriver.getInstance().write(CMD_QUERY_AXIS_B);
         Main.postConsoleMessage("Getting TinyG Axis B Settings...");
 
         logger.info("Getting C AXIS Settings");
-        TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_C);
+        TinygDriver.getInstance().write(CMD_QUERY_AXIS_C);
         Main.postConsoleMessage("Getting TinyG Axis C Settings...");
 
-        TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_X);
+        TinygDriver.getInstance().write(CMD_QUERY_AXIS_X);
         logger.info("Getting X AXIS Settings");
         Main.postConsoleMessage("Getting TinyG Axis X Settings...");
 
-        TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_Y);
+        TinygDriver.getInstance().write(CMD_QUERY_AXIS_Y);
         logger.info("Getting Y AXIS Settings");
         Main.postConsoleMessage("Getting TinyG Axis Y Settings...");
 
-        TinygDriver.getInstance().write(CommandManager.CMD_QUERY_AXIS_Z);
+        TinygDriver.getInstance().write(CMD_QUERY_AXIS_Z);
         logger.info("Getting Z AXIS Settings");
         Main.postConsoleMessage("Getting TinyG Axis Z Settings...");
     }
