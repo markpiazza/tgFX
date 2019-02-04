@@ -71,36 +71,18 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     //this is checked upon initial connect.  Once this is set to true
     private boolean buildChecked = false;
 
-//    @FXML
-//    private Circle cursor;
     @FXML
     private Button Connect;
     @FXML
     TextField input; // listenerPort;
     @FXML
     private Label srMomo, srState, srBuild, srBuffer, srGcodeLine, srVer, srUnits, srCoord;
-//    @FXML
-//    StackPane cursorPoint;
-//    @FXML
-//    TextArea gcodesList;
     @FXML
     TextArea console;
-//    @FXML
-//    WebView html, makerCam;
-//    @FXML
-//    Text heightSize, widthSize;
     @FXML
     private ChoiceBox<String> serialPorts;
-
-    //Config FXML//
-//    @FXML
-//    Group motor1Node;
-//    @FXML
-//    HBox bottom, xposhbox, gcodeWindowButtonBar, gcodePreviewHbox;
-//    @FXML
-//    HBox canvasHolder;
     @FXML
-    VBox consoleVBox; //topvbox, positionsVbox, tester
+    VBox consoleVBox;
     @FXML
     private TabPane topTabPane;
 

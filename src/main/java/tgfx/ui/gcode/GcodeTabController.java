@@ -81,7 +81,7 @@ public class GcodeTabController implements Initializable {
     private static SimpleStringProperty timeLeft = new SimpleStringProperty("00:00");
 
     //List to store the gcode file
-    public ObservableList<GcodeLine> data;
+    private ObservableList<GcodeLine> data;
 
 
     /*  ######################## FXML ELEMENTS ############################*/
