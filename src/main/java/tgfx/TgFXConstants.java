@@ -20,6 +20,7 @@ public class TgFXConstants {
     public static final String PROMPT = "tinyg>";
 
     public static final String STAGE_FXML_MAIN = "/tgfx/Main.fxml";
+    public static final String STAGE_FXML_GCODETAB = "/tgfx/ui/gcode/GcodeTab.fxml";
 
     public static final String ROUTING_STATUS_REPORT = "STATUS_REPORT";
     public static final String ROUTING_CMD_GET_AXIS_SETTINGS = "CMD_GET_AXIS_SETTINGS"; 

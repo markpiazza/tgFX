@@ -169,7 +169,7 @@ public class CNCMachine extends Pane {
 
     private void unFocusForJogging() {
         this.setFocused(true);
-        GcodeTabController.hideGcodeText();
+//        GcodeTabController.hideGcodeText();
     }
 
     private void setFocusForJogging() {

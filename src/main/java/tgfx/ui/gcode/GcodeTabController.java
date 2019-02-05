@@ -330,9 +330,11 @@ public class GcodeTabController implements Initializable {
         Platform.runLater(() -> {
             try {
                 Main.postConsoleMessage("Loading a gcode file.....\n");
+                // FIXME: Canceling FileChooser, throws a FileNotFoundException, handle this better
                 FileChooser fc = new FileChooser();
                 fc.setTitle("Open GCode File");
 
+                // TODO: Save last directory for easier browsing?
                 String HOME_DIR = System.getenv("HOME"); //Get Home DIR in OSX
                 if (HOME_DIR == null) {
                     HOME_DIR = System.getProperty("user.home");  //Get Home DIR in Windows
@@ -347,28 +349,28 @@ public class GcodeTabController implements Initializable {
 
                 //Clear the list if there was a previous file loaded
                 data.clear();
-                int _linenumber = 0;
+                int lineNumber = 0;
                 while ((strLine = br.readLine()) != null) {
                     if (!strLine.equals("")) {
                         //Do not add empty lines to the list
                         //gcodesList.appendText(strLine + "\n");
                         if (!strLine.toUpperCase().startsWith("N")) {
-                            strLine = "N" + String.valueOf(_linenumber) + " " + strLine;
+                            strLine = "N" + lineNumber + " " + strLine;
                         }
                         if (normalizeGcodeLine(strLine)) {
-                            data.add(new GcodeLine(strLine, _linenumber));
-                            _linenumber++;
+                            data.add(new GcodeLine(strLine, lineNumber));
+                            lineNumber++;
                         } else {
                             Main.postConsoleMessage("ERROR: Your gcode file contains an invalid character.. " +
                                     "Either !,% or ~. Remove this character and try again.");
-                            Main.postConsoleMessage("  Line " + _linenumber);
+                            Main.postConsoleMessage("  Line " + lineNumber);
                             data.clear(); //Remove all other previous entered lines
                             break;
                         }
 
                     }
                 }
-                totalGcodeLines = _linenumber;
+                totalGcodeLines = lineNumber;
                 logger.info("File Loading Complete");
             } catch (FileNotFoundException ex) {
                 logger.error("File Not Found.");
@@ -581,12 +583,7 @@ public class GcodeTabController implements Initializable {
         setCNCMachineVisible(false);
 
         // This adds our CNC Machine (2d preview) to our display window
-        if (!gcodePane.getChildren().contains(cncMachinePane)) {
-            logger.info("no cncMachinePane, making one");
-            // Add the cnc MACHINE to the gcode pane
-            gcodePane.getChildren().add(cncMachinePane);
-        }
-
+        drawTable();
 
         /*
          * CHANGE LISTENERS
@@ -738,6 +735,10 @@ public class GcodeTabController implements Initializable {
         };
     }
 
+    public CNCMachine getCncMachinePane(){
+        return cncMachinePane;
+    }
+
 
     /**
      * isTaskActive
@@ -767,7 +768,7 @@ public class GcodeTabController implements Initializable {
      *
      * @return isSendingFile property
      */
-    public static SimpleBooleanProperty isSendingFile(){
+    public SimpleBooleanProperty isSendingFile(){
         logger.info("isSendingFile: {}", isSendingFile);
         return isSendingFile;
     }
@@ -779,7 +780,7 @@ public class GcodeTabController implements Initializable {
      *
      * @param text message
      */
-    public static void setGcodeTextTemp(String text) {
+    public void setGcodeTextTemp(String text) {
         logger.info("setGcodeTextTemp: {}", text);
         gcodeStatusMessageValue.setValue(text);
     }
@@ -791,7 +792,7 @@ public class GcodeTabController implements Initializable {
      *
      * @param text message
      */
-    public static void setGcodeText(String text) {
+    public void setGcodeText(String text) {
         logger.info("setGcodeText: {}", text);
         gcodeStatusMessageVisible.setValue(true);
     }
@@ -801,7 +802,7 @@ public class GcodeTabController implements Initializable {
      * hides gcode status message
      *
      */
-    public static void hideGcodeText() {
+    public void hideGcodeText() {
         logger.info("hideGcodeText");
         gcodeStatusMessageVisible.setValue(false);
     }
@@ -811,10 +812,10 @@ public class GcodeTabController implements Initializable {
      * model to update canvas
      *
      */
-    public static void drawCanvasUpdate() {
+    public void drawCanvasUpdate() {
         logger.info("drawCanvasUpdate");
         if (TgfxSettingsController.isDrawPreview()) {
-//            cncMachinePane.drawLine(MACHINE.getMotionMode().get(), MACHINE.getVelocity());
+            cncMachinePane.drawLine(MACHINE.getMotionMode().get(), MACHINE.getVelocity());
         }
     }
 
@@ -938,7 +939,7 @@ public class GcodeTabController implements Initializable {
      *
      * @param visible update cnc MACHINE visibility
      */
-    public static void setCNCMachineVisible(boolean visible) {
+    public void setCNCMachineVisible(boolean visible) {
         cncMachineVisible.setValue(visible);
     }
 
@@ -948,7 +949,7 @@ public class GcodeTabController implements Initializable {
      *
      * @param isFileSending set is sending
      */
-    public static void setIsFileSending(boolean isFileSending) {
+    public void setIsFileSending(boolean isFileSending) {
         logger.info("setIsFileSending: {}", isFileSending);
         isSendingFile.set(isFileSending);
     }
@@ -960,7 +961,7 @@ public class GcodeTabController implements Initializable {
      *
      * @param lineNum line number
      */
-    public static void updateProgress(int lineNum) {
+    public void updateProgress(int lineNum) {
         logger.info("updateProgress: {}", lineNum);
         if (isSendingFile.get() && lineNum > 0) {
 //            gcodeView.scrollTo(lineNum);

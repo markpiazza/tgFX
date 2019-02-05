@@ -154,10 +154,12 @@ public class SerialWriter implements Runnable {
                 if(tmpCmd.equals("**FILEDONE**")){
                     //Our end of file sending token has been detected.
                     //We will not enable jogging by setting isSendingFile to false
-                    GcodeTabController.setIsFileSending(false);
+                    // FIXME: uncomment this
+                    //GcodeTabController.setIsFileSending(false);
                 }else if(tmpCmd.startsWith("**COMMENT**")){
                     //Display current gcode comment
-                    GcodeTabController.setGcodeTextTemp("Comment: " + tmpCmd);
+                    // FIXME: uncomment this
+                    //GcodeTabController.setGcodeTextTemp("Comment: " + tmpCmd);
                     continue;
                 }
                 this.write(tmpCmd);
