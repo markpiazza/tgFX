@@ -37,11 +37,15 @@ import tgfx.ui.gcode.GcodeTabController;
 public class CNCMachine extends Pane {
     private static final Logger logger = LogManager.getLogger();
 
-    private static StackPane gcodePane = new StackPane(); //Holds CNCMachine
-    private static double xPrevious;
-    private static double yPrevious;
-
     private final Circle cursorPoint = new Circle(2, javafx.scene.paint.Color.RED);
+
+    private TinygDriver DRIVER = TinygDriver.getInstance();
+    private Machine MACHINE = DRIVER.getMachine();
+
+    private StackPane gcodePane = new StackPane(); //Holds CNCMachine
+
+    private double xPrevious;
+    private double yPrevious;
 
     private SimpleDoubleProperty cncHeight = new SimpleDoubleProperty();
     private SimpleDoubleProperty cncWidth = new SimpleDoubleProperty();
@@ -51,10 +55,10 @@ public class CNCMachine extends Pane {
     private boolean msgSent = false;
     private double magnification = 1;
 
-    private static TinygDriver DRIVER = TinygDriver.getInstance();
-    private static Machine MACHINE = DRIVER.getMachine();
-
-
+    /**
+     * CNCMachine
+     *
+     */
     public CNCMachine() {
         //Cursor point indicator
         cursorPoint.setRadius(1);
@@ -151,12 +155,12 @@ public class CNCMachine extends Pane {
 //            cursorPoint.layoutYProperty().addListener(posChangeListener);
     }
 
-    public static StackPane getGcodePane() {
+    public StackPane getGcodePane() {
         return gcodePane;
     }
 
-    public static void setGcodePane(StackPane gcodePane) {
-        CNCMachine.gcodePane = gcodePane;
+    public void setGcodePane(StackPane gcodePane) {
+        this.gcodePane = gcodePane;
     }
 
     private void hideOrShowCursor(boolean choice) {
@@ -165,7 +169,6 @@ public class CNCMachine extends Pane {
 
     private void unFocusForJogging() {
         this.setFocused(true);
-//        Main.postConsoleMessage("UnFocused");
         GcodeTabController.hideGcodeText();
     }
 
@@ -208,21 +211,20 @@ public class CNCMachine extends Pane {
     }
 
     public void drawLine(String moveType, double vel) {
-        Line l;
-        l = new Line();
+        Line l = new Line();
         l.setSmooth(true);
         //Code to make mm's look the same size as inches
         double scale = 1;
         double unitMagnication = 1;
-        Machine machine = MACHINE;
 
-        if (machine.getGcodeUnitMode().get().equals(GcodeUnitMode.INCHES.toString())) {
+        if (MACHINE.getGcodeUnitMode().get().equals(GcodeUnitMode.INCHES.toString())) {
             unitMagnication = 5;  //INCHES
         } else {
             unitMagnication = 2; //MM
         }
-        double newX = unitMagnication * (machine.getAxisByName("X").getWorkPosition().get() + 80);// + magnification;
-        double newY = unitMagnication * (machine.getAxisByName("Y").getWorkPosition().get() + 80);// + magnification;
+
+        double newX = unitMagnication * (MACHINE.getAxisByName("X").getWorkPosition().get() + 80);// + magnification;
+        double newY = unitMagnication * (MACHINE.getAxisByName("Y").getWorkPosition().get() + 80);// + magnification;
 
         if (newX > getGcodePane().getWidth() || newX > getGcodePane().getWidth()) {
             scale = scale / 2;
@@ -319,7 +321,7 @@ public class CNCMachine extends Pane {
         }
     }
 
-    public static void resetDrawingCoords() {
+    public void resetDrawingCoords() {
         //After a reset has occured we call this ot reset the previous coords.
         xPrevious = 0;
         yPrevious = 0;

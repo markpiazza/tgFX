@@ -493,7 +493,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         if (keyArgument.trim().equals("SYSTEM READY")) {
             //The board has been reset and is ready to re-init our internal tgFX models
             onDisconnectActions();
-            CNCMachine.resetDrawingCoords();
+//            CNCMachine.resetDrawingCoords();
             // onConnectActions();  WE ARE DISABLING THIS FOR NOW.
             // THIS SHOULD KICK OF A RE-QUERY OF THE TINYG ON RESET.
             // HOWEVER IT IS MAKING OnConnectionActions run 2x.  Need to fix this.

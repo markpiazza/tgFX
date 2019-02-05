@@ -87,35 +87,317 @@ public class GcodeTabController implements Initializable {
 
     /*  ######################## FXML ELEMENTS ############################*/
     @FXML
+    private HBox gcodeTabControllerHBox; // commented out
+
+    /* left vbox */
+
+    @FXML
+    private TableView<GcodeLine> gcodeView;
+    @FXML
+    private TableColumn<GcodeLine, String> gcodeCol;
+    @FXML
+    private Button pauseResumeBtn;
+
+    /* center hbox */
+
+    @FXML
+    private StackPane gcodePane;
+
+    //lives inside of the gcodePane
+    @FXML
+    private CNCMachine cncMachinePane = new CNCMachine();
+
+    // below the gcode Pane
+    @FXML
+    private GridPane coordLocationGridPane;
+
+    @FXML
     private Text timeElapsedTxt,
             timeLeftTxt,
             xAxisLocationTxt,
             yAxisLocationTxt,
             gcodeStatusMessageTxt;
+
+    /* right vbox */
+
     @FXML
     private Gauge xLcd,
             yLcd,
             zLcd,
             aLcd,
             velLcd;
+
+    //    @FXML
+//    private ChoiceBox<?> zMoveScaleChoiceBox;
+
+
+    /**
+     * handleHomeXYZ
+     *
+     * @param evt action event
+     */
     @FXML
-    private StackPane gcodePane;
+    private void handleHomeXYZ(ActionEvent evt) {
+        logger.info("handleHomeXYZ");
+        if (DRIVER.isConnected().get()) {
+            DRIVER.write(CommandManager.CMD_APPLY_SYSTEM_HOME_XYZ_AXES);
+        }
+    }
+
+
+    /**
+     * handleHomeAxisClick
+     *
+     * @param evt action event
+     */
     @FXML
-    private GridPane coordLocationGridPane;
+    private void handleHomeAxisClick(ActionEvent evt) {
+        logger.info("handleHomeAxisClick");
+        MenuItem m = (MenuItem) evt.getSource();
+        String axis = String.valueOf(m.getId().charAt(0));
+
+        if (DRIVER.isConnected().get()) {
+            switch (axis) {
+                case "x":
+                    DRIVER.write(CommandManager.CMD_APPLY_HOME_X_AXIS);
+                    break;
+                case "y":
+                    DRIVER.write(CommandManager.CMD_APPLY_HOME_Y_AXIS);
+                    break;
+                case "z":
+                    DRIVER.write(CommandManager.CMD_APPLY_HOME_Z_AXIS);
+                    break;
+                case "a":
+                    DRIVER.write(CommandManager.CMD_APPLY_HOME_A_AXIS);
+                    break;
+            }
+        }
+        Main.postConsoleMessage("Homing " + axis.toUpperCase() + " Axis...\n");
+    }
+
+
+    /**
+     * handleZeroAxisClick
+     *
+     * @param evt action event
+     */
     @FXML
-    private Pane previewPane;
+    private void handleZeroAxisClick(ActionEvent evt) {
+        logger.info("handleZeroAxisClick");
+        MenuItem m = (MenuItem) evt.getSource();
+        String axis = String.valueOf(m.getId().charAt(0));
+
+        if (DRIVER.isConnected().get()) {
+            //We set this so we do not draw lines for the previous position to the new zero.
+            Draw2d.setFirstDraw(true);
+            switch (axis) {
+                case "x":
+                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_X_AXIS);
+                    break;
+                case "y":
+                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_Y_AXIS);
+                    break;
+                case "z":
+                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_Z_AXIS);
+                    break;
+                case "a":
+                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_A_AXIS);
+                    break;
+            }
+        }
+        Main.postConsoleMessage("Zeroed " + axis.toUpperCase() + " Axis...\n");
+    }
+
+
+    /**
+     * handleDroMouseClick
+     *
+     * @param me mouse event
+     */
     @FXML
-    private TableColumn<GcodeLine, String> gcodeCol;
+    private void handleDroMouseClick(MouseEvent me) {
+        logger.info("handleDroMouseClick");
+        if (me.isSecondaryButtonDown()) { //Check to see if its a Right Click
+            Gauge l = (Gauge) me.getSource();
+            String t = String.valueOf(l.idProperty().get().charAt(0));
+        }
+    }
+
+
+    /**
+     * handleZeroSystem
+     *
+     * @param evt action event
+     */
     @FXML
-    private TableView<GcodeLine> gcodeView;
+    private void handleZeroSystem(ActionEvent evt) {
+        logger.info("handleSystemZero");
+        cncMachinePane.zeroSystem();
+    }
+
+
+    /**
+     * handlePauseResume
+     *
+     * @param evt action event
+     */
     @FXML
-    private Button pauseResumeBtn;
+    private void handlePauseResume(ActionEvent evt) {
+        logger.info("handlePauseResume");
+        if ("Pause".equals(pauseResumeBtn.getText())) {
+            pauseResumeBtn.setText("Resume");
+            DRIVER.priorityWrite(CommandManager.CMD_APPLY_PAUSE);
+        } else {
+            pauseResumeBtn.setText("Pause");
+            DRIVER.priorityWrite(CommandManager.CMD_APPLY_RESUME);
+        }
+    }
+
+
+    /**
+     * handleClearScreen
+     *
+     * @param evt action event
+     */
     @FXML
-    private ChoiceBox<?> zMoveScaleChoiceBox; // commented out
+    private void handleClearScreen(ActionEvent evt) {
+        logger.info("handleClearScreen");
+        Main.postConsoleMessage("Clearing Screen...\n");
+        cncMachinePane.clearScreen();
+        //clear this so our first line added draws correctly
+        Draw2d.setFirstDraw(true);
+    }
+
+
+    /**
+     * handleReset
+     *
+     * @param evt action event
+     */
     @FXML
-    private HBox gcodeTabControllerHBox; // commented out
+    private void handleReset(ActionEvent evt) {
+        logger.info("handleReset");
+        Platform.runLater(() -> {
+            try {
+                DRIVER.getSerialWriter().clearQueueBuffer();
+                //This sends the 0x18 byte
+                DRIVER.priorityWrite(CommandManager.CMD_APPLY_RESET);
+
+                //We disable everything while waiting for the board to reset
+//                 topAnchorPane.setDisable(true);
+//                 topTabPane.setDisable(true);
+
+//                Thread.sleep(8000);
+//                onConnectActions();
+                Main.postConsoleMessage("Resetting TinyG....\n.");
+                DRIVER.getSerialWriter().notifyAck();
+                DRIVER.getSerialWriter().clearQueueBuffer();
+                cncMachinePane.clearScreen();
+                // We set this to false to allow us to jog again
+                isSendingFile.set(false);
+            } catch (SerialPortException ex) {
+                logger.error(ex);
+            }
+        });
+    }
+
+
+    /**
+     * handleStop
+     *
+     * @param evt action event
+     */
     @FXML
-    private CNCMachine cncMachinePane = new CNCMachine();
+    private void handleStop(ActionEvent evt) {
+        logger.info("handleStop");
+        Platform.runLater(() -> {
+            logger.info("Stopping Job Clearing Serial Queue...\n");
+            CommandManager.stopTinyGMovement();
+            // We set this to false to allow us to jog again
+            isSendingFile.set(false);
+        });
+    }
+
+
+    /**
+     * handleOpenFile
+     *
+     * @param event action event
+     */
+    @FXML
+    private void handleOpenFile(ActionEvent event) {
+        logger.info("handleOpenFile");
+        Platform.runLater(() -> {
+            try {
+                Main.postConsoleMessage("Loading a gcode file.....\n");
+                FileChooser fc = new FileChooser();
+                fc.setTitle("Open GCode File");
+
+                String HOME_DIR = System.getenv("HOME"); //Get Home DIR in OSX
+                if (HOME_DIR == null) {
+                    HOME_DIR = System.getProperty("user.home");  //Get Home DIR in Windows
+                }
+
+                fc.setInitialDirectory(new File(HOME_DIR));
+                File f = fc.showOpenDialog(null);
+                FileInputStream fstream = new FileInputStream(f);
+                DataInputStream in = new DataInputStream((fstream));
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                String strLine;
+
+                //Clear the list if there was a previous file loaded
+                data.clear();
+                int _linenumber = 0;
+                while ((strLine = br.readLine()) != null) {
+                    if (!strLine.equals("")) {
+                        //Do not add empty lines to the list
+                        //gcodesList.appendText(strLine + "\n");
+                        if (!strLine.toUpperCase().startsWith("N")) {
+                            strLine = "N" + String.valueOf(_linenumber) + " " + strLine;
+                        }
+                        if (normalizeGcodeLine(strLine)) {
+                            data.add(new GcodeLine(strLine, _linenumber));
+                            _linenumber++;
+                        } else {
+                            Main.postConsoleMessage("ERROR: Your gcode file contains an invalid character.. " +
+                                    "Either !,% or ~. Remove this character and try again.");
+                            Main.postConsoleMessage("  Line " + _linenumber);
+                            data.clear(); //Remove all other previous entered lines
+                            break;
+                        }
+
+                    }
+                }
+                totalGcodeLines = _linenumber;
+                logger.info("File Loading Complete");
+            } catch (FileNotFoundException ex) {
+                logger.error("File Not Found.");
+            } catch (IOException ex) {
+                logger.error(ex);
+            }
+        });
+    }
+
+
+    /**
+     * handleRunFile
+     *
+     * @param evt action event
+     */
+    @FXML
+    private void handleRunFile(ActionEvent evt) {
+        logger.info("handleRunFile");
+        if (!isSendingFile.get()) {
+            isSendingFile.set(true); //disables jogging while file is running
+            taskActive = true; //Set the thread condition to start
+            Task fileSend = fileSenderTask();
+            Thread fsThread = new Thread(fileSend);
+            fsThread.setName("FileSender");
+            timeStartDt = new Date();
+//            updateProgress(1);
+            fsThread.start();
+        }
+    }
 
 
     /**
@@ -236,98 +518,6 @@ public class GcodeTabController implements Initializable {
     }
 
 
-    /**
-     * handleHomeXYZ
-     *
-     * @param evt action event
-     */
-    @FXML
-    private void handleHomeXYZ(ActionEvent evt) {
-        logger.info("handleHomeXYZ");
-        if (DRIVER.isConnected().get()) {
-            DRIVER.write(CommandManager.CMD_APPLY_SYSTEM_HOME_XYZ_AXES);
-        }
-    }
-
-
-    /**
-     * handleHomeAxisClick
-     *
-     * @param evt action event
-     */
-    @FXML
-    private void handleHomeAxisClick(ActionEvent evt) {
-        logger.info("handleHomeAxisClick");
-        MenuItem m = (MenuItem) evt.getSource();
-        String axis = String.valueOf(m.getId().charAt(0));
-
-        if (DRIVER.isConnected().get()) {
-            switch (axis) {
-                case "x":
-                    DRIVER.write(CommandManager.CMD_APPLY_HOME_X_AXIS);
-                    break;
-                case "y":
-                    DRIVER.write(CommandManager.CMD_APPLY_HOME_Y_AXIS);
-                    break;
-                case "z":
-                    DRIVER.write(CommandManager.CMD_APPLY_HOME_Z_AXIS);
-                    break;
-                case "a":
-                    DRIVER.write(CommandManager.CMD_APPLY_HOME_A_AXIS);
-                    break;
-            }
-        }
-        Main.postConsoleMessage("Homing " + axis.toUpperCase() + " Axis...\n");
-    }
-
-
-    /**
-     * handleZeroAxisClick
-     *
-     * @param evt action event
-     */
-    @FXML
-    private void handleZeroAxisClick(ActionEvent evt) {
-        logger.info("handleZeroAxisClick");
-        MenuItem m = (MenuItem) evt.getSource();
-        String axis = String.valueOf(m.getId().charAt(0));
-
-        if (DRIVER.isConnected().get()) {
-            //We set this so we do not draw lines for the previous position to the new zero.
-            Draw2d.setFirstDraw(true);
-            switch (axis) {
-                case "x":
-                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_X_AXIS);
-                    break;
-                case "y":
-                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_Y_AXIS);
-                    break;
-                case "z":
-                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_Z_AXIS);
-                    break;
-                case "a":
-                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_A_AXIS);
-                    break;
-            }
-        }
-        Main.postConsoleMessage("Zeroed " + axis.toUpperCase() + " Axis...\n");
-    }
-
-
-    /**
-     * handleDroMouseClick
-     *
-     * @param me mouse event
-     */
-    @FXML
-    private void handleDroMouseClick(MouseEvent me) {
-        logger.info("handleDroMouseClick");
-        if (me.isSecondaryButtonDown()) { //Check to see if its a Right Click
-            Gauge l = (Gauge) me.getSource();
-            String t = String.valueOf(l.idProperty().get().charAt(0));
-        }
-    }
-
 
     /**
      * initialize
@@ -396,7 +586,6 @@ public class GcodeTabController implements Initializable {
             // Add the cnc MACHINE to the gcode pane
             gcodePane.getChildren().add(cncMachinePane);
         }
-
 
 
         /*
@@ -482,179 +671,6 @@ public class GcodeTabController implements Initializable {
     }
 
 
-    /**
-     * handleZeroSystem
-     *
-     * @param evt action event
-     */
-    @FXML
-    private void handleZeroSystem(ActionEvent evt) {
-        logger.info("handleSystemZero");
-        cncMachinePane.zeroSystem();
-    }
-
-
-    /**
-     * handlePauseResume
-     *
-     * @param evt action event
-     */
-    @FXML
-    private void handlePauseResume(ActionEvent evt) {
-        logger.info("handlePauseResume");
-        if ("Pause".equals(pauseResumeBtn.getText())) {
-            pauseResumeBtn.setText("Resume");
-            DRIVER.priorityWrite(CommandManager.CMD_APPLY_PAUSE);
-        } else {
-            pauseResumeBtn.setText("Pause");
-            DRIVER.priorityWrite(CommandManager.CMD_APPLY_RESUME);
-        }
-    }
-
-
-    /**
-     * handleClearScreen
-     *
-     * @param evt action event
-     */
-    @FXML
-    private void handleClearScreen(ActionEvent evt) {
-        logger.info("handleClearScreen");
-        Main.postConsoleMessage("Clearing Screen...\n");
-        cncMachinePane.clearScreen();
-        //clear this so our first line added draws correctly
-        Draw2d.setFirstDraw(true);
-    }
-
-
-    /**
-     * handleReset
-     *
-     * @param evt action event
-     */
-    @FXML
-    private void handleReset(ActionEvent evt) {
-        logger.info("handleReset");
-        Platform.runLater(() -> {
-            try {
-                DRIVER.getSerialWriter().clearQueueBuffer();
-                //This sends the 0x18 byte
-                DRIVER.priorityWrite(CommandManager.CMD_APPLY_RESET);
-
-                //We disable everything while waiting for the board to reset
-//                 topAnchorPane.setDisable(true);
-//                 topTabPane.setDisable(true);
-
-//                Thread.sleep(8000);
-//                onConnectActions();
-                Main.postConsoleMessage("Resetting TinyG....\n.");
-                DRIVER.getSerialWriter().notifyAck();
-                DRIVER.getSerialWriter().clearQueueBuffer();
-                cncMachinePane.clearScreen();
-                // We set this to false to allow us to jog again
-                isSendingFile.set(false);
-            } catch (SerialPortException ex) {
-                logger.error(ex);
-            }
-        });
-    }
-
-
-    /**
-     * handleStop
-     *
-     * @param evt action event
-     */
-    @FXML
-    private void handleStop(ActionEvent evt) {
-        logger.info("handleStop");
-        Platform.runLater(() -> {
-            logger.info("Stopping Job Clearing Serial Queue...\n");
-            CommandManager.stopTinyGMovement();
-            // We set this to false to allow us to jog again
-            isSendingFile.set(false);
-        });
-    }
-
-    /**
-     * handleOpenFile
-     *
-     * @param event action event
-     */
-    @FXML
-    private void handleOpenFile(ActionEvent event) {
-        logger.info("handleOpenFile");
-        Platform.runLater(() -> {
-            try {
-                Main.postConsoleMessage("Loading a gcode file.....\n");
-                FileChooser fc = new FileChooser();
-                fc.setTitle("Open GCode File");
-
-                String HOME_DIR = System.getenv("HOME"); //Get Home DIR in OSX
-                if (HOME_DIR == null) {
-                    HOME_DIR = System.getProperty("user.home");  //Get Home DIR in Windows
-                }
-
-                fc.setInitialDirectory(new File(HOME_DIR));
-                File f = fc.showOpenDialog(null);
-                FileInputStream fstream = new FileInputStream(f);
-                DataInputStream in = new DataInputStream((fstream));
-                BufferedReader br = new BufferedReader(new InputStreamReader(in));
-                String strLine;
-
-                //Clear the list if there was a previous file loaded
-                data.clear();
-                int _linenumber = 0;
-                while ((strLine = br.readLine()) != null) {
-                    if (!strLine.equals("")) {
-                        //Do not add empty lines to the list
-                        //gcodesList.appendText(strLine + "\n");
-                        if (!strLine.toUpperCase().startsWith("N")) {
-                            strLine = "N" + String.valueOf(_linenumber) + " " + strLine;
-                        }
-                        if (normalizeGcodeLine(strLine)) {
-                            data.add(new GcodeLine(strLine, _linenumber));
-                            _linenumber++;
-                        } else {
-                            Main.postConsoleMessage("ERROR: Your gcode file contains an invalid character.. " +
-                                    "Either !,% or ~. Remove this character and try again.");
-                            Main.postConsoleMessage("  Line " + _linenumber);
-                            data.clear(); //Remove all other previous entered lines
-                            break;
-                        }
-
-                    }
-                }
-                totalGcodeLines = _linenumber;
-                logger.info("File Loading Complete");
-            } catch (FileNotFoundException ex) {
-                logger.error("File Not Found.");
-            } catch (IOException ex) {
-                logger.error(ex);
-            }
-        });
-    }
-
-
-    /**
-     * handleRunFile
-     *
-     * @param evt action event
-     */
-    @FXML
-    private void handleRunFile(ActionEvent evt) {
-        logger.info("handleRunFile");
-        if (!isSendingFile.get()) {
-            isSendingFile.set(true); //disables jogging while file is running
-            taskActive = true; //Set the thread condition to start
-            Task fileSend = fileSenderTask();
-            Thread fsThread = new Thread(fileSend);
-            fsThread.setName("FileSender");
-            timeStartDt = new Date();
-//            updateProgress(1);
-            fsThread.start();
-        }
-    }
 
 
     /**
