@@ -68,10 +68,15 @@ public class HardwarePlatformManager {
         try {
             folder = new File(HardwarePlatformManager.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()+"/hardwarePlatforms");
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            logger.error(e);
+        }
+        if(folder==null){
+            logger.error("Error loading platform configs, path not found");
+            return;
         }
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles==null) {
+            // FIXME: this isn't the right error, but it's a low priority fix
             logger.error("Error loading hardware platforms, '{}' not found", folder.getName());
             return;
         }

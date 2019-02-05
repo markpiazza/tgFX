@@ -43,7 +43,7 @@ public class MachineSettingsController implements Initializable {
     private final DecimalFormat decimalFormat = new DecimalFormat("################################.############################");
 
     @FXML
-    private ListView configsListView;
+    private ListView<String> configsListView;
     @FXML
     private static ChoiceBox machineSwitchType, machineUnitMode;
     @FXML
@@ -72,11 +72,16 @@ public class MachineSettingsController implements Initializable {
         try {
             folder = new File(HardwarePlatformManager.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()+"/configs");
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            logger.error(e);
+        }
+        if(folder==null){
+            logger.error("Error loading platform configs, path not found");
+            return;
         }
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles==null) {
-            logger.warn("Error loading platform configs, '"+folder.getName()+"' not found");
+            // FIXME: this isn't the right error, but it's a low priority fix
+            logger.error("Error loading platform configs, '"+folder.getName()+"' not found");
             return;
         }
         for (File listOfFile : listOfFiles) {

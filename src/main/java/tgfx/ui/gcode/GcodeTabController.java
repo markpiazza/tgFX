@@ -414,7 +414,6 @@ public class GcodeTabController implements Initializable {
     public GcodeTabController() {
         logger.info("Gcode Controller Loaded");
 
-
         cncMachinePane.setOnMouseMoved(mouseEvent -> {
             yPosition.setValue(cncMachinePane.getNormalizedYasString(mouseEvent.getY()));
             xPosition.setValue(cncMachinePane.getNormalizedXasString(mouseEvent.getX()));
@@ -537,10 +536,18 @@ public class GcodeTabController implements Initializable {
         logger.info("Initializing GcodeTabController.");
 
         cncMachinePane.visibleProperty().bind(cncMachineVisible);
+
         // This shows the coords when the cncMachinePane is visible.
         coordLocationGridPane.visibleProperty().bind(cncMachinePane.visibleProperty());
+
         gcodeStatusMessageTxt.textProperty().bind(gcodeStatusMessageValue);
         gcodeStatusMessageTxt.visibleProperty().bind(gcodeStatusMessageVisible);
+
+        yAxisLocationTxt.textProperty().bind(yPosition);
+        xAxisLocationTxt.textProperty().bind(xPosition);
+
+        timeElapsedTxt.textProperty().bind(timeElapsed);
+        timeLeftTxt.textProperty().bind(timeLeft);
 
         xLcd.valueProperty().bind(MACHINE.getAxisByName("x").getMachinePositionSimple()
                 .subtract(MACHINE.getAxisByName("x").getOffset())
@@ -554,13 +561,6 @@ public class GcodeTabController implements Initializable {
         aLcd.valueProperty().bind(MACHINE.getAxisByName("a").getMachinePositionSimple()
                 .subtract(MACHINE.getAxisByName("a").getOffset()));
         velLcd.valueProperty().bind(MACHINE.velocity);
-
-        // FIXME: these causes a ClassCastException: com.sun.javafx.geom.BoxBounds cannot be cast to com.sun.javafx.geom.RectBounds
-        // seems to be related to (3d?) transforms in GridPanes
-        yAxisLocationTxt.textProperty().bind(yPosition);
-        xAxisLocationTxt.textProperty().bind(xPosition);
-        timeElapsedTxt.textProperty().bind(timeElapsed);
-        timeLeftTxt.textProperty().bind(timeLeft);
 
 
         // FIXME: java.lang.RuntimeException: HBox.disable : A bound value cannot be set.

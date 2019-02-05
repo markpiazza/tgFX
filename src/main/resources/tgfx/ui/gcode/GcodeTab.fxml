@@ -69,19 +69,19 @@
             <padding>
                 <Insets bottom="10.0" top="10.0"/>
             </padding>
-            <VBox id="previewVbox" alignment="BOTTOM_CENTER" rotate="180.0" spacing="5.0" translateZ="1.0" HBox.hgrow="ALWAYS">
+            <VBox id="previewVbox" alignment="BOTTOM_CENTER" spacing="5.0"  HBox.hgrow="ALWAYS"> <!--rotate="180.0" translateZ="1.0" -->
                 <HBox.margin>
                     <Insets left="15.0" right="15.0"/>
                 </HBox.margin>
-                <effect>
-                    <DropShadow color="WHITE" height="10" width="10" radius="4" spread="0.5"/>
-                </effect>
+                <!--<effect>-->
+                    <!--<DropShadow color="WHITE" height="10" width="10" radius="4" spread="0.5"/>-->
+                <!--</effect>-->
                 <padding>
                     <Insets fx:id="x66" bottom="5.0" left="5.0" right="5.0" top="5.0" />
                 </padding>
-                <rotationAxis>
-                    <Point3D/>
-                </rotationAxis>
+                <!--<rotationAxis>-->
+                    <!--<Point3D/>-->
+                <!--</rotationAxis>-->
                 <HBox alignment="CENTER_RIGHT">
                     <VBox.margin>
                         <Insets right="5.0"/>
@@ -168,9 +168,11 @@
                         </GridPane>
                     </HBox>
                 </HBox>
+
             </VBox>
         </HBox>
         <!-- end preview -->
+
 
         <!-- lcd gauges -->
         <VBox id="lcdGuages" alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="NEVER">
