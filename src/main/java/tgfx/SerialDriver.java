@@ -46,9 +46,8 @@ public class SerialDriver implements SerialPortEventListener {
         try {
             serialPort.writeBytes(str.getBytes());
             logger.debug("Wrote Line: " + str);
-        } catch (Exception ex) {
-            logger.error("Error in SerialDriver Write");
-            logger.error("\t" + ex.getMessage());
+        } catch (SerialPortException ex) {
+            logger.error(ex);
         }
     }
 

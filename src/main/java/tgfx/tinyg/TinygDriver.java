@@ -217,27 +217,29 @@ public class TinygDriver extends Observable {
     }
 
     public void queryHardwareSingleAxisSettings(String axis) {
+        String command = null;
         switch (axis.toLowerCase()) {
             case "x":
-                // this was serialWriter, not sure why it
-                // wasn't the same as everything else
-                serialDriver.write(CommandManager.CMD_QUERY_AXIS_X);
+                command = CommandManager.CMD_QUERY_AXIS_X;
                 break;
             case "y":
-                serialDriver.write(CommandManager.CMD_QUERY_AXIS_Y);
+                command = CommandManager.CMD_QUERY_AXIS_Y;
                 break;
             case "z":
-                serialDriver.write(CommandManager.CMD_QUERY_AXIS_Z);
+                command = CommandManager.CMD_QUERY_AXIS_Z;
                 break;
             case "a":
-                serialDriver.write(CommandManager.CMD_QUERY_AXIS_A);
+                command = CommandManager.CMD_QUERY_AXIS_A;
                 break;
             case "b":
-                serialDriver.write(CommandManager.CMD_QUERY_AXIS_B);
+                command = CommandManager.CMD_QUERY_AXIS_B;
                 break;
             case "c":
-                serialDriver.write(CommandManager.CMD_QUERY_AXIS_C);
+                command = CommandManager.CMD_QUERY_AXIS_C;
                 break;
+        }
+        if(command!=null){
+            serialDriver.write(command);
         }
     }
 
@@ -381,22 +383,26 @@ public class TinygDriver extends Observable {
 
 
     public void getMotorSettings(int motorNumber) {
+        String command = null;
         switch (motorNumber) {
             case 1:
-                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
+                command = CommandManager.CMD_QUERY_MOTOR_1_SETTINGS;
                 break;
             case 2:
-                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
+                command = CommandManager.CMD_QUERY_MOTOR_2_SETTINGS;
                 break;
             case 3:
-                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
+                command = CommandManager.CMD_QUERY_MOTOR_3_SETTINGS;
                 break;
             case 4:
-                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
+                command = CommandManager.CMD_QUERY_MOTOR_4_SETTINGS;
                 break;
             default:
                 logger.error("Invalid Motor Number.. Please try again..");
                 break;
+        }
+        if(command!=null){
+            serialDriver.write(command);
         }
     }
 
@@ -545,23 +551,27 @@ public class TinygDriver extends Observable {
     }
 
     public void queryHardwareSingleMotorSettings(int motorNumber) {
+        String command = null;
         switch (motorNumber) {
             case 1:
-                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
+                command = CommandManager.CMD_QUERY_MOTOR_1_SETTINGS;
                 break;
             case 2:
-                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
+                command = CommandManager.CMD_QUERY_MOTOR_2_SETTINGS;
                 break;
             case 3:
-                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
+                command = CommandManager.CMD_QUERY_MOTOR_3_SETTINGS;
                 break;
             case 4:
-                serialDriver.write(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
+                command = CommandManager.CMD_QUERY_MOTOR_4_SETTINGS;
                 break;
             default:
                 logger.warn("Invalid Motor Number.. Please try again..");
                 setChanged();
                 break;
+        }
+        if(command!=null){
+            serialDriver.write(command);
         }
     }
 
@@ -635,11 +645,11 @@ public class TinygDriver extends Observable {
     }
 
     public void priorityWrite(String msg){
+        logger.info("Priority write: {}", msg);
         if (!msg.contains("\n")) {
             msg = msg + "\n";
         }
         serialDriver.write(msg);
-        logger.info("+" + msg);
     }
 
     /*
