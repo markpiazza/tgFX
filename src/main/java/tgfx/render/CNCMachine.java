@@ -42,7 +42,7 @@ public class CNCMachine extends Pane {
     private TinygDriver DRIVER = TinygDriver.getInstance();
     private Machine MACHINE = DRIVER.getMachine();
 
-    private StackPane gcodePane = new StackPane(); //Holds CNCMachine
+    private static StackPane gcodePane = new StackPane(); //Holds CNCMachine
 
     private double xPrevious;
     private double yPrevious;

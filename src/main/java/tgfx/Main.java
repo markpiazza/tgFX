@@ -1,6 +1,8 @@
 package tgfx;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Observable;
@@ -62,6 +64,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     private TinygDriver DRIVER = TinygDriver.getInstance();
     private GcodeHistory gcodeCommandHistory;
     private QueueUsingTimer<String> connectionTimer;
+
     private GcodeTabController gcodeTabController;
 
     private static StringProperty consoleText =  new SimpleStringProperty();
@@ -409,12 +412,13 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
      *
      */
     public Main() throws IOException {
+        logger.info("MAIN()");
         connectionTimer = new QueueUsingTimer<>( CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
         gcodeCommandHistory = new GcodeHistory();
 
-        FXMLLoader cncMachineLoader = FXMLLoader.load(getClass().getResource(STAGE_FXML_GCODETAB));
-        cncMachineLoader.load();
-        gcodeTabController = cncMachineLoader.getController();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(STAGE_FXML_GCODETAB));
+        fxmlLoader.load();
+        gcodeTabController = fxmlLoader.getController();
     }
 
     /**
@@ -428,9 +432,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
      */
     public static void postConsoleMessage(String message){
         logger.info("postConsoleMessage : {}", message);
-        StringBuilder sb = new StringBuilder();
-        sb.append(consoleText.getValueSafe()).append(message);
-        consoleText.setValue(sb.toString());
+        consoleText.setValue(consoleText.getValueSafe() + message);
     }
 
     private void doTinyGConnectionTimeout() {

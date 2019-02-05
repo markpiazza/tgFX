@@ -41,6 +41,8 @@ import tgfx.tinyg.CommandManager;
 import tgfx.tinyg.TinygDriver;
 import tgfx.ui.tgfxsettings.TgfxSettingsController;
 
+import static javafx.scene.text.TextBoundsType.VISUAL;
+
 /**
  * GcodeTabController
  *
@@ -77,6 +79,9 @@ public class GcodeTabController implements Initializable {
     private static SimpleBooleanProperty cncMachineVisible = new SimpleBooleanProperty(true);
     private static SimpleStringProperty gcodeStatusMessageValue = new SimpleStringProperty("");
     private static SimpleBooleanProperty gcodeStatusMessageVisible = new SimpleBooleanProperty(false);
+
+    private static SimpleStringProperty xPosition = new SimpleStringProperty("");
+    private static SimpleStringProperty yPosition = new SimpleStringProperty("");
 
     private static SimpleStringProperty timeElapsed = new SimpleStringProperty("00:00");
     private static SimpleStringProperty timeLeft = new SimpleStringProperty("00:00");
@@ -408,16 +413,18 @@ public class GcodeTabController implements Initializable {
     @SuppressWarnings("ConstantConditions")
     public GcodeTabController() {
         logger.info("Gcode Controller Loaded");
-        cncMachinePane.setOnMouseMoved(me -> {
-            yAxisLocationTxt.setText(cncMachinePane.getNormalizedYasString(me.getY()));
-            xAxisLocationTxt.setText(cncMachinePane.getNormalizedXasString(me.getX()));
+
+
+        cncMachinePane.setOnMouseMoved(mouseEvent -> {
+            yPosition.setValue(cncMachinePane.getNormalizedYasString(mouseEvent.getY()));
+            xPosition.setValue(cncMachinePane.getNormalizedXasString(mouseEvent.getX()));
         });
 
         /*
          * keyPress EventHandler
          * TODO: Jogging needs to be broken into a new class
          */
-        EventHandler<KeyEvent> keyPress = keyEvent -> {
+        cncMachinePane.setOnKeyPressed(keyEvent -> {
             logger.info("Start jogging.");
             //If we are sending a file.. Do NOT jog right now
             if (!isSendingFile.get()) {
@@ -489,13 +496,13 @@ public class GcodeTabController implements Initializable {
                 //We are sending a file... We need to post a messages
                 setGcodeTextTemp("Jogging sd... Sending File.");
             }
-        };
+        });
 
 
         /*
          * keyRelease event handler
          */
-        EventHandler<KeyEvent> keyRelease = keyEvent -> {
+        cncMachinePane.setOnKeyReleased(keyEvent -> {
             logger.info("End jogging.");
             if (!isSendingFile().get()) {
                 try {
@@ -513,10 +520,8 @@ public class GcodeTabController implements Initializable {
                    logger.error(ex);
                 }
             }
-        };
+        });
 
-        cncMachinePane.setOnKeyPressed(keyPress);
-        cncMachinePane.setOnKeyReleased(keyRelease);
     }
 
 
@@ -550,6 +555,10 @@ public class GcodeTabController implements Initializable {
                 .subtract(MACHINE.getAxisByName("a").getOffset()));
         velLcd.valueProperty().bind(MACHINE.velocity);
 
+        // FIXME: these causes a ClassCastException: com.sun.javafx.geom.BoxBounds cannot be cast to com.sun.javafx.geom.RectBounds
+        // seems to be related to (3d?) transforms in GridPanes
+        yAxisLocationTxt.textProperty().bind(yPosition);
+        xAxisLocationTxt.textProperty().bind(xPosition);
         timeElapsedTxt.textProperty().bind(timeElapsed);
         timeLeftTxt.textProperty().bind(timeLeft);
 
