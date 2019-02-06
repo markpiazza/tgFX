@@ -52,24 +52,29 @@ import static tgfx.tinyg.Commands.*;
 public class GcodeTabController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
 
-    private static final byte[] BAD_BYTES = {(byte) 0x21, (byte) 0x18, (byte) 0x7e};
 
     private static TinygDriver DRIVER = TinygDriver.getInstance();
     private static Machine MACHINE = DRIVER.getMachine();
     private static SerialWriter WRITER = DRIVER.getSerialWriter();
 
-    private static Date timeStartDt;
-    private static int totalGcodeLines = 0;
+    private CommandManager commandManager = new CommandManager();;
+
+    private static final byte[] BAD_BYTES = {(byte) 0x21, (byte) 0x18, (byte) 0x7e};
+    private static double TRAVERSE_FEED_RATE = 1;  //%100
+    private static double NUDGE_FEED_RATE = .05;  //%5
+
+    private double feedRatePercentage = NUDGE_FEED_RATE;
+
+    private Date timeStartDt;
+    private int totalGcodeLines = 0;
 
     private String buildDate;
     private int buildNumber;
 
     private double scaleAmount;
     private double jogDial = 0;
-    private double FEED_RATE_PERCENTAGE = .05;  //%5
-    private double TRAVERSE_FEED_RATE = 1;  //%100
-    private double NUDGE_FEED_RATE = .05;  //%5
     private float zScale = 0.1f;
+
     private boolean taskActive = false;
     private boolean isKeyPressed = false;
 
@@ -318,7 +323,7 @@ public class GcodeTabController implements Initializable {
         logger.info("handleStop");
         Platform.runLater(() -> {
             logger.info("Stopping Job Clearing Serial Queue...\n");
-            CommandManager.stopTinyGMovement();
+            commandManager.stopTinyGMovement();
             // We set this to false to allow us to jog again
             isSendingFile.set(false);
         });
@@ -441,9 +446,9 @@ public class GcodeTabController implements Initializable {
 
                     if (keyEvent.isShiftDown()) {
                         // Alt is down so we make this into a Z movement
-                        FEED_RATE_PERCENTAGE = TRAVERSE_FEED_RATE;
+                        feedRatePercentage = TRAVERSE_FEED_RATE;
                     } else {
-                        FEED_RATE_PERCENTAGE = NUDGE_FEED_RATE;
+                        feedRatePercentage = NUDGE_FEED_RATE;
                     }
 
                     //Y Axis Jogging Movement
@@ -482,10 +487,10 @@ public class GcodeTabController implements Initializable {
 
                     if (axis.equals("X") || axis.equals("Y") || axis.equals("Z")) {
                         // valid key pressed
-                        CommandManager.setIncrementalMovementMode();
+                        commandManager.setIncrementalMovementMode();
                         DRIVER.write("{\"GC\":\"G1F" +
                                 MACHINE.getAxisByName(axis).getFeedRateMaximum() *
-                                        FEED_RATE_PERCENTAGE + axis + jogDial + "\"}\n");
+                                        feedRatePercentage + axis + jogDial + "\"}\n");
 //                        DRIVER.write("{\"GC\":\"G0" + axis + jogDial + "\"}\n");
                         isKeyPressed = true;
                     }
@@ -509,10 +514,10 @@ public class GcodeTabController implements Initializable {
                     setGcodeText("");
                     // We should find out of TinyG's distance mode is set to G90 before just firing this off.
                     if (isKeyPressed) {
-                        CommandManager.stopJogMovement();
+                        commandManager.stopJogMovement();
                         if (MACHINE.getGcodeDistanceMode().equals(GcodeDistanceMode.INCREMENTAL)) {
                             //We are in incremental mode we now will enter ABSOLUTE mode
-                            CommandManager.setAbsoluteMovementMode();
+                            commandManager.setAbsoluteMovementMode();
                         }
                         isKeyPressed = false; //reset the press flag
                     }
