@@ -40,7 +40,6 @@ import tgfx.tinyg.CommandManager;
 import tgfx.tinyg.TinygDriver;
 import tgfx.ui.tgfxsettings.TgfxSettingsController;
 
-import static javafx.scene.text.TextBoundsType.VISUAL;
 
 /**
  * GcodeTabController

@@ -28,7 +28,6 @@ import tgfx.system.Machine;
 import tgfx.system.enums.GcodeUnitMode;
 import tgfx.tinyg.CommandManager;
 import tgfx.tinyg.TinygDriver;
-import tgfx.ui.gcode.GcodeTabController;
 
 /**
  * CNCMachine pane
@@ -69,12 +68,6 @@ public class CNCMachine extends Pane {
         this.setPadding(new Insets(10));
         this.setFocusTraversable(true);
         this.setFocused(true);
-
-        /*
-         * CSS
-         */
-        // FIXME: no no no. no programmatically set css we have css files for that
-        this.setStyle("-fx-background-color: black; -fx-border-color: orange;  -fx-border-width: .5;");
 
         /*
          * PositionCursor Set

@@ -1,3 +1,10 @@
+CNCMachine
+{
+    -fx-background-color: black;
+    -fx-border-color: orange;
+    -fx-border-width: .5;
+}
+
 #gcodeTabHbox
 {
     -fx-background-image: url("../../carbon.png");
@@ -30,3 +37,5 @@
 {
     -fx-background-color: red;
 }
+
+
