@@ -13,7 +13,7 @@ import org.json.JSONObject;
 public class QueueReport {
     private static final Logger logger = LogManager.getLogger();
 
-    private int pba = 24;
+    private int availableBufferSize = 24;
     private int added = 0;
     private int removed = 0;
 
@@ -32,7 +32,7 @@ public class QueueReport {
     public synchronized void parse(JSONObject js) throws JSONException {
         logger.info("QUEUE REPORT");
         JSONArray jsa = js.getJSONArray("qr");
-        setPba(jsa.getInt(0));
+        setAvailableBufferSize(jsa.getInt(0));
         setAdded(jsa.getInt(1));
         setRemoved(jsa.getInt(2));
     }
@@ -53,12 +53,12 @@ public class QueueReport {
         this.removed = removed;
     }
 
-    public int getPba() {
-        return pba;
+    public int getAvailableBufferSize() {
+        return availableBufferSize;
     }
 
-    private void setPba(int pba) {
-        this.pba = pba;
+    private void setAvailableBufferSize(int pba) {
+        this.availableBufferSize = pba;
     }
 
 }

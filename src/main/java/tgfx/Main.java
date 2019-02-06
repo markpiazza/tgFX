@@ -1,8 +1,6 @@
 package tgfx;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Observable;
@@ -75,20 +73,31 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     //this is checked upon initial connect.  Once this is set to true
     private boolean buildChecked = false;
 
-    @FXML
-    private Button Connect;
-    @FXML
-    TextField input; // listenerPort;
-    @FXML
-    private Label srMomo, srState, srBuild, srBuffer, srGcodeLine, srVer, srUnits, srCoord;
-    @FXML
-    TextArea console;
-    @FXML
-    private ChoiceBox<String> serialPorts;
-    @FXML
-    VBox consoleVBox;
+
+    // tabs
     @FXML
     private TabPane topTabPane;
+
+    @FXML
+    private ChoiceBox<String> serialPorts;
+
+    @FXML
+    private Button Connect;
+
+    @FXML
+    VBox consoleVBox;
+
+    @FXML
+    TextArea console;
+
+    // gcode> command input
+    @FXML
+    TextField input;
+
+    // status bar
+    @FXML
+    private Label srMomo, srState, srBuild, srBuffer, srGcodeLine, srVer, srUnits, srCoord;
+
 
 
     /* ********************
@@ -100,9 +109,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         this.reScanSerial();
     }
 
-    @FXML
-    private void handleKeyInput(final InputEvent event) {
-    }
 
     /**
      *
@@ -121,7 +127,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                     logger.info("Attempting to Connect to TinyG.");
 
                     //This will be true if we connected when we tried to!
-                    if (!DRIVER.initialize(serialPortSelected, TgFXConstants.SERIAL_DATA_RATE)) {
+                    if (!DRIVER.initialize(serialPortSelected, SERIAL_DATA_RATE)) {
                         Main.postConsoleMessage("There was an error connecting to " +
                                 serialPortSelected + " please verify that the port is not in use.");
                     }
@@ -206,7 +212,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
             if (!DRIVER.isConnected().get()) {
                 logger.error("TinyG is not connected....\n");
                 Main.postConsoleMessage("TinyG is not connected....\n");
-                input.setPromptText(TgFXConstants.PROMPT);
+                input.setPromptText(PROMPT);
                 return;
             }
             //TinyG is connected... Proceed with processing command.
@@ -221,7 +227,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
             Main.postConsoleMessage(command.replace("\n", ""));
             gcodeCommandHistory.addCommandToHistory(command);  //Add this command to the history
             input.clear();
-            input.setPromptText(TgFXConstants.PROMPT);
+            input.setPromptText(PROMPT);
         } else if (keyEvent.getCode().equals(KeyCode.UP)) {
             input.setText(gcodeCommandHistory.getNextHistoryCommand());
 //            input.positionCaret(input.lengthProperty().get());
@@ -260,18 +266,16 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         /*
          * MISC INIT CODE
          */
-        DRIVER.getResParse().addObserver(this);  //Add the tinygdriver to this observer
+        DRIVER.getResponseParser().addObserver(this);  //Add the tinygdriver to this observer
         DRIVER.addObserver(this);
         this.reScanSerial(); //Populate our serial ports
 
         gcodeTabController.setGcodeText("TinyG Disconnected.");
 
         //This disables the UI if we are not connected.
-        if (!TgFXConstants.DISABLE_UI_CONNECTION_CHECK){
-            consoleVBox.disableProperty()
-                    .bind(DRIVER.getConnectionStatus().not());
-            topTabPane.disableProperty()
-                    .bind(DRIVER.getConnectionStatus().not());
+        if (!DISABLE_UI_CONNECTION_CHECK){
+            consoleVBox.disableProperty().bind(DRIVER.getConnectionStatus().not());
+            topTabPane.disableProperty().bind(DRIVER.getConnectionStatus().not());
         }
 
         // console binding
@@ -285,7 +289,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         serialWriterThread.setName("SerialWriter");
         serialWriterThread.setDaemon(true);
         serialWriterThread.start();
-        Thread threadResponseParser = new Thread(DRIVER.getResParse());
+        Thread threadResponseParser = new Thread(DRIVER.getResponseParser());
 
         threadResponseParser.setDaemon(true);
         threadResponseParser.setName("ResponseParser");
@@ -324,8 +328,8 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     /**
      *
-     * @param o
-     * @param arg
+     * @param o observable
+     * @param arg arguments
      */
     @Override
     public synchronized void update(Observable o, Object arg) {
@@ -346,52 +350,52 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                  * different parts of the GUI that is not bound to properties.
                  */
                 switch (routingKey) {
-                    case (TgFXConstants.ROUTING_STATUS_REPORT):
+                    case (ROUTING_STATUS_REPORT):
                         doStatusReport();
                         break;
-                    case (TgFXConstants.ROUTING_CMD_GET_AXIS_SETTINGS):
+                    case (ROUTING_CMD_GET_AXIS_SETTINGS):
                         TinyGConfigController.updateGuiAxisSettings(keyArgument);
                         break;
-                    case (TgFXConstants.ROUTING_CMD_GET_MACHINE_SETTINGS):
+                    case (ROUTING_CMD_GET_MACHINE_SETTINGS):
                         //updateGuiMachineSettings(ROUTING_KEY);
                         break;
-                    case (TgFXConstants.ROUTING_CMD_GET_MOTOR_SETTINGS):
+                    case (ROUTING_CMD_GET_MOTOR_SETTINGS):
                         TinyGConfigController.updateGuiMotorSettings(keyArgument);
                         break;
-                    case (TgFXConstants.ROUTING_NETWORK_MESSAGE):
+                    case (ROUTING_NETWORK_MESSAGE):
                         //updateExternal();
                         break;
-                    case (TgFXConstants.ROUTING_MACHINE_UPDATE):
+                    case (ROUTING_MACHINE_UPDATE):
                         MachineSettingsController.updateGuiMachineSettings();
                         break;
-                    case (TgFXConstants.ROUTING_TEXTMODE_REPORT):
+                    case (ROUTING_TEXTMODE_REPORT):
                         Main.postConsoleMessage(keyArgument);
                         break;
-                    case (TgFXConstants.ROUTING_BUFFER_UPDATE):
+                    case (ROUTING_BUFFER_UPDATE):
                         srBuffer.setText(keyArgument);
                         break;
-                    case (TgFXConstants.ROUTING_UPDATE_LINE_NUMBER):
+                    case (ROUTING_UPDATE_LINE_NUMBER):
                         srGcodeLine.setText(keyArgument);
                         break;
-                    case (TgFXConstants.ROUTING_BUILD_OK):
+                    case (ROUTING_BUILD_OK):
                         doBuildOK();
                         break;
-                    case (TgFXConstants.ROUTING_TINYG_USER_MESSAGE):
+                    case (ROUTING_TINYG_USER_MESSAGE):
                         doTinyGUserMessage(keyArgument);
                         break;
-                    case (TgFXConstants.ROUTING_TINYG_CONNECTION_TIMEOUT):
+                    case (ROUTING_TINYG_CONNECTION_TIMEOUT):
                         //This fires if your tinyg is not responding to tgFX in a timely manner.
                         doTinyGConnectionTimeout();
                         break;
-                    case (TgFXConstants.ROUTING_BUILD_ERROR):
+                    case (ROUTING_BUILD_ERROR):
                         doBuildError(keyArgument);
                         break;
                     // These 2 messages are sent when the firmware updater has begun
                     // updating or finished updating.
-                    case (TgFXConstants.ROUTING_DISCONNECT):
+                    case (ROUTING_DISCONNECT):
                         onDisconnectActions();
                         break;
-                    case (TgFXConstants.ROUTING_RECONNECT):
+                    case (ROUTING_RECONNECT):
                         handleConnect(new ActionEvent());
                         break;
                     default:
@@ -580,7 +584,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                     stage.show();
 
                     Platform.runLater(() -> {
-                        webEngFirmware.load(TgFXConstants.FIRMWARE_UPDATE_URL);
+                        webEngFirmware.load(FIRMWARE_UPDATE_URL);
                         try {
                             DRIVER.disconnect();
                         } catch (SerialPortException ex) {

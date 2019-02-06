@@ -7,24 +7,22 @@ import java.util.ResourceBundle;
 
 import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -32,6 +30,7 @@ import jssc.SerialPortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tgfx.Main;
+import tgfx.SerialWriter;
 import tgfx.TgFXConstants;
 import tgfx.render.CNCMachine;
 import tgfx.render.Draw2d;
@@ -56,6 +55,7 @@ public class GcodeTabController implements Initializable {
 
     private static TinygDriver DRIVER = TinygDriver.getInstance();
     private static Machine MACHINE = DRIVER.getMachine();
+    private static SerialWriter WRITER = DRIVER.getSerialWriter();
 
     private static Date timeStartDt;
     private static int totalGcodeLines = 0;
@@ -562,6 +562,13 @@ public class GcodeTabController implements Initializable {
                 .subtract(MACHINE.getAxisByName("a").getOffset()));
         velLcd.valueProperty().bind(MACHINE.velocity);
 
+        // TODO: make sure this is actually working at some point
+        isSendingFile.bindBidirectional(WRITER.getIsSendingFile());
+        Bindings.createStringBinding(() -> {
+            SimpleStringProperty str = WRITER.getGcodeComment();
+            Main.postConsoleMessage(str.getValue());
+            return null;
+        });
 
         // FIXME: java.lang.RuntimeException: HBox.disable : A bound value cannot be set.
         //gcodeTabControllerHBox.disableProperty().bind(DRIVER.getConnectionStatus().not());

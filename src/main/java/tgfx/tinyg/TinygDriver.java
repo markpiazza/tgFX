@@ -58,10 +58,10 @@ public class TinygDriver extends Observable {
     private AsyncTimer connectionTimer;
 
     private ArrayList<String> connections = new ArrayList<>();
-    private boolean PAUSED = false;
+    private boolean paused = false;
     private boolean timedout = false;
 
-    private ResponseParser resParse = new ResponseParser();
+    private ResponseParser responseParser = new ResponseParser();
     private SerialWriter serialWriter = new SerialWriter(writerQueue);
 
 
@@ -594,19 +594,19 @@ public class TinygDriver extends Observable {
         }
     }
 
-    public boolean isPAUSED() {
-        return PAUSED;
+    public boolean isPaused() {
+        return paused;
     }
 
-    public void setPAUSED(boolean choice) throws SerialPortException {
+    public void setPaused(boolean choice) throws SerialPortException {
         if (choice) { // if set to pause
             serialDriver.priorityWrite(CommandManager.CMD_APPLY_PAUSE);
-            PAUSED = choice;
+            paused = choice;
         } else { // set to resume
             serialDriver.priorityWrite(CommandManager.CMD_QUERY_OK_PROMPT);
             serialDriver.priorityWrite(CommandManager.CMD_APPLY_RESUME);
             serialDriver.priorityWrite(CommandManager.CMD_QUERY_OK_PROMPT);
-            PAUSED = false;
+            paused = false;
         }
     }
 
@@ -677,11 +677,11 @@ public class TinygDriver extends Observable {
         this.serialWriter = serialWriter;
     }
 
-    public ResponseParser getResParse() {
-        return resParse;
+    public ResponseParser getResponseParser() {
+        return responseParser;
     }
 
-    public void setResParse(ResponseParser resParse) {
-        this.resParse = resParse;
+    public void setResponseParser(ResponseParser responseParser) {
+        this.responseParser = responseParser;
     }
 }

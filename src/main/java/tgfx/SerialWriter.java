@@ -2,9 +2,11 @@ package tgfx;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tgfx.ui.gcode.GcodeTabController;
 
 /**
  * SerialWriter
@@ -12,57 +14,59 @@ import tgfx.ui.gcode.GcodeTabController;
 public class SerialWriter implements Runnable {
     private static final Logger logger = LogManager.getLogger();
 
-    private BlockingQueue<String> queue;
-    private boolean RUN = true;
-    private boolean cleared  = false;
-    private int BUFFER_SIZE = 180;
-    private AtomicInteger buffer_available = new AtomicInteger(BUFFER_SIZE);
-    private SerialDriver ser = SerialDriver.getInstance();
-    private static final Object mutex = new Object();
-    private static boolean throttled = false;
+    private static final Object MUTEX = new Object();
+    private static final int BUFFER_SIZE = 180;
 
-    public SerialWriter(BlockingQueue q) {
-        this.queue = q;
+    private static SerialDriver SERIAL = SerialDriver.getInstance();
+    private static boolean THROTTLED = false;
+
+    private AtomicInteger bufferAvailable = new AtomicInteger(BUFFER_SIZE);
+    private BlockingQueue<String> queue;
+    private boolean run = true;
+    private boolean cleared  = false;
+
+    public SerialWriter(BlockingQueue queue) {
+        this.queue = queue;
     }
 
     void resetBuffer() {
         //Called onDisconnectActions
-        buffer_available.set(BUFFER_SIZE);
+        bufferAvailable.set(BUFFER_SIZE);
         notifyAck();
     }
 
     public void clearQueueBuffer() {
         queue.clear();
-        // We set this to tell the mutex with waiting for an ack to
+        // We set this to tell the MUTEX with waiting for an ack to
         // send a line that it should not send a line.. we were asked to be cleared.
         this.cleared = true;
         //This is done in resetBuffer is this needed?
-        buffer_available.set(BUFFER_SIZE);
+        bufferAvailable.set(BUFFER_SIZE);
         this.setThrottled(false);
         this.notifyAck();
     }
 
-    public boolean isRUN() {
-        return RUN;
+    public boolean isRun() {
+        return run;
     }
 
-    public void setRun(boolean RUN) {
-        this.RUN = RUN;
+    public void setRun(boolean run) {
+        this.run = run;
     }
 
     synchronized int getBufferValue() {
-        return buffer_available.get();
+        return bufferAvailable.get();
     }
 
     public synchronized void setBuffer(int val) {
-        buffer_available.set(val);
         logger.debug("Got a BUFFER Response.. reset it to: " + val);
+        bufferAvailable.set(val);
     }
 
     synchronized void addBytesReturnedToBuffer(int lenBytesReturned) {
-        buffer_available.set(getBufferValue() + lenBytesReturned);
+        bufferAvailable.set(getBufferValue() + lenBytesReturned);
         logger.debug("Returned " + lenBytesReturned + " to buffer. " +
-                "Buffer is now at " + buffer_available);
+                "Buffer is now at " + bufferAvailable);
     }
 
     public void addCommandToBuffer(String cmd) {
@@ -70,23 +74,23 @@ public class SerialWriter implements Runnable {
     }
 
     public void setThrottled(boolean t) {
-        synchronized (mutex) {
-            if (t == throttled) {
+        synchronized (MUTEX) {
+            if (t == THROTTLED) {
                 logger.debug("Throttled already set");
                 return;
             }
             logger.debug("Setting Throttled " + t);
-            throttled = t;
+            THROTTLED = t;
         }
     }
 
     public void notifyAck() {
         // This is called by the response parser when an ack packet is recvd.  This
-        // Will wake up the mutex that is sleeping in the write method of the serialWriter
+        // Will wake up the MUTEX that is sleeping in the write method of the serialWriter
         // (this) class.
-        synchronized (mutex) {
+        synchronized (MUTEX) {
             logger.debug("Notifying the SerialWriter we have recvd an ACK");
-            mutex.notify();
+            MUTEX.notify();
         }
     }
 
@@ -103,27 +107,27 @@ public class SerialWriter implements Runnable {
     
     public void write(String str) {
         try {
-            synchronized (mutex) {
-//                int _currentPlanningBuffer = TinygDriver.getInstance().getQueryReport().getPba();
+            synchronized (MUTEX) {
+//                int _currentPlanningBuffer = TinygDriver.getInstance().getQueryReport().getAvailableBufferSize();
 
 //                if(_currentPlanningBuffer < 28){
 //                    //if we have less that 28 moves in the planning buffer send a line
 //                }
 
-                while (throttled) {
+                while (THROTTLED) {
                     if (str.length() > getBufferValue()) {
                         logger.debug("Throttling: Line Length: " + str.length() +
-                                " is smaller than buffer length: " + buffer_available);
+                                " is smaller than buffer length: " + bufferAvailable);
                         setThrottled(true);
                     } else {
                         setThrottled(false);
-                        buffer_available.set(getBufferValue() - str.length());
+                        bufferAvailable.set(getBufferValue() - str.length());
                         break;
                     }
                     logger.debug("We are Throttled in the write method for SerialWriter");
                     // We wait here until the an ack comes in to the response parser
-                    // frees up some buffer space.  Then we unlock the mutex and write the next line.
-                    mutex.wait();
+                    // frees up some buffer space.  Then we unlock the MUTEX and write the next line.
+                    MUTEX.wait();
                     if(cleared){
                        //clear out the line we were waiting to send.. we were asked to clear our buffer
                         //including this line that is waiting to be sent.
@@ -138,28 +142,44 @@ public class SerialWriter implements Runnable {
                 sendUiMessage(str);
             }
 
-            ser.write(str);
+            SERIAL.write(str);
             
         } catch (InterruptedException ex) {
             logger.error("Error in SerialDriver Write");
         }
     }
 
+    // TODO: is this as good as an event?
+    // start
+    private SimpleBooleanProperty isSendingFile = new SimpleBooleanProperty(false);
+    private SimpleStringProperty gcodeComment = new SimpleStringProperty("");
+
+    public SimpleBooleanProperty getIsSendingFile(){
+        return isSendingFile;
+    }
+
+    public SimpleStringProperty getGcodeComment(){
+        return gcodeComment;
+    }
+    // end
+
     @Override
     public void run() {
         logger.info("Serial Writer Thread Running...");
-        while (RUN) {
+        while (run) {
             try {
                 String tmpCmd = queue.take();  //Grab the line
                 if(tmpCmd.equals("**FILEDONE**")){
                     //Our end of file sending token has been detected.
                     //We will not enable jogging by setting isSendingFile to false
-                    // FIXME: uncomment this
+                    // TODO: this might work better as a an event instead of a binding
                     //GcodeTabController.setIsFileSending(false);
+                    isSendingFile.setValue(false);
                 }else if(tmpCmd.startsWith("**COMMENT**")){
                     //Display current gcode comment
-                    // FIXME: uncomment this
+                    // TODO: this might work better as a an event instead of a binding
                     //GcodeTabController.setGcodeTextTemp("Comment: " + tmpCmd);
+                    gcodeComment.setValue("Comment: "+tmpCmd);
                     continue;
                 }
                 this.write(tmpCmd);

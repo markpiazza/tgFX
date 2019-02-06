@@ -828,8 +828,8 @@ public final class Machine {
                         String[] message = new String[2];
                         message[0] = "MACHINE_UPDATE";
                         message[1] = null;
-                        TinygDriver.getInstance().getResParse().setChanged();
-                        TinygDriver.getInstance().getResParse().notifyObservers(message);
+                        TinygDriver.getInstance().getResponseParser().setChanged();
+                        TinygDriver.getInstance().getResponseParser().notifyObservers(message);
                         break;
                     case (MnemonicManager.MNEMONIC_SYSTEM_TEXT_VOBERSITY):
                         logger.info("[APPLIED:" + rc.getSettingParent() + " " +
