@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.util.Iterator;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -26,8 +27,9 @@ import org.apache.logging.log4j.Logger;
 import tgfx.Main;
 import tgfx.system.Machine;
 import tgfx.system.enums.GcodeUnitMode;
-import tgfx.tinyg.CommandManager;
 import tgfx.tinyg.TinygDriver;
+
+import static tgfx.tinyg.Commands.*;
 
 /**
  * CNCMachine pane
@@ -79,24 +81,15 @@ public class CNCMachine extends Pane {
 
         setupLayout(); //initial layout setup in constructor
 
-        /*
-         * Event / Change Listeners
-         */
-//ugh...
-//
-//
-//        ChangeListener posChangeListener = new ChangeListener() {
-//            @Override
-//            public void changed(ObservableValue ov, Object t, Object t1) {
-//                if (DRIVER.m.getAxisByName("y").getMachinePosition() > heightProperty().get()
-//                        || DRIVER.m.getAxisByName("x").getMachinePosition() > widthProperty().get()) {
-//                    hideOrShowCursor(false);
-//                } else {
-//                    hideOrShowCursor(true);
-//                }
-//
-//            }
-//        };
+        ChangeListener posChangeListener = (observableValue, oldValue, newValue) -> {
+            if (MACHINE.getAxisByName("y").getMachinePosition() > heightProperty().get()
+                    || MACHINE.getAxisByName("x").getMachinePosition() > widthProperty().get()) {
+                hideOrShowCursor(false);
+            } else {
+                hideOrShowCursor(true);
+            }
+
+        };
 
         this.setOnMouseExited(me -> {
 //             gcodePane.getChildren().remove(c);
@@ -121,8 +114,8 @@ public class CNCMachine extends Pane {
                     DRIVER.getCommandManager().setMachinePosition(getNormalizedX(me.getX()), getNormalizedY(me.getY()));
                     // This allows us to move our drawing to a new place without drawing a line from the old.
                     Draw2d.setFirstDraw(true);
-                    DRIVER.write(CommandManager.CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
-                    DRIVER.write(CommandManager.CMD_QUERY_STATUS_REPORT);
+                    DRIVER.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
+                    DRIVER.write(CMD_QUERY_STATUS_REPORT);
                     // G92 does not invoke a status report... So we need to generate one to have
                     // Our GUI update the coordinates to zero
                 });
@@ -141,11 +134,11 @@ public class CNCMachine extends Pane {
         cursorPoint.translateYProperty().bind(this.heightProperty().subtract(MACHINE.getAxisByName("y").getMachinePositionSimple()));
         cursorPoint.layoutXProperty().bind(MACHINE.getAxisByName("x").getMachinePositionSimple());
 
-//            cncHeight.bind(this.heightProperty());
-//            cncWidth.bind(this.widthProperty());
+            cncHeight.bind(this.heightProperty());
+            cncWidth.bind(this.widthProperty());
 //            //When the x or y pos changes we see if we want to show or hide the cursor
-//            cursorPoint.layoutXProperty().addListener(posChangeListener);
-//            cursorPoint.layoutYProperty().addListener(posChangeListener);
+            cursorPoint.layoutXProperty().addListener(posChangeListener);
+            cursorPoint.layoutYProperty().addListener(posChangeListener);
     }
 
     public StackPane getGcodePane() {
@@ -302,10 +295,10 @@ public class CNCMachine extends Pane {
         if (DRIVER.isConnected().get()) {
             try {
                 Draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
-                DRIVER.write(CommandManager.CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
+                DRIVER.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
                 //G92 does not invoke a status report... So we need to generate one to have
                 //Our GUI update the coordinates to zero
-                DRIVER.write(CommandManager.CMD_QUERY_STATUS_REPORT);
+                DRIVER.write(CMD_QUERY_STATUS_REPORT);
                 //We need to set these to 0 so we do not draw a line from the last place we were to 0,0
                 resetDrawingCoords();
             } catch (Exception ex) {

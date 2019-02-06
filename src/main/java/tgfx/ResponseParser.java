@@ -1,5 +1,6 @@
 package tgfx;
 
+import jssc.SerialPortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.*;
@@ -8,19 +9,7 @@ import javafx.application.Platform;
 import jfxtras.labs.dialogs.MonologFX;
 import jfxtras.labs.dialogs.MonologFXButton;
 
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_A;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_B;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_C;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_X;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_Y;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_AXIS_Z;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_MOTOR_1;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_MOTOR_2;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_MOTOR_3;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_MOTOR_4;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_SYSTEM;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_STATUS_REPORT;
-import static tgfx.tinyg.MnemonicManager.MNEMONIC_GROUP_EMERGENCY_SHUTDOWN;
+import static tgfx.tinyg.Mnemonics.*;
 
 import tgfx.system.Machine;
 import tgfx.tinyg.TinygDriver;
@@ -265,9 +254,7 @@ public class ResponseParser extends Observable implements Runnable {
         switch (pg) {
             case (MNEMONIC_GROUP_MOTOR_1):
                 machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_1)
-                        .applyJsonSystemSetting(
-                                js.getJSONObject(MNEMONIC_GROUP_MOTOR_1),
-                                MNEMONIC_GROUP_MOTOR_1);
+                        .applyJsonSystemSetting( js.getJSONObject(MNEMONIC_GROUP_MOTOR_1), MNEMONIC_GROUP_MOTOR_1);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
                 message[1] = MNEMONIC_GROUP_MOTOR_1;
@@ -275,9 +262,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
             case (MNEMONIC_GROUP_MOTOR_2):
                 machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_2)
-                        .applyJsonSystemSetting(
-                                js.getJSONObject(MNEMONIC_GROUP_MOTOR_2),
-                                MNEMONIC_GROUP_MOTOR_2);
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_2), MNEMONIC_GROUP_MOTOR_2);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
                 message[1] = MNEMONIC_GROUP_MOTOR_2;
@@ -285,9 +270,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
             case (MNEMONIC_GROUP_MOTOR_3):
                 machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_3)
-                        .applyJsonSystemSetting(
-                                js.getJSONObject(MNEMONIC_GROUP_MOTOR_3),
-                                MNEMONIC_GROUP_MOTOR_3);
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_3), MNEMONIC_GROUP_MOTOR_3);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
                 message[1] = MNEMONIC_GROUP_MOTOR_3;
@@ -296,8 +279,7 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_MOTOR_4):
                 machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_4)
-                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_4)
-                                , MNEMONIC_GROUP_MOTOR_4);
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_MOTOR_4), MNEMONIC_GROUP_MOTOR_4);
                 setChanged();
                 message[0] = "CMD_GET_MOTOR_SETTINGS";
                 message[1] = MNEMONIC_GROUP_MOTOR_4;
@@ -306,9 +288,7 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_AXIS_X):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_X)
-                        .applyJsonSystemSetting(
-                                js.getJSONObject(MNEMONIC_GROUP_AXIS_X),
-                                MNEMONIC_GROUP_AXIS_X);
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_X), MNEMONIC_GROUP_AXIS_X);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_X;
@@ -317,9 +297,7 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_AXIS_Y):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_Y)
-                        .applyJsonSystemSetting(
-                                js.getJSONObject(MNEMONIC_GROUP_AXIS_Y),
-                                MNEMONIC_GROUP_AXIS_Y);
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_Y), MNEMONIC_GROUP_AXIS_Y);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_Y;
@@ -328,9 +306,7 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_AXIS_Z):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_Z)
-                        .applyJsonSystemSetting(
-                                js.getJSONObject(MNEMONIC_GROUP_AXIS_Z),
-                                MNEMONIC_GROUP_AXIS_Z);
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_Z), MNEMONIC_GROUP_AXIS_Z);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_Z;
@@ -339,9 +315,7 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_AXIS_A):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_A)
-                        .applyJsonSystemSetting(
-                                js.getJSONObject(MNEMONIC_GROUP_AXIS_A),
-                                MNEMONIC_GROUP_AXIS_A);
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_A), MNEMONIC_GROUP_AXIS_A);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_A;
@@ -349,9 +323,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
             case (MNEMONIC_GROUP_AXIS_B):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_B)
-                        .applyJsonSystemSetting(
-                                js.getJSONObject(MNEMONIC_GROUP_AXIS_B),
-                                MNEMONIC_GROUP_AXIS_B);
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_B), MNEMONIC_GROUP_AXIS_B);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_B;
@@ -360,9 +332,7 @@ public class ResponseParser extends Observable implements Runnable {
 
             case (MNEMONIC_GROUP_AXIS_C):
                 machine.getAxisByName(MNEMONIC_GROUP_AXIS_C)
-                        .applyJsonSystemSetting(
-                                js.getJSONObject(MNEMONIC_GROUP_AXIS_C),
-                                MNEMONIC_GROUP_AXIS_C);
+                        .applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_AXIS_C), MNEMONIC_GROUP_AXIS_C);
                 setChanged();
                 message[0] = "CMD_GET_AXIS_SETTINGS";
                 message[1] = MNEMONIC_GROUP_AXIS_C;
@@ -378,9 +348,7 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case (MNEMONIC_GROUP_SYSTEM):
-                machine.applyJsonSystemSetting(
-                        js.getJSONObject(MNEMONIC_GROUP_SYSTEM),
-                        MNEMONIC_GROUP_SYSTEM);
+                machine.applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_SYSTEM), MNEMONIC_GROUP_SYSTEM);
                 /*
                  * UNCOMMENT THIS BELOW WHEN WE HAVE MACHINE SETTINGS THAT NEED
                  * TO UPDATE THE GU
@@ -428,7 +396,7 @@ public class ResponseParser extends Observable implements Runnable {
                             logger.info("Clicked Yes");
                             try {
                                 TinygDriver.getInstance().priorityWrite((byte) 0x18);
-                            } catch (Exception ex) {
+                            } catch (SerialPortException ex) {
                                 logger.error(ex);
                             }
                             break;
@@ -443,8 +411,7 @@ public class ResponseParser extends Observable implements Runnable {
             default:
                 //This is for single settings xfr, 1tr etc...
                 //This is pretty ugly but it gets the key and the value. For single values.
-                ResponseCommand rc = TinygDriver.getInstance()
-                        .getMnemonicManager().lookupSingleGroup(pg);
+                ResponseCommand rc = TinygDriver.getInstance().getMnemonicManager().lookupSingleGroup(pg);
 
 //                  String _parent = String.valueOf(parentGroup.charAt(0));
                 String newJs;

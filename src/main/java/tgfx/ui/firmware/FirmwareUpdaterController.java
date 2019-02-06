@@ -28,6 +28,8 @@ import tgfx.system.Machine;
 import tgfx.tinyg.*;
 import tgfx.utility.UtilityFunctions;
 
+import static tgfx.tinyg.Commands.CMD_APPLY_BOOTLOADER_MODE;
+
 /**
  * FirmwareUpdaterController
  *
@@ -267,9 +269,9 @@ public class FirmwareUpdaterController implements Initializable {
             //We need to disconnect from tinyg after issuing out boot command.
             try {
                 //Set our board into bootloader mode.
-                TinygDriver.getInstance().priorityWrite(CommandManager.CMD_APPLY_BOOTLOADER_MODE);
+                TinygDriver.getInstance().priorityWrite(CMD_APPLY_BOOTLOADER_MODE);
                 Thread.sleep(1000);
-            } catch (Exception ex) {
+            } catch (InterruptedException ex) {
                 logger.error(ex);
             }
             try {

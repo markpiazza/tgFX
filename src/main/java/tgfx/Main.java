@@ -35,7 +35,6 @@ import org.json.JSONException;
 import tgfx.system.Machine;
 import tgfx.tinyg.TinygDriver;
 import tgfx.system.StatusCode;
-import tgfx.tinyg.CommandManager;
 import tgfx.render.Draw2d;
 import tgfx.ui.gcode.GcodeHistory;
 import tgfx.ui.gcode.GcodeTabController;
@@ -46,6 +45,8 @@ import tgfx.utility.QueueUsingTimer;
 import tgfx.utility.QueuedTimerable;
 
 import static tgfx.TgFXConstants.*;
+
+import static tgfx.tinyg.Commands.*;
 
 /**
  * The <code>Main</code> class is logically the "main" class of the application,
@@ -220,7 +221,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
             //"{\""+ command.split("=")[0].replace("$", "") + "\":" +
             // command.split("=")[1].trim() + "}\n"
             if ("".equals(command)) {
-                DRIVER.write(CommandManager.CMD_QUERY_OK_PROMPT);
+                DRIVER.write(CMD_QUERY_OK_PROMPT);
             }
 
             DRIVER.write(command);
@@ -626,13 +627,13 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         Platform.runLater(() -> {
             gcodeTabController.setGcodeTextTemp("Attempting to Connect to TinyG.");
             DRIVER.getSerialWriter().notifyAck(); //If the serialWriter is in a wait state.. wake it up
-            DRIVER.write(CommandManager.CMD_APPLY_NOOP); //Just waking things up.
-            DRIVER.write(CommandManager.CMD_APPLY_NOOP);
-            DRIVER.write(CommandManager.CMD_APPLY_NOOP);
+            DRIVER.write(CMD_APPLY_NOOP); //Just waking things up.
+            DRIVER.write(CMD_APPLY_NOOP);
+            DRIVER.write(CMD_APPLY_NOOP);
 
-//                    DRIVER.write(CommandManager.CMD_QUERY_HARDWARE_PLATFORM);
-            DRIVER.write(CommandManager.CMD_QUERY_HARDWARE_VERSION);
-            DRIVER.write(CommandManager.CMD_QUERY_HARDWARE_BUILD_NUMBER);
+//                    DRIVER.write(CMD_QUERY_HARDWARE_PLATFORM);
+            DRIVER.write(CMD_QUERY_HARDWARE_VERSION);
+            DRIVER.write(CMD_QUERY_HARDWARE_BUILD_NUMBER);
 //                    Thread.sleep(delayValue);  //Should not need this for query operations
             Main.postConsoleMessage("Getting TinyG Firmware Build Version....");
             connectionTimer.start();
@@ -655,15 +656,15 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                  * as it goes into a "disable interrupt mode"
                  * to write values to EEPROM
                  */
-                DRIVER.write(CommandManager.CMD_APPLY_JSON_VERBOSITY);
+                DRIVER.write(CMD_APPLY_JSON_VERBOSITY);
                 Thread.sleep(delayValue);
-                DRIVER.write(CommandManager.CMD_APPLY_STATUS_UPDATE_INTERVAL);
+                DRIVER.write(CMD_APPLY_STATUS_UPDATE_INTERVAL);
                 Thread.sleep(delayValue);
-                DRIVER.write(CommandManager.CMD_APPLY_TEXT_VERBOSITY);
+                DRIVER.write(CMD_APPLY_TEXT_VERBOSITY);
                 Thread.sleep(delayValue);
-                DRIVER.write(CommandManager.CMD_APPLY_FLOWCONTROL);
+                DRIVER.write(CMD_APPLY_FLOWCONTROL);
                 Thread.sleep(delayValue);
-                DRIVER.write(CommandManager.CMD_APPLY_STATUS_REPORT_FORMAT);
+                DRIVER.write(CMD_APPLY_STATUS_REPORT_FORMAT);
                 Thread.sleep(600); //Setting the status report takes some time!  Just leave this alone.  This is a hardware limit..
                 //writing to the eeprom (so many values) is troublesome :)  Like geese.. (this one is for alden)
 
@@ -678,7 +679,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 Thread.sleep(delayValue);
                 DRIVER.getCommandManager().queryAllHardwareAxisSettings();
                 Thread.sleep(delayValue);
-                DRIVER.write(CommandManager.CMD_APPLY_TEXT_VERBOSITY);
+                DRIVER.write(CMD_APPLY_TEXT_VERBOSITY);
 
                 gcodeTabController.setCNCMachineVisible(true); //Once we connected we should show the drawing enevlope.
                 Main.postConsoleMessage("Showing CNC Machine Preview...");

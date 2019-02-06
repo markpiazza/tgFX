@@ -31,6 +31,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import org.json.JSONException;
 
+import static tgfx.tinyg.Commands.CMD_APPLY_DEFAULT_SETTINGS;
+
 /**
  * MachineSettingsController
  *
@@ -252,7 +254,7 @@ public class MachineSettingsController implements Initializable {
     @FXML
     void handleApplyDefaultSettings(ActionEvent evt) {
         if (checkConectedMessage().equals("true")) {
-            TinygDriver.getInstance().write(CommandManager.CMD_APPLY_DEFAULT_SETTINGS);
+            TinygDriver.getInstance().write(CMD_APPLY_DEFAULT_SETTINGS);
         } else {
             logger.error(checkConectedMessage());
             tgfx.Main.postConsoleMessage(checkConectedMessage());

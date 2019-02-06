@@ -18,7 +18,7 @@ import tgfx.tinyg.MnemonicManager;
 import tgfx.tinyg.TinygDriver;
 import tgfx.tinyg.ResponseCommand;
 
-import static tgfx.tinyg.MnemonicManager.*;
+import static tgfx.tinyg.Mnemonics.*;
 
 /*
  * [xmp] x_machine_position 0.000 mm [xwp] x_work_position 0.000 mm [xam]
@@ -437,31 +437,31 @@ public final class Axis {
             case MNEMONIC_AXIS_AXIS_MODE:
                 setAxisMode((int) Double.parseDouble(value));
                 break;
-            case MnemonicManager.MNEMONIC_AXIS_VELOCITY_MAXIMUM:
+            case MNEMONIC_AXIS_VELOCITY_MAXIMUM:
                 setVelocityMaximum(Float.valueOf(value));
                 break;
-            case MnemonicManager.MNEMONIC_AXIS_FEEDRATE_MAXIMUM:
+            case MNEMONIC_AXIS_FEEDRATE_MAXIMUM:
                 setFeedRateMaximum(Float.valueOf(value));
                 break;
-            case MnemonicManager.MNEMONIC_AXIS_TRAVEL_MAXIMUM:
+            case MNEMONIC_AXIS_TRAVEL_MAXIMUM:
                 setTravelMaximum(Float.valueOf(value));
                 break;
-            case MnemonicManager.MNEMONIC_AXIS_JERK_MAXIMUM:
+            case MNEMONIC_AXIS_JERK_MAXIMUM:
                 setJerkMaximum(Double.valueOf(value));
                 break;
-            case MnemonicManager.MNEMONIC_AXIS_JUNCTION_DEVIATION:
+            case MNEMONIC_AXIS_JUNCTION_DEVIATION:
                 setJunctionDeviation(Float.valueOf(value));
                 break;
             case "sn":
                 setMaxSwitchMode((int) Double.parseDouble(value));
                 break;
-            case MnemonicManager.MNEMONIC_AXIS_SEARCH_VELOCITY:
+            case MNEMONIC_AXIS_SEARCH_VELOCITY:
                 setSearchVelocity(Double.parseDouble(value));
                 break;
-            case MnemonicManager.MNEMONIC_AXIS_LATCH_VELOCITY:
+            case MNEMONIC_AXIS_LATCH_VELOCITY:
                 setLatchVelocity(Float.parseFloat(value));
                 break;
-            case MnemonicManager.MNEMONIC_AXIS_LATCH_BACKOFF:
+            case MNEMONIC_AXIS_LATCH_BACKOFF:
                 setLatchBackoff(Float.parseFloat(value));
                 break;
             case MNEMONIC_AXIS_ZERO_BACKOFF:

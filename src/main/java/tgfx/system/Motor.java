@@ -3,9 +3,10 @@ package tgfx.system;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import tgfx.tinyg.MnemonicManager;
 import tgfx.tinyg.TinygDriver;
 import tgfx.tinyg.ResponseCommand;
+
+import static tgfx.tinyg.Mnemonics.*;
 
 /**
  * Motor
@@ -146,37 +147,37 @@ public class Motor {
             }
 
             switch (key) {
-                case MnemonicManager.MNEMONIC_MOTOR_MAP_AXIS:
+                case MNEMONIC_MOTOR_MAP_AXIS:
                     motor.setMapToAxis(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
-                case MnemonicManager.MNEMONIC_MOTOR_MICROSTEPS:
+                case MNEMONIC_MOTOR_MICROSTEPS:
                     motor.setMicrosteps(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
-                case MnemonicManager.MNEMONIC_MOTOR_POLARITY:
+                case MNEMONIC_MOTOR_POLARITY:
                     motor.setPolarity(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
-                case MnemonicManager.MNEMONIC_MOTOR_POWER_MANAGEMENT:
+                case MNEMONIC_MOTOR_POWER_MANAGEMENT:
                     motor.setPowerManagement(Integer.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
-                case MnemonicManager.MNEMONIC_MOTOR_STEP_ANGLE:
+                case MNEMONIC_MOTOR_STEP_ANGLE:
                     motor.setStepAngle(Float.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());
                     break;
 
-                case MnemonicManager.MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION:
+                case MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION:
                     motor.setTravelPerRevolution(Float.valueOf(rc.getSettingValue()));
                     logger.info("[APPLIED:" + rc.getSettingParent() + " " +
                             rc.getSettingKey() + ":" + rc.getSettingValue());

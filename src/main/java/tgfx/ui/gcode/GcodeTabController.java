@@ -41,6 +41,8 @@ import tgfx.tinyg.TinygDriver;
 import tgfx.ui.tgfxsettings.TgfxSettingsController;
 
 
+import static tgfx.tinyg.Commands.*;
+
 /**
  * GcodeTabController
  *
@@ -144,7 +146,7 @@ public class GcodeTabController implements Initializable {
     private void handleHomeXYZ(ActionEvent evt) {
         logger.info("handleHomeXYZ");
         if (DRIVER.isConnected().get()) {
-            DRIVER.write(CommandManager.CMD_APPLY_SYSTEM_HOME_XYZ_AXES);
+            DRIVER.write(CMD_APPLY_SYSTEM_HOME_XYZ_AXES);
         }
     }
 
@@ -163,16 +165,16 @@ public class GcodeTabController implements Initializable {
         if (DRIVER.isConnected().get()) {
             switch (axis) {
                 case "x":
-                    DRIVER.write(CommandManager.CMD_APPLY_HOME_X_AXIS);
+                    DRIVER.write(CMD_APPLY_HOME_X_AXIS);
                     break;
                 case "y":
-                    DRIVER.write(CommandManager.CMD_APPLY_HOME_Y_AXIS);
+                    DRIVER.write(CMD_APPLY_HOME_Y_AXIS);
                     break;
                 case "z":
-                    DRIVER.write(CommandManager.CMD_APPLY_HOME_Z_AXIS);
+                    DRIVER.write(CMD_APPLY_HOME_Z_AXIS);
                     break;
                 case "a":
-                    DRIVER.write(CommandManager.CMD_APPLY_HOME_A_AXIS);
+                    DRIVER.write(CMD_APPLY_HOME_A_AXIS);
                     break;
             }
         }
@@ -196,16 +198,16 @@ public class GcodeTabController implements Initializable {
             Draw2d.setFirstDraw(true);
             switch (axis) {
                 case "x":
-                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_X_AXIS);
+                    DRIVER.write(CMD_APPLY_ZERO_X_AXIS);
                     break;
                 case "y":
-                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_Y_AXIS);
+                    DRIVER.write(CMD_APPLY_ZERO_Y_AXIS);
                     break;
                 case "z":
-                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_Z_AXIS);
+                    DRIVER.write(CMD_APPLY_ZERO_Z_AXIS);
                     break;
                 case "a":
-                    DRIVER.write(CommandManager.CMD_APPLY_ZERO_A_AXIS);
+                    DRIVER.write(CMD_APPLY_ZERO_A_AXIS);
                     break;
             }
         }
@@ -250,10 +252,10 @@ public class GcodeTabController implements Initializable {
         logger.info("handlePauseResume");
         if ("Pause".equals(pauseResumeBtn.getText())) {
             pauseResumeBtn.setText("Resume");
-            DRIVER.priorityWrite(CommandManager.CMD_APPLY_PAUSE);
+            DRIVER.priorityWrite(CMD_APPLY_PAUSE);
         } else {
             pauseResumeBtn.setText("Pause");
-            DRIVER.priorityWrite(CommandManager.CMD_APPLY_RESUME);
+            DRIVER.priorityWrite(CMD_APPLY_RESUME);
         }
     }
 
@@ -285,7 +287,7 @@ public class GcodeTabController implements Initializable {
             try {
                 DRIVER.getSerialWriter().clearQueueBuffer();
                 //This sends the 0x18 byte
-                DRIVER.priorityWrite(CommandManager.CMD_APPLY_RESET);
+                DRIVER.priorityWrite(CMD_APPLY_RESET);
 
                 //We disable everything while waiting for the board to reset
 //                 topAnchorPane.setDisable(true);
@@ -621,17 +623,17 @@ public class GcodeTabController implements Initializable {
 
             try {
                 DRIVER.getSerialWriter().setThrottled(true);
-                DRIVER.priorityWrite(CommandManager.CMD_QUERY_MOTOR_1_SETTINGS);
-                DRIVER.priorityWrite(CommandManager.CMD_QUERY_MOTOR_2_SETTINGS);
-                DRIVER.priorityWrite(CommandManager.CMD_QUERY_MOTOR_3_SETTINGS);
-                DRIVER.priorityWrite(CommandManager.CMD_QUERY_MOTOR_4_SETTINGS);
+                DRIVER.priorityWrite(CMD_QUERY_MOTOR_1_SETTINGS);
+                DRIVER.priorityWrite(CMD_QUERY_MOTOR_2_SETTINGS);
+                DRIVER.priorityWrite(CMD_QUERY_MOTOR_3_SETTINGS);
+                DRIVER.priorityWrite(CMD_QUERY_MOTOR_4_SETTINGS);
 
-                DRIVER.priorityWrite(CommandManager.CMD_QUERY_AXIS_X);
-                DRIVER.priorityWrite(CommandManager.CMD_QUERY_AXIS_Y);
-                DRIVER.priorityWrite(CommandManager.CMD_QUERY_AXIS_Z);
-                DRIVER.priorityWrite(CommandManager.CMD_QUERY_AXIS_A);
-                DRIVER.priorityWrite(CommandManager.CMD_QUERY_AXIS_B);
-                DRIVER.priorityWrite(CommandManager.CMD_QUERY_AXIS_C);
+                DRIVER.priorityWrite(CMD_QUERY_AXIS_X);
+                DRIVER.priorityWrite(CMD_QUERY_AXIS_Y);
+                DRIVER.priorityWrite(CMD_QUERY_AXIS_Z);
+                DRIVER.priorityWrite(CMD_QUERY_AXIS_A);
+                DRIVER.priorityWrite(CMD_QUERY_AXIS_B);
+                DRIVER.priorityWrite(CMD_QUERY_AXIS_C);
                 Thread.sleep(400);
                 DRIVER.getSerialWriter().setThrottled(false);
             } catch (InterruptedException ex) {
@@ -761,7 +763,7 @@ public class GcodeTabController implements Initializable {
      * @return task status
      */
     private synchronized boolean isTaskActive() {
-        logger.info("isTaskActive: {}", taskActive);
+        // logger.info("isTaskActive: {}", taskActive);
         return taskActive;
     }
 
@@ -772,7 +774,7 @@ public class GcodeTabController implements Initializable {
      * @param boolTask task status
      */
     public synchronized void setTaskActive(boolean boolTask) {
-        logger.info("setTaskActive: {}", boolTask);
+        // logger.info("setTaskActive: {}", boolTask);
         taskActive = boolTask;
     }
 
@@ -784,7 +786,7 @@ public class GcodeTabController implements Initializable {
      * @return isSendingFile property
      */
     public SimpleBooleanProperty isSendingFile(){
-        logger.info("isSendingFile: {}", isSendingFile);
+        // logger.info("isSendingFile: {}", isSendingFile);
         return isSendingFile;
     }
 
@@ -796,7 +798,7 @@ public class GcodeTabController implements Initializable {
      * @param text message
      */
     public void setGcodeTextTemp(String text) {
-        logger.info("setGcodeTextTemp: {}", text);
+        // logger.info("setGcodeTextTemp: {}", text);
         gcodeStatusMessageValue.setValue(text);
     }
 
@@ -809,6 +811,7 @@ public class GcodeTabController implements Initializable {
      */
     public void setGcodeText(String text) {
         logger.info("setGcodeText: {}", text);
+        gcodeStatusMessageValue.setValue(text);
         gcodeStatusMessageVisible.setValue(true);
     }
 

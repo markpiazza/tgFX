@@ -108,7 +108,7 @@ public class SerialDriver implements SerialPortEventListener {
     }
 
 
-    public static String[] listSerialPorts() {
+    public String[] listSerialPorts() {
         String[] ports = jssc.SerialPortList.getPortNames();
         List<String> portList = new ArrayList<>();
 
