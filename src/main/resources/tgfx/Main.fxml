@@ -5,7 +5,6 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
 <VBox id="AnchorPane" fx:id="topAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="1280.0"
@@ -17,6 +16,37 @@
         <URL value="@main.css"/>
     </stylesheets>
     <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <top>
+            <HBox alignment="CENTER" maxHeight="35.0" minHeight="35.0" prefHeight="35.0">
+                <AnchorPane id="topMainTitle" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets right="5.0"/>
+                    </padding>
+                    <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <spacing>
+                            <Long fx:value="5"/>
+                        </spacing>
+                        <Label fx:id="serialTitle" alignment="CENTER_RIGHT" text="Serial Ports: " HBox.hgrow="ALWAYS"/>
+                        <ChoiceBox fx:id="serialPorts" focusTraversable="false" minHeight="21.0" minWidth="120.0" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="Connect" focusTraversable="false" onAction="#handleConnect" text="Connect"/>
+                        <Button fx:id="reScan" focusTraversable="false" onAction="#FXreScanSerial" text="Re-Scan"/>
+                    </HBox>
+                    <Text fill="WHITE" layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="tgFX - TinyG Controller"/>
+                </AnchorPane>
+            </HBox>
+        </top>
+
+
+        <center>
+            <TabPane fx:id="topTabPane" focusTraversable="false" side="RIGHT" BorderPane.alignment="CENTER">
+                <fx:include fx:id="gcodeTab" source="ui/gcode/GcodeTab.fxml" />
+                <fx:include fx:id="tinygConfigTab" source="ui/tinygconfig/TinyGConfig.fxml"/>
+                <fx:include fx:id="machineSettingsTab" source="ui/machinesettings/MachineSettings.fxml" />
+                <fx:include fx:id="tgfxSettingsTab" source="ui/tgfxsettings/TgfxSettings.fxml"/>
+            </TabPane>
+        </center>
+
+
         <bottom>
             <VBox id="consoleHBox" fx:id="consoleVBox" alignment="CENTER" prefHeight="120.0" BorderPane.alignment="CENTER">
                 <padding>
@@ -25,30 +55,14 @@
                 <spacing>
                     <Long fx:value="5"/>
                 </spacing>
-                <BorderPane.margin>
-                    <Insets/>
-                </BorderPane.margin>
                 <TextArea fx:id="console" editable="false" focusTraversable="false" maxHeight="300.0" minHeight="50.0" wrapText="true" VBox.vgrow="ALWAYS" >
                     <prefHeight>
                         <Long fx:value="75"/>
                     </prefHeight>
-                    <prefWidth>
-                        <Long fx:value="-1"/>
-                    </prefWidth>
                 </TextArea>
                 <TextField fx:id="input" onKeyPressed="#handleKeyPress" prefHeight="40.0" promptText="TinyG&gt;">
-                    <prefWidth>
-                        <Long fx:value="-1"/>
-                    </prefWidth>
                 </TextField>
                 <FlowPane id="flowPane1" alignment="CENTER" columnHalignment="CENTER" maxHeight="22.0" minHeight="22.0" prefHeight="22.0" VBox.vgrow="ALWAYS">
-                    <hgap>
-                        <Long fx:value="0"/>
-                    </hgap>
-                    <prefWidth>
-                        <Long fx:value="-1"/>
-                    </prefWidth>
-
                     <Label id="srText" text="Gcode Block #" textFill="WHITE"/>
                     <Label id="srText" fx:id="srGcodeLine" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="0"/>
 
@@ -109,44 +123,5 @@
                 </FlowPane>
             </VBox>
         </bottom>
-        <center>
-            <TabPane fx:id="topTabPane" focusTraversable="false" side="RIGHT" BorderPane.alignment="CENTER">
-                <prefHeight>
-                    <Long fx:value="-1"/>
-                </prefHeight>
-                <prefWidth>
-                    <Long fx:value="-1"/>
-                </prefWidth>
-                <BorderPane.margin>
-                    <Insets/>
-                </BorderPane.margin>
-                <fx:include fx:id="gcodeTab" source="ui/gcode/GcodeTab.fxml" />
-                <fx:include fx:id="tinygConfigTab" source="ui/tinygconfig/TinyGConfig.fxml"/>
-                <fx:include fx:id="machineSettingsTab" source="ui/machinesettings/MachineSettings.fxml" />
-                <fx:include fx:id="tgfxSettingsTab" source="ui/tgfxsettings/TgfxSettings.fxml"/>
-            </TabPane>
-        </center>
-        <top>
-            <HBox alignment="CENTER" maxHeight="35.0" minHeight="35.0" prefHeight="35.0">
-                <prefWidth>
-                    <Long fx:value="-1"/>
-                </prefWidth>
-                <AnchorPane id="topMainTitle" HBox.hgrow="ALWAYS">
-                    <padding>
-                        <Insets right="5.0"/>
-                    </padding>
-                    <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                        <spacing>
-                            <Long fx:value="5"/>
-                        </spacing>
-                        <Label fx:id="serialTitle" alignment="CENTER_RIGHT" text="Serial Ports: " HBox.hgrow="ALWAYS"/>
-                        <ChoiceBox fx:id="serialPorts" focusTraversable="false" minHeight="21.0" minWidth="120.0" HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="Connect" focusTraversable="false" onAction="#handleConnect" text="Connect"/>
-                        <Button fx:id="reScan" focusTraversable="false" onAction="#FXreScanSerial" text="Re-Scan"/>
-                    </HBox>
-                    <Text fill="WHITE" layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="tgFX - TinyG Controller"/>
-                </AnchorPane>
-            </HBox>
-        </top>
     </BorderPane>
 </VBox>

@@ -882,28 +882,29 @@ public class GcodeTabController implements Initializable {
      */
     private void handleMaxHeightChange() {
         logger.info("handleMaxHeightChange");
-        if (gcodePane.getWidth() - MACHINE.getAxisByName("x").getTravelMaxSimple().get()
-                 < gcodePane.getHeight() - MACHINE.getAxisByName("y").getTravelMaxSimple().get()) {
-            //X is longer use this code
-            if (MACHINE.getGcodeUnitModeAsInt() == 0) {  //INCHES
-                scaleAmount = (gcodePane.heightProperty().get() /
-                        MACHINE.getAxisByName("y").getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
-            } else { //MM
-                scaleAmount = (gcodePane.heightProperty().get() /
-                        MACHINE.getAxisByName("y").getTravelMaxSimple().get()) * .80;  //%80 of the scale;
-            }
-        } else {
-            //Y is longer use this code
-            if (MACHINE.getGcodeUnitModeAsInt() == 0) {  //INCHES
-                scaleAmount = (gcodePane.heightProperty().get() /
-                        MACHINE.getAxisByName("y").getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
-            } else { //MM
-                scaleAmount = (gcodePane.heightProperty().get() /
-                        MACHINE.getAxisByName("y").getTravelMaxSimple().get()) * .80;  //%80 of the scale;
-            }
-        }
-        cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
-
+//        if (gcodePane.getWidth() - MACHINE.getAxisByName("x").getTravelMaxSimple().get() <
+//            gcodePane.getHeight() - MACHINE.getAxisByName("y").getTravelMaxSimple().get()) {
+//            //X is longer use this code
+//            if (MACHINE.getGcodeUnitModeAsInt() == 0) {  //INCHES
+//                scaleAmount = (gcodePane.heightProperty().get() /
+//                        MACHINE.getAxisByName("y").getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
+//            } else { //MM
+//                scaleAmount = (gcodePane.heightProperty().get() /
+//                        MACHINE.getAxisByName("y").getTravelMaxSimple().get()) * .80;  //%80 of the scale;
+//            }
+//        } else {
+//            //Y is longer use this code
+//            if (MACHINE.getGcodeUnitModeAsInt() == 0) {  //INCHES
+//                scaleAmount = (gcodePane.heightProperty().get() /
+//                        MACHINE.getAxisByName("y").getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
+//            } else { //MM
+//                scaleAmount = (gcodePane.heightProperty().get() /
+//                        MACHINE.getAxisByName("y").getTravelMaxSimple().get()) * .80;  //%80 of the scale;
+//            }
+//        }
+//        cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
+        
+        // this was already commented out
 //        widthSize.textProperty().bind( Bindings.format("%s",
 //        cncMachinePane.widthProperty().divide(MACHINE.gcodeUnitDivision)
 //                .asString().concat(MACHINE.getGcodeUnitMode())    ));
@@ -912,6 +913,7 @@ public class GcodeTabController implements Initializable {
 //                getTravelMaximum()) + " " + MACHINE.getGcodeUnitMode().getValue());
     }
 
+
     /**
      * handleMaxWidthChange
      *
@@ -919,29 +921,31 @@ public class GcodeTabController implements Initializable {
     private void handleMaxWidthChange() {
         logger.info("handleMaxWidthChange");
 
-        //This is for the change listener to call for Max Width Change on the CNC Machine
-        if (gcodePane.getWidth() - MACHINE.getAxisByName("x").getTravelMaxSimple().get() <
-            gcodePane.getHeight() - MACHINE.getAxisByName("y").getTravelMaxSimple().get()) {
+//        //This is for the change listener to call for Max Width Change on the CNC Machine
+//        if (gcodePane.getWidth() - MACHINE.getAxisByName("x").getTravelMaxSimple().get() <
+//            gcodePane.getHeight() - MACHINE.getAxisByName("y").getTravelMaxSimple().get()) {
+//
+//            //X is longer use this code
+//            if (MACHINE.getGcodeUnitModeAsInt() == 0) {  //INCHES
+//                scaleAmount = (gcodePane.heightProperty().get() /
+//                        MACHINE.getAxisByName("y").getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
+//            } else { //MM
+//                scaleAmount = (gcodePane.heightProperty().get() /
+//                        MACHINE.getAxisByName("y").getTravelMaxSimple().get()) * .80;  //%80 of the scale;
+//            }
+//        } else {
+//            //Y is longer use this code
+//            if (MACHINE.getGcodeUnitModeAsInt() == 0) {  //INCHES
+//                scaleAmount = (gcodePane.heightProperty().get() /
+//                        MACHINE.getAxisByName("y").getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
+//            } else { //MM
+//                scaleAmount = (gcodePane.heightProperty().get() /
+//                        MACHINE.getAxisByName("y").getTravelMaxSimple().get()) * .80;  //%80 of the scale;
+//            }
+//        }
+//        cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
 
-            //X is longer use this code
-            if (MACHINE.getGcodeUnitModeAsInt() == 0) {  //INCHES
-                scaleAmount = (gcodePane.heightProperty().get() /
-                        MACHINE.getAxisByName("y").getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
-            } else { //MM
-                scaleAmount = (gcodePane.heightProperty().get() /
-                        MACHINE.getAxisByName("y").getTravelMaxSimple().get()) * .80;  //%80 of the scale;
-            }
-        } else {
-            //Y is longer use this code
-            if (MACHINE.getGcodeUnitModeAsInt() == 0) {  //INCHES
-                scaleAmount = (gcodePane.heightProperty().get() /
-                        MACHINE.getAxisByName("y").getTravelMaxSimple().get() * 25.4) * .80;  //%80 of the scale;
-            } else { //MM
-                scaleAmount = (gcodePane.heightProperty().get() /
-                        MACHINE.getAxisByName("y").getTravelMaxSimple().get()) * .80;  //%80 of the scale;
-            }
-        }
-        cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
+        // this was already commented out
 //        widthSize.setText(decimalFormat.format(DRIVER
 //        .m.getAxisByName("x").getTravelMaximum()) + " " + DRIVER
 //        .m.getGcodeUnitMode().getValue());

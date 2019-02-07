@@ -42,20 +42,15 @@
                                             <RowConstraints maxHeight="0.0" prefHeight="0.0" vgrow="ALWAYS"/>
                                             <RowConstraints maxHeight="0.0" prefHeight="0.0" vgrow="ALWAYS"/>
                                         </rowConstraints>
-                                        <Label id="lblMachine" text="Switch Type" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                            <labelFor>
-                                                <ChoiceBox id="cbMachineSwitchType" fx:id="machineSwitchType" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                                    <items>
-                                                        <FXCollections fx:factory="observableArrayList">
-                                                            <String fx:value="Normally Open"/>
-                                                            <String fx:value="Normally Closed"/>
-                                                        </FXCollections>
-                                                    </items>
-                                                </ChoiceBox>
-                                            </labelFor>
-                                        </Label>
-
-                                        <fx:reference source="machineSwitchType"/>
+                                        <Label id="lblMachine" text="Switch Type" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                        <ChoiceBox id="cbMachineSwitchType" fx:id="machineSwitchType" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                            <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                    <String fx:value="Normally Open"/>
+                                                    <String fx:value="Normally Closed"/>
+                                                </FXCollections>
+                                            </items>
+                                        </ChoiceBox>
 
                                         <Label id="lblMachine" text="Machine Unit Mode" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                                         <ChoiceBox fx:id="machineUnitMode" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -73,7 +68,7 @@
                                         <Insets bottom="10.0" right="10.0" top="10.0"/>
                                     </padding>
                                     <VBox.margin>
-                                        <Insets bottom="5.0" top="5.0" fx:id="x1_x0"/>
+                                        <Insets bottom="5.0" top="5.0"/>
                                     </VBox.margin>
                                     <Button mnemonicParsing="false" onAction="#handleQueryMachineSettings" text="Query"/>
                                     <Button mnemonicParsing="false" onAction="#handleApplyMachineSettings" text="Apply"/>
@@ -84,14 +79,11 @@
 
                             <VBox id="vBox2" alignment="CENTER" minWidth="250.0" HBox.hgrow="NEVER">
                                 <padding>
-                                    <Insets bottom="5.0" fx:id="x53"/>
+                                    <Insets bottom="5.0"/>
                                 </padding>
-                                <HBox.margin>
-                                    <Insets fx:id="x83"/>
-                                </HBox.margin>
                                 <HBox  id="machineSettingsHbox" alignment="TOP_CENTER" VBox.vgrow="NEVER">
                                     <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x46"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                                     </padding>
                                     <Label id="machineSettingsLabel" alignment="CENTER" contentDisplay="CENTER" text="Machine Config Loader" HBox.hgrow="NEVER"/>
                                 </HBox>
@@ -107,17 +99,17 @@
                                 </ProgressBar>
                                 <HBox id="hBox5" alignment="CENTER" spacing="10.0" VBox.vgrow="NEVER">
                                     <padding>
-                                        <Insets left="5.0" right="5.0" fx:id="x6_x01"/>
+                                        <Insets left="5.0" right="5.0"/>
                                     </padding>
                                     <VBox.margin>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x66"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                                     </VBox.margin>
-                                    <Button fx:id="importButton" id="importButton" text="Import" onAction="#handleImportConfig"/>
+                                    <Button id="importButton" text="Import" onAction="#handleImportConfig"/>
                                     <Button fx:id="loadbutton" id="loadButton" onAction="#handleLoadConfig" text="Load"/>
-                                    <Button id="saveConfig" mnemonicParsing="false" onAction="#handleSaveCurrentSettings" text="Save"/>
+                                    <Button mnemonicParsing="false" onAction="#handleSaveCurrentSettings" text="Save"/>
                                 </HBox>
                                 <HBox alignment="CENTER" VBox.vgrow="NEVER">
-                                    <Button id="button3" onAction="#handleApplyDefaultSettings" text="Restore Hardware Defaults" HBox.hgrow="ALWAYS"/>
+                                    <Button onAction="#handleApplyDefaultSettings" text="Restore Hardware Defaults" HBox.hgrow="ALWAYS"/>
                                 </HBox>
                             </VBox>
                         </HBox>
