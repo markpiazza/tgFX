@@ -52,7 +52,7 @@ public class CNCMachine extends Pane {
     private SimpleDoubleProperty cncWidth = new SimpleDoubleProperty();
     private BooleanExpression cursorVisibleBinding;
 
-    private DecimalFormat df = new DecimalFormat(".");
+    private DecimalFormat df = new DecimalFormat("#.###");
     private boolean msgSent = false;
     private double magnification = 1;
 
@@ -79,6 +79,7 @@ public class CNCMachine extends Pane {
         cursorText.setFill(Color.YELLOW);
         cursorText.setFont(Font.font("Arial", 6));
 
+        logger.info("initial CNCMachine layout setup");
         setupLayout(); //initial layout setup in constructor
 
         ChangeListener posChangeListener = (observableValue, oldValue, newValue) -> {
@@ -103,6 +104,7 @@ public class CNCMachine extends Pane {
         });
 
         this.setOnMouseClicked(me -> {
+            logger.info("set machine position");
             //T his is so we can set our machine position when a machine does not have homing switches
             if (me.getButton().equals(MouseButton.SECONDARY)) {
                 // Right Clicked
@@ -125,40 +127,41 @@ public class CNCMachine extends Pane {
         });
 
 
-        /*
-         * Bindings
-         */
         maxHeightProperty().bind(MACHINE.getAxisByName("y").getTravelMaxSimple().multiply(MACHINE.gcodeUnitDivision));
         maxWidthProperty().bind(MACHINE.getAxisByName("x").getTravelMaxSimple().multiply(MACHINE.gcodeUnitDivision));
 
         cursorPoint.translateYProperty().bind(this.heightProperty().subtract(MACHINE.getAxisByName("y").getMachinePositionSimple()));
         cursorPoint.layoutXProperty().bind(MACHINE.getAxisByName("x").getMachinePositionSimple());
 
-            cncHeight.bind(this.heightProperty());
-            cncWidth.bind(this.widthProperty());
+        cncHeight.bind(this.heightProperty());
+        cncWidth.bind(this.widthProperty());
 //            //When the x or y pos changes we see if we want to show or hide the cursor
-            cursorPoint.layoutXProperty().addListener(posChangeListener);
-            cursorPoint.layoutYProperty().addListener(posChangeListener);
+        cursorPoint.layoutXProperty().addListener(posChangeListener);
+        cursorPoint.layoutYProperty().addListener(posChangeListener);
     }
 
     public StackPane getGcodePane() {
         return gcodePane;
     }
 
+    //TODO: not sure we need this
     public void setGcodePane(StackPane gcodePane) {
         this.gcodePane = gcodePane;
     }
 
     private void hideOrShowCursor(boolean choice) {
+        logger.info(choice?"show cursor":"hide cursor");
         this.visibleProperty().set(choice);
     }
 
     private void unFocusForJogging() {
+        logger.info("unFocusForJogging");
         this.setFocused(true);
 //        GcodeTabController.hideGcodeText();
     }
 
     private void setFocusForJogging() {
+        logger.info("setFocusForJogging");
         this.setFocused(true);
 //        Main.postConsoleMessage("Focused");
         //GcodeTabController.setGcodeText("Jogging Enabled");
@@ -191,26 +194,29 @@ public class CNCMachine extends Pane {
     }
 
     public void clearScreen() {
+        logger.info("clearScreen");
         this.getChildren().clear();
         Draw2d.setFirstDraw(true);  //We don't want to draw a line from where the previous point was when a clear screen is called.
+        logger.info("screen clear triggered CNCMachine layout setup");
         setupLayout();  //re-draw the needed elements.
     }
 
     public void drawLine(String moveType, double vel) {
+        logger.info("drawLine");
         Line l = new Line();
         l.setSmooth(true);
         //Code to make mm's look the same size as inches
         double scale = 1;
-        double unitMagnication = 1;
+        double unitMagnification = 1;
 
         if (MACHINE.getGcodeUnitMode().get().equals(GcodeUnitMode.INCHES.toString())) {
-            unitMagnication = 5;  //INCHES
+            unitMagnification = 5;  //INCHES
         } else {
-            unitMagnication = 2; //MM
+            unitMagnification = 2; //MM
         }
 
-        double newX = unitMagnication * (MACHINE.getAxisByName("X").getWorkPosition().get() + 80);// + magnification;
-        double newY = unitMagnication * (MACHINE.getAxisByName("Y").getWorkPosition().get() + 80);// + magnification;
+        double newX = unitMagnification * (MACHINE.getAxisByName("X").getWorkPosition().get() + 80);
+        double newY = unitMagnification * (MACHINE.getAxisByName("Y").getWorkPosition().get() + 80);
 
         if (newX > getGcodePane().getWidth() || newX > getGcodePane().getWidth()) {
             scale = scale / 2;
@@ -292,6 +298,7 @@ public class CNCMachine extends Pane {
     }
 
     public void zeroSystem() {
+        logger.info("zeroSystem");
         if (DRIVER.isConnected().get()) {
             try {
                 Draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
@@ -308,12 +315,14 @@ public class CNCMachine extends Pane {
     }
 
     public void resetDrawingCoords() {
+        logger.info("resetDrawingCoords");
         //After a reset has occured we call this ot reset the previous coords.
         xPrevious = 0;
         yPrevious = 0;
     }
 
     private void setupLayout() {
+        logger.info("setupLayout");
         //This draws the x axis text as well as grid etc
         Text xText = new Text("X Axis");
         Text yText = new Text("Y Axis");
@@ -338,6 +347,7 @@ public class CNCMachine extends Pane {
     }
 
     public void autoScaleWorkTravelSpace(double scaleAmount) {
+        logger.info("autoScaleWorkTrabelSpace");
         //Get the axis with the smallest available space.  Think aspect ratio really
         double stroke = 2 / scaleAmount;
         this.setScaleX(scaleAmount);

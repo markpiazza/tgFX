@@ -30,7 +30,7 @@ public class HardwarePlatformManager {
 
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
 
-    public HardwarePlatformManager() {
+    private HardwarePlatformManager() {
         logger.info("Starting HardwarePlatformManager");
         this.loadPlatformConfigs();
     }
