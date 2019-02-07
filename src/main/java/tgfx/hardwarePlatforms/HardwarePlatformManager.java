@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tgfx.TgFXConstants;
 import tgfx.tinyg.TinygDriver;
 
 /**
@@ -64,12 +65,7 @@ public class HardwarePlatformManager {
 
     private void loadPlatformConfigs() {
         // FIXME: god damned java file loading
-        File folder = null;
-        try {
-            folder = new File(HardwarePlatformManager.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()+"/hardwarePlatforms");
-        } catch (URISyntaxException e) {
-            logger.error(e);
-        }
+        File folder = new File(TgFXConstants.PATH+"/hardwarePlatforms");
         if(folder==null){
             logger.error("Error loading platform configs, path not found");
             return;

@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
@@ -22,8 +21,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import org.json.JSONObject;
 import tgfx.Main;
-import tgfx.hardwarePlatforms.HardwarePlatformManager;
-import tgfx.tinyg.CommandManager;
+import tgfx.TgFXConstants;
 import tgfx.tinyg.TinygDriver;
 
 import javafx.concurrent.Task;
@@ -65,17 +63,13 @@ public class MachineSettingsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        logger.info("Initializing MachineSettingsController.");
         populateConfigFiles();
     }
 
     private void populateConfigFiles() {
         // FIXME: god damned java file loading
-        File folder = null;
-        try {
-            folder = new File(HardwarePlatformManager.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()+"/configs");
-        } catch (URISyntaxException e) {
-            logger.error(e);
-        }
+        File folder = new File(TgFXConstants.PATH+"/configs");
         if(folder==null){
             logger.error("Error loading platform configs, path not found");
             return;
@@ -83,7 +77,7 @@ public class MachineSettingsController implements Initializable {
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles==null) {
             // FIXME: this isn't the right error, but it's a low priority fix
-            logger.error("Error loading platform configs, '"+folder.getName()+"' not found");
+            logger.error("Error loading platform configs, '" + folder.getName() + "' not found");
             return;
         }
         for (File listOfFile : listOfFiles) {
@@ -161,17 +155,10 @@ public class MachineSettingsController implements Initializable {
         // Why are we reading the file 2x?  It is to get the count of elements
         // we need to write.. then writing each line... so we just do it 2x.
         // FIXME: god damned java file loading
-        File folder = null;
-        try {
-            folder = new File(MachineSettingsController.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        File selected_config = new File(folder.getPath() +
-                System.getProperty("file.separator") + "configs" +
-                System.getProperty("file.separator") +
+        File folder = new File(TgFXConstants.PATH+"/configs");
+        File selected_config = new File(folder.getPath()  + "/" +
                 configsListView.getSelectionModel().getSelectedItem());
-        
+
         fis = new FileInputStream(selected_config);
         fis2 = new FileInputStream(selected_config);
 

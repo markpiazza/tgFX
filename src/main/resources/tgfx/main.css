@@ -33,7 +33,7 @@ root
         linear-gradient(#20262b, #191d22);
 }
 
-#machineConfigLoaderLabel
+#machineSettingLabel
 {
     -fx-text-fill: white;
 }
@@ -43,22 +43,8 @@ root
     -fx-background-color: black;
 }
 
-#motorTxt
-{
-    -fx-text-fill: white;
-}
-
-#hBox4
-{
-    -fx-background-color: black;
-}
-
-
-#machineConfigLoaderLabel
-{
-    -fx-text-fill: white;
-}
-
+#motorTxt,
+#machineConfigLoaderLabel,
 #lblMachine,
 #lblAxis
 {

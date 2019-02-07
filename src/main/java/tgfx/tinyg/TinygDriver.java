@@ -39,6 +39,7 @@ public class TinygDriver extends Observable {
 
     private static TinygDriver instance;
 
+    private final HardwarePlatformManager hardwarePlatformManager = HardwarePlatformManager.getInstance();
     private final SerialDriver serialDriver = SerialDriver.getInstance();
     private final QueueReport QUEUE = QueueReport.getInstance();
     private final Machine MACHINE = Machine.getInstance();
@@ -51,7 +52,6 @@ public class TinygDriver extends Observable {
 
     private String[] message = new String[2];
 
-    private HardwarePlatformManager hardwarePlatformManager = new HardwarePlatformManager();
     private SimpleBooleanProperty connectionStatus = new SimpleBooleanProperty(false);
 
     private MnemonicManager mnemonicManager = new MnemonicManager();

@@ -31,9 +31,6 @@ public class TinyGConfigController implements Initializable {
 
     private static DecimalFormat decimalFormat = new DecimalFormat("#0.000");
 
-    public TinyGConfigController() {
-    }
-
     @FXML
     private static TextField motor1ConfigTravelPerRev, motor2ConfigTravelPerRev, motor3ConfigTravelPerRev, motor4ConfigTravelPerRev,
             motor1ConfigStepAngle, motor2ConfigStepAngle, motor3ConfigStepAngle, motor4ConfigStepAngle,
@@ -66,7 +63,7 @@ public class TinyGConfigController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        logger.info("Initializing TinyGConfigController");
     }
 
     @FXML

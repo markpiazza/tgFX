@@ -3,8 +3,6 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
       fx:controller="tgfx.ui.firmware.FirmwareUpdaterController">
@@ -12,18 +10,22 @@
         <padding>
             <Insets/>
         </padding>
-        <HBox id="motor_config_hbox" alignment="TOP_CENTER" VBox.vgrow="NEVER">
+        <HBox id="machineSettingsHbox" alignment="TOP_CENTER" VBox.vgrow="NEVER">
             <padding>
                 <Insets bottom="5.0" top="5.0"/>
             </padding>
             <VBox.margin>
                 <Insets/>
             </VBox.margin>
-            <Label id="machineConfigLoaderLabel" alignment="CENTER" contentDisplay="CENTER" text="Version Information"/>
+            <Label id="machineSettingsLabel" text="Version Information" alignment="CENTER" contentDisplay="CENTER"/>
         </HBox>
         <VBox prefHeight="300.0" prefWidth="100.0" spacing="10.0" style="-fx-background-color: rgba(40%,33%,10%,0.2)" VBox.vgrow="NEVER">
+            <padding>
+                <Insets bottom="10.0" top="10.0"/>
+            </padding>
             <HBox alignment="CENTER" VBox.vgrow="NEVER">
                 <VBox HBox.hgrow="ALWAYS">
+
                     <GridPane id="movementGP" hgap="15.0" vgap="15.0" VBox.vgrow="NEVER">
                         <columnConstraints>
                             <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
@@ -33,37 +35,26 @@
                             <RowConstraints maxHeight="18.0" prefHeight="18.0" vgrow="ALWAYS"/>
                             <RowConstraints maxHeight="18.0" prefHeight="18.0" vgrow="ALWAYS"/>
                             <RowConstraints maxHeight="18.0" prefHeight="18.0" vgrow="ALWAYS"/>
+                            <RowConstraints maxHeight="18.0" prefHeight="18.0" vgrow="ALWAYS"/>
+                            <RowConstraints maxHeight="18.0" prefHeight="18.0" vgrow="ALWAYS"/>
                         </rowConstraints>
-                        <Label id="lblMachine" text="Harware ID:" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
-                            <font>
-                                <Font fx:id="x1" size="15.0" />
-                            </font>
-                        </Label>
-                        <Label id="motorTxt" font="$x1" text="Hardware Version:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <Label id="motorTxt" fx:id="hwVersion" text="unknown" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                        <Label id="motorTxt" fx:id="hardwareId" text="unknown" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                        <Label id="motorTxt" font="$x1" text="Firmware Version:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <Label id="motorTxt" fx:id="firmwareVersion" text="unknown" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Label text="Hardware ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" textFill="WHITE"/>
+                        <Label fx:id="hardwareId" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="0" textFill="WHITE"/>
+
+                        <Label text="Hardware Version:" GridPane.columnIndex="0" GridPane.rowIndex="1" textFill="WHITE"/>
+                        <Label fx:id="hwVersion" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="1" textFill="WHITE"/>
+
+                        <Label text="Firmware Version:" GridPane.columnIndex="0" GridPane.rowIndex="2" textFill="WHITE"/>
+                        <Label fx:id="firmwareVersion" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="2" textFill="WHITE"/>
+
+                        <Label text="Latest Firmware Build:" GridPane.columnIndex="0" GridPane.rowIndex="3" textFill="WHITE"/>
+                        <Label fx:id="latestFirmwareBuild" text="Click Check for Updates"
+                               GridPane.columnIndex="1" GridPane.rowIndex="3" textFill="WHITE"/>
+
+                        <Label text="Your Firmware Build:" GridPane.columnIndex="0" GridPane.rowIndex="4" textFill="WHITE"/>
+                        <Label fx:id="buildNumb" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="4" textFill="WHITE"/>
                     </GridPane>
                 </VBox>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
-                <padding>
-                    <Insets left="5.0" fx:id="x2"/>
-                </padding>
-                <Text font="$x1" strokeType="OUTSIDE" strokeWidth="0.0" text="Latest Firmware Build:">
-                    <fill>
-                        <Color blue="0.000" green="0.800" red="0.063" fx:id="x3"/>
-                    </fill>
-                </Text>
-                <Label id="latestFirmwareLabel" fx:id="latestFirmwareBuild" text="Click Check for Updates" textFill="WHITE"/>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" padding="$x2" spacing="5.0">
-                <Label id="currentFirmwareLabel" fx:id="buildNumb" text="unknown" textFill="WHITE">
-                    <graphic>
-                        <Text fill="$x3" font="$x1" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Firmware Build:"/>
-                    </graphic>
-                </Label>
             </HBox>
             <HBox alignment="BOTTOM_RIGHT" spacing="10.0">
                 <padding>
@@ -75,7 +66,9 @@
                 <!-- need to expose the controller statically to affect it -->
                 <!-- @see Tgfx -->
                 <!--<Button fx:id="handleUpdateFirmware" mnemonicParsing="false" onAction="#handleUpdateFirmware"-->
-                <!--text="Update Firmware"/>-->
+                        <!--text="Update Firmware"/>-->
+                <Button fx:id="handleUpdateFirmware" mnemonicParsing="false"
+                        text="Update Firmware"/>
             </HBox>
         </VBox>
     </VBox>

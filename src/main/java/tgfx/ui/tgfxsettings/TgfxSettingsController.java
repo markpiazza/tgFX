@@ -51,10 +51,6 @@ public class TgfxSettingsController implements Initializable {
         }
     }
 
-    public static void updateTgfxSettings() {
-
-    }
-
     public static boolean isDrawPreview() {
         return drawPreview;
     }
@@ -68,6 +64,7 @@ public class TgfxSettingsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        logger.info("Initializing TgfxSettingsController");
         settingDrawBtn.setSelected(true);  //We set drawing preview to default
         settingDrawBtn.setText("Enabled");
         

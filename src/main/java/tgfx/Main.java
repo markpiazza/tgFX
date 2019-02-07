@@ -61,10 +61,10 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     private static final Logger logger = LogManager.getLogger();
 
     private TinygDriver DRIVER = TinygDriver.getInstance();
+
+
     private GcodeHistory gcodeCommandHistory;
     private QueueUsingTimer<String> connectionTimer;
-
-    private GcodeTabController gcodeTabController;
 
     private static StringProperty consoleText =  new SimpleStringProperty();
 
@@ -74,6 +74,10 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     //this is checked upon initial connect.  Once this is set to true
     private boolean buildChecked = false;
 
+    // controllers
+    @SuppressWarnings("unused")
+    @FXML
+    private GcodeTabController gcodeTabController;
 
     // tabs
     @FXML
@@ -420,10 +424,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         logger.info("MAIN()");
         connectionTimer = new QueueUsingTimer<>( CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
         gcodeCommandHistory = new GcodeHistory();
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(STAGE_FXML_GCODETAB));
-        fxmlLoader.load();
-        gcodeTabController = fxmlLoader.getController();
     }
 
     /**

@@ -8,3 +8,18 @@
     -fx-padding: 10;
 }
 
+#movementGP
+{
+    -fx-padding: 10
+}
+
+#machineSettingsHbox
+{
+    -fx-background-color: black;
+}
+
+#machineSettingsLabel
+{
+    -fx-text-fill: white;
+}
+

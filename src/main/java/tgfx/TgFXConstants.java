@@ -44,4 +44,6 @@ public class TgFXConstants {
     // when there's no machine available.
     // TODO: need to write mock serial interface
     public static final boolean DISABLE_UI_CONNECTION_CHECK = true;
+
+    public static final String PATH = "/Users/Mark/Desktop/Workspace/tgfx/src/main/resources";
 }

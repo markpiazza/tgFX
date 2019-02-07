@@ -18,17 +18,17 @@
                 <HBox>
                     <VBox id="machineSettingsVbox" HBox.hgrow="ALWAYS">
                         <HBox spacing="5.0" VBox.vgrow="ALWAYS">
-                            <VBox id="VBox" alignment="TOP_CENTER"  HBox.hgrow="NEVER">
-                                <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0"/>
+                            <VBox alignment="TOP_CENTER"  HBox.hgrow="NEVER">
+                                <HBox alignment="CENTER_LEFT" spacing="5.0"/>
                                 <VBox alignment="CENTER">
-                                    <HBox id="motor_config_hbox" alignment="TOP_CENTER"  VBox.vgrow="NEVER">
+                                    <HBox id="machineSettingsHbox" alignment="TOP_CENTER"  VBox.vgrow="NEVER">
                                         <padding>
-                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x56"/>
+                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                                         </padding>
                                         <VBox.margin>
-                                            <Insets right="5.0" fx:id="x2"/>
+                                            <Insets right="5.0"/>
                                         </VBox.margin>
-                                        <Label id="machineConfigLoaderLabel" alignment="CENTER" contentDisplay="CENTER" text="Misc"/>
+                                        <Label id="machineSettingsLabel" alignment="CENTER" contentDisplay="CENTER" text="Misc"/>
                                     </HBox>
                                     <GridPane id="miscGP" hgap="15.0" vgap="15.0">
                                         <columnConstraints>
@@ -54,7 +54,9 @@
                                                 </ChoiceBox>
                                             </labelFor>
                                         </Label>
+
                                         <fx:reference source="machineSwitchType"/>
+
                                         <Label id="lblMachine" text="Machine Unit Mode" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                                         <ChoiceBox fx:id="machineUnitMode" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                             <items>
@@ -87,11 +89,11 @@
                                 <HBox.margin>
                                     <Insets fx:id="x83"/>
                                 </HBox.margin>
-                                <HBox id="hBox4" alignment="TOP_CENTER" VBox.vgrow="NEVER">
+                                <HBox  id="machineSettingsHbox" alignment="TOP_CENTER" VBox.vgrow="NEVER">
                                     <padding>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x46"/>
                                     </padding>
-                                    <Label id="machineConfigLoaderLabel" alignment="CENTER" contentDisplay="CENTER" text="Machine Config Loader" HBox.hgrow="NEVER"/>
+                                    <Label id="machineSettingsLabel" alignment="CENTER" contentDisplay="CENTER" text="Machine Config Loader" HBox.hgrow="NEVER"/>
                                 </HBox>
                                 <ListView fx:id="configsListView" maxWidth="350.0" VBox.vgrow="ALWAYS">
                                     <VBox.margin>

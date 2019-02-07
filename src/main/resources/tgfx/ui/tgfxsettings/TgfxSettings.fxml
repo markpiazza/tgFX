@@ -5,84 +5,60 @@
 <?import javafx.scene.layout.*?>
 
 <?import java.net.URL?>
-<Tab closable="false" text="tgFX Settings" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tgfx.ui.tgfxsettings.TgfxSettingsController">
+<Tab closable="false" text="tgFX Settings" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
+     fx:controller="tgfx.ui.tgfxsettings.TgfxSettingsController">
     <AnchorPane id="settingsContent" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
         <stylesheets>
             <URL value="@tgfxsettings.css"/>
         </stylesheets>
+
         <HBox blendMode="SRC_ATOP" spacing="5.0" AnchorPane.leftAnchor="0.0">
 
+            <!-- Build Information -->
+            <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
+                    <Label text="Build Info" textFill="WHITE"/>
+                </HBox>
+                <HBox spacing="15.0">
+                    <Label text="Version:" textFill="WHITE"/>
+                    <Label fx:id="tgfxVersion" textFill="WHITE"/>
+                </HBox>
+                <HBox spacing="15.0">
+                    <Label text="Build Number:" textFill="WHITE"/>
+                    <Label fx:id="tgfxBuildNumber" textFill="WHITE"/>
+                </HBox>
+                <HBox spacing="15.0">
+                    <Label text="Build Date:" textFill="WHITE"/>
+                    <Label fx:id="tgfxBuildDate" textFill="WHITE"/>
+                </HBox>
+            </VBox>
 
-            <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS" HBox.margin="$x5">
+
+            <!-- Render settings-->
+            <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
                     <Label text="Render" textFill="WHITE" />
                 </HBox>
-                <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
-                    <Label id="lblMachine" text="Draw Preview">
-                      <graphic>
-                        <ToggleButton fx:id="settingDrawBtn" maxWidth="77.0" minWidth="77.0" mnemonicParsing="false" onAction="#handleTogglePreview" prefWidth="77.0" text="Enabled" />
-                      </graphic>
-                    </Label>
-                    <VBox.margin>
-                        <Insets top="5.0" fx:id="x5" />
-                    </VBox.margin>
+                <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
+                    <Label id="lblMachine" text="Draw Preview" textFill="WHITE" />
+                    <ToggleButton fx:id="settingDrawBtn" maxWidth="77.0" minWidth="77.0" mnemonicParsing="false"
+                                  onAction="#handleTogglePreview" prefWidth="77.0" text="Enabled" />
                 </HBox>
             </VBox>
 
 
-            <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS" HBox.margin="$x5">
-                <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
-                    <Label text="Build Info" textFill="WHITE" />
-                </HBox>
-                <HBox spacing="15.0">
-                    <Label id="lblVersion" fx:id="tgfxVersion">
-                      <graphic>
-                        <Label id="lblMachine" text="Version:" />
-                      </graphic>
-                    </Label>
-                  <VBox.margin>
-                    <Insets top="5.0" fx:id="x5" />
-                  </VBox.margin>
-                </HBox>
-                <HBox spacing="15.0">
-                    <Label id="lblBuildNumber" fx:id="tgfxBuildNumber">
-                      <graphic>
-                        <Label id="lblMachine" text="Build Number:" />
-                      </graphic>
-                    </Label>
-                </HBox>
-                <HBox spacing="15.0">
-                    <Label id="lblBuildNumber" fx:id="tgfxBuildDate">
-                      <graphic>
-                        <Label id="lblMachine" text="Build Date:" />
-                      </graphic>
-                    </Label>
-                </HBox>
-            </VBox>
-
-
+            <!-- Debug -->
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
                     <Label text="Debug" textFill="WHITE" />
                 </HBox>
-                <HBox spacing="15.0">
-                    <Label id="lblVersion">
-                      <graphic>
-                        <Label id="lblMachine" text="Debug Mode">
-                          <graphic>
-                            <ToggleButton id="settingDrawBtn" fx:id="settingDebugBtn" maxWidth="77.0" minWidth="77.0" mnemonicParsing="false" prefWidth="77.0" selected="true" text="Enabled" />
-                          </graphic>
-                        </Label>
-                      </graphic>
-                    </Label>
-                  <VBox.margin>
-                    <Insets top="5.0" fx:id="x5" />
-                  </VBox.margin>
+                <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
+                    <Label text="Debug Mode" textFill="WHITE" />
+                    <ToggleButton fx:id="settingDebugBtn" maxWidth="77.0" minWidth="77.0"
+                          mnemonicParsing="false" prefWidth="77.0" selected="true" text="Enabled" />
                 </HBox>
-              <HBox.margin>
-                <Insets top="5.0" fx:id="x5" />
-              </HBox.margin>
             </VBox>
+
         </HBox>
     </AnchorPane>
 </Tab>

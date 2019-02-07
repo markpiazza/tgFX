@@ -52,12 +52,11 @@ import static tgfx.tinyg.Commands.*;
 public class GcodeTabController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
 
-
     private static TinygDriver DRIVER = TinygDriver.getInstance();
     private static Machine MACHINE = DRIVER.getMachine();
     private static SerialWriter WRITER = DRIVER.getSerialWriter();
 
-    private CommandManager commandManager = new CommandManager();;
+    private CommandManager commandManager = new CommandManager();
 
     private static final byte[] BAD_BYTES = {(byte) 0x21, (byte) 0x18, (byte) 0x7e};
     private static double TRAVERSE_FEED_RATE = 1;  //%100
@@ -138,7 +137,7 @@ public class GcodeTabController implements Initializable {
             aLcd,
             velLcd;
 
-    //    @FXML
+//    @FXML
 //    private ChoiceBox<?> zMoveScaleChoiceBox;
 
 
@@ -414,10 +413,16 @@ public class GcodeTabController implements Initializable {
 
 
     /**
-     * Initializes the controller class.
+     * initialize
+     *
+     * @param url url
+     * @param rb resource bundle
      */
-    @SuppressWarnings("ConstantConditions")
-    public GcodeTabController() {
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        logger.info("Initializing GcodeTabController.");
+
+
         logger.info("Gcode Controller Loaded");
 
         cncMachinePane.setOnMouseMoved(mouseEvent -> {
@@ -462,7 +467,7 @@ public class GcodeTabController implements Initializable {
                             jogDial = -1 * MACHINE.getJoggingIncrementByAxis(axis);
                         }
 
-                    //X Axis Jogging Movement
+                        //X Axis Jogging Movement
                     } else if (keyCode.equals(KeyCode.RIGHT) || keyCode.equals(KeyCode.LEFT)) {
                         //This is a X Axis Jog Action
                         axis = "X"; //Set the axis for this jog movement
@@ -473,7 +478,7 @@ public class GcodeTabController implements Initializable {
                             jogDial = MACHINE.getJoggingIncrementByAxis(axis);
                         }
 
-                    //Z Axis Jogging Movement
+                        //Z Axis Jogging Movement
                     } else if (keyCode.equals(KeyCode.MINUS) || (keyCode.equals(KeyCode.EQUALS))) {
                         //This is and Y Axis Jog action
                         axis = "Z"; //Set the axis for this jog movement
@@ -522,24 +527,10 @@ public class GcodeTabController implements Initializable {
                         isKeyPressed = false; //reset the press flag
                     }
                 } catch (InterruptedException ex) {
-                   logger.error(ex);
+                    logger.error(ex);
                 }
             }
         });
-
-    }
-
-
-
-    /**
-     * initialize
-     *
-     * @param url url
-     * @param rb resource bundle
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        logger.info("Initializing GcodeTabController.");
 
         cncMachinePane.visibleProperty().bind(cncMachineVisible);
 
