@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import java.net.URL?>
-<Tab closable="false" text="tgFX Settings" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
+<?import java.lang.Long?>
+<?import javafx.geometry.Insets?>
+<Tab text="tgFX Settings" closable="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
      fx:controller="tgfx.ui.tgfxsettings.TgfxSettingsController">
     <AnchorPane id="settingsContent" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
         <stylesheets>
             <URL value="@tgfxsettings.css"/>
         </stylesheets>
 
-        <HBox blendMode="SRC_ATOP" spacing="5.0" AnchorPane.leftAnchor="0.0">
+        <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
             <!-- Build Information -->
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
-                    <Label text="Build Info" textFill="WHITE"/>
+                    <minWidth>
+                        <Long fx:value="350"/>
+                    </minWidth>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </padding>
+                    <prefWidth>
+                        <Long fx:value="350"/>
+                    </prefWidth>
+                    <Label id="whiteFill" text="Build Info"/>
                 </HBox>
                 <HBox spacing="15.0">
-                    <Label text="Version:" textFill="WHITE"/>
-                    <Label fx:id="tgfxVersion" textFill="WHITE"/>
+                    <Label id="whiteFill" text="Version:"/>
+                    <Label id="whiteFill" fx:id="tgfxVersion"/>
                 </HBox>
                 <HBox spacing="15.0">
-                    <Label text="Build Number:" textFill="WHITE"/>
-                    <Label fx:id="tgfxBuildNumber" textFill="WHITE"/>
+                    <Label id="whiteFill" text="Build Number:"/>
+                    <Label id="whiteFill" fx:id="tgfxBuildNumber"/>
                 </HBox>
                 <HBox spacing="15.0">
-                    <Label text="Build Date:" textFill="WHITE"/>
-                    <Label fx:id="tgfxBuildDate" textFill="WHITE"/>
+                    <Label id="whiteFill" text="Build Date:"/>
+                    <Label id="whiteFill" fx:id="tgfxBuildDate"/>
                 </HBox>
             </VBox>
 
@@ -37,12 +47,21 @@
             <!-- Render settings-->
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
-                    <Label text="Render" textFill="WHITE" />
+                    <minWidth>
+                        <Long fx:value="350"/>
+                    </minWidth>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </padding>
+                    <prefWidth>
+                        <Long fx:value="350"/>
+                    </prefWidth>
+                    <Label id="whiteFill" text="Render"/>
                 </HBox>
                 <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
-                    <Label id="lblMachine" text="Draw Preview" textFill="WHITE" />
+                    <Label id="whiteFill" text="Draw Preview"/>
                     <ToggleButton fx:id="settingDrawBtn" maxWidth="77.0" minWidth="77.0" mnemonicParsing="false"
-                                  onAction="#handleTogglePreview" prefWidth="77.0" text="Enabled" />
+                          onAction="#handleTogglePreview" prefWidth="77.0" text="Enabled" />
                 </HBox>
             </VBox>
 
@@ -50,12 +69,21 @@
             <!-- Debug -->
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
-                    <Label text="Debug" textFill="WHITE" />
+                    <minWidth>
+                        <Long fx:value="350"/>
+                    </minWidth>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </padding>
+                    <prefWidth>
+                        <Long fx:value="350"/>
+                    </prefWidth>
+                    <Label id="whiteFill" text="Debug"/>
                 </HBox>
                 <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
-                    <Label text="Debug Mode" textFill="WHITE" />
+                    <Label id="whiteFill" text="Debug Mode"/>
                     <ToggleButton fx:id="settingDebugBtn" maxWidth="77.0" minWidth="77.0"
-                          mnemonicParsing="false" prefWidth="77.0" selected="true" text="Enabled" />
+                          mnemonicParsing="false" prefWidth="77.0" selected="true" text="Enabled"/>
                 </HBox>
             </VBox>
 

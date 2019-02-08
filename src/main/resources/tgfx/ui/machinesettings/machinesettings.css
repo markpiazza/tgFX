@@ -3,23 +3,15 @@
     -fx-background-image: url("../../carbongcode.png");
 }
 
-#miscGP
-{
-    -fx-padding: 10;
-}
-
-#movementGP
-{
-    -fx-padding: 10
-}
 
 #machineSettingsHbox
 {
     -fx-background-color: black;
 }
 
-#machineSettingsLabel
-{
-    -fx-text-fill: white;
-}
 
+#miscGP,
+#movementGP
+{
+    -fx-padding: 10;
+}

@@ -97,7 +97,7 @@ public class GcodeTabController implements Initializable {
 
     /*  ######################## FXML ELEMENTS ############################*/
     @FXML
-    private HBox gcodeTabControllerHBox; // commented out
+    private HBox gcodeTabHbox; // commented out
 
     /* left vbox */
 
@@ -568,7 +568,7 @@ public class GcodeTabController implements Initializable {
         });
 
         // FIXME: java.lang.RuntimeException: HBox.disable : A bound value cannot be set.
-        //gcodeTabControllerHBox.disableProperty().bind(DRIVER.getConnectionStatus().not());
+        //gcodeTabHbox.disableProperty().bind(DRIVER.getConnectionStatus().not());
 
         // add support for zmove
 //        assert zMoveScale != null : "fx:id=\"zMoveScale\" was not injected: check your FXML file 'Position.fxml'.";

@@ -7,115 +7,116 @@
 <?import javafx.scene.layout.*?>
 
 <?import java.net.URL?>
-<Tab closable="false" text="Machine Settings" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
+<Tab text="Machine Settings" closable="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
      fx:controller="tgfx.ui.machinesettings.MachineSettingsController">
-    <AnchorPane id="Content">
-        <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <stylesheets>
-                <URL value="@machinesettings.css"/>
-            </stylesheets>
-            <center>
-                <HBox>
-                    <VBox id="machineSettingsVbox" HBox.hgrow="ALWAYS">
-                        <HBox spacing="5.0" VBox.vgrow="ALWAYS">
-                            <VBox alignment="TOP_CENTER"  HBox.hgrow="NEVER">
-                                <HBox alignment="CENTER_LEFT" spacing="5.0"/>
-                                <VBox alignment="CENTER">
-                                    <HBox id="machineSettingsHbox" alignment="TOP_CENTER"  VBox.vgrow="NEVER">
-                                        <padding>
-                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                                        </padding>
-                                        <VBox.margin>
-                                            <Insets right="5.0"/>
-                                        </VBox.margin>
-                                        <Label id="machineSettingsLabel" alignment="CENTER" contentDisplay="CENTER" text="Misc"/>
-                                    </HBox>
-                                    <GridPane id="miscGP" hgap="15.0" vgap="15.0">
-                                        <columnConstraints>
-                                            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
-                                            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
-                                            <ColumnConstraints hgrow="ALWAYS"/>
-                                        </columnConstraints>
-                                        <rowConstraints>
-                                            <RowConstraints maxHeight="21.0" minHeight="10.0" prefHeight="21.0" vgrow="ALWAYS"/>
-                                            <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="ALWAYS"/>
-                                            <RowConstraints maxHeight="0.0" prefHeight="0.0" vgrow="ALWAYS"/>
-                                            <RowConstraints maxHeight="0.0" prefHeight="0.0" vgrow="ALWAYS"/>
-                                        </rowConstraints>
-                                        <Label id="lblMachine" text="Switch Type" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                        <ChoiceBox id="cbMachineSwitchType" fx:id="machineSwitchType" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                            <items>
-                                                <FXCollections fx:factory="observableArrayList">
-                                                    <String fx:value="Normally Open"/>
-                                                    <String fx:value="Normally Closed"/>
-                                                </FXCollections>
-                                            </items>
-                                        </ChoiceBox>
+    <AnchorPane>
+        <stylesheets>
+            <URL value="@machinesettings.css"/>
+        </stylesheets>
 
-                                        <Label id="lblMachine" text="Machine Unit Mode" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                        <ChoiceBox fx:id="machineUnitMode" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                            <items>
-                                                <FXCollections fx:factory="observableArrayList">
-                                                    <String fx:value="Inches"/>
-                                                    <String fx:value="MM"/>
-                                                </FXCollections>
-                                            </items>
-                                        </ChoiceBox>
-                                    </GridPane>
-                                </VBox>
-                                <HBox alignment="CENTER_RIGHT" spacing="15.0" VBox.vgrow="NEVER">
-                                    <padding>
-                                        <Insets bottom="10.0" right="10.0" top="10.0"/>
-                                    </padding>
-                                    <VBox.margin>
-                                        <Insets bottom="5.0" top="5.0"/>
-                                    </VBox.margin>
-                                    <Button mnemonicParsing="false" onAction="#handleQueryMachineSettings" text="Query"/>
-                                    <Button mnemonicParsing="false" onAction="#handleApplyMachineSettings" text="Apply"/>
-                                </HBox>
-                            </VBox>
+        <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-                            <fx:include source="../firmware/firmwareUpdater.fxml" HBox.hgrow="ALWAYS"/>
+            <VBox id="machineSettingsVbox" HBox.hgrow="ALWAYS">
+                <HBox spacing="5.0" VBox.vgrow="ALWAYS">
 
-                            <VBox id="vBox2" alignment="CENTER" minWidth="250.0" HBox.hgrow="NEVER">
+
+                    <VBox alignment="TOP_CENTER"  HBox.hgrow="NEVER">
+                        <HBox alignment="CENTER_LEFT" spacing="5.0"/>
+                        <VBox alignment="CENTER">
+                            <HBox id="machineSettingsHbox" alignment="TOP_CENTER"  VBox.vgrow="NEVER">
                                 <padding>
-                                    <Insets bottom="5.0"/>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                                 </padding>
-                                <HBox  id="machineSettingsHbox" alignment="TOP_CENTER" VBox.vgrow="NEVER">
-                                    <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                                    </padding>
-                                    <Label id="machineSettingsLabel" alignment="CENTER" contentDisplay="CENTER" text="Machine Config Loader" HBox.hgrow="NEVER"/>
-                                </HBox>
-                                <ListView fx:id="configsListView" maxWidth="350.0" VBox.vgrow="ALWAYS">
-                                    <VBox.margin>
-                                        <Insets left="10.0" right="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                </ListView>
-                                <ProgressBar fx:id="configProgress" prefWidth="220.0" progress="0.0" VBox.vgrow="NEVER">
-                                    <VBox.margin>
-                                        <Insets bottom="5.0" top="8.0"/>
-                                    </VBox.margin>
-                                </ProgressBar>
-                                <HBox id="hBox5" alignment="CENTER" spacing="10.0" VBox.vgrow="NEVER">
-                                    <padding>
-                                        <Insets left="5.0" right="5.0"/>
-                                    </padding>
-                                    <VBox.margin>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                                    </VBox.margin>
-                                    <Button id="importButton" text="Import" onAction="#handleImportConfig"/>
-                                    <Button fx:id="loadbutton" id="loadButton" onAction="#handleLoadConfig" text="Load"/>
-                                    <Button mnemonicParsing="false" onAction="#handleSaveCurrentSettings" text="Save"/>
-                                </HBox>
-                                <HBox alignment="CENTER" VBox.vgrow="NEVER">
-                                    <Button onAction="#handleApplyDefaultSettings" text="Restore Hardware Defaults" HBox.hgrow="ALWAYS"/>
-                                </HBox>
-                            </VBox>
+                                <VBox.margin>
+                                    <Insets right="5.0"/>
+                                </VBox.margin>
+                                <Label id="whiteFill" alignment="CENTER" contentDisplay="CENTER" text="Misc"/>
+                            </HBox>
+
+                            <GridPane id="miscGP" hgap="15.0" vgap="15.0">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
+                                    <ColumnConstraints hgrow="ALWAYS"/>
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="21.0" minHeight="10.0" prefHeight="21.0" vgrow="ALWAYS"/>
+                                    <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="ALWAYS"/>
+                                    <RowConstraints maxHeight="0.0" prefHeight="0.0" vgrow="ALWAYS"/>
+                                    <RowConstraints maxHeight="0.0" prefHeight="0.0" vgrow="ALWAYS"/>
+                                </rowConstraints>
+                                <Label id="whiteFill" text="Switch Type" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                <ChoiceBox fx:id="machineSwitchType" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Normally Open"/>
+                                            <String fx:value="Normally Closed"/>
+                                        </FXCollections>
+                                    </items>
+                                </ChoiceBox>
+
+                                <Label id="whiteFill" text="Machine Unit Mode" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                <ChoiceBox fx:id="machineUnitMode" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Inches"/>
+                                            <String fx:value="MM"/>
+                                        </FXCollections>
+                                    </items>
+                                </ChoiceBox>
+                            </GridPane>
+                        </VBox>
+                        <HBox alignment="CENTER_RIGHT" spacing="15.0" VBox.vgrow="NEVER">
+                            <padding>
+                                <Insets bottom="10.0" right="10.0" top="10.0"/>
+                            </padding>
+                            <VBox.margin>
+                                <Insets bottom="5.0" top="5.0"/>
+                            </VBox.margin>
+                            <Button mnemonicParsing="false" onAction="#handleQueryMachineSettings" text="Query"/>
+                            <Button mnemonicParsing="false" onAction="#handleApplyMachineSettings" text="Apply"/>
+                        </HBox>
+                    </VBox>
+
+                    <fx:include source="../firmware/firmwareUpdater.fxml" HBox.hgrow="ALWAYS"/>
+
+                    <VBox alignment="CENTER" minWidth="250.0" HBox.hgrow="NEVER">
+                        <padding>
+                            <Insets bottom="5.0"/>
+                        </padding>
+                        <HBox id="machineSettingsHbox" alignment="TOP_CENTER" VBox.vgrow="NEVER">
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                            </padding>
+                            <Label id="whiteFill" alignment="CENTER" contentDisplay="CENTER" text="Machine Config Loader" HBox.hgrow="NEVER"/>
+                        </HBox>
+                        <ListView fx:id="configsListView" maxWidth="350.0" VBox.vgrow="ALWAYS">
+                            <VBox.margin>
+                                <Insets left="10.0" right="10.0" top="10.0"/>
+                            </VBox.margin>
+                        </ListView>
+                        <ProgressBar fx:id="configProgress" prefWidth="220.0" progress="0.0" VBox.vgrow="NEVER">
+                            <VBox.margin>
+                                <Insets bottom="5.0" top="8.0"/>
+                            </VBox.margin>
+                        </ProgressBar>
+                        <HBox alignment="CENTER" spacing="10.0" VBox.vgrow="NEVER">
+                            <padding>
+                                <Insets left="5.0" right="5.0"/>
+                            </padding>
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                            </VBox.margin>
+                            <Button text="Import" onAction="#handleImportConfig"/>
+                            <Button fx:id="loadbutton" onAction="#handleLoadConfig" text="Load"/>
+                            <Button mnemonicParsing="false" onAction="#handleSaveCurrentSettings" text="Save"/>
+                        </HBox>
+                        <HBox alignment="CENTER" VBox.vgrow="NEVER">
+                            <Button onAction="#handleApplyDefaultSettings" text="Restore Hardware Defaults" HBox.hgrow="ALWAYS"/>
                         </HBox>
                     </VBox>
                 </HBox>
-            </center>
-        </BorderPane>
+            </VBox>
+        </HBox>
     </AnchorPane>
 </Tab>

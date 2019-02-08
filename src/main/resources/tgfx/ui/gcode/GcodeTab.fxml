@@ -7,9 +7,9 @@
 <?import eu.hansolo.medusa.*?>
 
 <?import java.net.URL?>
-<Tab closable="false" text="Gcode" xmlns:fx="http://javafx.com/fxml/1"
-     xmlns="http://javafx.com/javafx/2.2" fx:controller="tgfx.ui.gcode.GcodeTabController">
-    <HBox fx:id="gcodeTabControllerHBox" id="gcodeTabHbox" alignment="TOP_CENTER" minHeight="450.0">
+<Tab text="Gcode" closable="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
+    fx:controller="tgfx.ui.gcode.GcodeTabController">
+    <HBox fx:id="gcodeTabHbox" id="gcodeTabHbox" alignment="TOP_CENTER" minHeight="450.0">
         <stylesheets>
             <URL value="@gcodetab.css"/>
         </stylesheets>
@@ -27,8 +27,8 @@
             <!-- gcode view table -->
             <TableView fx:id="gcodeView" editable="true" prefHeight="250.0" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="gcodeCol" id="gcodeCol" text="Gcode Program"
-                                 maxWidth="500.0" minWidth="290.0" prefWidth="250.0" sortable="false"/>
+                    <TableColumn fx:id="gcodeCol" text="Gcode Program"
+                         maxWidth="500.0" minWidth="290.0" prefWidth="250.0" sortable="false"/>
                 </columns>
                 <VBox.margin>
                     <Insets bottom="15.0" left="5.0" right="5.0" top="15.0"/>
@@ -36,7 +36,7 @@
             </TableView>
 
             <!-- gcode file option buttons -->
-            <HBox id="gcodeFile" alignment="TOP_CENTER" spacing="10.0">
+            <HBox alignment="TOP_CENTER" spacing="10.0">
                 <padding>
                     <Insets bottom="5.0" top="5.0"/>
                 </padding>
@@ -71,7 +71,7 @@
                         <Insets right="5.0"/>
                     </VBox.margin>
                     <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Text fx:id="gcodeStatusMessageTxt" text="JOGGING ENABLED" strokeType="OUTSIDE" strokeWidth="0.0">
+                        <Text fx:id="gcodeStatusMessageTxt" text="JOGGING ENABLED">
                             <font>
                                 <Font name="Arial Black" size="16.0"/>
                             </font>
@@ -153,7 +153,7 @@
                 <Insets top="15.0"/>
             </padding>
 
-            <Gauge fx:id="xLcd" skinType="LCD"
+            <Gauge fx:id="xLcd" skinType="LCD" id="xLcd"
                    title="Title" unit="mm" decimals="3"
                    subTitle="Subtitle"
                    minWidth="200" prefWidth="200" maxWidth="200"

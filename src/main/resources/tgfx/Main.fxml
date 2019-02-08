@@ -7,18 +7,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="AnchorPane" fx:id="topAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="1280.0"
-      xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tgfx.Main">
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
+      minWidth="1280.0" fx:controller="tgfx.Main">
     <layoutX>
         <Long fx:value="0"/>
     </layoutX>
     <stylesheets>
         <URL value="@main.css"/>
     </stylesheets>
-    <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <BorderPane>
+
         <top>
             <HBox alignment="CENTER" maxHeight="35.0" minHeight="35.0" prefHeight="35.0">
-                <AnchorPane id="topMainTitle" HBox.hgrow="ALWAYS">
+                <AnchorPane id="topAnchorPane" HBox.hgrow="ALWAYS">
                     <padding>
                         <Insets right="5.0"/>
                     </padding>
@@ -26,12 +27,12 @@
                         <spacing>
                             <Long fx:value="5"/>
                         </spacing>
-                        <Label fx:id="serialTitle" alignment="CENTER_RIGHT" text="Serial Ports: " HBox.hgrow="ALWAYS"/>
+                        <Label id="serialTitleLabel" text="Serial Ports: " alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS"/>
                         <ChoiceBox fx:id="serialPorts" focusTraversable="false" minHeight="21.0" minWidth="120.0" HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="Connect" focusTraversable="false" onAction="#handleConnect" text="Connect"/>
-                        <Button fx:id="reScan" focusTraversable="false" onAction="#FXreScanSerial" text="Re-Scan"/>
+                        <Button fx:id="Connect" text="Connect" focusTraversable="false" onAction="#handleConnect"/>
+                        <Button text="Re-Scan" focusTraversable="false" onAction="#FXreScanSerial"/>
                     </HBox>
-                    <Text fill="WHITE" layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="tgFX - TinyG Controller"/>
+                    <Text id="tgfxTitleText" text="tgFX - TinyG Controller" layoutX="14.0" layoutY="22.0" fill="WHITE"/>
                 </AnchorPane>
             </HBox>
         </top>
@@ -48,51 +49,49 @@
 
 
         <bottom>
-            <VBox id="consoleHBox" fx:id="consoleVBox" alignment="CENTER" prefHeight="120.0" BorderPane.alignment="CENTER">
+            <VBox fx:id="consoleVBox" id="consoleVBox" alignment="CENTER" prefHeight="120.0" BorderPane.alignment="CENTER">
                 <padding>
                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                 </padding>
                 <spacing>
                     <Long fx:value="5"/>
                 </spacing>
+
                 <TextArea fx:id="console" editable="false" focusTraversable="false" maxHeight="300.0" minHeight="50.0" wrapText="true" VBox.vgrow="ALWAYS" >
                     <prefHeight>
                         <Long fx:value="75"/>
                     </prefHeight>
                 </TextArea>
-                <TextField fx:id="input" onKeyPressed="#handleKeyPress" prefHeight="40.0" promptText="TinyG&gt;">
-                </TextField>
-                <FlowPane id="flowPane1" alignment="CENTER" columnHalignment="CENTER" maxHeight="22.0" minHeight="22.0" prefHeight="22.0" VBox.vgrow="ALWAYS">
-                    <Label id="srText" text="Gcode Block #" textFill="WHITE"/>
-                    <Label id="srText" fx:id="srGcodeLine" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="0"/>
+
+                <TextField fx:id="input" onKeyPressed="#handleKeyPress" prefHeight="40.0" promptText="TinyG&gt;"/>
+
+                <FlowPane id="statusBar" alignment="CENTER" columnHalignment="CENTER" maxHeight="22.0" minHeight="22.0" prefHeight="22.0" VBox.vgrow="ALWAYS">
+                    <Label id="whiteFill" text="Gcode Block #"/>
+                    <Label fx:id="srGcodeLine" text="0" alignment="CENTER" maxWidth="70.0" prefWidth="70.0"/>
 
                     <Separator orientation="VERTICAL"/>
 
-                    <Label id="srText" text="Units" textFill="WHITE"/>
-                    <Label id="srText" fx:id="srUnits" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"/>
+                    <Label id="whiteFill" text="Units"/>
+                    <Label fx:id="srUnits" text="?" alignment="CENTER" maxWidth="70.0" prefWidth="70.0"/>
 
                     <Separator orientation="VERTICAL"/>
 
-                    <Label id="srText" text="Ver" textFill="WHITE"/>
-                    <Label id="srText" fx:id="srVer" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?">
-                        <graphicTextGap>
-                            <Long fx:value="4"/>
-                        </graphicTextGap>
-                    </Label>
+                    <Label id="whiteFill" text="Ver"/>
+                    <Label fx:id="srVer" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"/>
 
                     <Separator orientation="VERTICAL"/>
 
-                    <Label id="srText" text="Build" textFill="WHITE"/>
-                    <Label id="srText" fx:id="srBuild" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"/>
+                    <Label id="whiteFill" text="Build"/>
+                    <Label fx:id="srBuild" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"/>
 
                     <Separator orientation="VERTICAL"/>
 
-                    <Label id="srText" text="Motion Mode" textFill="WHITE">
+                    <Label id="whiteFill" text="Motion Mode">
                         <FlowPane.margin>
                             <Insets left="5.0" right="5.0"/>
                         </FlowPane.margin>
                     </Label>
-                    <Label id="srText" fx:id="srMomo" alignment="CENTER" maxWidth="78.0" prefWidth="78.0" text="?">
+                    <Label fx:id="srMomo" alignment="CENTER" maxWidth="78.0" prefWidth="78.0" text="?">
                         <FlowPane.margin>
                             <Insets right="5.0"/>
                         </FlowPane.margin>
@@ -100,12 +99,12 @@
 
                     <Separator orientation="VERTICAL"/>
 
-                    <Label id="srText" text="State" textFill="WHITE">
+                    <Label id="whiteFill" text="State">
                         <FlowPane.margin>
                             <Insets left="5.0"/>
                         </FlowPane.margin>
                     </Label>
-                    <Label id="srText" fx:id="srState" alignment="CENTER" prefWidth="55.0" text="?"/>
+                    <Label fx:id="srState" alignment="CENTER" prefWidth="55.0" text="?"/>
 
                     <Separator orientation="VERTICAL">
                         <FlowPane.margin>
@@ -113,13 +112,13 @@
                         </FlowPane.margin>
                     </Separator>
 
-                    <Label id="srText" text="Coord System" textFill="WHITE"/>
-                    <Label id="srText" fx:id="srCoord" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"/>
+                    <Label id="whiteFill" text="Coord System"/>
+                    <Label fx:id="srCoord" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"/>
 
                     <Separator orientation="VERTICAL"/>
 
-                    <Label id="srText" text="Buffer" textFill="WHITE"/>
-                    <Label id="srText" fx:id="srBuffer" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"/>
+                    <Label id="whiteFill" text="Buffer"/>
+                    <Label fx:id="srBuffer" alignment="CENTER" maxWidth="70.0" prefWidth="70.0" text="?"/>
                 </FlowPane>
             </VBox>
         </bottom>
