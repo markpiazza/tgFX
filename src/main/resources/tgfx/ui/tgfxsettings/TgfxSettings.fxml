@@ -13,11 +13,12 @@
             <URL value="@tgfxsettings.css"/>
         </stylesheets>
 
-        <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <HBox spacing="5.0"
+              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
             <!-- Build Information -->
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
-                <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
+                <HBox id="headerHBox" alignment="CENTER" prefWidth="200.0" style="">
                     <minWidth>
                         <Long fx:value="350"/>
                     </minWidth>
@@ -46,7 +47,7 @@
 
             <!-- Render settings-->
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
-                <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
+                <HBox id="headerHBox" alignment="CENTER" prefWidth="200.0">
                     <minWidth>
                         <Long fx:value="350"/>
                     </minWidth>
@@ -68,7 +69,7 @@
 
             <!-- Debug -->
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
-                <HBox alignment="CENTER" prefWidth="200.0" style="-fx-background-color:black">
+                <HBox id="headerHBox" alignment="CENTER" prefWidth="200.0">
                     <minWidth>
                         <Long fx:value="350"/>
                     </minWidth>

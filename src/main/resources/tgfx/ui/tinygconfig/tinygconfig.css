@@ -1,14 +1,3 @@
-#settingsContent
-{
-    -fx-background-image: url("../../carbon.png");
-}
-
-
-#motorConfigHBox
-{
-    -fx-background-color: black;
-}
-
 #settingsBottom,
 #motorTabPane,
 #motorConfigHBox

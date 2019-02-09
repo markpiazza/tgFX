@@ -7,7 +7,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
       fx:controller="tgfx.ui.firmware.FirmwareUpdaterController">
     <VBox alignment="TOP_CENTER" prefWidth="350.0" spacing="5.0" >
-        <HBox id="machineSettingsHbox" alignment="TOP_CENTER" VBox.vgrow="NEVER">
+        <HBox id="headerHBox" alignment="TOP_CENTER" VBox.vgrow="NEVER">
             <padding>
                 <Insets bottom="5.0" top="5.0"/>
             </padding>

@@ -3,6 +3,11 @@ root
     display: block;
 }
 
+#settingsContent
+{
+    -fx-background-image: url("carbon.png");
+}
+
 
 #topAnchorPane {
     -fx-background-image: url("carbon.png");
@@ -21,6 +26,12 @@ root
     -fx-font-weight: bold;
     -fx-text-fill: linear-gradient(white, #d0d0d0);
 }
+
+#headerHBox
+{
+    -fx-background-color:black
+}
+
 
 
 #consoleVBox

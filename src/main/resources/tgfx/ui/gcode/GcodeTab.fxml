@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -9,230 +9,234 @@
 <?import java.net.URL?>
 <Tab text="Gcode" closable="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
     fx:controller="tgfx.ui.gcode.GcodeTabController">
-    <HBox fx:id="gcodeTabHbox" id="gcodeTabHbox" alignment="TOP_CENTER" minHeight="450.0">
+    <AnchorPane id="settingsContent" >
         <stylesheets>
             <URL value="@gcodetab.css"/>
         </stylesheets>
-        <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-        </padding>
 
-        <!-- gcode dialogs-->
-        <VBox alignment="TOP_CENTER" blendMode="SRC_ATOP"
-              minWidth="320.0" maxWidth="300.0" prefHeight="300.0" prefWidth="320.0" HBox.hgrow="NEVER">
+        <HBox fx:id="gcodeTabHbox" id="gcodeTabHbox" alignment="TOP_CENTER" minHeight="450.0"
+              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <padding>
-                <Insets bottom="15.0" left="5.0" right="5.0"/>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
             </padding>
 
-            <!-- gcode view table -->
-            <TableView fx:id="gcodeView" editable="true" prefHeight="250.0" VBox.vgrow="ALWAYS">
-                <columns>
-                    <TableColumn fx:id="gcodeCol" text="Gcode Program"
-                         maxWidth="500.0" minWidth="290.0" prefWidth="250.0" sortable="false"/>
-                </columns>
-                <VBox.margin>
-                    <Insets bottom="15.0" left="5.0" right="5.0" top="15.0"/>
-                </VBox.margin>
-            </TableView>
+            <!-- gcode dialogs-->
+            <VBox alignment="TOP_CENTER" blendMode="SRC_ATOP"
+                  minWidth="320.0" maxWidth="300.0" prefHeight="300.0" prefWidth="320.0" HBox.hgrow="NEVER">
+                <padding>
+                    <Insets bottom="15.0" left="5.0" right="5.0"/>
+                </padding>
 
-            <!-- gcode file option buttons -->
-            <HBox alignment="TOP_CENTER" spacing="10.0">
-                <padding>
-                    <Insets bottom="5.0" top="5.0"/>
-                </padding>
-                <Button text="Load" focusTraversable="false" onAction="#handleOpenFile"/>
-                <Button text="Run" focusTraversable="false" onAction="#handleRunFile"/>
-                <Button fx:id="pauseResumeBtn" text="Pause" focusTraversable="false" onAction="#handlePauseResume"/>
-            </HBox>
-            <HBox alignment="CENTER" spacing="10.0">
-                <padding>
-                    <Insets top="10.0"/>
-                </padding>
-                <Button id="cancelBtn" text="Reset" focusTraversable="false" onAction="#handleReset"/>
-                <Button text="Stop Job" focusTraversable="false" onAction="#handleStop"/>
-            </HBox>
-        </VBox>
-        <!-- end gcode -->
-
-        <!-- preview pane-->
-        <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-            <padding>
-                <Insets bottom="10.0" top="10.0"/>
-            </padding>
-            <VBox id="previewVbox" alignment="BOTTOM_CENTER" spacing="5.0"  HBox.hgrow="ALWAYS">
-                <HBox.margin>
-                    <Insets left="15.0" right="15.0"/>
-                </HBox.margin>
-                <padding>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                </padding>
-                <HBox alignment="CENTER_RIGHT">
+                <!-- gcode view table -->
+                <TableView fx:id="gcodeView" editable="true" prefHeight="250.0" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="gcodeCol" text="Gcode Program"
+                             maxWidth="500.0" minWidth="290.0" prefWidth="250.0" sortable="false"/>
+                    </columns>
                     <VBox.margin>
-                        <Insets right="5.0"/>
+                        <Insets bottom="15.0" left="5.0" right="5.0" top="15.0"/>
                     </VBox.margin>
-                    <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Text fx:id="gcodeStatusMessageTxt" text="JOGGING ENABLED">
-                            <font>
-                                <Font name="Arial Black" size="16.0"/>
-                            </font>
-                        </Text>
-                    </HBox>
-                    <Button text="Clear Screen" focusTraversable="false" onAction="#handleClearScreen">
-                        <HBox.margin>
-                            <Insets bottom="5.0" right="5.0" top="5.0"/>
-                        </HBox.margin>
-                    </Button>
-                </HBox>
+                </TableView>
 
-                <!-- preview pane -->
-                <StackPane fx:id="gcodePane" id="topPreviewPane" minHeight="400.0" minWidth="400.0"/>
-
-                <!-- information -->
-                <HBox alignment="CENTER_RIGHT" maxHeight="45.0" minHeight="55.0" spacing="5.0" VBox.vgrow="NEVER">
+                <!-- gcode file option buttons -->
+                <HBox alignment="TOP_CENTER" spacing="10.0">
                     <padding>
-                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+                        <Insets bottom="5.0" top="5.0"/>
                     </padding>
-                    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                    <Button text="Load" focusTraversable="false" onAction="#handleOpenFile"/>
+                    <Button text="Run" focusTraversable="false" onAction="#handleRunFile"/>
+                    <Button fx:id="pauseResumeBtn" text="Pause" focusTraversable="false" onAction="#handlePauseResume"/>
+                </HBox>
+                <HBox alignment="CENTER" spacing="10.0">
+                    <padding>
+                        <Insets top="10.0"/>
+                    </padding>
+                    <Button id="cancelBtn" text="Reset" focusTraversable="false" onAction="#handleReset"/>
+                    <Button text="Stop Job" focusTraversable="false" onAction="#handleStop"/>
+                </HBox>
+            </VBox>
+            <!-- end gcode -->
 
-                        <!-- timing information -->
-                        <HBox alignment="BASELINE_LEFT" HBox.hgrow="ALWAYS">
-                            <padding>
-                                <Insets bottom="5.0" top="5.0"/>
-                            </padding>
-                            <GridPane hgap="5.0">
+            <!-- preview pane-->
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="10.0" top="10.0"/>
+                </padding>
+                <VBox id="previewVbox" alignment="BOTTOM_CENTER" spacing="5.0"  HBox.hgrow="ALWAYS">
+                    <HBox.margin>
+                        <Insets left="15.0" right="15.0"/>
+                    </HBox.margin>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                    <HBox alignment="CENTER_RIGHT">
+                        <VBox.margin>
+                            <Insets right="5.0"/>
+                        </VBox.margin>
+                        <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Text fx:id="gcodeStatusMessageTxt" text="JOGGING ENABLED">
+                                <font>
+                                    <Font name="Arial Black" size="16.0"/>
+                                </font>
+                            </Text>
+                        </HBox>
+                        <Button text="Clear Screen" focusTraversable="false" onAction="#handleClearScreen">
+                            <HBox.margin>
+                                <Insets bottom="5.0" right="5.0" top="5.0"/>
+                            </HBox.margin>
+                        </Button>
+                    </HBox>
+
+                    <!-- preview pane -->
+                    <StackPane fx:id="gcodePane" id="topPreviewPane" minHeight="400.0" minWidth="400.0"/>
+
+                    <!-- information -->
+                    <HBox alignment="CENTER_RIGHT" maxHeight="45.0" minHeight="55.0" spacing="5.0" VBox.vgrow="NEVER">
+                        <padding>
+                            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+                        </padding>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+
+                            <!-- timing information -->
+                            <HBox alignment="BASELINE_LEFT" HBox.hgrow="ALWAYS">
+                                <padding>
+                                    <Insets bottom="5.0" top="5.0"/>
+                                </padding>
+                                <GridPane hgap="5.0">
+                                    <HBox.margin>
+                                        <Insets right="5.0"/>
+                                    </HBox.margin>
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="119.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="81.0"/>
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                    </rowConstraints>
+                                    <Label text="Time Elapsed" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                    <Label text="Time Remaining" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                    <Text fx:id="timeElapsedTxt" GridPane.columnIndex="1" GridPane.rowIndex="0" text="00:00" />
+                                    <Text fx:id="timeLeftTxt" GridPane.columnIndex="1" GridPane.rowIndex="1" text="00:00" />
+                                </GridPane>
+                            </HBox>
+
+                            <!-- location information-->
+                            <GridPane fx:id="coordLocationGridPane" alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="53.0">
                                 <HBox.margin>
-                                    <Insets right="5.0"/>
+                                    <Insets right="10.0"/>
                                 </HBox.margin>
+                                <padding>
+                                    <Insets left="10.0" right="10.0"/>
+                                </padding>
                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="119.0"/>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="81.0"/>
+                                    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                 </columnConstraints>
                                 <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                 </rowConstraints>
-                                <Label text="Time Elapsed" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                <Label text="Time Remaining" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                <Text fx:id="timeElapsedTxt" GridPane.columnIndex="1" GridPane.rowIndex="0" text="00:00" />
-                                <Text fx:id="timeLeftTxt" GridPane.columnIndex="1" GridPane.rowIndex="1" text="00:00" />
+                                <Label text="Y:" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                <Text fx:id="yAxisLocationTxt" GridPane.columnIndex="1" GridPane.rowIndex="0" fill="BLACK" text="0"/>
+                                <Label text="X:" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                <Text fx:id="xAxisLocationTxt" GridPane.columnIndex="1" GridPane.rowIndex="1" fill="BLACK" text="0" />
                             </GridPane>
                         </HBox>
-
-                        <!-- location information-->
-                        <GridPane fx:id="coordLocationGridPane" alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="53.0">
-                            <HBox.margin>
-                                <Insets right="10.0"/>
-                            </HBox.margin>
-                            <padding>
-                                <Insets left="10.0" right="10.0"/>
-                            </padding>
-                            <columnConstraints>
-                                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                            </rowConstraints>
-                            <Label text="Y:" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                            <Text fx:id="yAxisLocationTxt" GridPane.columnIndex="1" GridPane.rowIndex="0" fill="BLACK" text="0"/>
-                            <Label text="X:" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                            <Text fx:id="xAxisLocationTxt" GridPane.columnIndex="1" GridPane.rowIndex="1" fill="BLACK" text="0" />
-                        </GridPane>
                     </HBox>
-                </HBox>
 
-            </VBox>
-        </HBox>
-        <!-- end preview -->
-
-
-        <!-- lcd gauges -->
-        <VBox id="lcdGuages" alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="NEVER">
-            <padding>
-                <Insets top="15.0"/>
-            </padding>
-
-            <Gauge fx:id="xLcd" skinType="LCD" id="xLcd"
-                   title="Title" unit="mm" decimals="3"
-                   subTitle="Subtitle"
-                   minWidth="200" prefWidth="200" maxWidth="200"
-                   minHeight="75" prefHeight="75" maxHeight="75"
-                   oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
-                   onMousePressed="#handleDroMouseClick">
-                <contextMenu>
-                    <ContextMenu>
-                        <items>
-                            <MenuItem onAction="#handleZeroAxisClick" text="Zero X Axis"/>
-                            <MenuItem onAction="#handleHomeAxisClick" text="Home X Axis"/>
-                        </items>
-                    </ContextMenu>
-                </contextMenu>
-            </Gauge>
-
-            <Gauge fx:id="yLcd" skinType="LCD"
-                   title="Y Axis Position" unit="mm" decimals="3"
-                   oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
-                   minWidth="200" prefWidth="200" maxWidth="200"
-                   minHeight="75" prefHeight="75" maxHeight="75"
-                   onMousePressed="#handleDroMouseClick">
-                <contextMenu>
-                    <ContextMenu>
-                        <items>
-                            <MenuItem onAction="#handleZeroAxisClick" text="Zero Y Axis"/>
-                            <MenuItem onAction="#handleHomeAxisClick" text="Home Y Axis"/>
-                        </items>
-                    </ContextMenu>
-                </contextMenu>
-            </Gauge>
-
-            <Gauge fx:id="zLcd" skinType="LCD"
-                   title="Z Axis Position" unit="mm" decimals="3"
-                   oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
-                   minWidth="200" prefWidth="200" maxWidth="200"
-                   minHeight="75" prefHeight="75" maxHeight="75"
-                   onMousePressed="#handleDroMouseClick">
-                <contextMenu>
-                    <ContextMenu>
-                        <items>
-                            <MenuItem onAction="#handleZeroAxisClick" text="Zero Z Axis"/>
-                            <MenuItem onAction="#handleHomeAxisClick" text="Home Z Axis"/>
-                        </items>
-                    </ContextMenu>
-                </contextMenu>
-            </Gauge>
-
-            <Gauge fx:id="aLcd" skinType="LCD"
-                   title="A Axis Position" unit="mm" decimals="3"
-                   oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
-                   minWidth="200" prefWidth="200" maxWidth="200"
-                   minHeight="75" prefHeight="75" maxHeight="75"
-                   onMousePressed="#handleDroMouseClick" >
-                <contextMenu>
-                    <ContextMenu>
-                        <items>
-                            <MenuItem onAction="#handleZeroAxisClick" text="Zero A Axis"/>
-                        </items>
-                    </ContextMenu>
-                </contextMenu>
-            </Gauge>
-
-            <Gauge fx:id="velLcd" skinType="LCD"
-                   title="Velocity" unit="mm/min" decimals="3"
-                   oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
-                   minWidth="200" prefWidth="200" maxWidth="200"
-                   minHeight="75" prefHeight="75" maxHeight="75"/>
-            <HBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
-                <Button text="Zero All" onAction="#handleZeroSystem" focusTraversable="false"
-                        alignment="BASELINE_LEFT" VBox.vgrow="NEVER"/>
-                <HBox.margin>
-                    <Insets/>
-                </HBox.margin>
-                <Button text="Home All" onAction="#handleHomeXYZ" focusTraversable="false"
-                        alignment="BASELINE_RIGHT" VBox.vgrow="NEVER"/>
+                </VBox>
             </HBox>
-        </VBox>
-        <!-- end lcd gauges -->
+            <!-- end preview -->
 
-    </HBox>
+
+            <!-- lcd gauges -->
+            <VBox id="lcdGuages" alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="NEVER">
+                <padding>
+                    <Insets top="15.0"/>
+                </padding>
+
+                <Gauge fx:id="xLcd" skinType="LCD" id="xLcd"
+                       title="Title" unit="mm" decimals="3"
+                       subTitle="Subtitle"
+                       minWidth="200" prefWidth="200" maxWidth="200"
+                       minHeight="75" prefHeight="75" maxHeight="75"
+                       oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
+                       onMousePressed="#handleDroMouseClick">
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem onAction="#handleZeroAxisClick" text="Zero X Axis"/>
+                                <MenuItem onAction="#handleHomeAxisClick" text="Home X Axis"/>
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </Gauge>
+
+                <Gauge fx:id="yLcd" skinType="LCD"
+                       title="Y Axis Position" unit="mm" decimals="3"
+                       oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
+                       minWidth="200" prefWidth="200" maxWidth="200"
+                       minHeight="75" prefHeight="75" maxHeight="75"
+                       onMousePressed="#handleDroMouseClick">
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem onAction="#handleZeroAxisClick" text="Zero Y Axis"/>
+                                <MenuItem onAction="#handleHomeAxisClick" text="Home Y Axis"/>
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </Gauge>
+
+                <Gauge fx:id="zLcd" skinType="LCD"
+                       title="Z Axis Position" unit="mm" decimals="3"
+                       oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
+                       minWidth="200" prefWidth="200" maxWidth="200"
+                       minHeight="75" prefHeight="75" maxHeight="75"
+                       onMousePressed="#handleDroMouseClick">
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem onAction="#handleZeroAxisClick" text="Zero Z Axis"/>
+                                <MenuItem onAction="#handleHomeAxisClick" text="Home Z Axis"/>
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </Gauge>
+
+                <Gauge fx:id="aLcd" skinType="LCD"
+                       title="A Axis Position" unit="mm" decimals="3"
+                       oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
+                       minWidth="200" prefWidth="200" maxWidth="200"
+                       minHeight="75" prefHeight="75" maxHeight="75"
+                       onMousePressed="#handleDroMouseClick" >
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem onAction="#handleZeroAxisClick" text="Zero A Axis"/>
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </Gauge>
+
+                <Gauge fx:id="velLcd" skinType="LCD"
+                       title="Velocity" unit="mm/min" decimals="3"
+                       oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
+                       minWidth="200" prefWidth="200" maxWidth="200"
+                       minHeight="75" prefHeight="75" maxHeight="75"/>
+                <HBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <Button text="Zero All" onAction="#handleZeroSystem" focusTraversable="false"
+                            alignment="BASELINE_LEFT" VBox.vgrow="NEVER"/>
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                    <Button text="Home All" onAction="#handleHomeXYZ" focusTraversable="false"
+                            alignment="BASELINE_RIGHT" VBox.vgrow="NEVER"/>
+                </HBox>
+            </VBox>
+            <!-- end lcd gauges -->
+
+        </HBox>
+    </AnchorPane>
 </Tab>
