@@ -1,11 +1,3 @@
-#settingsBottom,
-#motorTabPane,
-#motorConfigHBox
-{
-    -fx-background-color:#777785
-}
-
-
 #xGP
 {
     -fx-background-color:
@@ -53,18 +45,3 @@
         linear-gradient(#20262b, #191d22),
         radial-gradient(center 50% 0%, radius 100%, rgba(01, 5, 226,0.9), rgba(255,255,255,0));
 }
-
-#xGP,
-#yGP,
-#zGP,
-#aGP,
-#bGP,
-#cGP,
-#motor1,
-#motor2,
-#motor3,
-#motor4
-{
-    -fx-padding: 10;
-}
-

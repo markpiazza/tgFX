@@ -9,6 +9,7 @@
 
 <Tab text="Axis / Motor Settings" closable="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
      fx:controller="tgfx.ui.tinygconfig.TinyGConfigController">
+
     <AnchorPane id="settingsContent" >
         <stylesheets>
             <URL value="@tinygconfig.css"/>
@@ -36,6 +37,7 @@
 <!-- motor tabs -->
                 <TabPane fx:id="motorTabPane" side="LEFT" VBox.vgrow="ALWAYS">
                     <Tab closable="false" text="Motor 1">
+
                         <GridPane id="motor1" hgap="15.0" vgap="15.0">
                             <Label id="motorTxt" text="Mapped to axis" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                             <ChoiceBox fx:id="motor1ConfigMapAxis" GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -83,13 +85,15 @@
                             <TextField fx:id="motor1ConfigStepAngle" onKeyPressed="#handleMotorEnter" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                             <Label id="motorTxt" text="Travel Per Rev." GridPane.columnIndex="0" GridPane.rowIndex="5"/>
                             <TextField fx:id="motor1ConfigTravelPerRev" onKeyPressed="#handleMotorEnter" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                            <HBox id="hBox6" alignment="CENTER" spacing="25.0" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" GridPane.rowSpan="2147483647">
+                            <HBox id="hBox6" alignment="CENTER" spacing="25.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6" GridPane.rowSpan="2">
                                 <Button id="queryMotor" onAction="#handleMotorQuerySettings" text="Query"/>
                                 <Button id="queryMotor" onAction="#handleMotorApplySettings" text="Apply"/>
                             </HBox>
                         </GridPane>
+
                     </Tab>
                     <Tab closable="false" text="Motor 2">
+
                         <GridPane id="motor2" hgap="15.0" vgap="15.0">
                             <Label id="motorTxt" text="Mapped to axis" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                             <ChoiceBox fx:id="motor2ConfigMapAxis" GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -137,13 +141,15 @@
                             <TextField fx:id="motor2ConfigStepAngle" onKeyPressed="#handleMotorEnter" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                             <Label id="motorTxt" text="Travel Per Rev." GridPane.columnIndex="0" GridPane.rowIndex="5"/>
                             <TextField fx:id="motor2ConfigTravelPerRev" onKeyPressed="#handleMotorEnter" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                            <HBox id="hBox6" alignment="CENTER" spacing="25.0" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" GridPane.rowSpan="2147483647">
+                            <HBox id="hBox6" alignment="CENTER" spacing="25.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6" GridPane.rowSpan="2">
                                 <Button id="queryMotor" onAction="#handleMotorQuerySettings" text="Query"/>
                                 <Button id="queryMotor" onAction="#handleMotorApplySettings" text="Apply"/>
                             </HBox>
                         </GridPane>
+
                     </Tab>
                     <Tab closable="false" text="Motor 3">
+
                         <GridPane id="motor3" hgap="15.0" vgap="15.0">
                             <Label id="motorTxt" text="Mapped to axis" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                             <ChoiceBox fx:id="motor3ConfigMapAxis" GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -191,13 +197,15 @@
                             <TextField fx:id="motor3ConfigStepAngle" onKeyPressed="#handleMotorEnter" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                             <Label id="motorTxt" text="Travel Per Rev." GridPane.columnIndex="0" GridPane.rowIndex="5"/>
                             <TextField fx:id="motor3ConfigTravelPerRev" onKeyPressed="#handleMotorEnter" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                            <HBox id="hBox6" alignment="CENTER" spacing="25.0" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" GridPane.rowSpan="2147483647">
+                            <HBox id="hBox6" alignment="CENTER" spacing="25.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6" GridPane.rowSpan="2">
                                 <Button id="queryMotor" onAction="#handleMotorQuerySettings" text="Query"/>
                                 <Button id="queryMotor" onAction="#handleMotorApplySettings" text="Apply"/>
                             </HBox>
                         </GridPane>
+
                     </Tab>
                     <Tab closable="false" text="Motor 4">
+
                         <GridPane id="motor4" hgap="15.0" vgap="15.0">
                             <Label id="motorTxt" text="Mapped to axis" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                             <ChoiceBox fx:id="motor4ConfigMapAxis" GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -245,19 +253,14 @@
                             <TextField fx:id="motor4ConfigStepAngle" onKeyPressed="#handleMotorEnter" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                             <Label id="motorTxt" text="Travel Per Rev." GridPane.columnIndex="0" GridPane.rowIndex="5"/>
                             <TextField fx:id="motor4ConfigTravelPerRev" onKeyPressed="#handleMotorEnter" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                            <HBox id="hBox6" alignment="CENTER" spacing="25.0" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" GridPane.rowSpan="2147483647">
+                            <HBox id="hBox6" alignment="CENTER" spacing="25.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6" GridPane.rowSpan="2">
                                 <Button id="queryMotor" onAction="#handleMotorQuerySettings" text="Query"/>
                                 <Button id="queryMotor" onAction="#handleMotorApplySettings" text="Apply"/>
                             </HBox>
                         </GridPane>
+
                     </Tab>
                 </TabPane>
-                <!--<HBox alignment="CENTER" spacing="5.0" style="-fx-background-color: black" VBox.vgrow="NEVER">-->
-                    <!--<padding>-->
-                        <!--<Insets bottom="5.0" top="5.0"/>-->
-                    <!--</padding>-->
-                    <!--<Button mnemonicParsing="false" text="Button" visible="false"/>-->
-                <!--</HBox>-->
             </VBox>
 <!-- end motor vbox -->
 
@@ -282,6 +285,7 @@
 <!-- axis tab pane -->
                 <TabPane id="motorTabPane" fx:id="axisTabPane" side="LEFT" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                     <Tab closable="false" text="X Axis">
+
                         <GridPane id="xGP" hgap="15.0" vgap="15.0">
                             <columnConstraints>
                                 <ColumnConstraints minWidth="10.0" hgrow="NEVER"/>
@@ -366,8 +370,10 @@
                             </HBox>
                             <TextField fx:id="axisXlatchBackoff" onKeyPressed="#handleAxisEnter" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4"/>
                         </GridPane>
+
                     </Tab>
                     <Tab closable="false" text="Y Axis">
+
                         <GridPane id="yGP" hgap="15.0" vgap="15.0">
                             <columnConstraints>
                                 <ColumnConstraints minWidth="10.0" hgrow="NEVER"/>
@@ -802,6 +808,7 @@
                             <Label id="lblAxis" text="Radius" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
                             <TextField id="tbaxisCRadius" fx:id="axisCradius" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
                         </GridPane>
+
                     </Tab>
                 </TabPane>
                 <HBox alignment="CENTER" spacing="10.0" style="-fx-background-color: black" VBox.vgrow="NEVER">

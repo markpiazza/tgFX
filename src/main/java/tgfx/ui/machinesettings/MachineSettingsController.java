@@ -40,14 +40,14 @@ import static tgfx.tinyg.Commands.CMD_APPLY_DEFAULT_SETTINGS;
 public class MachineSettingsController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
 
-    private final DecimalFormat decimalFormat = new DecimalFormat("################################.############################");
+    private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
 
     @FXML
     private ListView<String> configsListView;
     @FXML
     private static ChoiceBox machineSwitchType, machineUnitMode;
     @FXML
-    private Button loadbutton;
+    private Button loadButton;
     @FXML
     private ProgressBar configProgress;
 
@@ -70,7 +70,7 @@ public class MachineSettingsController implements Initializable {
     private void populateConfigFiles() {
         // FIXME: god damned java file loading
         File folder = new File(TgFXConstants.PATH+"/configs");
-        if(folder==null){
+        if(folder.exists()){
             logger.error("Error loading platform configs, path not found");
             return;
         }
@@ -84,7 +84,6 @@ public class MachineSettingsController implements Initializable {
             if (listOfFile.isFile()) {
                 String files = listOfFile.getName();
                 if (files.endsWith(".config") || files.endsWith(".json")) {
-                    // FIXME: unchecked assignment
                     configsListView.getItems().add(files);
                 }
             }
@@ -212,14 +211,14 @@ public class MachineSettingsController implements Initializable {
             }
             updateProgress(0, 0); //reset the progress bar
             Main.postConsoleMessage("Finished Loading " + filename + ".");
-            loadbutton.setDisable(false);
+            loadButton.setDisable(false);
             return null;
             }
         };
         
         if (TinygDriver.getInstance().isConnected().get()) {
             configProgress.progressProperty().bind(task.progressProperty());
-            loadbutton.setDisable(true);
+            loadButton.setDisable(true);
             new Thread(task).start();
         }
     }

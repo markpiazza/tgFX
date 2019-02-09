@@ -3,23 +3,18 @@ root
     display: block;
 }
 
-#settingsContent
-{
-    -fx-background-image: url("carbon.png");
-}
 
-
+/* main pane background */
 #topAnchorPane {
     -fx-background-image: url("carbon.png");
-    -fx-background-color:
-        #090a0c,
+    -fx-background-color: #090a0c,
         linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
         linear-gradient(#20262b, #191d22);
 }
 
 
-#tgfxTitleText,
-#serialTitleLabel
+/* main pane title and serial fonts */
+#tgfxTitleText, #serialTitleLabel
 {
     -fx-font-family: "Helvetica";
     -fx-font-size: 20px;
@@ -27,19 +22,29 @@ root
     -fx-text-fill: linear-gradient(white, #d0d0d0);
 }
 
+
+/* the background of settings tabs */
+#settingsContent
+{
+    -fx-background-image: url("carbon.png");
+}
+
+
+/* header background for all tabs */
 #headerHBox
 {
     -fx-background-color:black
 }
 
 
-
+/* console output vbox */
 #consoleVBox
 {
     -fx-background-color: slategray;
 }
 
 
+/* bottom status bar */
 #statusBar
 {
     -fx-padding: 1 2 1 2;
@@ -50,23 +55,82 @@ root
 }
 
 
+/* white text fill */
 #whiteFill
 {
     -fx-text-fill: white;
 }
 
+#motorTabPane
+{
+    -fx-background-color:#777785
+}
+
+#xGP, #yGP, #zGP, #aGP, #bGP, #cGP,
+#motor1, #motor2, #motor3, #motor4,
+#firmwareGP, #miscGP
+{
+    -fx-padding: 10;
+}
+
+
+#gcodeTabHbox
+{
+    -fx-background-image: url("carbon.png");
+    -fx-padding: 3 30 3 30;
+    -fx-text-fill: #242d35;
+    -fx-font-size: 14px;
+}
+
+
+#previewVbox
+{
+    -fx-background-image: url("background.jpg");
+}
+
+
+#topPreviewPane
+{
+    -fx-background-color: black
+}
+
+
+#alphaVBox
+{
+    -fx-background-color: rgba(40%,33%,10%,0.2)
+}
+
+
+#cancelBtn
+{
+    -fx-background-color: red;
+}
+
+
+CNCMachine
+{
+    -fx-background-color: black;
+    -fx-border-color: orange;
+    -fx-border-width: .5;
+}
+
+
+/* all buttons */
+
 
 .button
 {
+    /*
     -fx-background-color:
             #c3c4c4,
             linear-gradient(#d6d6d6 50%, white 100%),
             radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
     -fx-background-radius: 30;
+    */
     -fx-background-insets: 0,1,1;
     -fx-text-fill: black;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
-    -fx-padding: 5 22 5 22;  
+    -fx-padding: 5 22 5 22;
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-size: 11pt;
 }
