@@ -12,7 +12,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -625,7 +624,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     private void onConnectActions() {
         connectionTimer = new QueueUsingTimer<>(CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
         Platform.runLater(() -> {
-            gcodeTabController.setGcodeTextTemp("Attempting to Connect to TinyG.");
+            gcodeTabController.setGcodeText("Attempting to Connect to TinyG.");
             DRIVER.getSerialWriter().notifyAck(); //If the serialWriter is in a wait state.. wake it up
             DRIVER.write(CMD_APPLY_NOOP); //Just waking things up.
             DRIVER.write(CMD_APPLY_NOOP);
@@ -683,7 +682,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
                 gcodeTabController.setCNCMachineVisible(true); //Once we connected we should show the drawing enevlope.
                 Main.postConsoleMessage("Showing CNC Machine Preview...");
-                gcodeTabController.setGcodeTextTemp("TinyG Connected.");
+                gcodeTabController.setGcodeText("TinyG Connected.");
 
             } catch (InterruptedException ex) {
                 logger.error("Error in OnConnectActions()", ex);
@@ -716,7 +715,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 DRIVER.getSerialWriter().clearQueueBuffer();
                 DRIVER.getSerialWriter().notifyAck();
                 buildChecked = false;
-                gcodeTabController.setGcodeTextTemp("TinyG Disconnected.");
+                gcodeTabController.setGcodeText("TinyG Disconnected.");
             } catch (JSONException ex) {
                 logger.error(ex);
             }

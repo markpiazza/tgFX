@@ -25,16 +25,15 @@ public class GcodeCoordinateManager {
         currentGcodeCoordinateSystem = new GcodeCoordinateSystem();
     }
 
-    
 
     public GcodeCoordinateSystem getCurrentGcodeCoordinateSystem() { 
         return currentGcodeCoordinateSystem;
     }
-    
+
+
     public StringProperty getCurrentGcodeCoordinateSystemName() { 
         return currentGcodeCoordinateSystem.getGcodeCoordinateSystemProperty();
     }
-    
     
 
     void setCurrentGcodeCoordinateSystem(int gcu) {
@@ -85,6 +84,7 @@ public class GcodeCoordinateManager {
             }
         }
     }
+
 
     public void setCurrentGcodeCoordinateSystem(GcodeCoordinateSystem currentGcodeCoordinateSystem) {
         this.currentGcodeCoordinateSystem = currentGcodeCoordinateSystem;

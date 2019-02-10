@@ -24,6 +24,7 @@ import static tgfx.tinyg.Mnemonics.*;
  * contains machine specific values (states, switches, acceleration, axises, jog and travel )
  *
  */
+@SuppressWarnings({"FieldCanBeLocal","unused"})
 public final class Machine {
     private static final Logger logger = LogManager.getLogger();
     private static Machine machineInstance;
@@ -82,9 +83,9 @@ public final class Machine {
 
     /**
      * Machine
-     *
+     * machine constructor
      */
-    public Machine() {
+    private Machine() {
         motors.add(new Motor(1));
         motors.add(new Motor(2));
         motors.add(new Motor(3));
@@ -103,6 +104,11 @@ public final class Machine {
         zjoggingIncrement.bind(getAxisByName("Z").getTravelMaxSimple());
     }
 
+
+    /**
+     * get singleton instance of a machine
+     * @return singleton machine
+     */
     public static Machine getInstance(){
         if(machineInstance == null){
             machineInstance = new Machine();
@@ -110,82 +116,154 @@ public final class Machine {
         return machineInstance;
     }
 
+
+    /**
+     * get hardware platform
+     * @return hardware platform
+     */
     public HardwarePlatform getHardwarePlatform() {
         return hardwarePlatform;
     }
 
+
+    /**
+     * set hardware platform
+     * @param hardwarePlatform hardware platform
+     */
     public void setHardwarePlatform(HardwarePlatform hardwarePlatform) {
         this.hardwarePlatform = hardwarePlatform;
     }
 
+
+    /**
+     * get coordinate system
+     * @return coordinate system
+     */
     public GcodeCoordinateManager getGcodeCoordinateManager(){
         return coordinateManager;
     }
 
-    /* MESSAGES */
 
+    /**
+     * get last message
+     * @return message
+     */
     public String getLastMessage() {
         return lastMessage;
     }
 
+
+    /**
+     * set last message
+     * @param lastMessage message
+     */
     public void setLastMessage(String lastMessage) {
         this.lastMessage = lastMessage;
     }
 
-    /* HARDWARE ID */
-
+    /**
+     * get hardware id
+     * @return hardware id
+     */
     public StringProperty getHardwareId(){
         return hardwareId;
     }
 
+
+    /**
+     * set hardware id
+     * @param hardwareId hardware id
+     */
     public void setHardwareId(String hardwareId){
         this.hardwareId.setValue(hardwareId);
     }
 
-    /* HARDWARE VERSION */
 
+    /**
+     * get hardware version
+     * @return hardware version
+     */
     public StringProperty getHardwareVersion(){
         return hardwareVersion;
     }
 
+
+    /**
+     * set hardware version
+     * @param hardwareVersion hardware version
+     */
     public void setHardwareVersion(String hardwareVersion){
         this.hardwareVersion.setValue(hardwareVersion);
     }
 
-    /* SWITCHES */
 
-    private void setSwitchType(int swType) {
-        this.switchType = swType;
-    }
-
+    /**
+     * get switch type
+     * @return switch type
+     */
     public int getSwitchType() {
         return switchType;
     }
 
+
+    /**
+     * set switch type
+     * @param swType switch type
+     */
+    private void setSwitchType(int swType) {
+        this.switchType = swType;
+    }
+
+
+    /**
+     * get switch type as a string
+     * @return switch type string
+     */
     public String getSwitchTypeAsString() {
         return switchType == 0 ? "Normally Open" : "Normally Closed";
     }
 
-    /* TRAVEL */
 
+    /**
+     * get longest travel axis value
+     * @return longest travel
+     */
     public double getLongestTravelAxisValue() {
         return longestTravelAxisValue.get();
     }
 
+
+    /**
+     * set longest travel axis value
+     * @param value longest travel
+     */
     public void setLongestTravelAxisValue(double value){
         longestTravelAxisValue.set(value);
     }
 
-    /* DISTANCE MODE */
 
+    /**
+     *
+     * @return
+     */
     public GcodeDistanceMode getGcodeDistanceMode() {
         return gcodeDistanceMode;
     }
 
+
+    /**
+     *
+     * @param gdm
+     */
     private void setGcodeDistanceMode(String gdm) {
         setGcodeDistanceMode(Integer.valueOf(gdm));
     }
 
+
+    /**
+     *
+     * @param gdm
+     */
     private void setGcodeDistanceMode(int gdm) {
         switch (gdm) {
             case 0:
@@ -197,16 +275,29 @@ public final class Machine {
         }
     }
 
-    /* PLANE */
 
+    /**
+     *
+     * @return
+     */
     public GcodeSelectPlane getGcodeSelectPlane() {
         return gcodeSelectPlane;
     }
 
+
+    /**
+     *
+     * @param gsp
+     */
     private void setGcodeSelectPlane(String gsp) {
         setGcodeSelectPlane(Integer.valueOf(gsp));
     }
 
+
+    /**
+     *
+     * @param gsp
+     */
     private void setGcodeSelectPlane(int gsp) {
         switch (gsp) {
             case 0:
@@ -221,20 +312,38 @@ public final class Machine {
         }
     }
 
+
+    /**
+     *
+     * @param gcodeSelectPlane
+     */
     public void setGcodeSelectPlane(GcodeSelectPlane gcodeSelectPlane) {
         this.gcodeSelectPlane = gcodeSelectPlane;
     }
 
-    /* PATH CONTROL */
 
+    /**
+     *
+     * @return
+     */
     public GcodePathControl getGcodePathControl() {
         return gcodePathControl;
     }
 
+
+    /**
+     *
+     * @param gpc
+     */
     private void setGcodePathControl(String gpc) {
         setGcodePathControl(Integer.valueOf(gpc));
     }
 
+
+    /**
+     *
+     * @param gpc
+     */
     private void setGcodePathControl(int gpc) {
         switch (gpc) {
             case 0:
@@ -249,28 +358,47 @@ public final class Machine {
         }
     }
 
-    /* CARRIAGE RETURN ON TRANSMIT */
 
+    /**
+     *
+     * @return
+     */
     public boolean isEnableCrOnTx() {
         return enableCrOnTx;
     }
 
+
+    /**
+     *
+     * @param enableCrOnTx
+     */
     public void setEnableCrOnTx(boolean enableCrOnTx) {
         this.enableCrOnTx = enableCrOnTx;
     }
 
-    /* HASHCODE */
 
+    /**
+     *
+     * @return
+     */
     public boolean isEnableHashcode() {
         return enableHashcode;
     }
 
+
+    /**
+     *
+     * @param enableHashcode
+     */
     public void setEnableHashcode(boolean enableHashcode) {
         this.enableHashcode = enableHashcode;
     }
 
-    /* ACCELERATION */
 
+    /**
+     *
+     * @return
+     */
     public float getJunctionAcceleration() {
         return junctionAcceleration;
     }
@@ -279,36 +407,65 @@ public final class Machine {
         this.junctionAcceleration = junctionAcceleration;
     }
 
-    /* MOTERS */
 
+    /**
+     *
+     * @return
+     */
     public List<Motor> getMotors() {
         return this.motors;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public int getNumberOfMotors() {
         return this.getMotors().size();
     }
 
-    /* MACHINE NAME */
 
+    /**
+     *
+     * @return
+     */
     public String getMachineName() {
         return machineName;
     }
 
+
+    /**
+     *
+     * @param machineName
+     */
     public void setMachineName(String machineName) {
         this.machineName = machineName;
     }
 
-    /* UNITS MODE */
 
+    /**
+     *
+     * @return
+     */
     public StringProperty getGcodeUnitMode() {
         return gcodeUnitMode;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public int getGcodeUnitModeAsInt() {
         return gcodeUnitMode.get().equals(GcodeUnitMode.MM.toString()) ? 1 : 0;
     }
 
+
+    /**
+     *
+     * @param unitMode
+     */
     private void setGcodeUnits(int unitMode) {
         if (unitMode == 0) {
             gcodeUnitMode.setValue("inches");
@@ -319,6 +476,11 @@ public final class Machine {
         }
     }
 
+
+    /**
+     *
+     * @param gcu
+     */
     public void setGcodeUnits(String gcu) {
         switch (Integer.valueOf(gcu)) {
             case 0:
@@ -330,12 +492,20 @@ public final class Machine {
         }
     }
 
-    /* MOTION MODE */
 
+    /**
+     *
+     * @return
+     */
     public SimpleStringProperty getMotionMode() {
         return motionMode;
     }
 
+
+    /**
+     *
+     * @param mode
+     */
     public void setMotionMode(int mode) {
         switch (mode) {
             case 0:
@@ -356,91 +526,167 @@ public final class Machine {
         }
     }
 
-    /* REPORT INTERVAL */
 
+    /**
+     *
+     * @return
+     */
     public int getStatusReportInterval() {
         return statusReportInterval;
     }
 
+
+    /**
+     *
+     * @param statusReportInterval
+     */
     public void setStatusReportInterval(int statusReportInterval) {
         this.statusReportInterval = statusReportInterval;
     }
 
-    /* ACCELERATION ENABLE */
 
+    /**
+     *
+     * @return
+     */
     public boolean isEnableAcceleration() {
         return enableAcceleration;
     }
 
+
+    /**
+     *
+     * @param enableAcceleration
+     */
     public void setEnableAcceleration(boolean enableAcceleration) {
         this.enableAcceleration = enableAcceleration;
     }
 
-    /* ECHO ENABLE */
 
+    /**
+     *
+     * @return
+     */
     public boolean isEnableEcho() {
         return enableEcho;
     }
 
+
+    /**
+     *
+     * @param enableEcho
+     */
     private void setEnableEcho(boolean enableEcho) {
         this.enableEcho = enableEcho;
     }
 
-    /* XON XOFF FLOW CONTROL ENABLE */
 
+    /**
+     *
+     * @return
+     */
     public boolean isEnableXonXoff() {
         return enableXonXoff;
     }
 
+
+    /**
+     *
+     * @param enableXonXoff
+     */
     private void setEnableXonXoff(boolean enableXonXoff) {
         this.enableXonXoff = enableXonXoff;
     }
 
-    /* FIRMWARE BUILD */
 
+    /**
+     *
+     * @return
+     */
     public SimpleDoubleProperty getFirmwareBuild(){
         return firmwareBuild;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public double getFirmwareBuildVersion(){
         return firmwareBuild.getValue();
     }
 
+
+    /**
+     *
+     * @param firmware_build
+     * @throws JSONException
+     */
     public void setFirmwareBuild(double firmware_build) throws JSONException {
         this.firmwareBuild.set(firmware_build);
         TinygDriver.getInstance().notifyBuildChanged();
     }
 
-    /* FIRMWARE VERSION */
 
+    /**
+     *
+     * @return
+     */
     public StringProperty getFirmwareVersion() {
         return firmwareVersion;
     }
 
+
+    /**
+     *
+     * @param fv
+     */
     public void setFirmwareVersion(String fv) {
         this.firmwareVersion.setValue(fv);
     }
 
-    /* LINE NUMBER */
 
+    /**
+     *
+     * @return
+     */
     public int getLineNumber() {
         return lineNumber.get();
     }
 
+
+    /**
+     *
+     * @return
+     */
     public SimpleIntegerProperty getLineNumberSimple() {
         return lineNumber;
     }
 
+
+    /**
+     *
+     * @param lineNumber
+     */
     public void setLineNumber(int lineNumber) {
         this.lineNumber.set(lineNumber);
     }
 
-    /* COORDINATE SYSTEM */
 
+    /**
+     *
+     * @return
+     */
     public SimpleStringProperty getCoordinateSystem() {
         return this.coordinateSystem;
     }
 
+
+    /**
+     *
+     * @param name
+     * @return
+     */
     public GcodeCoordinateSystem getCoordinateSystemByName(String name) {
         for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
             if (_tmpGCS.getCoordinate().equals(name)) {
@@ -450,6 +696,12 @@ public final class Machine {
         return null;
     }
 
+
+    /**
+     *
+     * @param number
+     * @return
+     */
     public GcodeCoordinateSystem getCoordinateSystemByNumberMnemonic(int number) {
         for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
             if (_tmpGCS.getCoordinateNumberMnemonic() == number) {
@@ -460,6 +712,12 @@ public final class Machine {
         return null;
     }
 
+
+    /**
+     *
+     * @param number
+     * @return
+     */
     public GcodeCoordinateSystem getCoordinateSystemByTgNumber(int number) {
         for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
             if (_tmpGCS.getCoordinateNumberByTgFormat() == number) {
@@ -509,12 +767,20 @@ public final class Machine {
     //        }
     //    }
 
-    /* MACHINE STATE */
 
+    /**
+     *
+     * @return
+     */
     public SimpleStringProperty getMachineState() {
         return this.machineState;
     }
 
+
+    /**
+     *
+     * @param state
+     */
     public void setMachineState(int state) {
         switch (state) {
             case 1:
@@ -547,73 +813,129 @@ public final class Machine {
         }
     }
 
-    /* MIN ARC SEGMENT */
 
+    /**
+     *
+     * @return
+     */
     public float getMinArcSegment() {
         return minArcSegment;
     }
 
+
+    /**
+     *
+     * @param minArcSegment
+     */
     public void setMinArcSegment(float minArcSegment) {
         this.minArcSegment = minArcSegment;
     }
 
-    /* MIN LINE SEGMENT */
 
+    /**
+     *
+     * @return
+     */
     public float getMinLineSegment() {
         return minLineSegment;
     }
 
+
+    /**
+     *
+     * @param minLineSegment
+     */
     public void setMinLineSegment(float minLineSegment) {
         this.minLineSegment = minLineSegment;
     }
 
-    /* MIN SEGMENT TIME */
 
+    /**
+     *
+     * @return
+     */
     public double getMinSegmentTime() {
         return minSegmentTime;
     }
 
+
+    /**
+     *
+     * @param minSegmentTime
+     */
     public void setMinSegmentTime(double minSegmentTime) {
         this.minSegmentTime = minSegmentTime;
     }
 
-    /* VELOCITY */
 
+    /**
+     *
+     * @return
+     */
     public Double getVelocity() {
         return velocity.get();
     }
 
+
+    /**
+     *
+     * @param vel
+     */
     public void setVelocity(double vel) {
         velocity.set(vel);
     }
 
-    /* JOGGING INCREMENT TIME */
 
+    /**
+     *
+     * @param _axisName
+     * @return
+     */
     public double getJoggingIncrementByAxis(String _axisName) {
         return getAxisByName(_axisName).getTravelMaxSimple().get();
     }
 
-    /* AXISES */
 
+    /**
+     *
+     * @return
+     */
     public List<Axis> getAllAxis() {
         return axis;
     }
 
+
+    /**
+     *
+     * @return
+     */
     List<Axis> getAllLinearAxis() {
-        List<Axis> _allAxis = getAllAxis();
-        List<Axis> _retAxisList = new ArrayList<>();
-        for (Axis a : _allAxis) {
+        List<Axis> allAxis = getAllAxis();
+        List<Axis> retAxisList = new ArrayList<>();
+        for (Axis a : allAxis) {
             if (a.getAxisType().equals(AxisType.LINEAR)) {
-                _retAxisList.add(a);
+                retAxisList.add(a);
             }
         }
-        return _retAxisList;
+        return retAxisList;
     }
 
+
+    /**
+     *
+     * @param c
+     * @return
+     */
     private Axis getAxisByName(char c) {
         return getAxisByName(String.valueOf(c));
     }
 
+
+    /**
+     *
+     * @param name
+     * @return
+     */
     public Axis getAxisByName(String name) {
         for (Axis tmpAxis : axis) {
             if (tmpAxis.getAxisName().equals(name.toUpperCase())) {
@@ -623,13 +945,23 @@ public final class Machine {
         return null;
     }
 
-    /* MOTORS */
 
+    /**
+     *
+     * @param m
+     * @return
+     */
     public Motor getMotorByNumber(String m) {
         //Little stub method to allow calling getMotorByNumber with String arg.
         return getMotorByNumber(Integer.valueOf(m));
     }
 
+
+    /**
+     *
+     * @param i
+     * @return
+     */
     public Motor getMotorByNumber(int i) {
         for (Motor m : motors) {
             if (m.getIdNumber() == i) {
@@ -639,17 +971,32 @@ public final class Machine {
         return null;
     }
 
+
+    /**
+     *
+     * @param m
+     * @return
+     */
     public int getMotorAxis(Motor m) {
         return m.getIdNumber();
     }
 
+
+    /**
+     *
+     * @param motorNumber
+     * @param x
+     */
     public void setMotorAxis(int motorNumber, int x) {
         Motor m = getMotorByNumber(motorNumber);
         m.setMapToAxis(x);
     }
 
-    /* JSON STATUS REPORT */
 
+    /**
+     *
+     * @param rc
+     */
     public void applyJsonStatusReport(ResponseCommand rc) {
         Machine machine = TinygDriver.getInstance().getMachine();
         switch (rc.getSettingKey()) {
@@ -714,7 +1061,12 @@ public final class Machine {
         }
     }
 
-    //This is the main method to parser a JSON sys object
+
+    /**
+     * main method to parser a JSON sys object
+     * @param js
+     * @param parent
+     */
     public void applyJsonSystemSetting(JSONObject js, String parent) {
         Machine machine = TinygDriver.getInstance().getMachine();
         logger.info("Applying JSON Object to System Group");

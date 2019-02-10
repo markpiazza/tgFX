@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.system;
 
 
@@ -11,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 /**
  * StatusCode
  *
- * TODO: Any reason this shouldn't be an enum?
  */
 public class StatusCode {
     private static final Logger logger = LogManager.getLogger();
@@ -20,12 +15,6 @@ public class StatusCode {
     private String message;
     private String statusType;
 
-//    private emum
-//    "INTERNAL","GCODE","INPUT","LOW-LEVEL"
-//    // Input errors (400's, if you will)
-//    List<String> places = Arrays.asList(new StatusCode(40, "Unrecgonized Command", line),
-//            );
-    
     private static final int TG_UNRECOGNIZED_COMMAND = 40;      // parser didn't recognize the command
     private static final int TG_EXPECTED_COMMAND_LETTER = 41;   // malformed line to parser
     private static final int TG_BAD_NUMBER_FORMAT = 42;         // number format error
@@ -36,7 +25,8 @@ public class StatusCode {
     private static final int TG_INPUT_VALUE_UNSUPPORTED = 47;   // input error: value is not supported
     private static final int TG_JSON_SYNTAX_ERROR = 48;         // JSON string is not well formed
     private static final int TG_JSON_TOO_MANY_PAIRS = 49;       // JSON string or has too many JSON pairs
-// Gcode and machining errors
+
+    // Gcode and machining errors
     private static final int TG_ZERO_LENGTH_MOVE = 60;          // move is zero length
     private static final int TG_GCODE_BLOCK_SKIPPED = 61;       // block is too short - was skipped
     private static final int TG_GCODE_INPUT_ERROR = 62;         // general error for gcode input
@@ -48,29 +38,43 @@ public class StatusCode {
     private static final int TG_MAX_SPINDLE_SPEED_EXCEEDED = 68;
     private static final int TG_ARC_SPECIFICATION_ERROR = 69;   // arc specification error
 
-//    public StatusCode mapIntToStatusCode(int sc) {
-//        switch (sc) {
-//            case(TG_UNRECOGNIZED_COMMAND):
-//                
-//        }
-//    }
 
+    /**
+     *
+     * @param sn
+     * @param msg
+     * @param type
+     */
     public StatusCode(int sn, String msg, String type) {
         statusNUmber = sn;
         message = msg;
         statusType = type;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public String getStatusType() {
         return statusType;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public int getStatusNumber() {
         return statusNUmber;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public String getMessage() {
         return message;
     }
-
 }

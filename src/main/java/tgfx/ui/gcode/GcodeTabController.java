@@ -504,7 +504,7 @@ public class GcodeTabController implements Initializable {
             } //end if isSendingFile
             else {
                 //We are sending a file... We need to post a messages
-                setGcodeTextTemp("Jogging sd... Sending File.");
+                setGcodeText("Jogging disabled... Sending File.");
             }
         });
 
@@ -784,18 +784,6 @@ public class GcodeTabController implements Initializable {
     public SimpleBooleanProperty isSendingFile(){
         // logger.info("isSendingFile: {}", isSendingFile);
         return isSendingFile;
-    }
-
-
-    /**
-     * setGcodeTextTemp
-     * updates the gcodeTextTemp model
-     *
-     * @param text message
-     */
-    public void setGcodeTextTemp(String text) {
-        // logger.info("setGcodeTextTemp: {}", text);
-        gcodeStatusMessageValue.setValue(text);
     }
 
 

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.hardwarePlatforms;
 
 import com.google.gson.Gson;
@@ -11,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +16,7 @@ import tgfx.tinyg.TinygDriver;
 
 /**
  * HardwarePlatformManager
- *
+ * manages the hardware platforms that are loaded from the file system
  */
 public class HardwarePlatformManager {
     private static final Logger logger = LogManager.getLogger();
@@ -30,11 +25,19 @@ public class HardwarePlatformManager {
 
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
 
+    /**
+     * constructor, loads the platforms
+     */
     private HardwarePlatformManager() {
         logger.info("Starting HardwarePlatformManager");
         this.loadPlatformConfigs();
     }
 
+
+    /**
+     * get hardware platform singleton
+     * @return get a hardware platform manager singleton
+     */
     public static HardwarePlatformManager getInstance() {
         if(hardwarePlatformManagerInstance == null){
             hardwarePlatformManagerInstance = new HardwarePlatformManager();
@@ -42,8 +45,13 @@ public class HardwarePlatformManager {
         return hardwarePlatformManagerInstance;
     }
 
-    //we are not using this until all platforms have the $hp element.
+
+    /**
+     * set a platform by name
+     * @param name platform name
+     */
     public void setPlatformByName(String name) {
+        //we are not using this until all platforms have the $hp element.
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getPlatformName().equals(name)) {
                 TinygDriver.getInstance().getMachine().setHardwarePlatform(platform);
@@ -53,6 +61,11 @@ public class HardwarePlatformManager {
         }
     }
 
+
+    /**
+     * set a platform by version
+     * @param verNumber platform version
+     */
     public void setHardwarePlatformByVersionNumber(int verNumber) {
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getHardwarePlatformVersion() == verNumber) {
@@ -63,10 +76,13 @@ public class HardwarePlatformManager {
         }
     }
 
+    /**
+     * load hardware platform configs
+     */
     private void loadPlatformConfigs() {
         // FIXME: god damned java file loading
         File folder = new File(TgFXConstants.PATH+"/hardwarePlatforms");
-        if(folder==null){
+        if(!folder.exists()){
             logger.error("Error loading platform configs, path not found");
             return;
         }
@@ -93,6 +109,9 @@ public class HardwarePlatformManager {
         logger.info("Loaded " + availablePlatforms.size() + " platform files");
     }
 
+    /**
+     * update platform files
+     */
     private void updatePlatformFiles() {
         // TODO: code in support for updating platform files from remote server
     }

@@ -58,30 +58,33 @@ public class CNCMachine extends Pane {
 
     /**
      * CNCMachine
-     *
+     * CNCMachine constructor
      */
     public CNCMachine() {
         //Cursor point indicator
         cursorPoint.setRadius(1);
-        this.setMaxSize(0, 0);  //hide this element until we connect
 
-        //Set our machine size from tinyg travel max
+        // hide this element until we connect
+        this.setMaxSize(0, 0);
+
+        // Set our machine size from tinyg travel max
         this.setVisible(false);
         this.setPadding(new Insets(10));
         this.setFocusTraversable(true);
         this.setFocused(true);
 
-        /*
-         * PositionCursor Set
-         */
+        // PositionCursor Set
         final Circle c = new Circle(2, Color.RED);
         final Text cursorText = new Text("None");
         cursorText.setFill(Color.YELLOW);
         cursorText.setFont(Font.font("Arial", 6));
 
         logger.info("initial CNCMachine layout setup");
-        setupLayout(); //initial layout setup in constructor
 
+        // initial layout setup in constructor
+        setupLayout();
+
+        // mouse moved inside the CNCMachine
         ChangeListener posChangeListener = (observableValue, oldValue, newValue) -> {
             if (MACHINE.getAxisByName("y").getMachinePosition() > heightProperty().get()
                     || MACHINE.getAxisByName("x").getMachinePosition() > widthProperty().get()) {
@@ -92,17 +95,20 @@ public class CNCMachine extends Pane {
 
         };
 
+        // mouse exited the CNCMachine
         this.setOnMouseExited(me -> {
-//             gcodePane.getChildren().remove(c);
+            // gcodePane.getChildren().remove(c);
             getChildren().remove(cursorText);
             unFocusForJogging();
         });
 
+        // mouse entered the CNCMachine
         this.setOnMouseEntered(me -> {
             setFocusForJogging();
             requestFocus();
         });
 
+        //  mouse clicked the CNCMachine
         this.setOnMouseClicked(me -> {
             logger.info("set machine position");
             //T his is so we can set our machine position when a machine does not have homing switches
@@ -127,80 +133,141 @@ public class CNCMachine extends Pane {
         });
 
 
-        maxHeightProperty().bind(MACHINE.getAxisByName("y").getTravelMaxSimple().multiply(MACHINE.gcodeUnitDivision));
-        maxWidthProperty().bind(MACHINE.getAxisByName("x").getTravelMaxSimple().multiply(MACHINE.gcodeUnitDivision));
+        maxHeightProperty().bind(MACHINE.getAxisByName("y")
+                .getTravelMaxSimple().multiply(MACHINE.gcodeUnitDivision));
+        maxWidthProperty().bind(MACHINE.getAxisByName("x")
+                .getTravelMaxSimple().multiply(MACHINE.gcodeUnitDivision));
 
-        cursorPoint.translateYProperty().bind(this.heightProperty().subtract(MACHINE.getAxisByName("y").getMachinePositionSimple()));
-        cursorPoint.layoutXProperty().bind(MACHINE.getAxisByName("x").getMachinePositionSimple());
+        cursorPoint.translateYProperty()
+                .bind(this.heightProperty().subtract(MACHINE.getAxisByName("y").getMachinePositionSimple()));
+        cursorPoint.layoutXProperty()
+                .bind(MACHINE.getAxisByName("x").getMachinePositionSimple());
 
         cncHeight.bind(this.heightProperty());
         cncWidth.bind(this.widthProperty());
-//            //When the x or y pos changes we see if we want to show or hide the cursor
+
+        //When the x or y pos changes we see if we want to show or hide the cursor
         cursorPoint.layoutXProperty().addListener(posChangeListener);
         cursorPoint.layoutYProperty().addListener(posChangeListener);
     }
 
-    public StackPane getGcodePane() {
+
+    /**
+     * get the pane that the CNCMachine lives in
+     * @return gcode pane
+     */
+    private StackPane getGcodePane() {
         return gcodePane;
     }
 
-    //TODO: not sure we need this
-    public void setGcodePane(StackPane gcodePane) {
-        this.gcodePane = gcodePane;
-    }
 
+    /**
+     * hide or show the cursor
+     * @param choice sets visibility
+     */
     private void hideOrShowCursor(boolean choice) {
         logger.info(choice?"show cursor":"hide cursor");
         this.visibleProperty().set(choice);
     }
 
+
+    /**
+     * unFocus for jogging
+     */
     private void unFocusForJogging() {
         logger.info("unFocusForJogging");
         this.setFocused(true);
-//        GcodeTabController.hideGcodeText();
     }
 
+
+    /**
+     * focus for jogging
+     */
     private void setFocusForJogging() {
         logger.info("setFocusForJogging");
         this.setFocused(true);
-//        Main.postConsoleMessage("Focused");
-        //GcodeTabController.setGcodeText("Jogging Enabled");
     }
 
+
+    /**
+     * get normalized x position
+     * @param x x axis position
+     * @return normalized x position
+     */
     private double getNormalizedX(double x) {
         return x / MACHINE.gcodeUnitDivision.get();
     }
 
+
+    /**
+     * get normalized y position
+     * @param y y axis position
+     * @return normalized y position
+     */
     private double getNormalizedY(double y) {
         return (getHeight() - y) / MACHINE.gcodeUnitDivision.get();
     }
 
+
+    /**
+     * get normalized x string
+     * @param y y axis position
+     * @return formatted y axis position
+     */
     public String getNormalizedYasString(double y) {
         return df.format(getNormalizedY(y));
     }
 
+
+    /**
+     * get normalized x string
+     * @param x x axis position
+     * @return formatted x axis position
+     */
     public String getNormalizedXasString(double x) {
         return df.format(getNormalizedX(x));
     }
 
+
+    /**
+     * check y bounds
+     * @param l line
+     * @return is inside bounds
+     */
     private boolean checkBoundsY(Line l) {
         return this.getHeight() - l.getEndY() >= 0
                 && this.getHeight() - l.getEndY() <= this.getHeight() + 1;
     }
 
+
+    /**
+     * check x bounds
+     * @param l line
+     * @return is inside bounds
+     */
     private boolean checkBoundsX(Line l) {
         return l.getEndX() >= 0
                 && l.getEndX() <= this.getWidth();
     }
 
+
+    /**
+     * clear screen
+     * reset layout
+     */
     public void clearScreen() {
-        logger.info("clearScreen");
+        logger.info("screen clear triggered CNCMachine layout setup");
         this.getChildren().clear();
         Draw2d.setFirstDraw(true);  //We don't want to draw a line from where the previous point was when a clear screen is called.
-        logger.info("screen clear triggered CNCMachine layout setup");
         setupLayout();  //re-draw the needed elements.
     }
 
+
+    /**
+     * draw a line
+     * @param moveType type of movement
+     * @param vel velocity
+     */
     public void drawLine(String moveType, double vel) {
         logger.info("drawLine");
         Line l = new Line();
@@ -243,7 +310,7 @@ public class CNCMachine extends Pane {
 //        Main.print(gcodePane.getHeight() - MACHINE.getAxisByName("y").getWorkPosition().get());
 //        double newX = MACHINE.getAxisByName("x").getMachinePositionSimple().get(); // + magnification;
 //        double newY = this.getHeight() - MACHINE.getAxisByName("y").getMachinePositionSimple().get(); // + magnification;
-//
+
         if (Draw2d.isFirstDraw()) {
             //This is to not have us draw a line on the first connect.
             l = new Line(newX, this.getHeight(), newX, this.getHeight());
@@ -294,9 +361,12 @@ public class CNCMachine extends Pane {
                 }
             }
         }
-
     }
 
+
+    /**
+     * zero coordinates
+     */
     public void zeroSystem() {
         logger.info("zeroSystem");
         if (DRIVER.isConnected().get()) {
@@ -314,6 +384,10 @@ public class CNCMachine extends Pane {
         }
     }
 
+
+    /**
+     * reset drawing coordinates
+     */
     public void resetDrawingCoords() {
         logger.info("resetDrawingCoords");
         //After a reset has occured we call this ot reset the previous coords.
@@ -321,6 +395,10 @@ public class CNCMachine extends Pane {
         yPrevious = 0;
     }
 
+
+    /**
+     * setup layout
+     */
     private void setupLayout() {
         logger.info("setupLayout");
         //This draws the x axis text as well as grid etc
@@ -346,6 +424,11 @@ public class CNCMachine extends Pane {
         this.getChildren().add(cursorPoint);
     }
 
+
+    /**
+     * scale workspace
+     * @param scaleAmount scale amount
+     */
     public void autoScaleWorkTravelSpace(double scaleAmount) {
         logger.info("autoScaleWorkTrabelSpace");
         //Get the axis with the smallest available space.  Think aspect ratio really

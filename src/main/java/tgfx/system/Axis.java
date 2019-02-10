@@ -44,7 +44,7 @@ public final class Axis {
     private static final DecimalFormat decimalFormatJunctionDeviation =
             new DecimalFormat("0.000000");
     private static final DecimalFormat decimalFormatMaximumJerk =
-            new DecimalFormat("################################.############################");
+            new DecimalFormat("#.###");
 
     private List<Motor> motors = new ArrayList<>();
 
