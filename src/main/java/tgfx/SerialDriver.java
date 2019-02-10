@@ -31,6 +31,11 @@ public class SerialDriver implements SerialPortEventListener {
     private SerialDriver() {
     }
 
+
+    /**
+     *
+     * @return
+     */
     public static SerialDriver getInstance() {
         if(serialDriverInstance==null){
             serialDriverInstance = new SerialDriver();
@@ -38,10 +43,20 @@ public class SerialDriver implements SerialPortEventListener {
         return serialDriverInstance;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public SerialPort getSerialPort(){
         return serialPort;
     }
 
+
+    /**
+     *
+     * @param str
+     */
     public void write(String str) {
         try {
             serialPort.writeBytes(str.getBytes());
@@ -51,15 +66,32 @@ public class SerialDriver implements SerialPortEventListener {
         }
     }
 
+
+    /**
+     *
+     * @param str
+     * @throws SerialPortException
+     */
     public void priorityWrite(String str) throws SerialPortException {
         serialPort.writeBytes(str.getBytes());
     }
 
+
+    /**
+     *
+     * @param b
+     * @throws SerialPortException
+     */
     public void priorityWrite(Byte b) throws SerialPortException {
         logger.debug("[*] Priority Write Sent\n");
         serialPort.writeByte(b);
     }
 
+
+    /**
+     *
+     * @throws SerialPortException
+     */
     public synchronized void disconnect() throws SerialPortException {
         if (serialPort != null && serialPort.isOpened()) {
             serialPort.closePort();
@@ -67,20 +99,33 @@ public class SerialDriver implements SerialPortEventListener {
         }
     }
 
-    public void setConnected(boolean c) {
-        connectionState = c;
-    }
 
+    /**
+     *
+     * @return
+     */
     public boolean isConnected() {
         return connectionState;
     }
 
+
+    /**
+     *
+     * @param c
+     */
+    public void setConnected(boolean c) {
+        connectionState = c;
+    }
+
+
+    /**
+     *
+     * @param event
+     */
     @Override
     public void serialEvent(SerialPortEvent event) {
-        int bytesToRead;
+        int bytesToRead = event.getEventValue();
         byte[] tmpBuffer = null;
-
-        bytesToRead = event.getEventValue();
 
         if (event.isRXCHAR()) {
             try {
@@ -108,6 +153,10 @@ public class SerialDriver implements SerialPortEventListener {
     }
 
 
+    /**
+     *
+     * @return
+     */
     public String[] listSerialPorts() {
         String[] ports = jssc.SerialPortList.getPortNames();
         List<String> portList = new ArrayList<>();
@@ -132,6 +181,14 @@ public class SerialDriver implements SerialPortEventListener {
         return portList.toArray(new String[0]);
     }
 
+
+    /**
+     *
+     * @param port
+     * @param DATA_RATE
+     * @return
+     * @throws SerialPortException
+     */
     public boolean initialize(String port, int DATA_RATE) throws SerialPortException {
         if (isConnected()) {
             String returnMsg = "[*] Port Already Connected.\n";

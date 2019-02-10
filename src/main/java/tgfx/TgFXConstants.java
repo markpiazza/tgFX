@@ -2,6 +2,7 @@ package tgfx;
 
 /**
  * TgFXCONSTANTS
+ *
  */
 @SuppressWarnings("WeakerAccess") // these accessors _can_ be package-private, but I don't want them to be
 public class TgFXConstants {

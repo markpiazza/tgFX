@@ -17,6 +17,12 @@ import java.io.IOException;
 public class TgFX extends Application {
     private static final Logger logger = LogManager.getLogger();
 
+
+    /**
+     *
+     * @param stage
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(TgFXConstants.STAGE_FXML_MAIN));
@@ -28,17 +34,13 @@ public class TgFX extends Application {
         stage.setMinWidth(TgFXConstants.STAGE_MIN_WIDTH);
         stage.setScene(scene);
         stage.show();
-
-//        Gauge root = new Gauge(Gauge.SkinType.LCD);
-//        root.setMaxMeasuredValueVisible(false);
-//        root.setMinMeasuredValueVisible(false);
-//        root.setOldValueVisible(false);
-//        root.setTitle("A Axis Position");
-//        root.setSubTitle("mm/min");
-//        stage.setScene(new Scene(root,200,75));
-//        stage.show();
     }
 
+
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         logger.info("Starting up TgFX");
         Application.launch(TgFX.class, args);

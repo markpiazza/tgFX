@@ -25,16 +25,32 @@ public class SerialWriter implements Runnable {
     private boolean run = true;
     private boolean cleared  = false;
 
+    private SimpleBooleanProperty isSendingFile = new SimpleBooleanProperty(false);
+    private SimpleStringProperty gcodeComment = new SimpleStringProperty("");
+
+
+    /**
+     *
+     * @param queue
+     */
     public SerialWriter(BlockingQueue queue) {
         this.queue = queue;
     }
 
+
+    /**
+     *
+     */
     void resetBuffer() {
         //Called onDisconnectActions
         bufferAvailable.set(BUFFER_SIZE);
         notifyAck();
     }
 
+
+    /**
+     *
+     */
     public void clearQueueBuffer() {
         queue.clear();
         // We set this to tell the MUTEX with waiting for an ack to
@@ -46,33 +62,68 @@ public class SerialWriter implements Runnable {
         this.notifyAck();
     }
 
+
+    /**
+     *
+     * @return
+     */
     public boolean isRun() {
         return run;
     }
 
+
+    /**
+     *
+     * @param run
+     */
     public void setRun(boolean run) {
         this.run = run;
     }
 
+
+    /**
+     *
+     * @return
+     */
     synchronized int getBufferValue() {
         return bufferAvailable.get();
     }
 
+
+    /**
+     *
+     * @param val
+     */
     public synchronized void setBuffer(int val) {
         logger.debug("Got a BUFFER Response.. reset it to: " + val);
         bufferAvailable.set(val);
     }
 
+
+    /**
+     *
+     * @param lenBytesReturned
+     */
     synchronized void addBytesReturnedToBuffer(int lenBytesReturned) {
         bufferAvailable.set(getBufferValue() + lenBytesReturned);
         logger.debug("Returned " + lenBytesReturned + " to buffer. " +
                 "Buffer is now at " + bufferAvailable);
     }
 
+
+    /**
+     *
+     * @param cmd
+     */
     public void addCommandToBuffer(String cmd) {
         this.queue.add(cmd);
     }
 
+
+    /**
+     *
+     * @param t
+     */
     public void setThrottled(boolean t) {
         synchronized (MUTEX) {
             if (t == THROTTLED) {
@@ -84,6 +135,10 @@ public class SerialWriter implements Runnable {
         }
     }
 
+
+    /**
+     *
+     */
     public void notifyAck() {
         // This is called by the response parser when an ack packet is recvd.  This
         // Will wake up the MUTEX that is sleeping in the write method of the serialWriter
@@ -94,6 +149,11 @@ public class SerialWriter implements Runnable {
         }
     }
 
+
+    /**
+     *
+     * @param str
+     */
     private void sendUiMessage(String str) {
         //Used to send messages to the console on the GUI
         StringBuilder gcodeComment = new StringBuilder();
@@ -104,7 +164,12 @@ public class SerialWriter implements Runnable {
         }
         Main.postConsoleMessage(" Gcode Comment << " + gcodeComment);
     }
-    
+
+
+    /**
+     *
+     * @param str
+     */
     public void write(String str) {
         try {
             synchronized (MUTEX) {
@@ -149,20 +214,28 @@ public class SerialWriter implements Runnable {
         }
     }
 
-    // TODO: is this as good as an event?
-    // start
-    private SimpleBooleanProperty isSendingFile = new SimpleBooleanProperty(false);
-    private SimpleStringProperty gcodeComment = new SimpleStringProperty("");
 
+    /**
+     *
+     * @return
+     */
     public SimpleBooleanProperty getIsSendingFile(){
         return isSendingFile;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public SimpleStringProperty getGcodeComment(){
         return gcodeComment;
     }
-    // end
 
+
+    /**
+     *
+     */
     @Override
     public void run() {
         logger.info("Serial Writer Thread Running...");

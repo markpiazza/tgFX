@@ -18,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -48,12 +49,7 @@ import static tgfx.TgFXConstants.*;
 import static tgfx.tinyg.Commands.*;
 
 /**
- * The <code>Main</code> class is logically the "main" class of the application,
- * but due to how javaFX's framework is setup, it is not the first class
- * executed on application startup, rather that is TgFX, which is kicked off
- * under the control of the XML instructions.
- *
- * @see TgFX
+ * Main controller for the application
  *
  */
 public class Main extends Stage implements Initializable, Observer, QueuedTimerable<String> {
@@ -61,20 +57,20 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     private TinygDriver DRIVER = TinygDriver.getInstance();
 
-
     private GcodeHistory gcodeCommandHistory;
     private QueueUsingTimer<String> connectionTimer;
 
     private static StringProperty consoleText =  new SimpleStringProperty();
 
     private int oldRspLine = 0;
+
     //Time between config set'ers.
     private int delayValue = 150;
+
     //this is checked upon initial connect.  Once this is set to true
     private boolean buildChecked = false;
 
     // controllers
-    @SuppressWarnings("unused")
     @FXML
     private GcodeTabController gcodeTabController;
 
@@ -103,11 +99,20 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     private Label srMomo, srState, srBuild, srBuffer, srGcodeLine, srVer, srUnits, srCoord;
 
 
+    /**
+     *
+     */
+    public Main() {
+        logger.info("MAIN()");
+        connectionTimer = new QueueUsingTimer<>( CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
+        gcodeCommandHistory = new GcodeHistory();
+    }
 
-    /* ********************
-     * FXML bound handlers
-     * ********************/
 
+    /**
+     *
+     * @param event
+     */
     @FXML
     private void FXreScanSerial(ActionEvent event) {
         this.reScanSerial();
@@ -116,6 +121,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     /**
      *
+     * @param event
      */
     @FXML
     private void handleConnect(ActionEvent event) {
@@ -165,8 +171,8 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     /**
      * Looks like it's for adding and removing gcode breakpoints
      */
-//    @FXML
-//    private void gcodeProgramClicks(MouseEvent me) {
+    @FXML
+    private void gcodeProgramClicks(MouseEvent me) {
 //        TextField tField = (TextField) gcodesList.getSelectionModel().getSelectedItem();
 //        if (me.getButton() == me.getButton().SECONDARY) {
 ////            DRIVER.write("{\"gc\":\"" + lbl.getText() + "\"}\n");
@@ -177,22 +183,25 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 //            logger.info("double clicked");
 //            tField.setEditable(true);
 //
-//            //if (lbl.getParent().getStyleClass().contains("breakpoint")) {
-////                lbl.getParent().getStyleClass().remove("breakpoint");
-////                tgfx.Main.postConsoleMessage("BREAKPOINT REMOVED: " + lbl.getText() + "\n");
-////                logger.info("BREAKPOINT REMOVED");
-////            } else {
-////
-////                logger.info("DOUBLE CLICKED");
-////                lbl.getStyleClass().removeAll(null);
-////                lbl.getParent().getStyleClass().add("breakpoint");
-////                logger.info("BREAKPOINT SET");
-////                tgfx.Main.postConsoleMessage("BREAKPOINT SET: " + lbl.getText() + "\n");
-////            };
+//            if (lbl.getParent().getStyleClass().contains("breakpoint")) {
+//                lbl.getParent().getStyleClass().remove("breakpoint");
+//                tgfx.Main.postConsoleMessage("BREAKPOINT REMOVED: " + lbl.getText() + "\n");
+//                logger.info("BREAKPOINT REMOVED");
+//            } else {
+//
+//                logger.info("DOUBLE CLICKED");
+//                lbl.getStyleClass().removeAll(null);
+//                lbl.getParent().getStyleClass().add("breakpoint");
+//                logger.info("BREAKPOINT SET");
+//                tgfx.Main.postConsoleMessage("BREAKPOINT SET: " + lbl.getText() + "\n");
+//            }
 //        }
-//    }
+    }
 
 
+    /**
+     *
+     */
     @FXML
     private void handleGuiRefresh() {
         //Refreshed all gui settings from TinyG Responses.
@@ -206,6 +215,11 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         }
     }
 
+
+    /**
+     *
+     * @param event
+     */
     @FXML
     private void handleKeyPress(final InputEvent event) {
         //private void handleEnter(ActionEvent event) throws Exception {
@@ -240,11 +254,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 //            input.positionCaret(input.lengthProperty().get());
         }
     }
-
-
-    /* *********
-     * Overrides
-     * *********/
 
 
     /**
@@ -285,9 +294,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         // console binding
         console.textProperty().bindBidirectional(consoleText);
 
-        /*
-         * THREAD INITS
-         */
         Thread serialWriterThread = new Thread(DRIVER.getSerialWriter());
 
         serialWriterThread.setName("SerialWriter");
@@ -299,9 +305,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         threadResponseParser.setName("ResponseParser");
         threadResponseParser.start();
 
-        /*
-         * String Converters
-         */
+
         StringConverter<Number> sc = new StringConverter<Number>() {
             @Override
             public String toString(Number n) {
@@ -314,9 +318,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
             }
         };
 
-        /*
-         * BINDINGS
-         */
         Machine machine = DRIVER.getMachine();
         srMomo.textProperty().bind(machine.getMotionMode());
         srVer.textProperty().bind(machine.getFirmwareVersion());
@@ -327,6 +328,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         srCoord.textProperty().bind(machine.getGcodeCoordinateManager()
                 .getCurrentGcodeCoordinateSystemName());
         srGcodeLine.textProperty().bind(machine.getLineNumberSimple().asString());
+
     }
 
 
@@ -412,18 +414,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     }
 
 
-    /* **********************
-     * Public/Private methods
-     * **********************/
-
-    /**
-     *
-     */
-    public Main() throws IOException {
-        logger.info("MAIN()");
-        connectionTimer = new QueueUsingTimer<>( CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
-        gcodeCommandHistory = new GcodeHistory();
-    }
 
     /**
      * can't access the console from a static context due to the way JavaFX8 works
@@ -440,10 +430,14 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     }
 
     private void doTinyGConnectionTimeout() {
-        Main.postConsoleMessage("ERROR! - tgFX timed out while attempting to connect to TinyG.  \nVerify the port you selected and that power is applied to your TinyG.");
-        DRIVER.setTimedout(true);  //we set this to tell the firmware updater that we have no clue what platform we are dealing with because it timed out.
+        Main.postConsoleMessage("ERROR! - tgFX timed out while attempting to connect to TinyG.  \n" +
+                "Verify the port you selected and that power is applied to your TinyG.");
+        // we set this to tell the firmware updater that we have no
+        // clue what platform we are dealing with because it timed out.
+        DRIVER.setTimedout(true);
         Platform.runLater(() -> {
-            Connect.setText("Connect"); //set the text back to "connect" since we are disconnected
+            //set the text back to "connect" since we are disconnected
+            Connect.setText("Connect");
             MonologFXButton btnYes = new MonologFXButton();
             btnYes.setDefaultButton(true);
             btnYes.setIcon("/testmonologfx/dialog_apply.png");
@@ -499,6 +493,11 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     }
 
 
+    /**
+     *
+     * @param keyArgument
+     * @throws SerialPortException
+     */
     private void doTinyGUserMessage(String keyArgument) throws SerialPortException {
         if (keyArgument.trim().equals("SYSTEM READY")) {
             //The board has been reset and is ready to re-init our internal tgFX models
@@ -512,6 +511,10 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         }
     }
 
+
+    /**
+     *
+     */
     private void doBuildOK() {
         //TinyG's build version is up to date to run tgfx.
         if (!buildChecked && DRIVER.isConnected().get()) {
@@ -520,6 +523,10 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         }
     }
 
+
+    /**
+     *
+     */
     private void doStatusReport() {
         gcodeTabController.drawCanvasUpdate();
         int rspLine = DRIVER.getMachine().getLineNumber();
@@ -539,6 +546,11 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         }
     }
 
+
+    /**
+     *
+     * @param keyValue
+     */
     private void doBuildError(String keyValue) {
         //This is the code to manage the build error window and checking system.
         logger.error("Your TinyG firmware is too old.  System is exiting.");
@@ -616,6 +628,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         serialPorts.getItems().addAll(Arrays.asList(portArray));
     }
 
+
     /**
      * These are the actions that need to be ran upon successful serial port
      * connection. If you have something that you want to "auto run" on connect.
@@ -630,14 +643,15 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
             DRIVER.write(CMD_APPLY_NOOP);
             DRIVER.write(CMD_APPLY_NOOP);
 
-//                    DRIVER.write(CMD_QUERY_HARDWARE_PLATFORM);
+//            DRIVER.write(CMD_QUERY_HARDWARE_PLATFORM);
             DRIVER.write(CMD_QUERY_HARDWARE_VERSION);
             DRIVER.write(CMD_QUERY_HARDWARE_BUILD_NUMBER);
-//                    Thread.sleep(delayValue);  //Should not need this for query operations
+//            Thread.sleep(delayValue);  //Should not need this for query operations
             Main.postConsoleMessage("Getting TinyG Firmware Build Version....");
             connectionTimer.start();
         });
     }
+
 
     /**
      *
@@ -680,7 +694,8 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 Thread.sleep(delayValue);
                 DRIVER.write(CMD_APPLY_TEXT_VERBOSITY);
 
-                gcodeTabController.setCNCMachineVisible(true); //Once we connected we should show the drawing enevlope.
+                //Once we connected we should show the drawing envelope.
+                gcodeTabController.setCNCMachineVisible(true);
                 Main.postConsoleMessage("Showing CNC Machine Preview...");
                 gcodeTabController.setGcodeText("TinyG Connected.");
 
@@ -689,6 +704,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
             }
         });
     }
+
 
     /**
      *
