@@ -7,8 +7,8 @@
 <?import eu.hansolo.medusa.*?>
 
 <?import java.net.URL?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
+<?import tgfx.render.CNCMachine?>
+
 <Tab text="Gcode" closable="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
      fx:controller="tgfx.ui.gcode.GcodeTabController">
     <AnchorPane id="settingsContent" >
@@ -90,7 +90,9 @@
                     </HBox>
 
                     <!-- preview pane -->
-                    <StackPane fx:id="gcodePane" id="topPreviewPane" minHeight="400.0" minWidth="400.0"/>
+                    <StackPane fx:id="gcodePane" id="topPreviewPane" minHeight="400.0" minWidth="400.0" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                        <CNCMachine fx:id="cncMachinePane"/>
+                    </StackPane>
 
                     <!-- information -->
                     <HBox alignment="CENTER_RIGHT" maxHeight="45.0" minHeight="55.0" spacing="5.0" VBox.vgrow="NEVER">
@@ -165,7 +167,7 @@
 
 
             <!-- lcd gauges -->
-            <VBox fx:id="lcdGuages" id="lcdGuages" alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="NEVER">
+            <VBox fx:id="lcdGauges" id="lcdGuages" alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="NEVER">
                 <padding>
                     <Insets top="15.0"/>
                 </padding>
