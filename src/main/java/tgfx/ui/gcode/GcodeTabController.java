@@ -24,6 +24,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import jssc.SerialPortException;
@@ -129,6 +130,9 @@ public class GcodeTabController implements Initializable {
             gcodeStatusMessageTxt;
 
     /* right vbox */
+
+    @FXML
+    VBox lcdGuages;
 
     @FXML
     private Gauge xLcd,
@@ -422,9 +426,6 @@ public class GcodeTabController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         logger.info("Initializing GcodeTabController.");
 
-
-        logger.info("Gcode Controller Loaded");
-
         cncMachinePane.setOnMouseMoved(mouseEvent -> {
             yPosition.setValue(cncMachinePane.getNormalizedYasString(mouseEvent.getY()));
             xPosition.setValue(cncMachinePane.getNormalizedXasString(mouseEvent.getX()));
@@ -461,9 +462,9 @@ public class GcodeTabController implements Initializable {
                         //This is and Y Axis Jog action
                         axis = "Y"; //Set the axis for this jog movement
                         if (keyEvent.getCode().equals(KeyCode.UP)) {
-                            jogDial = MACHINE.getJoggingIncrementByAxis(axis);
-                        } else if (keyEvent.getCode().equals(KeyCode.DOWN)) {
                             //Invert this value by multiplying by -1
+                            jogDial = MACHINE.getJoggingIncrementByAxis(axis);
+                        } else {
                             jogDial = -1 * MACHINE.getJoggingIncrementByAxis(axis);
                         }
 
@@ -472,9 +473,9 @@ public class GcodeTabController implements Initializable {
                         //This is a X Axis Jog Action
                         axis = "X"; //Set the axis for this jog movement
                         if (keyEvent.getCode().equals(KeyCode.LEFT)) {
-                            jogDial = -1 * MACHINE.getJoggingIncrementByAxis(axis);
-                        } else if (keyEvent.getCode().equals(KeyCode.RIGHT)) {
                             //Invert this value by multiplying by -1
+                            jogDial = -1 * MACHINE.getJoggingIncrementByAxis(axis);
+                        } else {
                             jogDial = MACHINE.getJoggingIncrementByAxis(axis);
                         }
 
@@ -483,9 +484,9 @@ public class GcodeTabController implements Initializable {
                         //This is and Y Axis Jog action
                         axis = "Z"; //Set the axis for this jog movement
                         if (keyEvent.getCode().equals(KeyCode.MINUS)) {
-                            jogDial = -1 * MACHINE.getJoggingIncrementByAxis(axis);
-                        } else if (keyEvent.getCode().equals(KeyCode.EQUALS)) {
                             //Invert this value by multiplying by -1
+                            jogDial = -1 * MACHINE.getJoggingIncrementByAxis(axis);
+                        } else {
                             jogDial = MACHINE.getJoggingIncrementByAxis(axis);
                         }
                     }

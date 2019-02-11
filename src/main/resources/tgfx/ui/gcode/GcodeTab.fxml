@@ -7,8 +7,10 @@
 <?import eu.hansolo.medusa.*?>
 
 <?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <Tab text="Gcode" closable="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
-    fx:controller="tgfx.ui.gcode.GcodeTabController">
+     fx:controller="tgfx.ui.gcode.GcodeTabController">
     <AnchorPane id="settingsContent" >
         <stylesheets>
             <URL value="@gcodetab.css"/>
@@ -142,16 +144,28 @@
                                 <Label text="X:" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                                 <Text fx:id="xAxisLocationTxt" GridPane.columnIndex="1" GridPane.rowIndex="1" fill="BLACK" text="0" />
                             </GridPane>
+<!--
+                            <VBox>
+                                <ChoiceBox>
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="1"/>
+                                            <String fx:value="10"/>
+                                            <String fx:value="100"/>
+                                        </FXCollections>
+                                    </items>
+                                </ChoiceBox>
+                            </VBox>
+-->
                         </HBox>
                     </HBox>
-
                 </VBox>
             </HBox>
             <!-- end preview -->
 
 
             <!-- lcd gauges -->
-            <VBox id="lcdGuages" alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="NEVER">
+            <VBox fx:id="lcdGuages" id="lcdGuages" alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="NEVER">
                 <padding>
                     <Insets top="15.0"/>
                 </padding>
@@ -225,6 +239,7 @@
                        oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
                        minWidth="200" prefWidth="200" maxWidth="200"
                        minHeight="75" prefHeight="75" maxHeight="75"/>
+
                 <HBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                     <Button text="Zero All" onAction="#handleZeroSystem" focusTraversable="false"
                             alignment="BASELINE_LEFT" VBox.vgrow="NEVER"/>

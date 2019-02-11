@@ -1,6 +1,5 @@
 package tgfx;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Observable;
@@ -55,12 +54,14 @@ import static tgfx.tinyg.Commands.*;
 public class Main extends Stage implements Initializable, Observer, QueuedTimerable<String> {
     private static final Logger logger = LogManager.getLogger();
 
+    private static StringProperty consoleText =  new SimpleStringProperty();
+
     private TinygDriver DRIVER = TinygDriver.getInstance();
 
-    private GcodeHistory gcodeCommandHistory;
-    private QueueUsingTimer<String> connectionTimer;
+    private GcodeHistory gcodeCommandHistory = new GcodeHistory();
 
-    private static StringProperty consoleText =  new SimpleStringProperty();
+    private QueueUsingTimer<String> connectionTimer =
+            new QueueUsingTimer<>( CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
 
     private int oldRspLine = 0;
 
@@ -70,7 +71,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
     //this is checked upon initial connect.  Once this is set to true
     private boolean buildChecked = false;
 
-    // controllers
+    @SuppressWarnings("unused") // IDE says it's unused, but don't believe it
     @FXML
     private GcodeTabController gcodeTabController;
 
@@ -104,14 +105,12 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
      */
     public Main() {
         logger.info("MAIN()");
-        connectionTimer = new QueueUsingTimer<>( CONNECTION_TIMEOUT, this, CONNECTION_TIMEOUT_STRING);
-        gcodeCommandHistory = new GcodeHistory();
     }
 
 
     /**
      *
-     * @param event
+     * @param event action event
      */
     @FXML
     private void FXreScanSerial(ActionEvent event) {
@@ -121,7 +120,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     /**
      *
-     * @param event
+     * @param event action event
      */
     @FXML
     private void handleConnect(ActionEvent event) {
@@ -170,6 +169,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     /**
      * Looks like it's for adding and removing gcode breakpoints
+     * @param me mouse event
      */
     @FXML
     private void gcodeProgramClicks(MouseEvent me) {
@@ -218,11 +218,10 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     /**
      *
-     * @param event
+     * @param event input event
      */
     @FXML
     private void handleKeyPress(final InputEvent event) {
-        //private void handleEnter(ActionEvent event) throws Exception {
         final KeyEvent keyEvent = (KeyEvent) event;
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
             String command = (input.getText() + "\n");
@@ -233,9 +232,9 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
                 input.setPromptText(PROMPT);
                 return;
             }
-            //TinyG is connected... Proceed with processing command.
-            //This will send the command to get a OK prompt if the buffer is empty.
-            //"{\""+ command.split("=")[0].replace("$", "") + "\":" +
+            // TinyG is connected... Proceed with processing command.
+            // This will send the command to get a OK prompt if the buffer is empty.
+            // "{\""+ command.split("=")[0].replace("$", "") + "\":" +
             // command.split("=")[1].trim() + "}\n"
             if ("".equals(command)) {
                 DRIVER.write(CMD_QUERY_OK_PROMPT);
@@ -258,27 +257,24 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     /**
      *
-     * @param t
+     * @param message message
      */
     @Override
-    public void addToQueue(String t) {
+    public void addToQueue(String message) {
         //This is used to add the connection timeout message to the "json" queue.
-        DRIVER.appendJsonQueue(t);
+        DRIVER.appendJsonQueue(message);
     }
 
 
     /**
      *
-     * @param url
-     * @param rb
+     * @param url url
+     * @param rb resource bundle
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         logger.info("tgFX is starting....");
 
-        /*
-         * MISC INIT CODE
-         */
         DRIVER.getResponseParser().addObserver(this);  //Add the tinygdriver to this observer
         DRIVER.addObserver(this);
         this.reScanSerial(); //Populate our serial ports
@@ -304,7 +300,6 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         threadResponseParser.setDaemon(true);
         threadResponseParser.setName("ResponseParser");
         threadResponseParser.start();
-
 
         StringConverter<Number> sc = new StringConverter<Number>() {
             @Override
@@ -495,8 +490,8 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     /**
      *
-     * @param keyArgument
-     * @throws SerialPortException
+     * @param keyArgument key argument
+     * @throws SerialPortException exception
      */
     private void doTinyGUserMessage(String keyArgument) throws SerialPortException {
         if (keyArgument.trim().equals("SYSTEM READY")) {
@@ -535,13 +530,13 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
         if (rspLine != oldRspLine && gcodeTabController.isSendingFile().get()) {
             gcodeTabController.updateProgress(rspLine);
             // Check for gaps in TinyG acks - Note comments are not acked
-            if (rspLine != oldRspLine + 1) {
-                int gap = oldRspLine + 1;
-                //mikeh says not to put this in... so we won't.
-                //if (gap != 1){
-                //  Main.postConsoleMessage("NO RESPONSE FOR N" + gap  );
-                //}
-            }
+//            if (rspLine != oldRspLine + 1) {
+//                // mikeh says not to put this in... so we won't.
+//                int gap = oldRspLine + 1;
+//                if (gap != 1){
+//                    Main.postConsoleMessage("NO RESPONSE FOR N" + gap  );
+//                }
+//            }
             oldRspLine = rspLine;
         }
     }
@@ -549,7 +544,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     /**
      *
-     * @param keyValue
+     * @param keyValue key value
      */
     private void doBuildError(String keyValue) {
         //This is the code to manage the build error window and checking system.
@@ -708,7 +703,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
     /**
      *
-     * @throws SerialPortException
+     * @throws SerialPortException serial port exception
      */
     private void onDisconnectActions() throws SerialPortException {
         DRIVER.disconnect();
