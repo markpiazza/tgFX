@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import eu.hansolo.medusa.Gauge;
+import eu.hansolo.medusa.GaugeBuilder;
+import eu.hansolo.medusa.events.UpdateEvent;
+import eu.hansolo.medusa.skins.LcdSkin;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -39,6 +42,7 @@ import tgfx.system.Machine;
 import tgfx.system.enums.GcodeDistanceMode;
 import tgfx.tinyg.CommandManager;
 import tgfx.tinyg.TinygDriver;
+import tgfx.ui.DROLcdSkin;
 import tgfx.ui.tgfxsettings.TgfxSettingsController;
 
 
@@ -547,6 +551,7 @@ public class GcodeTabController implements Initializable {
         timeElapsedTxt.textProperty().bind(timeElapsed);
         timeLeftTxt.textProperty().bind(timeLeft);
 
+
         xLcd.valueProperty().bind(MACHINE.getAxisByName("x").getMachinePositionSimple()
                 .subtract(MACHINE.getAxisByName("x").getOffset())
                 .divide(MACHINE.gcodeUnitDivision));
@@ -678,6 +683,28 @@ public class GcodeTabController implements Initializable {
 
     }
 
+
+    public void refresh(MouseEvent event){
+        xLcd.setMaxMeasuredValueVisible(false);
+        xLcd.setMinMeasuredValueVisible(false);
+        xLcd.setAverageVisible(false);
+
+        yLcd.setMaxMeasuredValueVisible(false);
+        yLcd.setMinMeasuredValueVisible(false);
+        yLcd.setAverageVisible(false);
+
+        zLcd.setMaxMeasuredValueVisible(false);
+        zLcd.setMinMeasuredValueVisible(false);
+        zLcd.setAverageVisible(false);
+
+        aLcd.setMaxMeasuredValueVisible(false);
+        aLcd.setMinMeasuredValueVisible(false);
+        aLcd.setAverageVisible(false);
+
+        velLcd.setMaxMeasuredValueVisible(false);
+        velLcd.setMinMeasuredValueVisible(false);
+        velLcd.setAverageVisible(false);
+    }
 
     /**
      * getLcdByAxisName
