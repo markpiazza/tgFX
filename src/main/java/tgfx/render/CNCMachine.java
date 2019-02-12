@@ -167,7 +167,8 @@ public class CNCMachine extends Pane {
      */
     private void hideOrShowCursor(boolean choice) {
         logger.info(choice?"show cursor":"hide cursor");
-        this.visibleProperty().set(choice);
+        // FIXME: RuntimeException: CNCMachine.visible : A bound value cannot be set
+        // this.visibleProperty().set(choice);
     }
 
 
@@ -175,7 +176,7 @@ public class CNCMachine extends Pane {
      * unFocus for jogging
      */
     private void unFocusForJogging() {
-        logger.info("unFocusForJogging");
+        // logger.info("unFocusForJogging");
         this.setFocused(true);
     }
 
@@ -184,7 +185,7 @@ public class CNCMachine extends Pane {
      * focus for jogging
      */
     private void setFocusForJogging() {
-        logger.info("setFocusForJogging");
+        // logger.info("setFocusForJogging");
         this.setFocused(true);
     }
 
@@ -329,7 +330,7 @@ public class CNCMachine extends Pane {
             l.getStrokeDashArray().addAll(1d, 5d);
             l.setStroke(Draw2d.TRAVERSE);
         } else {
-//            l.setStroke(Draw2d.getLineColorFromVelocity(vel));
+            l.setStroke(Draw2d.getLineColorFromVelocity(vel));
             l.setStroke(Draw2d.FAST);
         }
 

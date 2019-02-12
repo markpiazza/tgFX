@@ -574,71 +574,81 @@ public final class Axis {
         switch (rc.getSettingKey()) {
             case MNEMONIC_AXIS_AXIS_MODE:
                 axis.setAxisMode(Double.valueOf(rc.getSettingValue()).intValue());
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied axis mode: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_FEEDRATE_MAXIMUM:
                 axis.setFeedRateMaximum(Float.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " "
-                        + rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied feed rate max: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_JERK_MAXIMUM:
                 axis.setJerkMaximum(Float.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied jerk max: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_JUNCTION_DEVIATION:
                 axis.setJunctionDeviation(Float.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied junction deviation: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_LATCH_BACKOFF:
                 axis.setLatchBackoff(Float.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied latch backoff: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_LATCH_VELOCITY:
                 axis.setLatchVelocity(Float.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied lat velocity: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_MAX_SWITCH_MODE:
                 axis.setMaxSwitchMode(Integer.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied max switch mode: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_MIN_SWITCH_MODE:
                 axis.setMinSwitchMode(Integer.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied min switch mode: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_RADIUS:
                 axis.setRadius(Float.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied radius: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_SEARCH_VELOCITY:
                 axis.setSearchVelocity(Float.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied search velocity: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_TRAVEL_MAXIMUM:
                 axis.setTravelMaximum(Float.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied travel max: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_VELOCITY_MAXIMUM:
                 axis.setVelocityMaximum(Float.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied velocity max: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_AXIS_ZERO_BACKOFF:
                 axis.setZeroBackoff(Float.valueOf(rc.getSettingValue()));
-                logger.info("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info( "applied zero backoff: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
+                break;
+            case MNEMONIC_AXIS_JERK_HOMING:
+                axis.setJerkHomingMaximum(Double.valueOf(rc.getSettingValue()));
+                logger.info( "applied jerk homing max: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
+                break;
+            case "tn":
+                logger.info( "property tn, recognised, but unknown: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             default:
-                logger.info("Default Switch");
+                logger.info("unknown property {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue() );
         }
     }
 }

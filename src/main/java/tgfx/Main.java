@@ -421,7 +421,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
      */
     public static void postConsoleMessage(String message){
         logger.info("postConsoleMessage : {}", message);
-        consoleText.setValue(consoleText.getValueSafe() + message);
+        consoleText.setValue(consoleText.getValueSafe() + "\n" +message);
     }
 
     private void doTinyGConnectionTimeout() {

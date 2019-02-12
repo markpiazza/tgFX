@@ -177,7 +177,9 @@ public class ResponseParser extends Observable implements Runnable {
     }
 
     public void setChanged() {
-        this.setChanged();
+        // FIXME: setChanged calls this.setChanged()???
+        // that'll give you a stack overflow ;)
+        //this.setChanged();
     }
 
     private void applySetting(JSONObject js) {

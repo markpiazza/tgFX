@@ -867,8 +867,9 @@ public class GcodeTabController implements Initializable {
     private void handleMaxHeightChange() {
         logger.info("handleMaxHeightChange");
 
-        scaleAmount = getScale();
-        cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
+        // FIXME: makes the CNCMachine stage too large
+//        scaleAmount = getScale();
+//        cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
 
         // this was already commented out
 //        widthSize.textProperty().bind( Bindings.format("%s",
@@ -887,8 +888,9 @@ public class GcodeTabController implements Initializable {
     private void handleMaxWidthChange() {
         logger.info("handleMaxWidthChange");
 
-        scaleAmount = getScale();
-        cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
+        // FIXME: makes the CNCMachine stage too large
+//        scaleAmount = getScale();
+//        cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
 
         // this was already commented out
 //        widthSize.setText(decimalFormat.format(DRIVER
