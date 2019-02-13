@@ -1089,7 +1089,7 @@ public final class Machine {
                         logger.info( "not applying system baudrate: {}, {} : {}",
                                 rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                         break;
-                    case MNEMONIC_SYSTEM_HARDWARD_PLATFORM:
+                    case MNEMONIC_SYSTEM_HARDWARE_PLATFORM:
                         TinygDriver.getInstance().getHardwarePlatformManager()
                                 .setHardwarePlatformByVersionNumber(
                                         Integer.valueOf(rc.getSettingValue()));
@@ -1197,6 +1197,9 @@ public final class Machine {
                         logger.info( "applied tinyg id version: {}, {} : {}",
                                 rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                         break;
+                    default:
+                        logger.error("unknown machine property: {}, {} : {}",
+                                rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 }
             }
         } catch (JSONException | NumberFormatException ex) {

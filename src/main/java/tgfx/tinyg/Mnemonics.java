@@ -13,11 +13,17 @@ public class Mnemonics {
     public static final ArrayList<String> STATUS_MNEMONICS = new ArrayList<>();
 
     //Group Mnemonics
+    public static final String MNEMONIC_GROUP_TGFX = "tgfx";
     public static final String MNEMONIC_GROUP_SYSTEM = "sys";
     public static final String MNEMONIC_GROUP_EMERGENCY_SHUTDOWN = "er";
     public static final String MNEMONIC_GROUP_STATUS_REPORT = "sr";
+    public static final String MNEMONIC_GROUP_RESPONSE = "r";
+    public static final String MNEMONIC_GROUP_FOOTER = "f";
+    public static final String MNEMONIC_GROUP_QUERY_REPORT = "qr";
+
     public static final String MNEMONIC_GROUP_HOME = "hom";
     public static final String MNEMONIC_GROUP_POS = "pos";
+    public static final String MNEMONIC_GROUP_MSG = "msg";
     public static final String MNEMONIC_GROUP_MOTOR_1 = "1";
     public static final String MNEMONIC_GROUP_MOTOR_2 = "2";
     public static final String MNEMONIC_GROUP_MOTOR_3 = "3";
@@ -94,7 +100,7 @@ public class Mnemonics {
     public static final String MNEMONIC_SYSTEM_FIRMWARE_BUILD = "fb";
     public static final String MNEMONIC_SYSTEM_SWITCH_TYPE = "st";
     public static final String MNEMONIC_SYSTEM_FIRMWARE_VERSION = "fv";
-    public static final String MNEMONIC_SYSTEM_HARDWARD_PLATFORM = "hp";
+    public static final String MNEMONIC_SYSTEM_HARDWARE_PLATFORM = "hp";
     public static final String MNEMONIC_SYSTEM_HARDWARE_VERSION = "hv";
     public static final String MNEMONIC_SYSTEM_JUNCTION_ACCELERATION = "ja";
     public static final String MNEMONIC_SYSTEM_MIN_LINE_SEGMENT = "ml";
@@ -109,11 +115,12 @@ public class Mnemonics {
     public static final String MNEMONIC_SYSTEM_TEXT_VERBOSITY = "tv";
     public static final String MNEMONIC_SYSTEM_STATUS_REPORT_INTERVAL = "si";
     public static final String MNEMONIC_SYSTEM_BAUDRATE = "baud";
-    //    public static final String MNEMONIC_SYSTEM_LAST_MESSAGE = "msg";
+    public static final String MNEMONIC_SYSTEM_LAST_MESSAGE = "msg";
     public static final String MNEMONIC_SYSTEM_EXPAND_LF_TO_CRLF_ON_TX = "ec";
     public static final String MNEMONIC_SYSTEM_CHORDAL_TOLERANCE = "ct";
     public static final String MNEMONIC_SYSTEM_TINYG_ID_VERSION = "id";
     public static final String MNEMONIC_STATUS_REPORT_TINYG_DISTANCE_MODE = "dist";
+    public static final String MNEMONIC_SYSTEM_REPORT_RX_BUFFER = "rx";
 
 
     static {
@@ -154,7 +161,7 @@ public class Mnemonics {
         SYS_MNEMONICS.add(MNEMONIC_SYSTEM_ENABLE_XON);
         SYS_MNEMONICS.add(MNEMONIC_SYSTEM_FIRMWARE_BUILD);
         SYS_MNEMONICS.add(MNEMONIC_SYSTEM_FIRMWARE_VERSION);
-        SYS_MNEMONICS.add(MNEMONIC_SYSTEM_HARDWARD_PLATFORM);
+        SYS_MNEMONICS.add(MNEMONIC_SYSTEM_HARDWARE_PLATFORM);
         SYS_MNEMONICS.add(MNEMONIC_SYSTEM_HARDWARE_VERSION);
 //        SYS_MNEMONICS.add(MNEMONIC_SYSTEM_GCODE_UNIT_MODE);
         SYS_MNEMONICS.add(MNEMONIC_SYSTEM_IGNORE_CR);
@@ -167,6 +174,8 @@ public class Mnemonics {
         SYS_MNEMONICS.add(MNEMONIC_SYSTEM_STATUS_REPORT_INTERVAL);
         SYS_MNEMONICS.add(MNEMONIC_SYSTEM_SWITCH_TYPE);
         SYS_MNEMONICS.add(MNEMONIC_SYSTEM_TEXT_VERBOSITY);
+        SYS_MNEMONICS.add(MNEMONIC_SYSTEM_REPORT_RX_BUFFER);
+
 
         SYS_MNEMONICS.add(MNEMONIC_SYSTEM_EXPAND_LF_TO_CRLF_ON_TX);
         SYS_MNEMONICS.add(MNEMONIC_SYSTEM_DEFAULT_GCODE_UNIT_MODE);
@@ -217,6 +226,11 @@ public class Mnemonics {
         GROUP_MNEMONICS.add(MNEMONIC_GROUP_MOTOR_4);
         GROUP_MNEMONICS.add(MNEMONIC_GROUP_POS);
         GROUP_MNEMONICS.add(MNEMONIC_GROUP_STATUS_REPORT);
+        GROUP_MNEMONICS.add(MNEMONIC_GROUP_TGFX);
         GROUP_MNEMONICS.add(MNEMONIC_GROUP_SYSTEM);
+        GROUP_MNEMONICS.add(MNEMONIC_GROUP_RESPONSE);
+        GROUP_MNEMONICS.add(MNEMONIC_GROUP_FOOTER);
+        GROUP_MNEMONICS.add(MNEMONIC_GROUP_QUERY_REPORT);
+
     }
 }

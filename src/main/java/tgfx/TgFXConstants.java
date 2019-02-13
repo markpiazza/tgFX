@@ -21,7 +21,6 @@ public class TgFXConstants {
     public static final String PROMPT = "tinyg>";
 
     public static final String STAGE_FXML_MAIN = "/tgfx/Main.fxml";
-    public static final String STAGE_FXML_GCODETAB = "/tgfx/ui/gcode/GcodeTab.fxml";
 
     public static final String ROUTING_STATUS_REPORT = "STATUS_REPORT";
     public static final String ROUTING_CMD_GET_AXIS_SETTINGS = "CMD_GET_AXIS_SETTINGS"; 
@@ -44,7 +43,7 @@ public class TgFXConstants {
     // This disables the serial connection check so we can debug things
     // when there's no machine available.
     // TODO: need to write mock serial interface
-    public static final boolean DISABLE_UI_CONNECTION_CHECK = true;
+    public static final boolean DISABLE_UI_CONNECTION_CHECK = false;
 
-    public static final String PATH = "/Users/Mark/Desktop/Workspace/tgfx/src/main/resources";
+    public static final String PATH = "/Users/Mark/Desktop/Workspace/tgfx/";
 }

@@ -424,7 +424,7 @@ public class GcodeTabController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        logger.info("Initializing GcodeTabController.");
+        logger.info("Initializing GcodeTabController");
 
         cncMachinePane.setOnMouseMoved(mouseEvent -> {
             yPosition.setValue(cncMachinePane.getNormalizedYasString(mouseEvent.getY()));
@@ -436,7 +436,7 @@ public class GcodeTabController implements Initializable {
          * TODO: Jogging needs to be broken into a new class
          */
         cncMachinePane.setOnKeyPressed(keyEvent -> {
-            logger.info("Start jogging.");
+            //logger.info("Start jogging.");
             //If we are sending a file.. Do NOT jog right now
             if (!isSendingFile.get()) {
                 // Initialize to no valid axis set
@@ -514,7 +514,7 @@ public class GcodeTabController implements Initializable {
          * keyRelease event handler
          */
         cncMachinePane.setOnKeyReleased(keyEvent -> {
-            logger.info("End jogging.");
+            //logger.info("End jogging.");
             if (!isSendingFile().get()) {
                 try {
                     setGcodeText("");

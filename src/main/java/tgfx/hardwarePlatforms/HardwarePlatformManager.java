@@ -81,7 +81,7 @@ public class HardwarePlatformManager {
      */
     private void loadPlatformConfigs() {
         // FIXME: god damned java file loading
-        File folder = new File(TgFXConstants.PATH+"/hardwarePlatforms");
+        File folder = new File(TgFXConstants.PATH+ "/hardwarePlatforms");
         if(!folder.exists()){
             logger.error("Error loading platform configs, path not found");
             return;

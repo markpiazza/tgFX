@@ -2,8 +2,8 @@
 <Configuration status="WARN" monitorInterval="30">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} %level %logger{1} - %msg%n"/>
-            <!--<PatternLayout pattern="%p %d{yyyy-MM-dd HH:mm:ss,SSS},thread=%t,logger=%c,%X,%n%m%n%n"/>-->
+            <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} %level %logger{1} - %msg%n"/>-->
+            <PatternLayout pattern="%p %d{yyyy-MM-dd HH:mm:ss,SSS},thread=%t,logger=%c,%X,%n%m%n%n"/>
         </Console>
     </Appenders>
     <Loggers>

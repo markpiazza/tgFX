@@ -54,7 +54,7 @@
                 <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
                     <Label id="whiteFill" text="Draw Preview"/>
                     <ToggleButton fx:id="settingDrawBtn" maxWidth="77.0" minWidth="77.0" mnemonicParsing="false"
-                          onAction="#handleTogglePreview" prefWidth="77.0" text="Enabled" />
+                          focusTraversable="false" onAction="#handleTogglePreview" prefWidth="77.0" text="Enabled" />
                 </HBox>
             </VBox>
 
@@ -70,7 +70,7 @@
                 <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
                     <Label id="whiteFill" text="Debug Mode"/>
                     <ToggleButton fx:id="settingDebugBtn" maxWidth="77.0" minWidth="77.0"
-                          mnemonicParsing="false" prefWidth="77.0" selected="true" text="Enabled"/>
+                          focusTraversable="false" mnemonicParsing="false" prefWidth="77.0" selected="true" text="Enabled"/>
                 </HBox>
             </VBox>
 

@@ -63,14 +63,14 @@ public class MachineSettingsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        logger.info("Initializing MachineSettingsController.");
+        logger.info("Initializing MachineSettingsController");
         populateConfigFiles();
     }
 
     private void populateConfigFiles() {
         // FIXME: god damned java file loading
-        File folder = new File(TgFXConstants.PATH+"/configs");
-        if(folder.exists()){
+        File folder = new File(TgFXConstants.PATH+ "/configs");
+        if(!folder.exists()){
             logger.error("Error loading platform configs, path not found");
             return;
         }
@@ -154,7 +154,7 @@ public class MachineSettingsController implements Initializable {
         // Why are we reading the file 2x?  It is to get the count of elements
         // we need to write.. then writing each line... so we just do it 2x.
         // FIXME: god damned java file loading
-        File folder = new File(TgFXConstants.PATH+"/configs");
+        File folder = new File(TgFXConstants.PATH+ "/configs");
         File selected_config = new File(folder.getPath()  + "/" +
                 configsListView.getSelectionModel().getSelectedItem());
 

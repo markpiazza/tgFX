@@ -47,15 +47,14 @@ public class TinygDriver extends Observable {
     private final AtomicBoolean connectionSemaphore = new AtomicBoolean(false);
 
     private static ArrayBlockingQueue<GcodeLine[]> writerQueue = new ArrayBlockingQueue<>(50000);
-    private static ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(30);
     private static ArrayBlockingQueue<String> jsonQueue = new ArrayBlockingQueue<>(10000);
+    private static ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(30);
 
     private String[] message = new String[2];
 
     private SimpleBooleanProperty connectionStatus = new SimpleBooleanProperty(false);
 
     private MnemonicManager mnemonicManager = new MnemonicManager();
-    private ResponseManager responseManager = new ResponseManager();
     private CommandManager commandManager = new CommandManager();
 
     private AsyncTimer connectionTimer;
@@ -106,8 +105,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @return
+     * get json queue
+     * @return json queue
      */
     public static ArrayBlockingQueue<String> getJsonQueue() {
         return jsonQueue;
@@ -133,15 +132,6 @@ public class TinygDriver extends Observable {
 
 
     /**
-     * get the response manager
-     * @return response manager
-     */
-    public ResponseManager getResponseManager(){
-        return responseManager;
-    }
-
-
-    /**
      * get the command manager
      * @return command manager
      */
@@ -151,7 +141,7 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
+     * get serial writer
      * @return SerialWriter
      */
     public SerialWriter getSerialWriter() {
@@ -160,8 +150,9 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
+     * set serial writer
      * @param serialWriter
+     * TODO: might be good for mocking
      */
     public void setSerialWriter(SerialWriter serialWriter) {
         this.serialWriter = serialWriter;
@@ -169,7 +160,7 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
+     * get response parser
      * @return ResponseParser
      */
     public ResponseParser getResponseParser() {
@@ -178,8 +169,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param responseParser
+     * set response parser
+     * @param responseParser response parser
      */
     public void setResponseParser(ResponseParser responseParser) {
         this.responseParser = responseParser;
@@ -196,17 +187,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param value
-     */
-    public void setAsyncTimer(AsyncTimer value){
-        connectionTimer = value;
-    }
-
-
-    /**
-     *
-     * @return
+     * get connection timer
+     * @return connection timer
      */
     public AsyncTimer getAsyncTimer(){
         return connectionTimer;
@@ -214,8 +196,19 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @return
+     * set connection timer
+     * @param connectionTimer connection timer
+     */
+    public void setAsyncTimer(AsyncTimer connectionTimer){
+        this.connectionTimer = connectionTimer;
+    }
+
+
+
+
+    /**
+     * get connection semaphore
+     * @return connection semaphore
      */
     public AtomicBoolean getConnectionSemaphore(){
         return connectionSemaphore;
@@ -223,8 +216,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @return
+     * is timed out
+     * @return is timed out
      */
     public boolean isTimedout() {
         return timedout;
@@ -232,8 +225,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param timedout
+     * set timed out
+     * @param timedout is timed out
      */
     public void setTimedout(boolean timedout) {
         this.timedout = timedout;
@@ -241,14 +234,15 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @throws JSONException
+     * notify build version change
+     * @throws JSONException json exception
      */
     public void notifyBuildChanged() throws JSONException {
-        if(MACHINE.getHardwarePlatform().getMinimalBuildVersion() < this.MACHINE.getFirmwareBuildVersion()){
+        // FIXME: NPE
+        //if(MACHINE.getHardwarePlatform().getMinimalBuildVersion() < this.MACHINE.getFirmwareBuildVersion()){
             // This checks to see if the current build version on
             // TinyG is greater than what tgFX's hardware profile needs.
-        }
+        //}
 
         if (MACHINE.getFirmwareBuildVersion() < MACHINE
                 .getHardwarePlatform().getMinimalBuildVersion() &&
@@ -261,9 +255,7 @@ public class TinygDriver extends Observable {
             setChanged();
             notifyObservers(message);
             logger.debug("Build Version: " + MACHINE.getFirmwareBuildVersion() + " is NOT OK");
-        } else if(MACHINE.getFirmwareBuildVersion() == 0.0){
-            // FIXME: remove no op
-        } else {
+        } else if(MACHINE.getFirmwareBuildVersion() != 0.0){
             logger.debug("Build Version: " + MACHINE.getFirmwareBuildVersion() + " is OK");
             message[0] = "BUILD_OK";
             message[1] = null;
@@ -274,7 +266,7 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
+     * send reconnect request
      */
     public void sendReconnectRequest(){
         Main.postConsoleMessage("Attempting to reconnect to TinyG...");
@@ -287,7 +279,7 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
+     * send disconnect request
      */
     public void sendDisconnectRequest(){
         logger.info("Disconnect Request Sent.");
@@ -299,8 +291,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param c
+     * query hardware single axis settings by character
+     * @param c axis to query
      */
     public void queryHardwareSingleAxisSettings(char c) {
         //Our queryHardwareSingleAxisSetting function for chars
@@ -309,7 +301,7 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
+     * query hardware single axis settings by string
      * @param axis axis to query
      */
     public void queryHardwareSingleAxisSettings(String axis) {
@@ -341,7 +333,7 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
+     * apply hardware settings to tab
      * @param tab
      */
     public void applyHardwareAxisSettings(Tab tab) {
@@ -361,7 +353,6 @@ public class TinygDriver extends Observable {
 
             } else if (node instanceof ChoiceBox) {
                 //This ia a ChoiceBox... Lets get the value and apply it if it needs to be applied.
-                @SuppressWarnings("unchecked")
                 ChoiceBox<Object> choiceBox = (ChoiceBox<Object>) node;
                 if (choiceBox.getId().contains("AxisMode")) {
                     int axisMode = choiceBox.getSelectionModel().getSelectedIndex();
@@ -386,9 +377,9 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param motor
-     * @param textField
+     * apply hardware motor settings
+     * @param motor moter
+     * @param textField field
      */
     public void applyHardwareMotorSettings(Motor motor, TextField textField)  {
         if (textField.getId().contains("StepAngle")) {
@@ -406,9 +397,9 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param axis
-     * @param textField
+     * apply hardware axis settings
+     * @param axis axis
+     * @param textField field
      */
     public void applyHardwareAxisSettings(Axis axis, TextField textField) {
         /*
@@ -473,8 +464,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param motorNumber
+     * get motor settings by number
+     * @param motorNumber motor number
      */
     public void getMotorSettings(int motorNumber) {
         String command = null;
@@ -502,71 +493,71 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param rc
+     * apply response command
+     * @param rc response command
      */
     public void applyResponseCommand(ResponseCommand rc) {
-        char _ax;
+        char axis;
         switch (rc.getSettingKey()) {
-            case (MNEMONIC_STATUS_REPORT_LINE):
+            case MNEMONIC_STATUS_REPORT_LINE:
                 MACHINE.setLineNumber(Integer.valueOf(rc.getSettingValue()));
-                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info("applied line number: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
-            case (MNEMONIC_STATUS_REPORT_MOTION_MODE):
-                TinygDriver.logger.debug("[DID NOT APPLY NEED TO CODE THIS IN:" +
-                        rc.getSettingParent() + " " + rc.getSettingKey() + ":" + rc.getSettingValue());
-//                getInstance().m.setMotionMode(Integer.valueOf(rc.getSettingValue()));
+            case MNEMONIC_STATUS_REPORT_MOTION_MODE:
+                MACHINE.setMotionMode(Integer.valueOf(rc.getSettingValue()));
+                logger.info("not applying motion mode: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
-            case (MNEMONIC_STATUS_REPORT_POSA):
-                _ax = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                MACHINE.getAxisByName(String.valueOf(_ax))
+            case MNEMONIC_STATUS_REPORT_POSA:
+                axis = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
+                MACHINE.getAxisByName(String.valueOf(axis))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
-                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info("applied POS A: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
-            case (MNEMONIC_STATUS_REPORT_POSX):
-                _ax = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                MACHINE.getAxisByName(String.valueOf(_ax))
+            case MNEMONIC_STATUS_REPORT_POSX:
+                axis = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
+                MACHINE.getAxisByName(String.valueOf(axis))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
-                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info("applied POS X: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
-            case (MNEMONIC_STATUS_REPORT_POSY):
-                _ax = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                MACHINE.getAxisByName(String.valueOf(_ax))
+            case MNEMONIC_STATUS_REPORT_POSY:
+                axis = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
+                MACHINE.getAxisByName(String.valueOf(axis))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
-                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info("applied POS Y: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
-            case (MNEMONIC_STATUS_REPORT_POSZ):
-                _ax = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                MACHINE.getAxisByName(String.valueOf(_ax))
+            case MNEMONIC_STATUS_REPORT_POSZ:
+                axis = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
+                MACHINE.getAxisByName(String.valueOf(axis))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
-                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info("applied POS Z: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
-            case (MNEMONIC_STATUS_REPORT_STAT):
+            case MNEMONIC_STATUS_REPORT_STAT:
                 //TinygDriver.getInstance()(Float.valueOf(rc.getSettingValue()));
-                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info("not applying stat: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
-            case (MNEMONIC_STATUS_REPORT_VELOCITY):
+            case MNEMONIC_STATUS_REPORT_VELOCITY:
                 MACHINE.setVelocity(Double.valueOf(rc.getSettingValue()));
-                logger.debug("[APPLIED:" + rc.getSettingParent() + " " +
-                        rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.info("applied velocity: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             default:
-                logger.error("[ERROR] in ApplyResponseCommand:  Command Was:" +
-                        rc.getSettingParent() + " " + rc.getSettingKey() + ":" + rc.getSettingValue());
+                logger.error("unknown status report property: {}, {} : {}",
+                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
         }
     }
 
 
     /**
-     *
-     * @param tab
+     * apply hardware motor settings by tab
+     * @param tab tab
      */
     public void applyHardwareMotorSettings(Tab tab) {
         /*
@@ -657,8 +648,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param motorNumber
+     * query hardware single motor settings by motor number
+     * @param motorNumber motor number
      */
     public void queryHardwareSingleMotorSettings(int motorNumber) {
         String command = null;
@@ -687,18 +678,18 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param obsrvr
+     * add observer
+     * @param observer observer
      */
     @Override
-    public synchronized void addObserver(Observer obsrvr) {
-        super.addObserver(obsrvr);
+    public synchronized void addObserver(Observer observer) {
+        super.addObserver(observer);
     }
 
 
     /**
-     *
-     * @param line
+     * append json queue
+     * @param line line to queue
      */
     public void appendJsonQueue(String line) {
         // This adds full normalized json objects to our jsonQueue.
@@ -707,8 +698,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param queue
+     * append response queue
+     * @param queue bytes to append
      */
     public synchronized void appendResponseQueue(byte[] queue) {
         // Add byte arrays to the buffer queue from tinyG's responses.
@@ -721,8 +712,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @return
+     * is paused
+     * @return is paused
      */
     public boolean isPaused() {
         return paused;
@@ -730,9 +721,9 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param choice
-     * @throws SerialPortException
+     * set paused
+     * @param choice is paused
+     * @throws SerialPortException serial exception
      */
     public void setPaused(boolean choice) throws SerialPortException {
         if (choice) { // if set to pause
@@ -748,8 +739,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param choice
+     * set connected
+     * @param choice is connected
      */
     public void setConnected(boolean choice) {
         serialDriver.setConnected(choice);
@@ -757,11 +748,11 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param portName
-     * @param dataRate
-     * @return
-     * @throws SerialPortException
+     * initialize serial port
+     * @param portName port name
+     * @param dataRate data rate
+     * @return success
+     * @throws SerialPortException serial port exception
      */
     public boolean initialize(String portName, int dataRate) throws SerialPortException {
         return serialDriver.initialize(portName, dataRate);
@@ -769,8 +760,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @throws SerialPortException
+     * disconnect
+     * @throws SerialPortException serial port exception
      */
     public void disconnect() throws SerialPortException {
         serialDriver.disconnect();
@@ -778,8 +769,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @return
+     * is connected
+     * @return is connected
      */
     public SimpleBooleanProperty isConnected() {
         //Our binding to keep tabs in the us of if we are connected to TinyG or not.
@@ -790,8 +781,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param msg
+     * write
+     * @param msg message to write
      */
     public synchronized void write(String msg) {
         getSerialWriter().addCommandToBuffer(msg);
@@ -799,9 +790,9 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param b
-     * @throws SerialPortException
+     * priority write byte
+     * @param b byte to write
+     * @throws SerialPortException serial port exception
      */
     public void priorityWrite(Byte b) throws SerialPortException {
         serialDriver.priorityWrite(b);
@@ -809,11 +800,11 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @param msg
+     * priority write string
+     * @param msg message string to write
      */
     public void priorityWrite(String msg){
-        logger.info("Priority write: {}", msg);
+        logger.info("Priority write: {}", msg.replace("\n",""));
         if (!msg.contains("\n")) {
             msg = msg + "\n";
         }
@@ -822,8 +813,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @return
+     * list serial ports available
+     * @return array of serial port names
      */
     public String[] listSerialPorts() {
         // Get a listing current system serial ports
@@ -832,8 +823,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @return
+     * get port name
+     * @return port name
      */
     public String getPortName() {
         // Return the serial port name that is connected.
@@ -842,8 +833,8 @@ public class TinygDriver extends Observable {
 
 
     /**
-     *
-     * @return
+     * get internal all axis
+     * @return list of axises
      */
     public List<Axis> getInternalAllAxis() {
         return MACHINE.getAllAxis();

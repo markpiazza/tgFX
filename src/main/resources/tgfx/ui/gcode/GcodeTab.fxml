@@ -245,9 +245,6 @@
                 <HBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                     <Button text="Zero All" onAction="#handleZeroSystem" focusTraversable="false"
                             alignment="BASELINE_LEFT" VBox.vgrow="NEVER"/>
-                    <HBox.margin>
-                        <Insets/>
-                    </HBox.margin>
                     <Button text="Home All" onAction="#handleHomeXYZ" focusTraversable="false"
                             alignment="BASELINE_RIGHT" VBox.vgrow="NEVER"/>
                 </HBox>

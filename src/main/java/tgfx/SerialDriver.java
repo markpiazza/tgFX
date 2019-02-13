@@ -33,8 +33,8 @@ public class SerialDriver implements SerialPortEventListener {
 
 
     /**
-     *
-     * @return
+     * get serial driver instance
+     * @return serial driver instance
      */
     public static SerialDriver getInstance() {
         if(serialDriverInstance==null){
@@ -45,8 +45,8 @@ public class SerialDriver implements SerialPortEventListener {
 
 
     /**
-     *
-     * @return
+     * get serial port
+     * @return serial port
      */
     public SerialPort getSerialPort(){
         return serialPort;
@@ -54,8 +54,8 @@ public class SerialDriver implements SerialPortEventListener {
 
 
     /**
-     *
-     * @param str
+     * write
+     * @param str string to write
      */
     public void write(String str) {
         try {
@@ -68,9 +68,9 @@ public class SerialDriver implements SerialPortEventListener {
 
 
     /**
-     *
-     * @param str
-     * @throws SerialPortException
+     * priority write by string
+     * @param str string
+     * @throws SerialPortException serial port exception
      */
     public void priorityWrite(String str) throws SerialPortException {
         serialPort.writeBytes(str.getBytes());
@@ -78,8 +78,8 @@ public class SerialDriver implements SerialPortEventListener {
 
 
     /**
-     *
-     * @param b
+     * priority write by byte
+     * @param b byte
      * @throws SerialPortException
      */
     public void priorityWrite(Byte b) throws SerialPortException {
@@ -89,8 +89,8 @@ public class SerialDriver implements SerialPortEventListener {
 
 
     /**
-     *
-     * @throws SerialPortException
+     * disconnect
+     * @throws SerialPortException serial port exception
      */
     public synchronized void disconnect() throws SerialPortException {
         if (serialPort != null && serialPort.isOpened()) {
@@ -101,8 +101,8 @@ public class SerialDriver implements SerialPortEventListener {
 
 
     /**
-     *
-     * @return
+     * is connected
+     * @return is connected
      */
     public boolean isConnected() {
         return connectionState;
@@ -110,17 +110,17 @@ public class SerialDriver implements SerialPortEventListener {
 
 
     /**
-     *
-     * @param c
+     * set connected
+     * @param connected is connected
      */
-    public void setConnected(boolean c) {
-        connectionState = c;
+    public void setConnected(boolean connected) {
+        connectionState = connected;
     }
 
 
     /**
-     *
-     * @param event
+     * serial event
+     * @param event event
      */
     @Override
     public void serialEvent(SerialPortEvent event) {
@@ -130,8 +130,10 @@ public class SerialDriver implements SerialPortEventListener {
         if (event.isRXCHAR()) {
             try {
                 tmpBuffer = serialPort.readBytes(bytesToRead, serialPort.getInputBufferBytesCount());
-            } catch (SerialPortException | SerialPortTimeoutException ex) {
+            } catch (SerialPortException ex) {
                 logger.error(ex);
+            } catch (SerialPortTimeoutException ex){
+                //no op
             }
             
             for (int i = 0; i < bytesToRead; i++) {
@@ -154,8 +156,8 @@ public class SerialDriver implements SerialPortEventListener {
 
 
     /**
-     *
-     * @return
+     * list serial ports
+     * @return array of serial ports
      */
     public String[] listSerialPorts() {
         String[] ports = jssc.SerialPortList.getPortNames();
@@ -183,11 +185,11 @@ public class SerialDriver implements SerialPortEventListener {
 
 
     /**
-     *
-     * @param port
-     * @param DATA_RATE
-     * @return
-     * @throws SerialPortException
+     * initialize
+     * @param port port
+     * @param DATA_RATE data rate
+     * @return success
+     * @throws SerialPortException serial port exception
      */
     public boolean initialize(String port, int DATA_RATE) throws SerialPortException {
         if (isConnected()) {

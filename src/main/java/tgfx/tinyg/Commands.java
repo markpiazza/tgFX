@@ -51,7 +51,7 @@ public class Commands {
     public static final String CMD_APPLY_PAUSE = "!\n";
     public static final String CMD_APPLY_RESUME = "~\n";
     public static final String CMD_APPLY_QUEUE_FLUSH = "%\n";
-    //Homeing Commandings
+    //Homing Commands
     public static final String CMD_APPLY_HOME_X_AXIS = "{\"gc\":\"g28.2x0\"}\n";
     public static final String CMD_APPLY_HOME_Y_AXIS = "{\"gc\":\"g28.2y0\"}\n";
     public static final String CMD_APPLY_HOME_Z_AXIS = "{\"gc\":\"g28.2z0\"}\n";

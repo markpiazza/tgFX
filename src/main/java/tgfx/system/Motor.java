@@ -292,7 +292,7 @@ public class Motor {
                             rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                     break;
                 default:
-                    logger.info("unknown motor property: : {}, {} : {}",
+                    logger.error("unknown motor property: : {}, {} : {}",
                             rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                     break;
             }

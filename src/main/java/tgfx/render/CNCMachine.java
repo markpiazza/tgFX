@@ -79,7 +79,6 @@ public class CNCMachine extends Pane {
         cursorText.setFill(Color.YELLOW);
         cursorText.setFont(Font.font("Arial", 6));
 
-        logger.info("initial CNCMachine layout setup");
 
         // initial layout setup in constructor
         setupLayout();
@@ -149,6 +148,8 @@ public class CNCMachine extends Pane {
         //When the x or y pos changes we see if we want to show or hide the cursor
         cursorPoint.layoutXProperty().addListener(posChangeListener);
         cursorPoint.layoutYProperty().addListener(posChangeListener);
+
+        logger.info("CNCMachine preview pane initialized");
     }
 
 
@@ -166,7 +167,7 @@ public class CNCMachine extends Pane {
      * @param choice sets visibility
      */
     private void hideOrShowCursor(boolean choice) {
-        logger.info(choice?"show cursor":"hide cursor");
+        //logger.info(choice?"show cursor":"hide cursor");
         // FIXME: RuntimeException: CNCMachine.visible : A bound value cannot be set
         // this.visibleProperty().set(choice);
     }
@@ -337,7 +338,7 @@ public class CNCMachine extends Pane {
         if (this.checkBoundsX(l) && this.checkBoundsY(l)) {
             //Line is within the travel max gcode preview box.  So we will draw it.
             this.getChildren().add(l);  //Add the line to the Pane
-//            cursorPoint.visibleProperty().set(true);
+            cursorPoint.visibleProperty().set(true);
             msgSent = false;
             if (!getChildren().contains(cursorPoint)) { //If the cursorPoint is not in the Group and we are in bounds
                 this.getChildren().add(cursorPoint);  //Adding the cursorPoint back
@@ -348,8 +349,8 @@ public class CNCMachine extends Pane {
             if (getWidth() != 21 && getHeight() != 21) { //This is a bug fix to avoid the cursor being hidden on the initial connect.
                 //This should be fairly harmless as it will always show the cursor if its the inital connect size 21,21
                 //its a bit of a hack but it works for now.
-//                    cursorPoint.visibleProperty().set(false);
-//                    Draw2d.setFirstDraw(true);
+                    cursorPoint.visibleProperty().set(false);
+                    Draw2d.setFirstDraw(true);
                 if (getChildren().contains(cursorPoint)) { //If cursor is in the group we are going to remove it util above is true
                     getChildren().remove(this.getChildren().indexOf(cursorPoint)); //Remove it.
                     if (!msgSent) {
@@ -391,7 +392,7 @@ public class CNCMachine extends Pane {
      */
     public void resetDrawingCoords() {
         logger.info("resetDrawingCoords");
-        //After a reset has occured we call this ot reset the previous coords.
+        //After a reset has occurred we call this ot reset the previous coords.
         xPrevious = 0;
         yPrevious = 0;
     }
@@ -401,7 +402,7 @@ public class CNCMachine extends Pane {
      * setup layout
      */
     private void setupLayout() {
-        logger.info("setupLayout");
+        logger.info("Setting up CNCMachine layout");
         //This draws the x axis text as well as grid etc
         Text xText = new Text("X Axis");
         Text yText = new Text("Y Axis");
