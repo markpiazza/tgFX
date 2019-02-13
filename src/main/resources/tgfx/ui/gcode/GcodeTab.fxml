@@ -172,9 +172,9 @@
                     <Insets top="15.0"/>
                 </padding>
 
-                <Gauge fx:id="xLcd" skinType="LCD" id="xLcd"
-                       title="Title" unit="mm" decimals="3"
-                       subTitle="Subtitle"
+                <Gauge fx:id="xLcd" skinType="LCD" id="xLcd" averagingEnabled="false" sectionsAlwaysVisible="false"
+                       onMouseClicked="#refresh"
+                       title="X Axis Position" subTitle="mm" decimals="3"
                        minWidth="200" prefWidth="200" maxWidth="200"
                        minHeight="75" prefHeight="75" maxHeight="75"
                        oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
@@ -190,7 +190,7 @@
                 </Gauge>
 
                 <Gauge fx:id="yLcd" skinType="LCD"
-                       title="Y Axis Position" unit="mm" decimals="3"
+                       title="Y Axis Position" subTitle="mm" decimals="3"
                        oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
                        minWidth="200" prefWidth="200" maxWidth="200"
                        minHeight="75" prefHeight="75" maxHeight="75"
@@ -206,7 +206,7 @@
                 </Gauge>
 
                 <Gauge fx:id="zLcd" skinType="LCD"
-                       title="Z Axis Position" unit="mm" decimals="3"
+                       title="Z Axis Position" subTitle="mm" decimals="3"
                        oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
                        minWidth="200" prefWidth="200" maxWidth="200"
                        minHeight="75" prefHeight="75" maxHeight="75"
@@ -222,7 +222,7 @@
                 </Gauge>
 
                 <Gauge fx:id="aLcd" skinType="LCD"
-                       title="A Axis Position" unit="mm" decimals="3"
+                       title="A Axis Position" subTitle="mm" decimals="3"
                        oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
                        minWidth="200" prefWidth="200" maxWidth="200"
                        minHeight="75" prefHeight="75" maxHeight="75"
@@ -237,7 +237,7 @@
                 </Gauge>
 
                 <Gauge fx:id="velLcd" skinType="LCD"
-                       title="Velocity" unit="mm/min" decimals="3"
+                       title="Velocity" subTitle="mm/min" decimals="3"
                        oldValueVisible="false" minMeasuredValueVisible="false" maxMeasuredValueVisible="false"
                        minWidth="200" prefWidth="200" maxWidth="200"
                        minHeight="75" prefHeight="75" maxHeight="75"/>
