@@ -79,18 +79,17 @@ public class CNCMachine extends Pane {
         cursorText.setFill(Color.YELLOW);
         cursorText.setFont(Font.font("Arial", 6));
 
-
         // initial layout setup in constructor
         setupLayout();
 
         // mouse moved inside the CNCMachine
         ChangeListener posChangeListener = (observableValue, oldValue, newValue) -> {
+            boolean showCursor = true;
             if (MACHINE.getAxisByName("y").getMachinePosition() > heightProperty().get()
                     || MACHINE.getAxisByName("x").getMachinePosition() > widthProperty().get()) {
-                hideOrShowCursor(false);
-            } else {
-                hideOrShowCursor(true);
+                showCursor = false;
             }
+            hideOrShowCursor(showCursor);
 
         };
 
@@ -98,12 +97,12 @@ public class CNCMachine extends Pane {
         this.setOnMouseExited(me -> {
             // gcodePane.getChildren().remove(c);
             getChildren().remove(cursorText);
-            unFocusForJogging();
+            setFocusForJogging(false);
         });
 
         // mouse entered the CNCMachine
         this.setOnMouseEntered(me -> {
-            setFocusForJogging();
+            setFocusForJogging(true);
             requestFocus();
         });
 
@@ -174,20 +173,11 @@ public class CNCMachine extends Pane {
 
 
     /**
-     * unFocus for jogging
+     * focus or unfocus for jogging
+     * @param focus sets focus
      */
-    private void unFocusForJogging() {
-        // logger.info("unFocusForJogging");
-        this.setFocused(true);
-    }
-
-
-    /**
-     * focus for jogging
-     */
-    private void setFocusForJogging() {
-        // logger.info("setFocusForJogging");
-        this.setFocused(true);
+    private void setFocusForJogging(boolean focus) {
+        this.setFocused(focus);
     }
 
 

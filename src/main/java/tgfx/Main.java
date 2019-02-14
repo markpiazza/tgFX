@@ -200,6 +200,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
 
     /**
+     * FIXME: track down what was calling this (cnc machine?)
      *
      */
     @FXML
