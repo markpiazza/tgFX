@@ -30,10 +30,10 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @param queue
+     * Serial Writer constructor
+     * @param queue blocking queue
      */
-    public SerialWriter(BlockingQueue queue) {
+    public SerialWriter(BlockingQueue<String> queue) {
         this.queue = queue;
     }
 
@@ -49,7 +49,7 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
+     * clear buffer
      */
     public void clearQueueBuffer() {
         queue.clear();
@@ -64,8 +64,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @return
+     * is running
+     * @return is running
      */
     public boolean isRun() {
         return run;
@@ -73,8 +73,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @param run
+     * set running
+     * @param run is running
      */
     public void setRun(boolean run) {
         this.run = run;
@@ -82,8 +82,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @return
+     * get buffer value
+     * @return buffer value
      */
     synchronized int getBufferValue() {
         return bufferAvailable.get();
@@ -91,8 +91,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @param val
+     * set buffer value
+     * @param val buffer value
      */
     public synchronized void setBuffer(int val) {
         logger.debug("Got a BUFFER Response.. reset it to: " + val);
@@ -101,8 +101,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @param lenBytesReturned
+     * add bytes returned to buffer
+     * @param lenBytesReturned length returned
      */
     synchronized void addBytesReturnedToBuffer(int lenBytesReturned) {
         bufferAvailable.set(getBufferValue() + lenBytesReturned);
@@ -112,8 +112,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @param cmd
+     * add command to buffer
+     * @param cmd command
      */
     public void addCommandToBuffer(String cmd) {
         this.queue.add(cmd);
@@ -121,8 +121,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @param t
+     * set throttled
+     * @param t is throttled
      */
     public void setThrottled(boolean t) {
         synchronized (MUTEX) {
@@ -137,7 +137,7 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
+     * notify acknowledge
      */
     public void notifyAck() {
         // This is called by the response parser when an ack packet is recvd.  This
@@ -151,8 +151,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @param str
+     * send ui message
+     * @param str message
      */
     private void sendUiMessage(String str) {
         //Used to send messages to the console on the GUI
@@ -167,8 +167,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @param str
+     * write
+     * @param str message
      */
     public void write(String str) {
         try {
@@ -216,8 +216,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @return
+     * is sending file
+     * @return is sending file
      */
     public SimpleBooleanProperty getIsSendingFile(){
         return isSendingFile;
@@ -225,8 +225,8 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
-     * @return
+     * get gcode comment
+     * @return gcode commend
      */
     public SimpleStringProperty getGcodeComment(){
         return gcodeComment;
@@ -234,7 +234,7 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
+     * run tread
      */
     @Override
     public void run() {
@@ -245,13 +245,9 @@ public class SerialWriter implements Runnable {
                 if(tmpCmd.equals("**FILEDONE**")){
                     //Our end of file sending token has been detected.
                     //We will not enable jogging by setting isSendingFile to false
-                    // TODO: this might work better as a an event instead of a binding
-                    //GcodeTabController.setIsFileSending(false);
                     isSendingFile.setValue(false);
                 }else if(tmpCmd.startsWith("**COMMENT**")){
                     //Display current gcode comment
-                    // TODO: this might work better as a an event instead of a binding
-                    //GcodeTabController.setGcodeTextTemp("Comment: " + tmpCmd);
                     gcodeComment.setValue("Comment: "+tmpCmd);
                     continue;
                 }
