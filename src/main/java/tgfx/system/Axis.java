@@ -14,27 +14,34 @@ import tgfx.system.enums.AxisMode;
 import tgfx.system.enums.AxisName;
 import tgfx.system.enums.AxisType;
 import tgfx.system.enums.SwitchMode;
-import tgfx.tinyg.MnemonicManager;
 import tgfx.tinyg.TinygDriver;
 import tgfx.tinyg.ResponseCommand;
 
 import static tgfx.tinyg.Mnemonics.*;
 
 /*
- * [xmp] x_machine_position 0.000 mm [xwp] x_work_position 0.000 mm [xam]
- * x_axis_mode 1 [standard] [xfr] x_feedrate_maximum 2400.000 mm/min [xvm]
- * x_velocity_maximum 2400.000 mm/min [xtm] x_travel_maximum 400.000 mm [xjm]
- * x_jerk_maximum 100000000 mm/min^3 [xjd] x_junction_deviation 0.0500 mm [xsm]
- * x_switch_mode 1 [0,1] [xht] x_homing_travel 400.000 mm [xhs]
- * x_homing_search_velocity 2400.000 mm/min [xhl] x_homing_latch_velocity
- * 100.000 mm/min [xhz] x_homing_zero_offset 5.000 mm [xhw] x_homing_work_offset
- * 200.000 mm
- *
  */
 
 /**
- * Axis
+ * Axis Model
  *
+ * @see <a href="https://github.com/synthetos/TinyG/wiki/TinyG-Command-Line">Tinyg Command Line</a>
+ *
+ * $x    --- Show all X axis settings (send g20 for inches) ---
+ * [xmp] x_machine_position 0.000 mm
+ * [xwp] x_work_position 0.000 mm
+ * [xam] x_axis_mode 1 [standard]
+ * [xfr] x_feedrate_maximum 2400.000 mm/min
+ * [xvm] x_velocity_maximum 2400.000 mm/min
+ * [xtm] x_travel_maximum 400.000 mm
+ * [xjm] x_jerk_maximum 100000000 mm/min^3
+ * [xjd] x_junction_deviation 0.0500 mm
+ * [xsm] x_switch_mode 1 [0,1]
+ * [xht] x_homing_travel 400.000 mm
+ * [xhs] x_homing_search_velocity 2400.000 mm/min
+ * [xhl] x_homing_latch_velocity 100.000 mm/min
+ * [xhz] x_homing_zero_offset 5.000 mm
+ * [xhw] x_homing_work_offset 200.000 mm
  */
 public final class Axis {
     private static final Logger logger = LogManager.getLogger();
@@ -48,36 +55,38 @@ public final class Axis {
 
     private List<Motor> motors = new ArrayList<>();
 
-    private SimpleBooleanProperty homed;
-    private SimpleDoubleProperty workPosition;
-    private SimpleDoubleProperty machinePosition;
-    private SimpleDoubleProperty travelMaximum;
-    private SimpleDoubleProperty offset;
-
-    private SwitchMode maxSwitchMode = SwitchMode.DISABLED;
-    private SwitchMode minSwitchMode = SwitchMode.DISABLED;
+    private String currentAxisJsonObject;
 
     private AxisType axisType;
-    private AxisMode axisMode;
     private String axisName;
-    private String currentAxisJsonObject;
-    private float latchVelocity;
-//    private float seekRateMaximum;
-    private double latchBackoff;
-    private double zeroBackoff;
     private double machine_position;
-    private double radius;
-    private double searchVelocity;
+    private SimpleDoubleProperty machinePosition;
+    private SimpleDoubleProperty workPosition;
+    private AxisMode axisMode;
     private double feedRateMaximum;
     private double velocityMaximum;
+    private SimpleDoubleProperty travelMaximum;
     private double jerkMaximum;
-    private double jerkHomingMaximum;
     private double junctionDeviation;
+    private SwitchMode maxSwitchMode = SwitchMode.DISABLED;
+    private SwitchMode minSwitchMode = SwitchMode.DISABLED;
 //    private float homing_travel;
 //    private float homing_search_velocity;
 //    private float homing_latch_velocity;
 //    private float homing_zero_offset;
 //    private float homing_work_offset;
+
+    private SimpleBooleanProperty homed;
+    private SimpleDoubleProperty offset;
+    private double searchVelocity;
+    private float latchVelocity;
+    private double latchBackoff;
+    private double zeroBackoff;
+//    private float seekRateMaximum;
+    private double jerkHomingMaximum;
+    private double radius;
+
+
 
 
 

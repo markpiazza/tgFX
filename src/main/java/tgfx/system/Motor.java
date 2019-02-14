@@ -9,30 +9,31 @@ import tgfx.tinyg.ResponseCommand;
 import static tgfx.tinyg.Mnemonics.*;
 
 /**
- * Motor
+ * Motor Model
  *
+ * @see <a href="https://github.com/synthetos/TinyG/wiki/TinyG-Command-Line">Tinyg Command Line</a>
+ *
+ * $3    --- Show all motor 3 settings ---
+ * [3ma] m3_map_to_axis 0 [0=X, 1=Y...]
+ * [3sa] m3_step_angle 1.800 deg
+ * [3tr] m3_travel_per_revolution 5.080 mm
+ * [3mi] m3_microsteps 8 [1,2,4,8]
+ * [3po] m3_polarity 1 [0,1]
+ * [3pm] m3_power_management 1 [0,1]
  */
 public class Motor {
     private static final Logger logger = LogManager.getLogger();
     
     private String currentMotorJsonObject;
+
     private int idNumber;               // On TinyG the motor ports are 1-4
     private int mapToAxis;              // map_to_axis
-    private int microsteps;             // Microsteps
     private float stepAngle;            // step angle
     private float travelPerRevolution;  // travel revolution
+    private int microsteps;             // Microsteps
     private boolean polarity;           // polarity
     private boolean powerManagement;    // power management
 
-    /*
-     * What TinyG Motor Class Looks Like. 2/1/2012
-     * [1ma] m1_map_to_axis 0 [0=X, 1=Y...]
-     * [1sa] m1_step_angle 1.800 deg
-     * [1tr] m1_travel_per_revolution 5.080 mm
-     * [1mi] m1_microsteps 8 [1,2,4,8]
-     * [1po] m1_polarity 1 [0,1]
-     * [1pm] m1_power_management 1 [0,1]
-     */
 
     /**
      * motor constructor
