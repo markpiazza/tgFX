@@ -173,7 +173,6 @@
                 </padding>
 
                 <Gauge fx:id="xLcd" skinType="LCD" id="xLcd" averagingEnabled="false" sectionsAlwaysVisible="false"
-                       onMouseClicked="#refresh"
                        title="X Axis Position" subTitle="mm" decimals="3"
                        minWidth="200" prefWidth="200" maxWidth="200"
                        minHeight="75" prefHeight="75" maxHeight="75"
