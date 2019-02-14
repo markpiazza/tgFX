@@ -418,7 +418,7 @@ public class Main extends Stage implements Initializable, Observer, QueuedTimera
 
      * Another possibility is using eventing on the console and just send it message events
      *
-     * @param message mesvsage to send to the Main windows console
+     * @param message message to send to the Main windows console
      */
     public static void postConsoleMessage(String message){
         logger.info("postConsoleMessage : {}", message);
