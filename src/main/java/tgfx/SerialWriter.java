@@ -21,7 +21,7 @@ public class SerialWriter implements Runnable {
     private static boolean THROTTLED = false;
 
     private AtomicInteger bufferAvailable = new AtomicInteger(BUFFER_SIZE);
-    private BlockingQueue<String> queue;
+    private BlockingQueue queue;
     private boolean run = true;
     private boolean cleared  = false;
 
@@ -33,7 +33,7 @@ public class SerialWriter implements Runnable {
      * Serial Writer constructor
      * @param queue blocking queue
      */
-    public SerialWriter(BlockingQueue<String> queue) {
+    public SerialWriter(BlockingQueue queue) {
         this.queue = queue;
     }
 
@@ -241,7 +241,8 @@ public class SerialWriter implements Runnable {
         logger.info("Serial Writer Thread Running...");
         while (run) {
             try {
-                String tmpCmd = queue.take();  //Grab the line
+                // FIXME: is this an okay cast?
+                String tmpCmd = (String) queue.take();  //Grab the line
                 if(tmpCmd.equals("**FILEDONE**")){
                     //Our end of file sending token has been detected.
                     //We will not enable jogging by setting isSendingFile to false
