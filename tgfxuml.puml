@@ -1,0 +1,574 @@
+@startuml
+
+hide members
+
+hide tgfx.system.enums
+hide tgfx.external
+
+class Application
+class Stage
+
+
+class tgfx.TgFX {
+    + void start(Stage stage)
+    + {static} void main(String[] args)
+}
+
+class tgfx.Main {
+    - static StringProperty consoleText
+    - TinygDriver DRIVER
+    - GcodeHistory gcodeCommandHistory
+    - QueueUsingTimer<String> connectionTimer
+    - int oldRspLine
+    - int delayValue
+    - boolean buildChecked
+    - GcodeTabController gcodeTabController
+    - TabPane topTabPane
+    - ChoiceBox<String> serialPorts
+    - Button Connect
+    VBox consoleVBox
+    TextArea console
+    TextField input
+    - Label srMomo
+    - Label srState
+    - Label srBuild
+    - Label srBuffer
+    - Label srGcodeLine
+    - Label srVer
+    - Label srUnits
+    - Label srCoord
+
+    + Main()
+    - void FXreScanSerial(ActionEvent event)
+    - void handleConnect(ActionEvent event)
+    - void gcodeProgramClicks(MouseEvent me)
+    - void handleGuiRefresh()
+    - void handleKeyPress(final InputEvent event)
+    + void addToQueue(String message)
+    + void initialize(URL url, ResourceBundle rb)
+    + synchronized void update(Observable o, Object arg)
+    + static void postConsoleMessage(String message)
+    - void doTinyGConnectionTimeout()
+    - void doTinyGUserMessage(String keyArgument) +
+    - void doBuildOK()
+    - void doStatusReport()
+    - void doBuildError(String keyValue)
+    - void reScanSerial()
+    - void onConnectActions()
+    - void onConnectActionsTwo()
+    - void onDisconnectActions() +
+}
+class tgfx.ResponseFooter
+class tgfx.ResponseParser
+class tgfx.SerialDriver
+class tgfx.SerialWriter
+class tgfx.TgFXConstants {
+    + {static} final int STAGE_MIN_WIDTH
+    + {static} final int STAGE_MIN_HEIGHT
+    + {static} final int CONNECTION_TIMEOUT
+    + {static} final String CONNECTION_TIMEOUT_STRING
+    + {static} final String FIRMWARE_UPDATE_URL
+    + {static} final String OS
+    + {static} final String PROMPT
+    + {static} final String STAGE_FXML_MAIN
+    + {static} final String ROUTING_STATUS_REPORT
+    + {static} final String ROUTING_CMD_GET_AXIS_SETTINGS
+    + {static} final String ROUTING_CMD_GET_MACHINE_SETTINGS
+    + {static} final String ROUTING_CMD_GET_MOTOR_SETTINGS
+    + {static} final String ROUTING_NETWORK_MESSAGE
+    + {static} final String ROUTING_MACHINE_UPDATE
+    + {static} final String ROUTING_TEXTMODE_REPORT
+    + {static} final String ROUTING_BUFFER_UPDATE
+    + {static} final String ROUTING_UPDATE_LINE_NUMBER
+    + {static} final String ROUTING_BUILD_OK
+    + {static} final String ROUTING_TINYG_USER_MESSAGE
+    + {static} final String ROUTING_TINYG_CONNECTION_TIMEOUT
+    + {static} final String ROUTING_BUILD_ERROR
+    + {static} final String ROUTING_DISCONNECT
+    + {static} final String ROUTING_RECONNECT
+    + {static} final int SERIAL_DATA_RATE
+    + {static} final boolean DISABLE_UI_CONNECTION_CHECK
+    + {static} final String PATH
+}
+
+
+
+
+class tgfx.external.ConnectionHandler
+
+class tgfx.external.SocketMonitor
+
+class tgfx.hardwarePlatforms.HardwarePlatform
+class tgfx.hardwarePlatforms.HardwarePlatformManager
+
+class tgfx.render.CNCMachine
+class tgfx.render.Draw2d
+
+enum tgfx.system.enums.AxisMode {
+    DISABLE
+    INHIBITED
+    RADIUS
+    SLAVE_X
+    SLAVE_Y
+    SLAVE_Z
+    SLAVE_XY
+    SLAVE_XZ
+    SLAVE_YZ
+    SLAVE_XYZ
+    UNKNOWN
+}
+enum tgfx.system.enums.AxisName {
+    X
+    Y
+    Z
+    A
+    B
+    C
+}
+enum tgfx.system.enums.AxisType{
+    LINEAR
+    ROTATIONAL
+}
+enum tgfx.system.enums.GcodeCoordinateSystem{
+    G54
+    G55
+    G56
+    G57
+    G58
+    G59
+}
+enum tgfx.system.enums.GcodeDistanceMode {
+    ABSOLUTE
+    INCREMENTAL
+}
+enum tgfx.system.enums.GcodePathControl {
+    G61
+    G61POINT1
+    G64
+}
+enum tgfx.system.enums.GcodeSelectionPlane {
+    G17
+    G18
+    G19
+}
+
+enum tgfx.system.enums.GcodeSelectPlane {
+    XY
+    XZ
+    YZ
+}
+enum tgfx.system.enums.GcodeUnitMode {
+    INCHES
+    MM
+}
+enum tgfx.system.enums.MachineState {
+    RESET
+    CYCLE
+    STOP
+    END
+    RUN
+    HOLD
+    HOMING
+    PROBE
+    JOG
+}
+enum tgfx.system.enums.MotionMode {
+    TRAVERSE
+    FEED
+    CW_ARC
+    CCW_ARC
+    CANCEL
+}
+enum tgfx.system.enums.SwitchMode {
+    DISABLED
+    HOMING_ONLY
+    LIMIT_ONLY
+    HOMING_AND_LIMIT
+}
+
+class tgfx.system.Axis {
+    - {static} final DecimalFormat decimalFormat
+    - {static} final DecimalFormat decimalFormatJunctionDeviation
+    - {static} final DecimalFormat decimalFormatMaximumJerk
+    - List<Motor> motors
+    - String currentAxisJsonObject
+    - AxisType axisType
+    - String axisName
+    - double machine_position
+    - SimpleDoubleProperty machinePosition
+    - SimpleDoubleProperty workPosition
+    - AxisMode axisMode
+    - double feedRateMaximum
+    - double velocityMaximum
+    - SimpleDoubleProperty travelMaximum
+    - double jerkMaximum
+    - double junctionDeviation
+    - SwitchMode maxSwitchMode
+    - SwitchMode minSwitchMode
+    - SimpleBooleanProperty homed
+    - SimpleDoubleProperty offset
+    - double searchVelocity
+    - float latchVelocity
+    - double latchBackoff
+    - double zeroBackoff
+    - double jerkHomingMaximum
+    - double radius
+
+    + String getCurrentAxisJsonObject()
+    + void setCurrentAxisJsonObject(String currentAxisJsonObject)
+    + Axis(AxisName axisName, AxisType axisType, AxisMode axisMode)
+    + void setAxisCommand(String cmd, String value)
+    + String getAxisName()
+    - void setAxisName(String axisName)
+    - void setAxisType(AxisType axisType)
+    + AxisType getAxisType()
+    + AxisMode getAxisMode()
+    - void setAxisMode(int axMode)
+    + double getVelocityMaximum()
+    - void setVelocityMaximum(double velocityMaximum)
+    + double getFeedRateMaximum()
+    - void setFeedRateMaximum(float feedRateMaximum)
+    + SimpleDoubleProperty getTravelMaxSimple()
+    + double getTravelMaximum()
+    - void setTravelMaximum(float travelMaximum)
+    + double getJerkMaximum()
+    - void setJerkMaximum(double jerkMaximum)
+    + double getJerkHomingMaximum()
+    + void setJerkHomingMaximum(double jerkHomingMaximum)
+    + double getJunctionDeviation()
+    - void setJunctionDeviation(float junctionDevation)
+    + SwitchMode getMaxSwitchMode()
+    - void setMaxSwitchMode(int maxSwitchMode)
+    + SwitchMode getMinSwitchMode()
+    - void setMinSwitchMode(int minSwitchMode)
+    + double getSearchVelocity()
+    - void setSearchVelocity(double searchVelocity)
+    - void setLatchVelocity(float latchVelocity)
+    + float getLatchVelocity()
+    + double getLatchBackoff()
+    - void setLatchBackoff(float latchBackoff)
+    + double getZeroBackoff()
+    - void setZeroBackoff(float zeroBackoff)
+    + double getRadius()
+    - void setRadius(double radius)
+    + void setMotorCommand(String cmd, String value)
+    + SimpleDoubleProperty getWorkPosition()
+    + void setWorkPosition(double workPosition)
+    + SimpleDoubleProperty getMachinePositionSimple()
+    + void setMachinePosition(double machinePosition)
+    + double getMachinePosition()
+    + void setMachinePosition(float machinePosition)
+    + SimpleDoubleProperty getOffset()
+    + void setOffset(double offset)
+    + List<Motor> getMotors()
+    + void addMotor(Motor motor)
+    + void setMotors(List<Motor> motors)
+    - double formatDoubleValue(double val)
+    - double formatJunctionDeviation(double val)
+    - double formatJerkMaximum(double val)
+    - float formatFloatValue(float val)
+    + void applyJsonSystemSetting(ResponseCommand rc)
+    + void applyJsonSystemSetting(JSONObject js, String parent)
+    - void _applyJsonSystemSetting(ResponseCommand rc)
+}
+class tgfx.system.GcodeCoordinateManager {
+    - GcodeCoordinateSystem currentGcodeCoordinateSystem
+    - ArrayList<GcodeCoordinateSystem> coordinateSystems
+
+    GcodeCoordinateManager()
+    + GcodeCoordinateSystem getCurrentGcodeCoordinateSystem()
+    + StringProperty getCurrentGcodeCoordinateSystemName()
+    void setCurrentGcodeCoordinateSystem(int gcu)
+    - void setCurrentGcodeCoordinateSystem(String gcu)
+    + void setCurrentGcodeCoordinateSystem(GcodeCoordinateSystem currentGcodeCoordinateSystem)
+}
+class tgfx.system.GcodeCoordinateSystem{
+    - StringProperty coordinateSystemName
+    - int coordinateNumber
+    - int coordinateNumberTgFormat
+    - double xOffset
+    - double yOffset
+    - double zOffset
+    - double aOffset
+    - double bOffset
+    - double cOffset
+
+    + GcodeCoordinateSystem()
+    + GcodeCoordinateSystem(String coordinateName)
+    + StringProperty getGcodeCoordinateSystemProperty()
+    + int getCoordinateNumberMnemonic()
+    + void setCoordinateNumberMnemonic(int coordinateNumber)
+    + int getCoordinateNumberByTgFormat()
+    + void setCoordinateNumberTgFormat(int coordinateNumberTgFormat)
+    + void setCoordinateNumber(int number)
+    + String getCoordinate()
+    + void setCoordinate(String coordinate)
+    + double getxOffset()
+    + void setxOffset(double xOffset)
+    + double getyOffset()
+    + void setyOffset(double yOffset)
+    + double getzOffset()
+    + void setzOffset(double zOffset)
+    + double getaOffset()
+    + void setaOffset(double aOffset)
+    + double getbOffset()
+    + void setbOffset(double bOffset)
+    + double getcOffset()
+    + void setcOffset(double cOffset)
+}
+class tgfx.system.Machine {
+    - {static} Machine machineInstance
+    - HardwarePlatform hardwarePlatform
+    - SimpleDoubleProperty longestTravelAxisValue
+    - SimpleIntegerProperty xjoggingIncrement
+    - SimpleIntegerProperty yjoggingIncrement
+    - SimpleIntegerProperty zjoggingIncrement
+    - SimpleIntegerProperty ajoggingIncrement
+    - StringProperty hardwareId
+    - StringProperty hardwareVersion
+    - StringProperty firmwareVersion
+    - SimpleDoubleProperty firmwareBuild
+    - SimpleStringProperty machineState
+    - SimpleStringProperty motionMode
+    + SimpleDoubleProperty velocity
+    - StringProperty gcodeUnitMode
+    + SimpleDoubleProperty gcodeUnitDivision
+    - int switchType
+    - int statusReportInterval
+    - GcodeSelectPlane gcodeSelectPlane
+    - GcodeCoordinateSystem gcodeCoordinateSystem
+    - GcodePathControl gcodePathControl
+    - GcodeDistanceMode gcodeDistanceMode
+    - float junctionAcceleration
+    - float minLineSegment
+    - float minArcSegment
+    - double minSegmentTime
+    - boolean enableAcceleration
+    - boolean enableCrOnTx
+    - boolean enableEcho
+    - boolean enableXonXoff
+    - boolean enableHashcode
+    - final List<Motor> motors
+    - final List<Axis> axis
+    - List<GcodeCoordinateSystem> gcodeCoordinateSystems
+    - GcodeCoordinateManager coordinateManager
+    - SimpleStringProperty coordinateSystem
+    - SimpleIntegerProperty lineNumber
+    - String lastMessage
+    - String machineName
+
+    - Machine()
+    + static Machine getInstance()
+    + HardwarePlatform getHardwarePlatform()
+    + void setHardwarePlatform(HardwarePlatform hardwarePlatform)
+    + GcodeCoordinateManager getGcodeCoordinateManager()
+    + String getLastMessage()
+    + void setLastMessage(String lastMessage)
+    + StringProperty getHardwareId()
+    + void setHardwareId(String hardwareId)
+    + StringProperty getHardwareVersion()
+    + void setHardwareVersion(String hardwareVersion)
+    + int getSwitchType()
+    - void setSwitchType(int swType)
+    + String getSwitchTypeAsString()
+    + double getLongestTravelAxisValue()
+    + void setLongestTravelAxisValue(double value)
+    + GcodeDistanceMode getGcodeDistanceMode()
+    - void setGcodeDistanceMode(String gdm)
+    - void setGcodeDistanceMode(int gdm)
+    + GcodeSelectPlane getGcodeSelectPlane()
+    - void setGcodeSelectPlane(String gsp)
+    - void setGcodeSelectPlane(int gsp)
+    + void setGcodeSelectPlane(GcodeSelectPlane gcodeSelectPlane)
+    + GcodePathControl getGcodePathControl()
+    - void setGcodePathControl(String gpc)
+    - void setGcodePathControl(int gpc)
+    + boolean isEnableCrOnTx()
+    + void setEnableCrOnTx(boolean enableCrOnTx)
+    + boolean isEnableHashcode()
+    + void setEnableHashcode(boolean enableHashcode)
+    + float getJunctionAcceleration()
+    + void setJunctionAcceleration(float junctionAcceleration)
+    + List<Motor> getMotors()
+    + int getNumberOfMotors()
+    + String getMachineName()
+    + void setMachineName(String machineName)
+    + StringProperty getGcodeUnitMode()
+    + int getGcodeUnitModeAsInt()
+    + void setGcodeUnits(String gcu)
+    - void setGcodeUnits(int unitMode)
+    + SimpleStringProperty getMotionMode()
+    + void setMotionMode(int mode)
+    + int getStatusReportInterval()
+    + void setStatusReportInterval(int statusReportInterval)
+    + boolean isEnableAcceleration()
+    + void setEnableAcceleration(boolean enableAcceleration)
+    + boolean isEnableEcho()
+    - void setEnableEcho(boolean enableEcho)
+    + boolean isEnableXonXoff()
+    - void setEnableXonXoff(boolean enableXonXoff)
+    + SimpleDoubleProperty getFirmwareBuild()
+    + double getFirmwareBuildVersion()
+    + void setFirmwareBuild(double firmware_build) throws JSONException
+    + StringProperty getFirmwareVersion()
+    + void setFirmwareVersion(String fv)
+    + int getLineNumber()
+    + SimpleIntegerProperty getLineNumberSimple()
+    + void setLineNumber(int lineNumber)
+    + SimpleStringProperty getCoordinateSystem()
+    + GcodeCoordinateSystem getCoordinateSystemByName(String name)
+    + GcodeCoordinateSystem getCoordinateSystemByNumberMnemonic(int number)
+    + GcodeCoordinateSystem getCoordinateSystemByTgNumber(int number)
+    + SimpleStringProperty getMachineState()
+    + void setMachineState(int state)
+    + float getMinArcSegment()
+    + void setMinArcSegment(float minArcSegment)
+    + float getMinLineSegment()
+    + void setMinLineSegment(float minLineSegment)
+    + double getMinSegmentTime()
+    + void setMinSegmentTime(double minSegmentTime)
+    + Double getVelocity()
+    + void setVelocity(double vel)
+    + double getJoggingIncrementByAxis(String _axisName)
+    + List<Axis> getAllAxis()
+    List<Axis> getAllLinearAxis()
+    - Axis getAxisByName(char c)
+    + Axis getAxisByName(String name)
+    + Motor getMotorByNumber(String m)
+    + Motor getMotorByNumber(int i)
+    + int getMotorAxis(Motor m)
+    + void setMotorAxis(int motorNumber, int x)
+    + void applyJsonStatusReport(ResponseCommand rc)
+    + void applyJsonSystemSetting(JSONObject js, String parent)
+
+}
+class tgfx.system.Motor {
+    - String currentMotorJsonObject
+    - int idNumber
+    - int mapToAxis
+    - float stepAngle
+    - float travelPerRevolution
+    - int microsteps
+    - boolean polarity
+    - boolean powerManagement
+
+    + Motor(int id)
+    + String getCurrentMotorJsonObject()
+    + void setCurrentMotorJsonObject(String currentMotorJsonObject)
+    + int isPolarityInt()
+    + int isPowerManagementInt()
+    + int getIdNumber()
+    + void setIdNumber(int idNumber)
+    + int getMapToAxis()
+    + void setMapToAxis(int m)
+    + int getMicrosteps()
+    + void setMicrosteps(int microsteps)
+    - boolean isPolarity()
+    + void setPolarity(boolean polarity)
+    - void setPolarity(int polarity)
+    - boolean isPowerManagement()
+    + void setPowerManagement(boolean powerManagement)
+    - void setPowerManagement(int power_management)
+    + float getStepAngle()
+    - void setStepAngle(float stepAngle)
+    + float getTravelPerRevolution()
+    - void setTravelPerRevolution(float travel_per_revolution)
+    + void applyJsonSystemSetting(JSONObject js, String parent)
+}
+class tgfx.system.StatusCode {
+    - int statusNumber
+    - String message
+    - String statusType
+
+    + StatusCode(int sn, String msg, String type)
+    + String getStatusType()
+    + int getStatusNumber()
+    + String getMessage()
+}
+
+class tgfx.tinyg.CommandManager
+class tgfx.tinyg.Commands
+class tgfx.tinyg.MnemonicManager
+class tgfx.tinyg.Mnemonics
+class tgfx.tinyg.QueueReport
+class tgfx.tinyg.ResponseCommand
+class tgfx.tinyg.TinygDriver
+
+class tgfx.ui.firmware.FirmwareUpdaterController {
+    - {static} TinygDriver DRIVER
+    - {static} Machine MACHINE
+    - {static} Label firmwareVersion
+    - Label hwVersion
+    - Label buildNumb
+    - Label hardwareId
+    - Label latestFirmwareBuild
+    - Label currentFirmwareVersionLabel
+    - {static} Button handleUpdateFirmware
+    - {static} String avrdudePath
+    - {static} String avrconfigPath
+    - SimpleDoubleProperty _currentVersionString
+    {static} HashMap<String, String> platformSetup
+
+    - {static} Task updateFirmware()
+    - {static} void toggleUpdateFirmwareButton(boolean choice)
+    + {static} void handleUpdateFirmware(ActionEvent event)
+    - void checkFirmwareUpdate(ActionEvent event)
+    + void initialize(URL url, ResourceBundle rb)
+    - {static} void enterBootloaderMode()
+}
+class tgfx.ui.gcode.GcodeHistory
+class tgfx.ui.gcode.GcodeLine
+class tgfx.ui.gcode.GcodeTabController
+class tgfx.ui.machinesettings.MachineSettingsController
+class tgfx.ui.tgfxsettings.TgfxSettingsController
+class tgfx.ui.tinygconfig.TinyGConfigController
+
+interface tgfx.utility.QueuedTimerable
+interface tgfx.utility.Timeable
+class tgfx.utility.AsyncTimer
+class tgfx.utility.QueueUsingTimer
+class tgfx.utility.UtilityFunctions
+class tgfx.utility.TimerTest
+
+
+Application <|-- tgfx.TgFX  : extends
+Stage <|-- tgfx.Main  : extends
+
+tgfx.TgFX --> tgfx.Main
+
+tgfx.ResponseParser --> tgfx.ResponseFooter
+
+tgfx.Main --> tgfx.tinyg.TinygDriver : <<singleton>>
+tgfx.Main --> tgfx.ui.gcode.GcodeHistory
+tgfx.Main --> tgfx.utility.QueueUsingTimer
+tgfx.Main ..> tgfx.system.Machine : <<singleton>>
+tgfx.Main ..> tgfx.system.StatusCode
+tgfx.Main ..> tgfx.render.Draw2d
+tgfx.Main ..> tgfx.utility.QueuedTimerable
+tgfx.Main --> tgfx.ui.gcode.GcodeTabController : <<singleton>>
+tgfx.Main ..> tgfx.ui.tinygconfig.TinyGConfigController : <<singleton>>
+tgfx.Main ..> tgfx.ui.firmware.FirmwareUpdaterController : <<singleton>>
+tgfx.Main ..> tgfx.ui.machinesettings.MachineSettingsController : <<singleton>>
+tgfx.Main ..> tgfx.ui.tgfxsettings.TgFXSettingsController : <<singleton>>
+
+tgfx.SerialDriver --> tgfx.SerialWriter
+tgfx.SerialDriver --> SerialPort
+
+tgfx.tinyg.TinygDriver --> tgfx.ResponseParser
+
+tgfx.tinyg.TinygDriver --> tgfx.tinyg.TinygDriver : <<singleton>
+tgfx.tinyg.TinygDriver --> tgfx.hardwarePlatforms.HardwarePlatformManager : <<singleton>>
+tgfx.tinyg.TinygDriver --> tgfx.SerialDriver : <<singleton>>
+tgfx.tinyg.TinygDriver --> tgfx.tinyg.QueueReport : <<singleton>>
+tgfx.tinyg.TinygDriver --> tgfx.system.Machine : <<singleton>>
+
+tgfx.system.Machine --> tgfx.system.Machine : <<singleton>>
+
+tgfx.system.Machine --> tgfx.hardwarePlatforms.HardwarePlatform
+
+tgfx.ui.firmware.FirmwareUpdaterController --> tgfx.tinyg.TinygDriver : <<singleton>>
+tgfx.ui.firmware.FirmwareUpdaterController --> tgfx.system.Machine : <<singleton>>
+
+tgfx.ui.machinesettings.MachineSettingsController --> tgfx.ui.firmware.FirmwareUpdaterController : <<singleton>>
+
+@enduml
