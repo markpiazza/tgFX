@@ -7,6 +7,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 
@@ -14,9 +18,21 @@ import java.io.IOException;
  * TgFX
  *
  */
+@SpringBootApplication
 public class TgFX extends Application {
     private static final Logger logger = LogManager.getLogger();
+    private ConfigurableApplicationContext springContext = new AnnotationConfigApplicationContext(SpringApplicationConfig.class);
+    Parent root;
 
+
+
+    @Override
+    public void init() throws Exception {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(TgFXConstants.STAGE_FXML_MAIN));
+        loader.setControllerFactory(springContext::getBean);
+        root = loader.load();
+    }
 
     /**
      *
@@ -25,8 +41,6 @@ public class TgFX extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(TgFXConstants.STAGE_FXML_MAIN));
-        Parent root = loader.load();
         Scene scene = new Scene(root);
         scene.setRoot(root);
 
