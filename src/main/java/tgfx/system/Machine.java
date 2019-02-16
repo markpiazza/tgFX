@@ -38,25 +38,24 @@ public final class Machine {
     private SimpleIntegerProperty zjoggingIncrement = new SimpleIntegerProperty();
     private SimpleIntegerProperty ajoggingIncrement = new SimpleIntegerProperty();
 
-    private StringProperty hardwareId = new SimpleStringProperty("na");
-    private StringProperty hardwareVersion = new SimpleStringProperty("na");
-    private StringProperty firmwareVersion = new SimpleStringProperty();
-    private SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty();
+    private StringProperty hardwareId = new SimpleStringProperty("hardwareId");
+    private StringProperty hardwareVersion = new SimpleStringProperty("hardwareVersion");
+    private StringProperty firmwareVersion = new SimpleStringProperty("firmwareVersion");
+    private SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty(0.0);
 
     private SimpleStringProperty machineState = new SimpleStringProperty();
     private SimpleStringProperty motionMode = new SimpleStringProperty();
 
-    public SimpleDoubleProperty velocity = new SimpleDoubleProperty();
+    private SimpleDoubleProperty velocity = new SimpleDoubleProperty();
     private StringProperty gcodeUnitMode = new SimpleStringProperty("mm");
-    public SimpleDoubleProperty gcodeUnitDivision = new SimpleDoubleProperty(1);
-//    private SimpleStringProperty gcodeDistanceMode = new SimpleStringProperty();
+    private SimpleDoubleProperty gcodeUnitDivision = new SimpleDoubleProperty(1);
 
     private int switchType = 0; //0=normally closed 1 = normally open
     private int statusReportInterval;
 
-//    public GcodeUnitMode gcode_startup_units;
+    private GcodeUnitMode gcodeStartupUnits;
     private GcodeSelectPlane gcodeSelectPlane;
-    private GcodeCoordinateSystem gcodeCoordinateSystem;
+    private CoordinateSystem gcodeCoordinateSystem;
     private GcodePathControl gcodePathControl;
     private GcodeDistanceMode gcodeDistanceMode = GcodeDistanceMode.ABSOLUTE;
 
@@ -73,8 +72,8 @@ public final class Machine {
     private final List<Motor> motors = new ArrayList<>();
     private final List<Axis> axis = new ArrayList<>();
 
-    private List<GcodeCoordinateSystem> gcodeCoordinateSystems = new ArrayList<>();
-    private GcodeCoordinateManager coordinateManager = new GcodeCoordinateManager();
+    private List<CoordinateSystem> gcodeCoordinateSystems = new ArrayList<>();
+    private CoordinateManager coordinateManager = new CoordinateManager();
     private SimpleStringProperty coordinateSystem = new SimpleStringProperty();
     private SimpleIntegerProperty lineNumber = new SimpleIntegerProperty(0);
 
@@ -139,7 +138,7 @@ public final class Machine {
      * get coordinate system
      * @return coordinate system
      */
-    public GcodeCoordinateManager getGcodeCoordinateManager(){
+    public CoordinateManager getGcodeCoordinateManager(){
         return coordinateManager;
     }
 
@@ -496,6 +495,9 @@ public final class Machine {
         }
     }
 
+    public SimpleDoubleProperty getGcodeUnitDivision(){
+        return gcodeUnitDivision;
+    }
 
 
     /**
@@ -692,10 +694,10 @@ public final class Machine {
      * @param name coordinate system name
      * @return coordinate system
      */
-    public GcodeCoordinateSystem getCoordinateSystemByName(String name) {
-        for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
-            if (_tmpGCS.getCoordinate().equals(name)) {
-                return _tmpGCS;
+    public CoordinateSystem getCoordinateSystemByName(String name) {
+        for (CoordinateSystem coordinateSystem : gcodeCoordinateSystems) {
+            if (coordinateSystem.getCoordinate().equals(name)) {
+                return coordinateSystem;
             }
         }
         return null;
@@ -707,11 +709,10 @@ public final class Machine {
      * @param number number mnemonic
      * @return coordinate system
      */
-    public GcodeCoordinateSystem getCoordinateSystemByNumberMnemonic(int number) {
-        for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
-            if (_tmpGCS.getCoordinateNumberMnemonic() == number) {
-                logger.info("Returned " + _tmpGCS.getCoordinate() + " coord system");
-                return _tmpGCS;
+    public CoordinateSystem getCoordinateSystemByNumberMnemonic(int number) {
+        for (CoordinateSystem coordinateSystem : gcodeCoordinateSystems) {
+            if (coordinateSystem.getCoordinateNumberMnemonic() == number) {
+                return coordinateSystem;
             }
         }
         return null;
@@ -723,54 +724,48 @@ public final class Machine {
      * @param number tg number
      * @return coordinate system
      */
-    public GcodeCoordinateSystem getCoordinateSystemByTgNumber(int number) {
-        for (GcodeCoordinateSystem _tmpGCS : gcodeCoordinateSystems) {
-            if (_tmpGCS.getCoordinateNumberByTgFormat() == number) {
-                logger.info("Returned " + _tmpGCS.getCoordinate() + " coord system");
-                return _tmpGCS;
+    public CoordinateSystem getCoordinateSystemByTgNumber(int number) {
+        for (CoordinateSystem coordinateSystem : gcodeCoordinateSystems) {
+            if (coordinateSystem.getCoordinateNumberByTgFormat() == number) {
+                return coordinateSystem;
             }
         }
         return null;
     }
 
-    //    public void setCoordinateSystem(String cord) {
-    //        setCoordinate_mode(Integer.valueOf(cord));
-    //    }
-    //
-    //    public void setCoordinate_mode(double m) {
-    //        int c = (int) (m); //Convert this to a int
-    //        setCoordinate_mode(c);
-    //    }
-    //    public int getCoordinateSystemOrd() {
-    //        CoordinateSystems[] cs = CoordinateSystems.values();
-    //        return 1;
-    //    }
-    //
-    //    public void setCoordinate_mode(int c) {
-    //        switch (c) {
-    //            case 1:
-    //                coordinateSystem.set(CoordinateSystems.G54.toString());
-    //                break;
-    //            case 2:
-    //                coordinateSystem.set(CoordinateSystems.G55.toString());
-    //                break;
-    //            case 3:
-    //                coordinateSystem.set(CoordinateSystems.G56.toString());
-    //                break;
-    //            case 4:
-    //                coordinateSystem.set(CoordinateSystems.G57.toString());
-    //                break;
-    //            case 5:
-    //                coordinateSystem.set(CoordinateSystems.G58.toString());
-    //                break;
-    //            case 6:
-    //                coordinateSystem.set(CoordinateSystems.G59.toString());
-    //                break;
-    //            default:
-    //                coordinateSystem.set(CoordinateSystems.G54.toString());
-    //                break;
-    //        }
-    //    }
+        public void setCoordinateSystem(String cord) {
+            setCoordinateSystem(Integer.valueOf(cord));
+        }
+
+        public void setCoordinateSystem(double m) {
+            setCoordinateSystem((int) m);
+        }
+
+        public void setCoordinateSystem(int c) {
+            switch (c) {
+                case 1:
+                    coordinateSystem.set(GcodeCoordinateSystem.G54.toString());
+                    break;
+                case 2:
+                    coordinateSystem.set(GcodeCoordinateSystem.G55.toString());
+                    break;
+                case 3:
+                    coordinateSystem.set(GcodeCoordinateSystem.G56.toString());
+                    break;
+                case 4:
+                    coordinateSystem.set(GcodeCoordinateSystem.G57.toString());
+                    break;
+                case 5:
+                    coordinateSystem.set(GcodeCoordinateSystem.G58.toString());
+                    break;
+                case 6:
+                    coordinateSystem.set(GcodeCoordinateSystem.G59.toString());
+                    break;
+                default:
+                    coordinateSystem.set(GcodeCoordinateSystem.G54.toString());
+                    break;
+            }
+        }
 
 
     /**
@@ -778,7 +773,7 @@ public final class Machine {
      * @return machine state
      */
     public SimpleStringProperty getMachineState() {
-        return this.machineState;
+        return machineState;
     }
 
 
@@ -877,6 +872,14 @@ public final class Machine {
      * get velocity
      * @return velocity
      */
+    public SimpleDoubleProperty velocityProperty() {
+        return velocity;
+    }
+
+    /**
+     * get velocity
+     * @return velocity
+     */
     public Double getVelocity() {
         return velocity.get();
     }
@@ -893,12 +896,12 @@ public final class Machine {
 
     /**
      * get jogging increment by axis
-     * @param _axisName axis name
+     * @param axisName axis name
      * @return jogging increment
      */
-    public double getJoggingIncrementByAxis(String _axisName) {
+    public double getJoggingIncrementByAxis(String axisName) {
         // FIXME: possible NPE
-        return getAxisByName(_axisName).getTravelMaxSimple().get();
+        return getAxisByName(axisName).getTravelMaxSimple().get();
     }
 
 

@@ -39,10 +39,10 @@ public class SerialWriter implements Runnable {
 
 
     /**
-     *
+     * reset the buffer
+     * called on onDisconnectActions
      */
     void resetBuffer() {
-        //Called onDisconnectActions
         bufferAvailable.set(BUFFER_SIZE);
         notifyAck();
     }
@@ -122,16 +122,16 @@ public class SerialWriter implements Runnable {
 
     /**
      * set throttled
-     * @param t is throttled
+     * @param throttled is throttled
      */
-    public void setThrottled(boolean t) {
+    public void setThrottled(boolean throttled) {
         synchronized (MUTEX) {
-            if (t == THROTTLED) {
+            if (throttled == THROTTLED) {
                 logger.debug("Throttled already set");
                 return;
             }
-            logger.debug("Setting Throttled " + t);
-            THROTTLED = t;
+            logger.debug("Setting Throttled " + throttled);
+            THROTTLED = throttled;
         }
     }
 

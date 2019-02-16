@@ -132,9 +132,9 @@ public class CNCMachine extends Pane {
 
 
         maxHeightProperty().bind(MACHINE.getAxisByName("y")
-                .getTravelMaxSimple().multiply(MACHINE.gcodeUnitDivision));
+                .getTravelMaxSimple().multiply(MACHINE.getGcodeUnitDivision()));
         maxWidthProperty().bind(MACHINE.getAxisByName("x")
-                .getTravelMaxSimple().multiply(MACHINE.gcodeUnitDivision));
+                .getTravelMaxSimple().multiply(MACHINE.getGcodeUnitDivision()));
 
         cursorPoint.translateYProperty()
                 .bind(this.heightProperty().subtract(MACHINE.getAxisByName("y").getMachinePositionSimple()));
@@ -187,7 +187,7 @@ public class CNCMachine extends Pane {
      * @return normalized x position
      */
     private double getNormalizedX(double x) {
-        return x / MACHINE.gcodeUnitDivision.get();
+        return x / MACHINE.getGcodeUnitDivision().get();
     }
 
 
@@ -197,7 +197,7 @@ public class CNCMachine extends Pane {
      * @return normalized y position
      */
     private double getNormalizedY(double y) {
-        return (getHeight() - y) / MACHINE.gcodeUnitDivision.get();
+        return (getHeight() - y) / MACHINE.getGcodeUnitDivision().get();
     }
 
 

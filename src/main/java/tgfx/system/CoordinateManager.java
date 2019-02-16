@@ -6,27 +6,27 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * GcodeCoordinateManager
+ * CoordinateManager
  *
  */
-public class GcodeCoordinateManager {
+public class CoordinateManager {
     private static final Logger logger = LogManager.getLogger();
 
-    private GcodeCoordinateSystem currentGcodeCoordinateSystem;
-    private ArrayList<GcodeCoordinateSystem> coordinateSystems = new ArrayList<>();
+    private CoordinateSystem currentGcodeCoordinateSystem;
+    private ArrayList<CoordinateSystem> coordinateSystems = new ArrayList<>();
 
-    GcodeCoordinateManager() {
-        coordinateSystems.add(new GcodeCoordinateSystem("g54"));
-        coordinateSystems.add(new GcodeCoordinateSystem("g55"));
-        coordinateSystems.add(new GcodeCoordinateSystem("g56"));
-        coordinateSystems.add(new GcodeCoordinateSystem("g57"));
-        coordinateSystems.add(new GcodeCoordinateSystem("g58"));
-        coordinateSystems.add(new GcodeCoordinateSystem("g59"));
-        currentGcodeCoordinateSystem = new GcodeCoordinateSystem();
+    CoordinateManager() {
+        coordinateSystems.add(new CoordinateSystem("g54"));
+        coordinateSystems.add(new CoordinateSystem("g55"));
+        coordinateSystems.add(new CoordinateSystem("g56"));
+        coordinateSystems.add(new CoordinateSystem("g57"));
+        coordinateSystems.add(new CoordinateSystem("g58"));
+        coordinateSystems.add(new CoordinateSystem("g59"));
+        currentGcodeCoordinateSystem = new CoordinateSystem();
     }
 
 
-    public GcodeCoordinateSystem getCurrentGcodeCoordinateSystem() { 
+    public CoordinateSystem getCurrentGcodeCoordinateSystem() {
         return currentGcodeCoordinateSystem;
     }
 
@@ -61,7 +61,7 @@ public class GcodeCoordinateManager {
 
 
     private void setCurrentGcodeCoordinateSystem(String gcu) {
-        for (GcodeCoordinateSystem _gc : coordinateSystems) {
+        for (CoordinateSystem _gc : coordinateSystems) {
             switch (_gc.getCoordinate().toLowerCase()) {
                 case "g54":
                     currentGcodeCoordinateSystem.setCoordinate(gcu);
@@ -86,7 +86,7 @@ public class GcodeCoordinateManager {
     }
 
 
-    public void setCurrentGcodeCoordinateSystem(GcodeCoordinateSystem currentGcodeCoordinateSystem) {
+    public void setCurrentGcodeCoordinateSystem(CoordinateSystem currentGcodeCoordinateSystem) {
         this.currentGcodeCoordinateSystem = currentGcodeCoordinateSystem;
     }
 }

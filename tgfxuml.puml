@@ -271,7 +271,7 @@ class tgfx.system.Axis {
     + void applyJsonSystemSetting(JSONObject js, String parent)
     - void _applyJsonSystemSetting(ResponseCommand rc)
 }
-class tgfx.system.GcodeCoordinateManager {
+class tgfx.system.CoordinateManager {
     - GcodeCoordinateSystem currentGcodeCoordinateSystem
     - ArrayList<GcodeCoordinateSystem> coordinateSystems
 
@@ -282,7 +282,7 @@ class tgfx.system.GcodeCoordinateManager {
     - void setCurrentGcodeCoordinateSystem(String gcu)
     + void setCurrentGcodeCoordinateSystem(GcodeCoordinateSystem currentGcodeCoordinateSystem)
 }
-class tgfx.system.GcodeCoordinateSystem{
+class tgfx.system.CoordinateSystem{
     - StringProperty coordinateSystemName
     - int coordinateNumber
     - int coordinateNumberTgFormat

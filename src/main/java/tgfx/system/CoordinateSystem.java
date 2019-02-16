@@ -6,11 +6,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * GcodeCoordinateSystem
+ * CoordinateSystem
  *
  */
 @SuppressWarnings("WeakerAccess")
-public final class GcodeCoordinateSystem {
+public final class CoordinateSystem {
     private static final Logger logger = LogManager.getLogger();
 
     private StringProperty coordinateSystemName = new SimpleStringProperty();
@@ -26,7 +26,7 @@ public final class GcodeCoordinateSystem {
     /**
      * gcode coordinate access system constructor
      */
-    public GcodeCoordinateSystem() {
+    public CoordinateSystem() {
     }
 
 
@@ -34,7 +34,7 @@ public final class GcodeCoordinateSystem {
      * gcode coorcinate access system constructor
      * @param coordinateName coordinate system name
      */
-    public GcodeCoordinateSystem(String coordinateName) {
+    public CoordinateSystem(String coordinateName) {
         setCoordinate(coordinateName);
         setCoordinateNumberMnemonic(Integer.valueOf(coordinateName.substring(1, 2)));
     }

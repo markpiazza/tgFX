@@ -21,8 +21,8 @@
                           AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <Label id="serialTitleLabel" text="Serial Ports: " alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS"/>
                         <ChoiceBox fx:id="serialPorts" focusTraversable="false" minHeight="21.0" minWidth="120.0" HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="Connect" text="Connect" focusTraversable="false" onAction="#handleConnect"/>
-                        <Button text="Re-Scan" focusTraversable="false" onAction="#FXreScanSerial"/>
+                        <Button fx:id="connectBtn" text="Connect" focusTraversable="false" onAction="#handleConnect"/>
+                        <Button text="Re-Scan" focusTraversable="false" onAction="#handleRescanSerial"/>
                     </HBox>
                     <Text id="tgfxTitleText" text="tgFX - TinyG Controller" layoutX="14.0" layoutY="22.0" fill="WHITE"/>
                 </AnchorPane>

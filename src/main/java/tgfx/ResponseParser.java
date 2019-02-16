@@ -31,12 +31,12 @@ public class ResponseParser extends Observable implements Runnable {
     private static final int FOOTER_ELEMENT_RX_RECVD = 2;
     private static final int FOOTER_ELEMENT_CHECKSUM = 3;
 
+    private static final TinygDriver DRIVER = TinygDriver.getInstance();
+
     //our holder for ResponseFooter Data
     private ResponseFooter responseFooter = new ResponseFooter();
-    private JSONArray footerValues;
     private String[] message = new String[2];
     private String line;
-    private String buf = "";
     private boolean textMode = false;
     private boolean RUN = true;
 
@@ -54,6 +54,7 @@ public class ResponseParser extends Observable implements Runnable {
     private boolean isTextMode() {
         return textMode;
     }
+
 
     /**
      * set text mode
@@ -87,14 +88,9 @@ public class ResponseParser extends Observable implements Runnable {
                         message[1] = "JSON Response Detected... Leaving Text mode..  " +
                                         "Querying System State....\n";
                         notifyObservers(message);
-                        try {
-                            TinygDriver.getInstance().getCommandManager().queryAllMachineSettings();
-                            TinygDriver.getInstance().getCommandManager().queryAllHardwareAxisSettings();
-                            TinygDriver.getInstance().getCommandManager().queryAllMotorSettings();
-                        } catch (Exception ex) {
-                            logger.error("Error leaving Text mode and querying Motor, " +
-                                            "Machine and Axis Settings.");
-                        }
+                        DRIVER.getCommandManager().queryAllMachineSettings();
+                        DRIVER.getCommandManager().queryAllHardwareAxisSettings();
+                        DRIVER.getCommandManager().queryAllMotorSettings();
 
                     }
                     parseJSON(line);  //Take a line from the response queue when its ready and parse it.
@@ -117,7 +113,7 @@ public class ResponseParser extends Observable implements Runnable {
                     notifyObservers(message);
                 }
             } catch (InterruptedException | JSONException ex) {
-                logger.error("Error in responseParser run(): " + ex.getMessage());
+                logger.error("Error in responseParser run()", ex);
             }
         }
     }
@@ -162,7 +158,7 @@ public class ResponseParser extends Observable implements Runnable {
                         // error codes.. bytes available in hardware buffer etc.
                         parseFooter(js.getJSONArray("f"));
                     } else {
-                        ResponseCommand rc = TinygDriver.getInstance().getMnemonicManager()
+                        ResponseCommand rc = DRIVER.getMnemonicManager()
                                 .lookupSingleGroupMaster(key, pg);
 
                         // This happens when a new mnemonic has been added to the tinyG firmware
@@ -196,27 +192,18 @@ public class ResponseParser extends Observable implements Runnable {
          * often that instead of walking the normal parsing tree.. this skips to
          * the end
          */
-//        try {
-            // This is a special multi single value response object
-            for (Object o : js.keySet()) {
-                String key = o.toString();
-                ResponseCommand rc = new ResponseCommand(MNEMONIC_GROUP_SYSTEM, key, js.get(key).toString());
-                TinygDriver.getInstance().getMachine().applyJsonStatusReport(rc);
-                // we will supply the parent object name for each key pair
-                // applySettings(rc.buildJsonObject(), rc.getSettingParent());
-            }
-            setChanged();
-            message[0] = "STATUS_REPORT";
-            message[1] = null;
-            notifyObservers(message);
-//        } catch (Exception ex) {
-//            logger.error("Error in applySettingStatusReport(JsonObject js) : " + ex.getMessage());
-//            logger.error("js.toString " + js.toString());
-//            setChanged();
-//            message[0] = "STATUS_REPORT";
-//            message[1] = null;
-//            notifyObservers(message);
-//        }
+        // This is a special multi single value response object
+        for (Object o : js.keySet()) {
+            String key = o.toString();
+            ResponseCommand rc = new ResponseCommand(MNEMONIC_GROUP_SYSTEM, key, js.get(key).toString());
+            DRIVER.getMachine().applyJsonStatusReport(rc);
+            // we will supply the parent object name for each key pair
+            // applySettings(rc.buildJsonObject(), rc.getSettingParent());
+        }
+        setChanged();
+        message[0] = "STATUS_REPORT";
+        message[1] = null;
+        notifyObservers(message);
     }
 
     /**
@@ -226,6 +213,7 @@ public class ResponseParser extends Observable implements Runnable {
     public void setChanged() {
         // that'll give you a stack overflow ;)
         // this.setChanged();
+        logger.warn("setChanged called, but it's not implemented");
     }
 
 
@@ -256,17 +244,15 @@ public class ResponseParser extends Observable implements Runnable {
                             notifyObservers(message);
                             break;
                         case MNEMONIC_SYSTEM_REPORT_RX_BUFFER:
-                            TinygDriver.getInstance().getSerialWriter().setBuffer(js.getInt(key));
+                            DRIVER.getSerialWriter().setBuffer(js.getInt(key));
                             break;
                         default:
-                            if (TinygDriver.getInstance().getMnemonicManager()
-                                    .isMasterGroupObject(key)) {
+                            if (DRIVER.getMnemonicManager().isMasterGroupObject(key)) {
                                 // logger.info("Group Status Report Detected: " + key);
                                 applySettingMasterGroup(js.getJSONObject(key), key);
                                 continue;
                             }
-                            ResponseCommand rc = TinygDriver.getInstance()
-                                    .getMnemonicManager().lookupSingleGroup(key);
+                            ResponseCommand rc = DRIVER.getMnemonicManager().lookupSingleGroup(key);
                             rc.setSettingValue(js.get(key).toString());
                             // we will supply the parent object name for each key pair
                             applySettings(rc.buildJsonObject(), rc.getSettingParent());
@@ -299,8 +285,14 @@ public class ResponseParser extends Observable implements Runnable {
         }
     }
 
+
+    /**
+     * apply settings
+     * @param js json object
+     * @param pg parent group
+     */
     private void applySettings(JSONObject js, String pg) {
-        Machine machine = TinygDriver.getInstance().getMachine();
+        Machine machine = DRIVER.getMachine();
         switch (pg) {
             case MNEMONIC_GROUP_MOTOR_1:
                 machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_1)
@@ -394,15 +386,11 @@ public class ResponseParser extends Observable implements Runnable {
                 break;
 
             case MNEMONIC_GROUP_MSG:
-                //NOP
+                //NO-OP
                 break;
 
             case MNEMONIC_GROUP_SYSTEM:
                 machine.applyJsonSystemSetting(js.getJSONObject(MNEMONIC_GROUP_SYSTEM), MNEMONIC_GROUP_SYSTEM);
-                /*
-                 * UNCOMMENT THIS BELOW WHEN WE HAVE MACHINE SETTINGS THAT NEED
-                 * TO UPDATE THE GU
-                 */
                 message[0] = "MACHINE_UPDATE";
                 message[1] = null;
                 setChanged();
@@ -417,46 +405,7 @@ public class ResponseParser extends Observable implements Runnable {
                 notifyObservers(message);
                 break;
             case MNEMONIC_GROUP_EMERGENCY_SHUTDOWN:
-                Platform.runLater(() -> {
-                    Main.postConsoleMessage("TinyG Alarm " + line);
-
-                    MonologFXButton btnYes = new MonologFXButton();
-                    btnYes.setDefaultButton(true);
-                    btnYes.setIcon("/testmonologfx/dialog_apply.png");
-                    btnYes.setType(MonologFXButton.Type.YES);
-
-                    MonologFXButton btnNo = new MonologFXButton();
-                    btnNo.setCancelButton(true);
-                    btnNo.setIcon("/testmonologfx/dialog_cancel.png");
-                    btnNo.setType(MonologFXButton.Type.CANCEL);
-
-                    MonologFX mono = new MonologFX();
-                    mono.setTitleText("Error Occurred");
-                    mono.setMessage("You have triggered a limit switch. " +
-                                    "TinyG is now in DISABLED mode. \n " +
-                                    "Manually back your machine off of its " +
-                                    "limit switches.\n  Once done, if you would" +
-                                    "like to re-enable TinyG click yes.");
-                    mono.addButton(btnYes);
-                    mono.addButton(btnNo);
-                    mono.setType(MonologFX.Type.ERROR);
-
-                    switch (mono.show()) {
-                        case YES:
-                            logger.info("Clicked Yes");
-                            try {
-                                TinygDriver.getInstance().priorityWrite((byte) 0x18);
-                            } catch (SerialPortException ex) {
-                                logger.error(ex);
-                            }
-                            break;
-                        case CANCEL:
-                            logger.info("Clicked No");
-                            Main.postConsoleMessage("TinyG will remain in disabled " +
-                                    "mode until you power cycle or click the reset button.");
-                            break;
-                    }
-                });
+                doEmergencyShutdown();
                 break;
             case "err":
                 // FIXME: been getting this, not sure why it's being caught here...
@@ -465,24 +414,30 @@ public class ResponseParser extends Observable implements Runnable {
             default:
                 //This is for single settings xfr, 1tr etc...
                 //This is pretty ugly but it gets the key and the value. For single values.
-                ResponseCommand rc = TinygDriver.getInstance().getMnemonicManager().lookupSingleGroup(pg);
-                if(rc==null){
-                    logger.error("unable to lookupSingleGroup {}",pg);
-                }
+                ResponseCommand rc = DRIVER.getMnemonicManager().lookupSingleGroup(pg);
+                if (rc != null) {
+                    // I changed this to deal with the fb mnemonic.. not sure if this works all over.
+                    rc.setSettingValue(String.valueOf(js.get(js.keys().next())));
+                    logger.info("Single Key Value: Group: {}, {} : {} ",
+                            rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
 
-                // I changed this to deal with the fb mnemonic.. not sure if this works all over.
-                rc.setSettingValue(String.valueOf(js.get(js.keys().next())));
-                logger.info("Single Key Value: Group: {}, {} : {} ",
-                        rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
-                if (rc.getSettingValue().equals((""))) {
-                    logger.info(rc.getSettingKey() + " value was null");
+                    if (!rc.getSettingValue().equals("")) {
+                        // We pass the new json object we created from the string above
+                        this.applySetting(rc.buildJsonObject());
+                    } else {
+                        logger.info(rc.getSettingKey() + " value was null");
+                    }
                 } else {
-                    // We pass the new json object we created from the string above
-                    this.applySetting(rc.buildJsonObject());
+                    logger.error("unable to lookupSingleGroup {}", pg);
                 }
         }
     }
 
+
+    /**
+     * convert string to json object and apply settings
+     * @param newJsObjString json object string
+     */
     public void applySettings(String newJsObjString) {
         //When a single key value pair is sent without the group object
         //We use this method to create a new json object
@@ -490,25 +445,29 @@ public class ResponseParser extends Observable implements Runnable {
         applySetting(newJs);
     }
 
+
+    /**
+     * parse footer
+     * @param footerValues json footer values
+     */
     private void parseFooter(JSONArray footerValues) {
         //Checking to see if we have a footer response
         //Status reports will not have a footer so this is for everything else
-
         responseFooter.setProtocolVersion(footerValues.getInt(FOOTER_ELEMENT_PROTOCOL_VERSION));
         responseFooter.setStatusCode(footerValues.getInt(FOOTER_ELEMENT_STATUS_CODE));
         responseFooter.setRxRecvd(footerValues.getInt(FOOTER_ELEMENT_RX_RECVD));
         responseFooter.setCheckSum(footerValues.getInt(FOOTER_ELEMENT_STATUS_CODE));
         //Out footer object is not populated
 
-        int beforeBytesReturned = TinygDriver.getInstance().getSerialWriter().getBufferValue();
+        int beforeBytesReturned = DRIVER.getSerialWriter().getBufferValue();
         // Make sure we do not add bytes to a already full buffer
         if (beforeBytesReturned != TinygDriver.MAX_BUFFER) {
-            TinygDriver.getInstance().getSerialWriter().addBytesReturnedToBuffer(responseFooter.getRxRecvd());
-            int afterBytesReturned = TinygDriver.getInstance().getSerialWriter().getBufferValue();
+            DRIVER.getSerialWriter().addBytesReturnedToBuffer(responseFooter.getRxRecvd());
+            int afterBytesReturned = DRIVER.getSerialWriter().getBufferValue();
             logger.debug("Returned {} to buffer... Buffer was {}  is now {}",
                     responseFooter.getRxRecvd(), beforeBytesReturned, afterBytesReturned );
             // We let our serialWriter thread know we have added some space to the buffer.
-            TinygDriver.getInstance().getSerialWriter().notifyAck();
+            DRIVER.getSerialWriter().notifyAck();
             //Lets tell the UI the new size of the buffer
             message[0] = "BUFFER_UPDATE";
             message[1] = String.valueOf(afterBytesReturned);
@@ -517,6 +476,12 @@ public class ResponseParser extends Observable implements Runnable {
         }
     }
 
+
+    /**
+     * parse the json
+     * @param line string line
+     * @throws JSONException json exception
+     */
     private synchronized void parseJSON(String line) throws JSONException {
         logger.info("Got Line: " + line + " from TinyG.");
 
@@ -564,10 +529,57 @@ public class ResponseParser extends Observable implements Runnable {
             });
 
         } else if (js.has(MNEMONIC_GROUP_QUERY_REPORT)) {
-            TinygDriver.getInstance().getQueryReport().parse(js);
+            DRIVER.getQueryReport().parse(js);
         } else if (js.has(MNEMONIC_GROUP_EMERGENCY_SHUTDOWN)) {
             applySetting(js);
         }
 
+    }
+
+
+    /**
+     * emergency shutdown
+     */
+    private void doEmergencyShutdown(){
+        Platform.runLater(() -> {
+            Main.postConsoleMessage("TinyG Alarm " + line);
+
+            MonologFXButton btnYes = new MonologFXButton();
+            btnYes.setDefaultButton(true);
+            btnYes.setIcon("/testmonologfx/dialog_apply.png");
+            btnYes.setType(MonologFXButton.Type.YES);
+
+            MonologFXButton btnNo = new MonologFXButton();
+            btnNo.setCancelButton(true);
+            btnNo.setIcon("/testmonologfx/dialog_cancel.png");
+            btnNo.setType(MonologFXButton.Type.CANCEL);
+
+            MonologFX mono = new MonologFX();
+            mono.setTitleText("Error Occurred");
+            mono.setMessage("You have triggered a limit switch. " +
+                    "TinyG is now in DISABLED mode. \n " +
+                    "Manually back your machine off of its " +
+                    "limit switches.\n  Once done, if you would" +
+                    "like to re-enable TinyG click yes.");
+            mono.addButton(btnYes);
+            mono.addButton(btnNo);
+            mono.setType(MonologFX.Type.ERROR);
+
+            switch (mono.show()) {
+                case YES:
+                    logger.info("Clicked Yes");
+                    try {
+                        DRIVER.priorityWrite((byte) 0x18);
+                    } catch (SerialPortException ex) {
+                        logger.error(ex);
+                    }
+                    break;
+                case CANCEL:
+                    logger.info("Clicked No");
+                    Main.postConsoleMessage("TinyG will remain in disabled " +
+                            "mode until you power cycle or click the reset button.");
+                    break;
+            }
+        });
     }
 }

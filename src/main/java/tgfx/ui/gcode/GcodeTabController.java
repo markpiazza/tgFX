@@ -549,16 +549,16 @@ public class GcodeTabController implements Initializable {
 
         xLcd.valueProperty().bind(MACHINE.getAxisByName("x").getMachinePositionSimple()
                 .subtract(MACHINE.getAxisByName("x").getOffset())
-                .divide(MACHINE.gcodeUnitDivision));
+                .divide(MACHINE.getGcodeUnitDivision()));
         yLcd.valueProperty().bind(MACHINE.getAxisByName("y").getMachinePositionSimple()
                 .subtract(MACHINE.getAxisByName("y").getOffset())
-                .divide(MACHINE.gcodeUnitDivision));
+                .divide(MACHINE.getGcodeUnitDivision()));
         zLcd.valueProperty().bind(MACHINE.getAxisByName("z").getMachinePositionSimple()
                 .subtract(MACHINE.getAxisByName("z").getOffset())
-                .divide(MACHINE.gcodeUnitDivision));
+                .divide(MACHINE.getGcodeUnitDivision()));
         aLcd.valueProperty().bind(MACHINE.getAxisByName("a").getMachinePositionSimple()
                 .subtract(MACHINE.getAxisByName("a").getOffset()));
-        velLcd.valueProperty().bind(MACHINE.velocity);
+        velLcd.valueProperty().bind(MACHINE.velocityProperty());
 
         // TODO: make sure this is actually working at some point
         isSendingFile.bindBidirectional(WRITER.getIsSendingFile());

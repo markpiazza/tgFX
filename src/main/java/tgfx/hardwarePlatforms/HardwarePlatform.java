@@ -25,10 +25,11 @@ public class HardwarePlatform {
 
     /**
      * get singleton instance
+     * TODO: Do we need this to be a singleton? it's just a pojo
      * @return hardware platform singleton
      */
     public static HardwarePlatform getInstance() {
-        if(hardwarePlatformInstance==null) {
+        if(hardwarePlatformInstance == null) {
             hardwarePlatformInstance = new HardwarePlatform();
         }
         return hardwarePlatformInstance;
