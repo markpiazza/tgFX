@@ -1,12 +1,8 @@
 @startuml
 
 hide members
-
 hide tgfx.system.enums
 hide tgfx.external
-
-class Application
-class Stage
 
 
 class tgfx.TgFX {
@@ -14,7 +10,7 @@ class tgfx.TgFX {
     + {static} void main(String[] args)
 }
 
-class tgfx.Main {
+class tgfx.MainController {
     - static StringProperty consoleText
     - TinygDriver DRIVER
     - GcodeHistory gcodeCommandHistory
@@ -49,14 +45,14 @@ class tgfx.Main {
     + synchronized void update(Observable o, Object arg)
     + static void postConsoleMessage(String message)
     - void doTinyGConnectionTimeout()
-    - void doTinyGUserMessage(String keyArgument) +
+    - void doTinyGUserMessage(String keyArgument)
     - void doBuildOK()
     - void doStatusReport()
     - void doBuildError(String keyValue)
     - void reScanSerial()
     - void onConnectActions()
     - void onConnectActionsTwo()
-    - void onDisconnectActions() +
+    - void onDisconnectActions()
 }
 class tgfx.ResponseFooter
 class tgfx.ResponseParser
@@ -530,45 +526,41 @@ class tgfx.utility.QueueUsingTimer
 class tgfx.utility.UtilityFunctions
 class tgfx.utility.TimerTest
 
+tgfx.TgFX --> tgfx.MainController
 
-Application <|-- tgfx.TgFX  : extends
-Stage <|-- tgfx.Main  : extends
 
-tgfx.TgFX --> tgfx.Main
+tgfx.MainController --> tgfx.tinyg.TinygDriver : <<singleton>>
+tgfx.MainController --> tgfx.ui.gcode.GcodeHistory
+tgfx.MainController --> tgfx.utility.QueueUsingTimer
+tgfx.MainController ..> tgfx.system.Machine : <<singleton>>
+tgfx.MainController ..> tgfx.system.StatusCode
+tgfx.MainController ..> tgfx.render.Draw2d
+tgfx.MainController ..> tgfx.utility.QueuedTimerable
+tgfx.MainController --> tgfx.ui.gcode.GcodeTabController : <<singleton>>
+tgfx.MainController ..> tgfx.ui.tinygconfig.TinyGConfigController : <<singleton>>
+tgfx.MainController ..> tgfx.ui.firmware.FirmwareUpdaterController : <<singleton>>
+tgfx.MainController ..> tgfx.ui.machinesettings.MachineSettingsController : <<singleton>>
+tgfx.MainController ..> tgfx.ui.tgfxsettings.TgFXSettingsController : <<singleton>>
 
-tgfx.ResponseParser --> tgfx.ResponseFooter
-
-tgfx.Main --> tgfx.tinyg.TinygDriver : <<singleton>>
-tgfx.Main --> tgfx.ui.gcode.GcodeHistory
-tgfx.Main --> tgfx.utility.QueueUsingTimer
-tgfx.Main ..> tgfx.system.Machine : <<singleton>>
-tgfx.Main ..> tgfx.system.StatusCode
-tgfx.Main ..> tgfx.render.Draw2d
-tgfx.Main ..> tgfx.utility.QueuedTimerable
-tgfx.Main --> tgfx.ui.gcode.GcodeTabController : <<singleton>>
-tgfx.Main ..> tgfx.ui.tinygconfig.TinyGConfigController : <<singleton>>
-tgfx.Main ..> tgfx.ui.firmware.FirmwareUpdaterController : <<singleton>>
-tgfx.Main ..> tgfx.ui.machinesettings.MachineSettingsController : <<singleton>>
-tgfx.Main ..> tgfx.ui.tgfxsettings.TgFXSettingsController : <<singleton>>
-
-tgfx.SerialDriver --> tgfx.SerialWriter
-tgfx.SerialDriver --> SerialPort
-
-tgfx.tinyg.TinygDriver --> tgfx.ResponseParser
-
-tgfx.tinyg.TinygDriver --> tgfx.tinyg.TinygDriver : <<singleton>
-tgfx.tinyg.TinygDriver --> tgfx.hardwarePlatforms.HardwarePlatformManager : <<singleton>>
-tgfx.tinyg.TinygDriver --> tgfx.SerialDriver : <<singleton>>
-tgfx.tinyg.TinygDriver --> tgfx.tinyg.QueueReport : <<singleton>>
-tgfx.tinyg.TinygDriver --> tgfx.system.Machine : <<singleton>>
-
-tgfx.system.Machine --> tgfx.system.Machine : <<singleton>>
-
-tgfx.system.Machine --> tgfx.hardwarePlatforms.HardwarePlatform
-
-tgfx.ui.firmware.FirmwareUpdaterController --> tgfx.tinyg.TinygDriver : <<singleton>>
-tgfx.ui.firmware.FirmwareUpdaterController --> tgfx.system.Machine : <<singleton>>
-
-tgfx.ui.machinesettings.MachineSettingsController --> tgfx.ui.firmware.FirmwareUpdaterController : <<singleton>>
+'tgfx.ResponseParser --> tgfx.ResponseFooter
+'tgfx.SerialDriver --> tgfx.SerialWriter
+'tgfx.SerialDriver --> SerialPort
+'
+'tgfx.tinyg.TinygDriver --> tgfx.ResponseParser
+'
+'tgfx.tinyg.TinygDriver --> tgfx.tinyg.TinygDriver : <<singleton>
+'tgfx.tinyg.TinygDriver --> tgfx.hardwarePlatforms.HardwarePlatformManager : <<singleton>>
+'tgfx.tinyg.TinygDriver --> tgfx.SerialDriver : <<singleton>>
+'tgfx.tinyg.TinygDriver --> tgfx.tinyg.QueueReport : <<singleton>>
+'tgfx.tinyg.TinygDriver --> tgfx.system.Machine : <<singleton>>
+'
+'tgfx.system.Machine --> tgfx.system.Machine : <<singleton>>
+'
+'tgfx.system.Machine --> tgfx.hardwarePlatforms.HardwarePlatform
+'
+'tgfx.ui.firmware.FirmwareUpdaterController --> tgfx.tinyg.TinygDriver : <<singleton>>
+'tgfx.ui.firmware.FirmwareUpdaterController --> tgfx.system.Machine : <<singleton>>
+'
+'tgfx.ui.machinesettings.MachineSettingsController --> tgfx.ui.firmware.FirmwareUpdaterController : <<singleton>>
 
 @enduml

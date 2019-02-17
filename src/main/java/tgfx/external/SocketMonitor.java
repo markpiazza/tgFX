@@ -8,9 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * ConnectionHandler
- *
- * TODO: is this class ever used?
+ * SocketMonitor
+ * external Socket monitor for remote connections
  */
 public class SocketMonitor {
     private static final Logger logger = LogManager.getLogger();

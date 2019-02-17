@@ -194,10 +194,10 @@ public class Motor {
 
     /**
      * set power management by int
-     * @param power_management
+     * @param powerManagement power management
      */
-    private void setPowerManagement(int power_management) {
-        this.powerManagement = power_management != 0;
+    private void setPowerManagement(int powerManagement) {
+        this.powerManagement = powerManagement != 0;
     }
 
 
@@ -230,10 +230,10 @@ public class Motor {
 
     /**
      * set travel per revolution
-     * @param travel_per_revolution travel per revolution
+     * @param travelPerRevolution travel per revolution
      */
-    private void setTravelPerRevolution(float travel_per_revolution) {
-        this.travelPerRevolution = travel_per_revolution;
+    private void setTravelPerRevolution(float travelPerRevolution) {
+        this.travelPerRevolution = travelPerRevolution;
     }
 
 

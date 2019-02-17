@@ -14,7 +14,7 @@ import java.util.Observer;
 
 /**
  * ConnectionHandler
- *
+ * external connection handler for remote connections
  */
 class ConnectionHandler implements Runnable, Observer {
     private static final Logger logger = LogManager.getLogger();
@@ -55,7 +55,7 @@ class ConnectionHandler implements Runnable, Observer {
     public void run() {
         try {
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            Main.print("GOT: " + stdIn.readLine());
+//            MainController.print("GOT: " + stdIn.readLine());
 //            try {
 //                this.write("Connected to tgFX\n");
 //            } catch (Exception ex) {

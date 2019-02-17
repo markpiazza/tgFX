@@ -23,7 +23,7 @@ import jfxtras.labs.dialogs.MonologFX;
 import jfxtras.labs.dialogs.MonologFXButton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tgfx.Main;
+import tgfx.MainController;
 import tgfx.system.Machine;
 import tgfx.tinyg.*;
 import tgfx.utility.UtilityFunctions;
@@ -77,7 +77,7 @@ public class FirmwareUpdaterController implements Initializable {
                 }
 
                 logger.info("Trying to enter bootloader mode");
-                Main.postConsoleMessage("Entering Bootloader mode.  " +
+                MainController.postConsoleMessage("Entering Bootloader mode.  " +
                         " tgFX will be un-responsive for then next 30 seconds.\n" +
                         "Your TinyG will start blinking rapidly while being programmed");
 
@@ -89,7 +89,7 @@ public class FirmwareUpdaterController implements Initializable {
                     url = new URL(MACHINE.getHardwarePlatform().getFirmwareUrl());
                     URLConnection urlConnection = url.openConnection();
                     logger.info("Opened Connection to Github");
-                    Main.postConsoleMessage("Downloading tinyg.hex file from github.com");
+                    MainController.postConsoleMessage("Downloading tinyg.hex file from github.com");
                     InputStream input;
                     input = urlConnection.getInputStream();
 
@@ -102,45 +102,45 @@ public class FirmwareUpdaterController implements Initializable {
                             }
                         }
                         output.close();
-                        Main.postConsoleMessage("Finished Downloading tinyg.hex");
+                        MainController.postConsoleMessage("Finished Downloading tinyg.hex");
                         logger.info("Finished Downloading tinyg.hex");
                     }
                 } catch (MalformedURLException ex) {
                     logger.error(ex);
-                    Main.postConsoleMessage("Error downloading the TinyG update from: " +
+                    MainController.postConsoleMessage("Error downloading the TinyG update from: " +
                             MACHINE.getHardwarePlatform().getFirmwareUrl());
-                    Main.postConsoleMessage("Check your internetion connection and try again. " +
+                    MainController.postConsoleMessage("Check your internetion connection and try again. " +
                             "Firmware update aborted...");
                 } catch (IOException ex) {
                     logger.error(ex);
-                    Main.postConsoleMessage("Error updating your TinyG.  IOERROR");
+                    MainController.postConsoleMessage("Error updating your TinyG.  IOERROR");
                     return null;
                 }
 
                 Runtime rt = Runtime.getRuntime();
 
                 try {
-                    Main.postConsoleMessage("Updating TinyG Now... Please Wait");
+                    MainController.postConsoleMessage("Updating TinyG Now... Please Wait");
                     Process process = rt.exec(avrdudePath +
                             " -p x192a3 -C " + avrconfigPath +
                             " -c avr109 -b 115200 -P " +
                             DRIVER.getPortName() +
                             " -U flash:w:tinyg.hex");
                     InputStream is = process.getInputStream();
-                    Main.postConsoleMessage("Attempting to update TinyG's firmware.");
+                    MainController.postConsoleMessage("Attempting to update TinyG's firmware.");
                     process.waitFor();
                     Thread.sleep(2000);//sleep a bit and let the firmware init
                     DRIVER.sendReconnectRequest();
 
-                    Main.postConsoleMessage("Firmware update complete.");
+                    MainController.postConsoleMessage("Firmware update complete.");
                     toggleUpdateFirmwareButton(true);
 
                 } catch (MalformedURLException ex) {
-                    Main.postConsoleMessage("TinyG update URL: " +
+                    MainController.postConsoleMessage("TinyG update URL: " +
                             MACHINE.getHardwarePlatform().getFirmwareUrl() +
                             " is invalid, check the platform config "
                             + "file you are using in the configs directory.");
-                    Main.postConsoleMessage("Firmware update aborted...");
+                    MainController.postConsoleMessage("Firmware update aborted...");
                     return null;
                 } catch (IOException | InterruptedException ex) {
                     logger.error(ex);
@@ -180,7 +180,7 @@ public class FirmwareUpdaterController implements Initializable {
             toggleUpdateFirmwareButton(true);
             
         } else {
-            Main.postConsoleMessage("Sorry your TinyG platform cannot be auto upgraded at this time.  " +
+            MainController.postConsoleMessage("Sorry your TinyG platform cannot be auto upgraded at this time.  " +
                     "Please see the TinyG wiki for manual upgrade instructions.");
         }
     }
@@ -205,7 +205,7 @@ public class FirmwareUpdaterController implements Initializable {
                         Double.parseDouble(_currentVersionString)) {
                     //We need to update your firmware
                     Platform.runLater(() -> {
-                        Main.postConsoleMessage("TinyG Firmware Update Available.");
+                        MainController.postConsoleMessage("TinyG Firmware Update Available.");
 
                         MonologFXButton btnYes = new MonologFXButton();
                         btnYes.setDefaultButton(true);
@@ -228,18 +228,18 @@ public class FirmwareUpdaterController implements Initializable {
                         MonologFXButton.Type retval = mono.show();
                         switch (retval) {
                             case YES:
-                                Main.postConsoleMessage("This is going to take about 30 seconds.... " +
+                                MainController.postConsoleMessage("This is going to take about 30 seconds.... " +
                                         "Please Wait... Watch the flashies....");
                                 handleUpdateFirmware(new ActionEvent());
                                 break;
                             case CANCEL:
-                                Main.postConsoleMessage("TinyG firmware update cancelled.");
+                                MainController.postConsoleMessage("TinyG firmware update cancelled.");
                                 break;
                         }
                     });
 
                 } else {
-                    Main.postConsoleMessage("Your " + MACHINE.getHardwarePlatform().getPlatformName() +
+                    MainController.postConsoleMessage("Your " + MACHINE.getHardwarePlatform().getPlatformName() +
                             "'s firmware is up to date...\n");
                 }
 

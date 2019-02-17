@@ -20,7 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import org.json.JSONObject;
-import tgfx.Main;
+import tgfx.MainController;
 import tgfx.TgFXConstants;
 import tgfx.tinyg.TinygDriver;
 
@@ -93,7 +93,7 @@ public class MachineSettingsController implements Initializable {
 
     @FXML
     private void handleSaveCurrentSettings(ActionEvent event) {
-        Main.postConsoleMessage("Saving current of Config Files is unsupported at this time.");
+        MainController.postConsoleMessage("Saving current of Config Files is unsupported at this time.");
 //        Platform.runLater(new Runnable() {
 //            @Override
 //            public void run() {
@@ -112,7 +112,7 @@ public class MachineSettingsController implements Initializable {
 
     @FXML
     private void handleImportConfig(ActionEvent event) {
-        Main.postConsoleMessage("Importing of Config Files is unsupported at this time.");
+        MainController.postConsoleMessage("Importing of Config Files is unsupported at this time.");
     }
 
 
@@ -148,7 +148,7 @@ public class MachineSettingsController implements Initializable {
         InputStream fis, fis2;
         final BufferedReader br, br2;
         if(configsListView.getSelectionModel().isEmpty()){
-            Main.postConsoleMessage("Please select a valid config file");
+            MainController.postConsoleMessage("Please select a valid config file");
             return;
         }
         // Why are we reading the file 2x?  It is to get the count of elements
@@ -183,7 +183,7 @@ public class MachineSettingsController implements Initializable {
                     if (line.startsWith("{\"name")) {
                         //This is the name of the CONFIG lets not write this to TinyG
                         filename = line.split(":")[1];
-                        tgfx.Main.postConsoleMessage("Loading " + filename +
+                        MainController.postConsoleMessage("Loading " + filename +
                                 " config into TinyG... Please Wait...");
                     } else {
 
@@ -197,7 +197,7 @@ public class MachineSettingsController implements Initializable {
                             String k = (String) it.next();
                             Double value = j.getJSONObject(topLevelParent).getDouble(k);
                             System.out.println("This is the value " + k + " " + decimalFormat.format(value));
-                            Main.postConsoleMessage("Applied: " + k + ":" + decimalFormat.format(value));
+                            MainController.postConsoleMessage("Applied: " + k + ":" + decimalFormat.format(value));
                             //value = Double.valueOf(decimalFormatjunctionDeviation.format(value));
 
                             String singleJsonSetting = "{\"" + topLevelParent + k + "\":" + value + "}\n";
@@ -210,7 +210,7 @@ public class MachineSettingsController implements Initializable {
                 }
             }
             updateProgress(0, 0); //reset the progress bar
-            Main.postConsoleMessage("Finished Loading " + filename + ".");
+            MainController.postConsoleMessage("Finished Loading " + filename + ".");
             loadButton.setDisable(false);
             return null;
             }
@@ -243,7 +243,7 @@ public class MachineSettingsController implements Initializable {
             TinygDriver.getInstance().write(CMD_APPLY_DEFAULT_SETTINGS);
         } else {
             logger.error(checkConectedMessage());
-            tgfx.Main.postConsoleMessage(checkConectedMessage());
+            MainController.postConsoleMessage(checkConectedMessage());
         }
     }
 

@@ -5,7 +5,6 @@ package tgfx.hardwarePlatforms;
  * holds the hardware platform information
  */
 public class HardwarePlatform {
-    private static HardwarePlatform hardwarePlatformInstance;
 
     private String platformName;
     private Double minimalBuildVersion;
@@ -16,23 +15,9 @@ public class HardwarePlatform {
     private boolean isUpgradeable;
 
     /**
-     * Hardware platform
-     * make private so only a singleton can be created
+     * Hardware platform constructor
      */
-    private HardwarePlatform() {
-    }
-
-
-    /**
-     * get singleton instance
-     * TODO: Do we need this to be a singleton? it's just a pojo
-     * @return hardware platform singleton
-     */
-    public static HardwarePlatform getInstance() {
-        if(hardwarePlatformInstance == null) {
-            hardwarePlatformInstance = new HardwarePlatform();
-        }
-        return hardwarePlatformInstance;
+    public HardwarePlatform() {
     }
 
 

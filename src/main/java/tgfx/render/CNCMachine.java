@@ -24,7 +24,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tgfx.Main;
+import tgfx.MainController;
 import tgfx.system.Machine;
 import tgfx.system.enums.GcodeUnitMode;
 import tgfx.tinyg.TinygDriver;
@@ -132,14 +132,14 @@ public class CNCMachine extends Pane {
 
 
         maxHeightProperty().bind(MACHINE.getAxisByName("y")
-                .getTravelMaxSimple().multiply(MACHINE.getGcodeUnitDivision()));
+                .travelMaximumProperty().multiply(MACHINE.getGcodeUnitDivision()));
         maxWidthProperty().bind(MACHINE.getAxisByName("x")
-                .getTravelMaxSimple().multiply(MACHINE.getGcodeUnitDivision()));
+                .travelMaximumProperty().multiply(MACHINE.getGcodeUnitDivision()));
 
         cursorPoint.translateYProperty()
-                .bind(this.heightProperty().subtract(MACHINE.getAxisByName("y").getMachinePositionSimple()));
+                .bind(this.heightProperty().subtract(MACHINE.getAxisByName("y").machinePositionProperty()));
         cursorPoint.layoutXProperty()
-                .bind(MACHINE.getAxisByName("x").getMachinePositionSimple());
+                .bind(MACHINE.getAxisByName("x").machinePositionProperty());
 
         cncHeight.bind(this.heightProperty());
         cncWidth.bind(this.widthProperty());
@@ -294,14 +294,14 @@ public class CNCMachine extends Pane {
                     getGcodePane().getChildren().add(line);
                 }
             }
-            Main.postConsoleMessage("Finished Drawing Preview Scale Change.\n");
+            MainController.postConsoleMessage("Finished Drawing Preview Scale Change.\n");
             getGcodePane().setScaleX(scale);
             getGcodePane().setScaleY(scale);
         }
 
-//        Main.print(gcodePane.getHeight() - MACHINE.getAxisByName("y").getWorkPosition().get());
-//        double newX = MACHINE.getAxisByName("x").getMachinePositionSimple().get(); // + magnification;
-//        double newY = this.getHeight() - MACHINE.getAxisByName("y").getMachinePositionSimple().get(); // + magnification;
+//        MainController.print(gcodePane.getHeight() - MACHINE.getAxisByName("y").getWorkPosition().get());
+//        double newX = MACHINE.getAxisByName("x").machinePositionProperty().get(); // + magnification;
+//        double newY = this.getHeight() - MACHINE.getAxisByName("y").machinePositionProperty().get(); // + magnification;
 
         if (Draw2d.isFirstDraw()) {
             //This is to not have us draw a line on the first connect.
@@ -344,7 +344,7 @@ public class CNCMachine extends Pane {
                 if (getChildren().contains(cursorPoint)) { //If cursor is in the group we are going to remove it util above is true
                     getChildren().remove(this.getChildren().indexOf(cursorPoint)); //Remove it.
                     if (!msgSent) {
-                        Main.postConsoleMessage("You are out of your TinyG machine working envelope. " +
+                        MainController.postConsoleMessage("You are out of your TinyG machine working envelope. " +
                                 " You need to either move back in by jogging, homing \n" +
                                 " or you can right click on the Gcode Preview and click set position " +
                                 " to set your estimated position.\n");

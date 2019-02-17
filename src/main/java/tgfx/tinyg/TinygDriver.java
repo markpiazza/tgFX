@@ -13,7 +13,7 @@ import jssc.SerialPortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
-import tgfx.Main;
+import tgfx.MainController;
 import tgfx.ResponseParser;
 import tgfx.SerialDriver;
 import tgfx.SerialWriter;
@@ -269,7 +269,7 @@ public class TinygDriver extends Observable {
      * send reconnect request
      */
     public void sendReconnectRequest(){
-        Main.postConsoleMessage("Attempting to reconnect to TinyG...");
+        MainController.postConsoleMessage("Attempting to reconnect to TinyG...");
         logger.info("Reconnect Request Sent.");
         message[0] = "RECONNECT";
         message[1] = null;

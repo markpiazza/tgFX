@@ -29,7 +29,7 @@ public final class Machine {
     private static final Logger logger = LogManager.getLogger();
     private static Machine machineInstance;
 
-    private HardwarePlatform hardwarePlatform = HardwarePlatform.getInstance();
+    private HardwarePlatform hardwarePlatform = new HardwarePlatform();
 
     //TG Specific Machine EEPROM Values binding
     private SimpleDoubleProperty longestTravelAxisValue = new SimpleDoubleProperty();
@@ -38,16 +38,16 @@ public final class Machine {
     private SimpleIntegerProperty zjoggingIncrement = new SimpleIntegerProperty();
     private SimpleIntegerProperty ajoggingIncrement = new SimpleIntegerProperty();
 
-    private StringProperty hardwareId = new SimpleStringProperty("hardwareId");
-    private StringProperty hardwareVersion = new SimpleStringProperty("hardwareVersion");
-    private StringProperty firmwareVersion = new SimpleStringProperty("firmwareVersion");
+    private StringProperty hardwareId = new SimpleStringProperty("");
+    private StringProperty hardwareVersion = new SimpleStringProperty("");
+    private StringProperty firmwareVersion = new SimpleStringProperty("");
     private SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty(0.0);
 
     private SimpleStringProperty machineState = new SimpleStringProperty();
     private SimpleStringProperty motionMode = new SimpleStringProperty();
 
     private SimpleDoubleProperty velocity = new SimpleDoubleProperty();
-    private StringProperty gcodeUnitMode = new SimpleStringProperty("mm");
+    private StringProperty gcodeUnitMode = new SimpleStringProperty("");
     private SimpleDoubleProperty gcodeUnitDivision = new SimpleDoubleProperty(1);
 
     private int switchType = 0; //0=normally closed 1 = normally open
@@ -98,9 +98,9 @@ public final class Machine {
         axis.add(new Axis(AxisName.C, AxisType.ROTATIONAL, AxisMode.STANDARD));
 
         setMotionMode(0);
-        xjoggingIncrement.bind(getAxisByName("X").getTravelMaxSimple());
-        yjoggingIncrement.bind(getAxisByName("Y").getTravelMaxSimple());
-        zjoggingIncrement.bind(getAxisByName("Z").getTravelMaxSimple());
+        xjoggingIncrement.bind(getAxisByName("X").travelMaximumProperty());
+        yjoggingIncrement.bind(getAxisByName("Y").travelMaximumProperty());
+        zjoggingIncrement.bind(getAxisByName("Z").travelMaximumProperty());
     }
 
 
@@ -901,7 +901,7 @@ public final class Machine {
      */
     public double getJoggingIncrementByAxis(String axisName) {
         // FIXME: possible NPE
-        return getAxisByName(axisName).getTravelMaxSimple().get();
+        return getAxisByName(axisName).travelMaximumProperty().get();
     }
 
 

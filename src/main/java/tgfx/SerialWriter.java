@@ -162,7 +162,7 @@ public class SerialWriter implements Runnable {
         for (int i = startComment; i <= endComment; i++) {
             gcodeComment.append(str.charAt(i));
         }
-        Main.postConsoleMessage(" Gcode Comment << " + gcodeComment);
+        MainController.postConsoleMessage(" Gcode Comment << " + gcodeComment);
     }
 
 

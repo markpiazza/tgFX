@@ -30,7 +30,7 @@ import javafx.stage.FileChooser;
 import jssc.SerialPortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tgfx.Main;
+import tgfx.MainController;
 import tgfx.SerialWriter;
 import tgfx.TgFXConstants;
 import tgfx.render.CNCMachine;
@@ -186,7 +186,7 @@ public class GcodeTabController implements Initializable {
                     break;
             }
         }
-        Main.postConsoleMessage("Homing " + axis.toUpperCase() + " Axis...\n");
+        MainController.postConsoleMessage("Homing " + axis.toUpperCase() + " Axis...\n");
     }
 
 
@@ -219,7 +219,7 @@ public class GcodeTabController implements Initializable {
                     break;
             }
         }
-        Main.postConsoleMessage("Zeroed " + axis.toUpperCase() + " Axis...\n");
+        MainController.postConsoleMessage("Zeroed " + axis.toUpperCase() + " Axis...\n");
     }
 
 
@@ -276,7 +276,7 @@ public class GcodeTabController implements Initializable {
     @FXML
     private void handleClearScreen(ActionEvent evt) {
         logger.info("handleClearScreen");
-        Main.postConsoleMessage("Clearing Screen...\n");
+        MainController.postConsoleMessage("Clearing Screen...\n");
         cncMachinePane.clearScreen();
         //clear this so our first line added draws correctly
         Draw2d.setFirstDraw(true);
@@ -303,7 +303,7 @@ public class GcodeTabController implements Initializable {
 
 //                Thread.sleep(8000);
 //                onConnectActions();
-                Main.postConsoleMessage("Resetting TinyG....\n.");
+                MainController.postConsoleMessage("Resetting TinyG....\n.");
                 DRIVER.getSerialWriter().notifyAck();
                 DRIVER.getSerialWriter().clearQueueBuffer();
                 cncMachinePane.clearScreen();
@@ -343,7 +343,7 @@ public class GcodeTabController implements Initializable {
         logger.info("handleOpenFile");
         Platform.runLater(() -> {
             try {
-                Main.postConsoleMessage("Loading a gcode file.....\n");
+                MainController.postConsoleMessage("Loading a gcode file.....\n");
                 // FIXME: Canceling FileChooser, throws a FileNotFoundException, handle this better
                 FileChooser fc = new FileChooser();
                 fc.setTitle("Open GCode File");
@@ -375,9 +375,9 @@ public class GcodeTabController implements Initializable {
                             data.add(new GcodeLine(strLine, lineNumber));
                             lineNumber++;
                         } else {
-                            Main.postConsoleMessage("ERROR: Your gcode file contains an invalid character.. " +
+                            MainController.postConsoleMessage("ERROR: Your gcode file contains an invalid character.. " +
                                     "Either !,% or ~. Remove this character and try again.");
-                            Main.postConsoleMessage("  Line " + lineNumber);
+                            MainController.postConsoleMessage("  Line " + lineNumber);
                             data.clear(); //Remove all other previous entered lines
                             break;
                         }
@@ -547,24 +547,24 @@ public class GcodeTabController implements Initializable {
         timeElapsedTxt.textProperty().bind(timeElapsed);
         timeLeftTxt.textProperty().bind(timeLeft);
 
-        xLcd.valueProperty().bind(MACHINE.getAxisByName("x").getMachinePositionSimple()
-                .subtract(MACHINE.getAxisByName("x").getOffset())
+        xLcd.valueProperty().bind(MACHINE.getAxisByName("x").machinePositionProperty()
+                .subtract(MACHINE.getAxisByName("x").offsetProperty())
                 .divide(MACHINE.getGcodeUnitDivision()));
-        yLcd.valueProperty().bind(MACHINE.getAxisByName("y").getMachinePositionSimple()
-                .subtract(MACHINE.getAxisByName("y").getOffset())
+        yLcd.valueProperty().bind(MACHINE.getAxisByName("y").machinePositionProperty()
+                .subtract(MACHINE.getAxisByName("y").offsetProperty())
                 .divide(MACHINE.getGcodeUnitDivision()));
-        zLcd.valueProperty().bind(MACHINE.getAxisByName("z").getMachinePositionSimple()
-                .subtract(MACHINE.getAxisByName("z").getOffset())
+        zLcd.valueProperty().bind(MACHINE.getAxisByName("z").machinePositionProperty()
+                .subtract(MACHINE.getAxisByName("z").offsetProperty())
                 .divide(MACHINE.getGcodeUnitDivision()));
-        aLcd.valueProperty().bind(MACHINE.getAxisByName("a").getMachinePositionSimple()
-                .subtract(MACHINE.getAxisByName("a").getOffset()));
+        aLcd.valueProperty().bind(MACHINE.getAxisByName("a").machinePositionProperty()
+                .subtract(MACHINE.getAxisByName("a").offsetProperty()));
         velLcd.valueProperty().bind(MACHINE.velocityProperty());
 
         // TODO: make sure this is actually working at some point
         isSendingFile.bindBidirectional(WRITER.getIsSendingFile());
         Bindings.createStringBinding(() -> {
             SimpleStringProperty str = WRITER.getGcodeComment();
-            Main.postConsoleMessage(str.getValue());
+            MainController.postConsoleMessage(str.getValue());
             return null;
         });
 
@@ -616,7 +616,7 @@ public class GcodeTabController implements Initializable {
         /* gcodeUnitMode listener */
         MACHINE.getGcodeUnitMode().addListener((ov, oldValue, newValue) -> {
             String gcodeUnitMode = MACHINE.getGcodeUnitMode().get();
-            Main.postConsoleMessage("Gcode Unit Mode Changed to: " + gcodeUnitMode + "\n");
+            MainController.postConsoleMessage("Gcode Unit Mode Changed to: " + gcodeUnitMode + "\n");
 
             try {
                 DRIVER.getSerialWriter().setThrottled(true);
@@ -635,7 +635,7 @@ public class GcodeTabController implements Initializable {
                 DRIVER.getSerialWriter().setThrottled(false);
             } catch (InterruptedException ex) {
                 logger.error("Error querying tg model state on gcode unit change.  " +
-                        "Main.java binding section.");
+                        "MainController.java binding section.");
             }
         });
 
@@ -662,10 +662,10 @@ public class GcodeTabController implements Initializable {
                     if (DRIVER.isConnected().get()) {
                         logger.info("Double Clicked gcodeView " + gcl.getCodeLine());
                         DRIVER.write(gcl.getGcodeLineJsonified());
-                        Main.postConsoleMessage(gcl.getGcodeLineJsonified());
+                        MainController.postConsoleMessage(gcl.getGcodeLineJsonified());
                     } else {
                         logger.info("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
-                        Main.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
+                        MainController.postConsoleMessage("TinyG Not Connected not sending: " + gcl.getGcodeLineJsonified());
                     }
 
                 }
@@ -719,7 +719,7 @@ public class GcodeTabController implements Initializable {
                 for (GcodeLine gcodeLine : data) {
                     if (!isTaskActive()) {
                         //Cancel Button was pushed
-                        Main.postConsoleMessage("File Sending Task Killed....\n");
+                        MainController.postConsoleMessage("File Sending Task Killed....\n");
                         break;
                     } else {
                         if (gcodeLine.getCodeLine().equals("")) {
@@ -728,7 +728,7 @@ public class GcodeTabController implements Initializable {
                         }
                         if (gcodeLine.getCodeLine().toLowerCase().contains("(")) {
                             DRIVER.write("**COMMENT**" + gcodeLine.getCodeLine());
-                            Main.postConsoleMessage("GCODE COMMENT:" + gcodeLine.getCodeLine());
+                            MainController.postConsoleMessage("GCODE COMMENT:" + gcodeLine.getCodeLine());
                             continue;
                         }
 
@@ -902,8 +902,8 @@ public class GcodeTabController implements Initializable {
 
     private double getScale(){
         logger.info("handleMaxHeightChange");
-        double x = MACHINE.getAxisByName("x").getTravelMaxSimple().get();
-        double y = MACHINE.getAxisByName("y").getTravelMaxSimple().get();
+        double x = MACHINE.getAxisByName("x").travelMaximumProperty().get();
+        double y = MACHINE.getAxisByName("y").travelMaximumProperty().get();
         double scale;
 
         if (gcodePane.getWidth() - x < gcodePane.getHeight() - y) {

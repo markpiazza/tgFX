@@ -542,7 +542,7 @@ public class ResponseParser extends Observable implements Runnable {
      */
     private void doEmergencyShutdown(){
         Platform.runLater(() -> {
-            Main.postConsoleMessage("TinyG Alarm " + line);
+            MainController.postConsoleMessage("TinyG Alarm " + line);
 
             MonologFXButton btnYes = new MonologFXButton();
             btnYes.setDefaultButton(true);
@@ -576,7 +576,7 @@ public class ResponseParser extends Observable implements Runnable {
                     break;
                 case CANCEL:
                     logger.info("Clicked No");
-                    Main.postConsoleMessage("TinyG will remain in disabled " +
+                    MainController.postConsoleMessage("TinyG will remain in disabled " +
                             "mode until you power cycle or click the reset button.");
                     break;
             }
