@@ -33,7 +33,7 @@ public class TinyGConfigController implements Initializable {
     private static DecimalFormat decimalFormat = new DecimalFormat("#0.000");
 
     @FXML
-    private static TextField motor1ConfigTravelPerRev, motor2ConfigTravelPerRev, motor3ConfigTravelPerRev, motor4ConfigTravelPerRev,
+    private TextField motor1ConfigTravelPerRev, motor2ConfigTravelPerRev, motor3ConfigTravelPerRev, motor4ConfigTravelPerRev,
             motor1ConfigStepAngle, motor2ConfigStepAngle, motor3ConfigStepAngle, motor4ConfigStepAngle,
             axisAmaxFeedRate, axisBmaxFeedRate, axisCmaxFeedRate, axisXmaxFeedRate, axisYmaxFeedRate, axisZmaxFeedRate,
             axisAmaxTravel, axisBmaxTravel, axisCmaxTravel, axisXmaxTravel, axisYmaxTravel, axisZmaxTravel,
@@ -48,7 +48,7 @@ public class TinyGConfigController implements Initializable {
             materialThickness, gcodeLoaded, axisXlatchBackoff, axisYlatchBackoff, axisZlatchBackoff, axisAlatchBackoff, axisBlatchBackoff, axisClatchBackoff, MachineStatusInterval;
 
     @FXML
-    private static ChoiceBox motor1ConfigMapAxis, motor2ConfigMapAxis, motor3ConfigMapAxis, motor4ConfigMapAxis,
+    private ChoiceBox motor1ConfigMapAxis, motor2ConfigMapAxis, motor3ConfigMapAxis, motor4ConfigMapAxis,
             motor1ConfigMicroSteps, motor2ConfigMicroSteps, motor3ConfigMicroSteps, motor4ConfigMicroSteps,
             motor1ConfigPolarity, motor2ConfigPolarity, motor3ConfigPolarity, motor4ConfigPolarity,
             motor1ConfigPowerMode, motor2ConfigPowerMode, motor3ConfigPowerMode, motor4ConfigPowerMode,
@@ -92,18 +92,18 @@ public class TinyGConfigController implements Initializable {
         }
     }
 
-    private static void _updateGuiAxisSettings(String axname) {
+    private void _updateGuiAxisSettings(String axname) {
         Axis ax = TinygDriver.getInstance().getMachine().getAxisByName(axname);
         _updateGuiAxisSettings(ax);
     }
 
     
-    public static void updateGuiMotorSettings() {
+    public void updateGuiMotorSettings() {
         //No motor was provided... Update them all.
         updateGuiMotorSettings(null);
     }
 
-    public static void updateGuiMotorSettings(final String arg) {
+    public void updateGuiMotorSettings(final String arg) {
         //Update the GUI for config settings
         Platform.runLater(new Runnable() {
             String MOTOR_ARGUMENT = arg;
@@ -123,7 +123,7 @@ public class TinyGConfigController implements Initializable {
         });
     }
     
-    private static void _updateGuiMotorSettings(String motorNumber) {
+    private void _updateGuiMotorSettings(String motorNumber) {
         Machine machine = TinygDriver.getInstance().getMachine();
         Motor motor = machine.getMotorByNumber(Integer.valueOf(motorNumber));
 
@@ -168,7 +168,7 @@ public class TinyGConfigController implements Initializable {
         }
     }
 
-    private static void _updateGuiAxisSettings(Axis ax) {
+    private void _updateGuiAxisSettings(Axis ax) {
         switch (ax.getAxisName().toLowerCase()) {
             case "a":
                 axisAmode.getSelectionModel().select(ax.getAxisMode().ordinal());
@@ -229,7 +229,7 @@ public class TinyGConfigController implements Initializable {
 //                axisXradius.setStyle("-fx-text-fill: red");
 //                axisXradius.setDisable(true);
 //                axisXradius.setEditable(false);
-                axisXmode.getSelectionModel().select(ax.getAxisMode().ordinal());
+                    axisXmode.getSelectionModel().select(ax.getAxisMode().ordinal());
                 axisXmaxFeedRate.setText(String.valueOf(ax.getFeedRateMaximum()));
                 axisXmaxTravel.setText(String.valueOf(ax.getTravelMaximum()));
                 axisXjunctionDeviation.setText(String.valueOf(ax.getJunctionDeviation()));
@@ -285,11 +285,11 @@ public class TinyGConfigController implements Initializable {
         }
     }
 
-    private static void updateGuiAxisSettings(Axis ax) {
+    private void updateGuiAxisSettings(Axis ax) {
         updateGuiAxisSettings(ax);
     }
 
-    public static void updateGuiAxisSettings(String axname) {
+    public void updateGuiAxisSettings(String axname) {
         //Update the GUI for Axis Config Settings
         final String AXIS_NAME = axname;
         Platform.runLater(() -> {

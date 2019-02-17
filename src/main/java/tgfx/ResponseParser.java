@@ -208,12 +208,9 @@ public class ResponseParser extends Observable implements Runnable {
 
     /**
      * set changed
-     * FIXME: setChanged calls this.setChanged()???
      */
-    public void setChanged() {
-        // that'll give you a stack overflow ;)
-        // this.setChanged();
-        logger.warn("setChanged called, but it's not implemented");
+    public void setHasChanged() {
+        this.setChanged();
     }
 
 

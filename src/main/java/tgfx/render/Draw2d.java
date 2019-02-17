@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class Draw2d {
     private static final Logger logger = LogManager.getLogger();
+    private static Draw2d instance;
 
     static Paint retPaint;
     static Paint FAST = Color.web("#85ff22");
@@ -28,19 +29,29 @@ public class Draw2d {
     private static double strokeIncrement = .1;
     private static boolean firstDraw = true;
 
-    static boolean isFirstDraw() {
+    private Draw2d(){
+    }
+
+    public static Draw2d getInstance(){
+        if(instance == null){
+            instance = new Draw2d();
+        }
+        return instance;
+    }
+
+    public boolean isFirstDraw() {
         return firstDraw;
     }
 
-    public static void setFirstDraw(boolean firstDraw) {
+    public void setFirstDraw(boolean firstDraw) {
         Draw2d.firstDraw = firstDraw;
     }
 
-    public static double getMagnification() {
+    public double getMagnification() {
         return magnification;
     }
 
-    public static void setMagnification(boolean b) {
+    public void setMagnification(boolean b) {
         if (b) {
             Draw2d.magnification = magnification + magZoomIncrement;
         } else {
@@ -48,7 +59,7 @@ public class Draw2d {
         }
     }
 
-    private static void calculateStroke() {
+    private void calculateStroke() {
         if (stroke_weight <= 5) {
             strokeIncrement = 1;
         }
@@ -66,12 +77,12 @@ public class Draw2d {
         }
     }
 
-    public static void incrementSetStrokeWeight() {
+    public void incrementSetStrokeWeight() {
         calculateStroke();
         stroke_weight = stroke_weight + strokeIncrement;
     }
 
-    public static void decrementSetStrokeWeight() {
+    public void decrementSetStrokeWeight() {
         calculateStroke();
         stroke_weight = stroke_weight - strokeIncrement;
     }
@@ -83,11 +94,11 @@ public class Draw2d {
 //        stroke_weight = w;
 //    }
 
-    public static double getStrokeWeight() {
+    public double getStrokeWeight() {
         return stroke_weight;
     }
 
-    public static Paint getLineColorFromVelocity(double vel) {
+    public Paint getLineColorFromVelocity(double vel) {
         if (vel > 1 && vel < 100) {
             return SLOWEST;
         } else if (vel > 101 && vel <= 250) {

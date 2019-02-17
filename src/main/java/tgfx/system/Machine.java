@@ -1186,7 +1186,7 @@ public final class Machine {
                         String[] message = new String[2];
                         message[0] = "MACHINE_UPDATE";
                         message[1] = null;
-                        TinygDriver.getInstance().getResponseParser().setChanged();
+                        TinygDriver.getInstance().getResponseParser().setHasChanged();
                         TinygDriver.getInstance().getResponseParser().notifyObservers(message);
                         logger.info( "applied switch type: {}, {} : {}",
                                 rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());

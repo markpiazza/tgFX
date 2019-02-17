@@ -55,6 +55,7 @@ public class MainController extends Stage implements Initializable, Observer, Qu
 
     private TinygDriver DRIVER = TinygDriver.getInstance();
     private Machine MACHINE = DRIVER.getMachine();
+    private Draw2d DRAW2D = Draw2d.getInstance();
 
     private GcodeHistory commandHistory = new GcodeHistory();
 
@@ -85,6 +86,15 @@ public class MainController extends Stage implements Initializable, Observer, Qu
     @FXML
     @SuppressWarnings("unused") // IDE says it's unused, but don't believe it
     private GcodeTabController gcodeTabController;
+
+    @FXML
+    @SuppressWarnings("unused") // IDE says it's unused, but don't believe it
+    private TinyGConfigController tinygConfigTabController;
+
+
+    @FXML
+    @SuppressWarnings("unused") // IDE says it's unused, but don't believe it
+    private MachineSettingsController machineSettingsTabController;
 
     @FXML
     private TabPane topTabPane;
@@ -310,22 +320,22 @@ public class MainController extends Stage implements Initializable, Observer, Qu
                         doStatusReport();
                         break;
                     case ROUTING_CMD_GET_AXIS_SETTINGS:
-                        TinyGConfigController.updateGuiAxisSettings(keyArgument);
+                        tinygConfigTabController.updateGuiAxisSettings(keyArgument);
                         break;
                     case ROUTING_CMD_GET_MACHINE_SETTINGS:
                         //updateGuiMachineSettings(ROUTING_KEY);
                         break;
                     case ROUTING_CMD_GET_MOTOR_SETTINGS:
-                        TinyGConfigController.updateGuiMotorSettings(keyArgument);
+                        tinygConfigTabController.updateGuiMotorSettings(keyArgument);
                         break;
                     case ROUTING_NETWORK_MESSAGE:
                         //updateExternal();
                         break;
                     case ROUTING_MACHINE_UPDATE:
-                        MachineSettingsController.updateGuiMachineSettings();
+                        machineSettingsTabController.updateGuiMachineSettings();
                         break;
                     case ROUTING_TEXTMODE_REPORT:
-                        MainController.postConsoleMessage(keyArgument);
+                        postConsoleMessage(keyArgument);
                         break;
                     case ROUTING_BUFFER_UPDATE:
                         srBuffer.setText(keyArgument);
@@ -697,7 +707,7 @@ public class MainController extends Stage implements Initializable, Observer, Qu
                 machine.setMachineState(0);
                 machine.setLineNumber(0);
                 machine.setMotionMode(0);
-                Draw2d.setFirstDraw(true);
+                DRAW2D.setFirstDraw(true);
                 //Once we disconnect we hide our gcode preview.
                 gcodeTabController.setCNCMachineVisible(false);
 

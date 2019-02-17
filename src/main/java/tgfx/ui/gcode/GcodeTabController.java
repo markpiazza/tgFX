@@ -56,6 +56,7 @@ public class GcodeTabController implements Initializable {
     private static TinygDriver DRIVER = TinygDriver.getInstance();
     private static Machine MACHINE = DRIVER.getMachine();
     private static SerialWriter WRITER = DRIVER.getSerialWriter();
+    private static Draw2d DRAW2D = Draw2d.getInstance();
 
     private CommandManager commandManager = new CommandManager();
 
@@ -203,7 +204,7 @@ public class GcodeTabController implements Initializable {
 
         if (DRIVER.isConnected().get()) {
             //We set this so we do not draw lines for the previous position to the new zero.
-            Draw2d.setFirstDraw(true);
+            DRAW2D.setFirstDraw(true);
             switch (axis) {
                 case "x":
                     DRIVER.write(CMD_APPLY_ZERO_X_AXIS);
@@ -279,7 +280,7 @@ public class GcodeTabController implements Initializable {
         MainController.postConsoleMessage("Clearing Screen...\n");
         cncMachinePane.clearScreen();
         //clear this so our first line added draws correctly
-        Draw2d.setFirstDraw(true);
+        DRAW2D.setFirstDraw(true);
     }
 
 

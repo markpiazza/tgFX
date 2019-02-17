@@ -45,13 +45,13 @@ public class MachineSettingsController implements Initializable {
     @FXML
     private ListView<String> configsListView;
     @FXML
-    private static ChoiceBox machineSwitchType, machineUnitMode;
+    private ChoiceBox machineSwitchType, machineUnitMode;
     @FXML
     private Button loadButton;
     @FXML
     private ProgressBar configProgress;
 
-    public static void updateGuiMachineSettings() {
+    public void updateGuiMachineSettings() {
         machineUnitMode.getSelectionModel().select(
                 TinygDriver.getInstance().getMachine().getGcodeUnitModeAsInt());
         machineSwitchType.getSelectionModel().select(
