@@ -9,6 +9,7 @@ import java.util.Iterator;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -275,27 +276,39 @@ public class CNCMachine extends Pane {
             unitMagnification = 2; //MM
         }
 
+        // FIXME: not moving from point 160x160 (magnification+80)
         double newX = unitMagnification * (MACHINE.getAxisByName("X").getWorkPosition().get() + 80);
         double newY = unitMagnification * (MACHINE.getAxisByName("Y").getWorkPosition().get() + 80);
 
+        //FIXME: copied from below, seems to work better than above, but still not quite right
+//        double newX = MACHINE.getAxisByName("x").machinePositionProperty().get() * 2;
+//        double newY = this.getHeight() - MACHINE.getAxisByName("y").machinePositionProperty().get() * 2;
+
+
         if (newX > getGcodePane().getWidth() || newX > getGcodePane().getWidth()) {
             scale = scale / 2;
-            Line line;
-            Iterator ii = getGcodePane().getChildren().iterator();
-            getGcodePane().getChildren().clear(); //remove them after we have the iterator
 
-            while (ii.hasNext()) {
-                if (ii.next().getClass().toString().contains("Line")) {
-                    //This is a line.
-                    line = (Line) ii.next();
+            int i = 0;
+            ObservableList<Node> nodes = getGcodePane().getChildren();
+            getGcodePane().getChildren().clear();
+            for(Node node : nodes){
+                i++;
+                logger.info("Node {} : {}", i, node.getClass().toString());
+                if(node.getClass().toString().contains("Line")) {
+                    Line line = (Line) node;
                     line.setStartX(line.getStartX() / 2);
                     line.setStartY(line.getStartY() / 2);
                     line.setEndX(line.getEndX() / 2);
                     line.setEndY(line.getEndY() / 2);
+                    logger.info("Line {} : ({},{}), ({},{})", i,
+                            line.getStartX(), line.getStartY(),
+                            line.getEndX(), line.getEndY() );
                     getGcodePane().getChildren().add(line);
                 }
             }
-            MainController.postConsoleMessage("Finished Drawing Preview Scale Change.\n");
+
+
+            //            MainController.postConsoleMessage("Finished Drawing Preview Scale Change.\n");
             getGcodePane().setScaleX(scale);
             getGcodePane().setScaleY(scale);
         }
@@ -329,6 +342,9 @@ public class CNCMachine extends Pane {
         if (this.checkBoundsX(l) && this.checkBoundsY(l)) {
             //Line is within the travel max gcode preview box.  So we will draw it.
             this.getChildren().add(l);  //Add the line to the Pane
+            logger.info("Line : ({},{}), ({},{})",
+                    l.getStartX(), l.getStartY(),
+                    l.getEndX(), l.getEndY() );
             cursorPoint.visibleProperty().set(true);
             msgSent = false;
             if (!getChildren().contains(cursorPoint)) { //If the cursorPoint is not in the Group and we are in bounds
@@ -423,7 +439,7 @@ public class CNCMachine extends Pane {
      * @param scaleAmount scale amount
      */
     public void autoScaleWorkTravelSpace(double scaleAmount) {
-        logger.info("autoScaleWorkTrabelSpace");
+        logger.info("autoScaleWorkTravelSpace");
         //Get the axis with the smallest available space.  Think aspect ratio really
         double stroke = 2 / scaleAmount;
         this.setScaleX(scaleAmount);

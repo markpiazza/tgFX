@@ -4,6 +4,7 @@ import jssc.SerialPortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Iterator;
 import java.util.Observable;
 import javafx.application.Platform;
 import jfxtras.labs.dialogs.MonologFX;
@@ -272,7 +273,10 @@ public class ResponseParser extends Observable implements Runnable {
                      * sure this else is needed any longer.
                      */
                     logger.info("applySettings: {}", js);
-                    applySettings(js, js.keys().next());
+                    Iterator i = js.keys();
+                    if(i.hasNext()) {
+                        applySettings(js, js.keys().next());
+                    }
                 }
             }
         } catch (JSONException ex) {
