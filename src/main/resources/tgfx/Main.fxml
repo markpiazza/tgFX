@@ -31,7 +31,7 @@
 
 
         <center>
-            <TabPane fx:id="topTabPane" focusTraversable="false" side="RIGHT" BorderPane.alignment="CENTER">
+            <TabPane fx:id="topTabPane" focusTraversable="false" side="TOP" BorderPane.alignment="CENTER">
                 <fx:include fx:id="gcodeTab" source="ui/gcode/GcodeTab.fxml" />
                 <fx:include fx:id="tinygConfigTab" source="ui/tinygconfig/TinyGConfig.fxml"/>
                 <fx:include fx:id="machineSettingsTab" source="ui/machinesettings/MachineSettings.fxml" />

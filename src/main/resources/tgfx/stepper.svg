@@ -1,37 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="278.70728"
    height="395.35019"
    viewBox="0 0 278.70728 395.35019" 
-   id="svg2"
-   sodipodi:version="0.32"
-   inkscape:version="0.46"
-   version="1.0"
-   sodipodi:docname="StepperMotor-Bipolar_breadboard.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+   id="svg2">
   <defs
      id="defs4">
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient3601">
-      <stop
-         style="stop-color:#808080;stop-opacity:1;"
-         offset="0"
-         id="stop3603" />
-      <stop
-         style="stop-color:#808080;stop-opacity:0;"
-         offset="1"
-         id="stop3605" />
-    </linearGradient>
     <linearGradient
        id="linearGradient3414">
       <stop
@@ -69,33 +45,7 @@
          offset="1"
          id="stop3223" />
     </linearGradient>
-    <inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 526.18109 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="744.09448 : 526.18109 : 1"
-       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
-       id="perspective10" />
     <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3219"
-       id="linearGradient3285"
-       gradientUnits="userSpaceOnUse"
-       x1="18"
-       y1="9"
-       x2="18"
-       y2="18" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3291"
-       id="linearGradient3297"
-       x1="36"
-       y1="18"
-       x2="90"
-       y2="99"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3414"
        id="linearGradient3420"
        x1="72"
@@ -105,7 +55,6 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(0,-76.499998)" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3291"
        id="linearGradient3527"
        gradientUnits="userSpaceOnUse"
@@ -114,7 +63,6 @@
        x2="90"
        y2="99" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3601"
        id="linearGradient3607"
        x1="81"
@@ -123,7 +71,6 @@
        y2="225"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3219"
        id="linearGradient4445"
        gradientUnits="userSpaceOnUse"
@@ -132,7 +79,6 @@
        x2="18"
        y2="18" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3291"
        id="linearGradient4678"
        gradientUnits="userSpaceOnUse"
@@ -141,7 +87,6 @@
        x2="90"
        y2="99" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3414"
        id="linearGradient4682"
        gradientUnits="userSpaceOnUse"
@@ -157,8 +102,7 @@
        x1="18"
        gradientUnits="userSpaceOnUse"
        id="linearGradient2587"
-       xlink:href="#linearGradient3219"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3219" />
     <linearGradient
        y2="18"
        x2="18"
@@ -166,8 +110,7 @@
        x1="18"
        gradientUnits="userSpaceOnUse"
        id="linearGradient2579"
-       xlink:href="#linearGradient3219"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3219" />
     <linearGradient
        y2="18"
        x2="18"
@@ -175,8 +118,7 @@
        x1="18"
        gradientUnits="userSpaceOnUse"
        id="linearGradient2571"
-       xlink:href="#linearGradient3219"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3219" />
     <linearGradient
        y2="18"
        x2="18"
@@ -184,8 +126,7 @@
        x1="18"
        gradientUnits="userSpaceOnUse"
        id="linearGradient2730"
-       xlink:href="#linearGradient3219"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3219" />
     <linearGradient
        y2="90"
        x2="81"
@@ -194,8 +135,7 @@
        gradientTransform="translate(0,-76.499998)"
        gradientUnits="userSpaceOnUse"
        id="linearGradient2728"
-       xlink:href="#linearGradient3414"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3414" />
     <linearGradient
        y2="99"
        x2="90"
@@ -203,8 +143,7 @@
        x1="36"
        gradientUnits="userSpaceOnUse"
        id="linearGradient2726"
-       xlink:href="#linearGradient3291"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3291" />
     <linearGradient
        y2="18"
        x2="18"
@@ -212,8 +151,7 @@
        x1="18"
        gradientUnits="userSpaceOnUse"
        id="linearGradient2724"
-       xlink:href="#linearGradient3219"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3219" />
     <linearGradient
        gradientUnits="userSpaceOnUse"
        y2="225"
@@ -221,8 +159,7 @@
        y1="225"
        x1="81"
        id="linearGradient2722"
-       xlink:href="#linearGradient3601"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3601" />
     <linearGradient
        y2="99"
        x2="90"
@@ -230,8 +167,7 @@
        x1="36"
        gradientUnits="userSpaceOnUse"
        id="linearGradient2720"
-       xlink:href="#linearGradient3291"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3291" />
     <linearGradient
        gradientTransform="translate(0,-76.499998)"
        gradientUnits="userSpaceOnUse"
@@ -240,8 +176,7 @@
        y1="90"
        x1="72"
        id="linearGradient2718"
-       xlink:href="#linearGradient3414"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3414" />
     <linearGradient
        gradientUnits="userSpaceOnUse"
        y2="99"
@@ -249,8 +184,7 @@
        y1="18"
        x1="36"
        id="linearGradient2716"
-       xlink:href="#linearGradient3291"
-       inkscape:collect="always" />
+       xlink:href="#linearGradient3291" />
     <linearGradient
        y2="18"
        x2="18"
@@ -258,15 +192,7 @@
        x1="18"
        gradientUnits="userSpaceOnUse"
        id="linearGradient2714"
-       xlink:href="#linearGradient3219"
-       inkscape:collect="always" />
-    <inkscape:perspective
-       id="perspective2712"
-       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
-       inkscape:vp_z="744.09448 : 526.18109 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 526.18109 : 1"
-       sodipodi:type="inkscape:persp3d" />
+       xlink:href="#linearGradient3219" />
     <linearGradient
        id="linearGradient2706">
       <stop
@@ -305,7 +231,6 @@
          style="stop-color:#9f9f9f;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3219"
        id="linearGradient2811"
        gradientUnits="userSpaceOnUse"
@@ -314,52 +239,6 @@
        x2="18"
        y2="18" />
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     gridtolerance="10000"
-     guidetolerance="10000"
-     objecttolerance="10"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="140.07108"
-     inkscape:cy="158.61398"
-     inkscape:document-units="m"
-     inkscape:current-layer="svg2"
-     showgrid="false"
-     units="mm"
-     inkscape:window-width="1680"
-     inkscape:window-height="1030"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:object-paths="false"
-     inkscape:object-nodes="true"
-     showguides="true"
-     inkscape:guide-bbox="true">
-    <inkscape:grid
-       type="xygrid"
-       id="grid2383"
-       visible="true"
-       enabled="true"
-       units="mm"
-       spacingx="2.54mm"
-       spacingy="2.54mm"
-       empspacing="10" />
-  </sodipodi:namedview>
-  <metadata
-     id="metadata7">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g id="breadboard">
   <g
      id="StepperMotor"
@@ -368,10 +247,7 @@
        transform="translate(0,-76.499998)"
        d="M 1.78125,154.78125 L 1.78125,277.90625 L 18.40625,286.21875 L 134.65625,286.21875 L 151.21875,277.90625 L 151.21875,154.78125 L 1.78125,154.78125 z"
        id="MotorHousing"
-       style="fill:#4d4d4d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       inkscape:original="M 0 153 L 0 279 L 18 288 L 135.0625 288 L 153 279 L 153 153 L 0 153 z "
-       inkscape:radius="-1.767767"
-       sodipodi:type="inkscape:offset" />
+       style="fill:#4d4d4d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     <path
        id="MotorHousingShade"
        style="fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -384,10 +260,7 @@
        transform="matrix(1,0,0,0.5,0,1.87e-6)"
        d="M 18.78125,1.90625 L 1.90625,18.78125 L 1.90625,134.1875 L 18.59375,151.09375 L 134.21875,151.09375 L 151.09375,134.21875 L 151.09375,18.78125 L 134.21875,1.90625 L 18.78125,1.90625 z"
        id="CapTopShade"
-       style="fill:url(#linearGradient4678);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       inkscape:original="M 18.78125 1.90625 L 1.90625 18.78125 L 1.90625 134.1875 L 18.59375 151.09375 L 134.21875 151.09375 L 151.09375 134.21875 L 151.09375 18.78125 L 134.21875 1.90625 L 18.78125 1.90625 z "
-       inkscape:radius="0"
-       sodipodi:type="inkscape:offset" />
+       style="fill:url(#linearGradient4678);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     <path
        id="CapTopGrove"
        d="M 118.75706,40.250002 C 118.75706,51.912952 99.825897,61.378532 76.5,61.378532 C 53.174103,61.378532 34.24294,51.912952 34.24294,40.250002 C 34.24294,28.587052 53.174103,19.121472 76.5,19.121472 C 99.825897,19.121472 118.75706,28.587052 118.75706,40.250002 z"
@@ -467,8 +340,7 @@
     <path
        id="CapBevelHilite"
        style="fill:#f2f2f2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       d="M 0,67.500002 L 0,71.500002 L 18,80.500002 L 135,80.500002 L 153,71.500002 L 153,67.500002 L 135,76.500002 L 18,76.500002 L 0,67.500002 z M 0,148.5 L 0,152.5 L 18,161.5 L 18,157.5 L 0,148.5 z M 153,148.5 L 135,157.5 L 135,161.5 L 153,152.5 L 153,148.5 z M 22,171.49466 L 18,175.5 L 135,175.5 L 131,171.49466 L 22,171.49466 z"
-       sodipodi:nodetypes="cccccccccccccccccccccccc" />
+       d="M 0,67.500002 L 0,71.500002 L 18,80.500002 L 135,80.500002 L 153,71.500002 L 153,67.500002 L 135,76.500002 L 18,76.500002 L 0,67.500002 z M 0,148.5 L 0,152.5 L 18,161.5 L 18,157.5 L 0,148.5 z M 153,148.5 L 135,157.5 L 135,161.5 L 153,152.5 L 153,148.5 z M 22,171.49466 L 18,175.5 L 135,175.5 L 131,171.49466 L 22,171.49466 z" />
     <path
        id="CapBevelShade"
        style="fill:#1a1a1a;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -503,13 +375,11 @@
       <path
          id="PinBase"
          d="M 54,270 L 54,279"
-         style="fill:none;fill-rule:evenodd;stroke:#808000;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         sodipodi:nodetypes="cc" />
+         style="fill:none;fill-rule:evenodd;stroke:#808000;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          style="fill:none;fill-rule:evenodd;stroke:#ffff00;stroke-width:0.70866144;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 54,270 L 54,279"
-         id="PinHilite"
-         sodipodi:nodetypes="cc" />
+         id="PinHilite" />
     </g>
     <use
        x="0"
@@ -567,72 +437,72 @@
        style="fill:#6c5d53;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="HousingSlots" />
   </g>
-  <g
-     id="FourWireCable">
-    <path
-       id="FourWire3"
-       d="M 256.20728,381.58878 L 256.20728,346.35019 C 256.20728,317.80727 89.915822,317.65883 89.956051,284.86108 L 90.000002,249.02942 L 99,230.19284"
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5.31496048;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       id="FourWire2"
-       d="M 247.20728,381.58878 L 247.20728,346.35019 C 247.20728,317.80727 80.924548,317.65884 80.956044,284.86108 L 81.000002,249.02942 L 81,230.19284"
-       style="fill:none;fill-rule:evenodd;stroke:#d40000;stroke-width:5.31496048;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       id="FourWire1"
-       d="M 238.20728,381.58878 L 238.20728,346.35019 C 238.20728,317.80727 71.929673,317.65885 71.956044,284.86108 L 72.000002,249.02942 L 72,230.19284"
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5.31496048;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       id="FourWire0"
-       d="M 229.20728,381.58878 L 229.20728,346.35019 C 229.20728,317.80727 62.915804,317.65883 62.95604,284.86108 L 62.999998,249.02942 L 54,230.19284"
-       style="fill:none;fill-rule:evenodd;stroke:#d40000;stroke-width:5.31496048;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#c8ab37;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 256.20728,390.8502 C 256.20728,390.8502 256.20728,381.58878 256.20728,381.58878"
-       id="FourWire3End" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#c8ab37;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 247.20728,390.8502 C 247.20728,390.8502 247.20728,381.58878 247.20728,381.58878"
-       id="FourWire2End" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#c8ab37;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 238.20728,381.58878 C 238.20728,381.58878 238.20728,390.8502 238.20728,390.8502"
-       id="FourWire1End" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#c8ab37;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 229.20728,381.58878 C 229.20728,381.58878 229.20728,390.8502 229.20728,390.8502"
-       id="FourWire0End" />
-    <path
-       id="FourWireHilite"
-       style="fill:none;fill-rule:evenodd;stroke:#e6e6e6;stroke-width:0.44291338;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 256.20728,381.58878 L 256.20728,346.35019 C 256.20728,317.80727 89.915822,317.65883 89.956051,284.86108 L 90.000002,249.02942 L 99,230.19284 M 247.20728,381.58878 L 247.20728,346.35019 C 247.20728,317.80727 80.924548,317.65884 80.956044,284.86108 L 81.000002,249.02942 L 81,230.19284 M 238.20728,381.58878 L 238.20728,346.35019 C 238.20728,317.80727 71.929673,317.65885 71.956044,284.86108 L 72.000002,249.02942 L 72,230.19284 M 229.20728,381.58878 L 229.20728,346.35019 C 229.20728,317.80727 62.915804,317.65883 62.95604,284.86108 L 62.999998,249.02942 L 54,230.19284" />
-  </g>
-  <rect
-     style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-     id="connector0pin"
-     width="9"
-     height="9"
-     x="224.70728"
-     y="386.35019" />
-  <rect
-     y="386.35019"
-     x="233.70728"
-     height="9"
-     width="9"
-     id="connector1pin"
-     style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
-  <rect
-     style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-     id="connector2pin"
-     width="9"
-     height="9"
-     x="242.70728"
-     y="386.35019" />
-  <rect
-     y="386.35019"
-     x="251.70728"
-     height="9"
-     width="9"
-     id="connector3pin"
-     style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+  <!--<g-->
+     <!--id="FourWireCable">-->
+    <!--<path-->
+       <!--id="FourWire3"-->
+       <!--d="M 256.20728,381.58878 L 256.20728,346.35019 C 256.20728,317.80727 89.915822,317.65883 89.956051,284.86108 L 90.000002,249.02942 L 99,230.19284"-->
+       <!--style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5.31496048;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />-->
+    <!--<path-->
+       <!--id="FourWire2"-->
+       <!--d="M 247.20728,381.58878 L 247.20728,346.35019 C 247.20728,317.80727 80.924548,317.65884 80.956044,284.86108 L 81.000002,249.02942 L 81,230.19284"-->
+       <!--style="fill:none;fill-rule:evenodd;stroke:#d40000;stroke-width:5.31496048;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />-->
+    <!--<path-->
+       <!--id="FourWire1"-->
+       <!--d="M 238.20728,381.58878 L 238.20728,346.35019 C 238.20728,317.80727 71.929673,317.65885 71.956044,284.86108 L 72.000002,249.02942 L 72,230.19284"-->
+       <!--style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5.31496048;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />-->
+    <!--<path-->
+       <!--id="FourWire0"-->
+       <!--d="M 229.20728,381.58878 L 229.20728,346.35019 C 229.20728,317.80727 62.915804,317.65883 62.95604,284.86108 L 62.999998,249.02942 L 54,230.19284"-->
+       <!--style="fill:none;fill-rule:evenodd;stroke:#d40000;stroke-width:5.31496048;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />-->
+    <!--<path-->
+       <!--style="fill:none;fill-rule:evenodd;stroke:#c8ab37;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"-->
+       <!--d="M 256.20728,390.8502 C 256.20728,390.8502 256.20728,381.58878 256.20728,381.58878"-->
+       <!--id="FourWire3End" />-->
+    <!--<path-->
+       <!--style="fill:none;fill-rule:evenodd;stroke:#c8ab37;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"-->
+       <!--d="M 247.20728,390.8502 C 247.20728,390.8502 247.20728,381.58878 247.20728,381.58878"-->
+       <!--id="FourWire2End" />-->
+    <!--<path-->
+       <!--style="fill:none;fill-rule:evenodd;stroke:#c8ab37;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"-->
+       <!--d="M 238.20728,381.58878 C 238.20728,381.58878 238.20728,390.8502 238.20728,390.8502"-->
+       <!--id="FourWire1End" />-->
+    <!--<path-->
+       <!--style="fill:none;fill-rule:evenodd;stroke:#c8ab37;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"-->
+       <!--d="M 229.20728,381.58878 C 229.20728,381.58878 229.20728,390.8502 229.20728,390.8502"-->
+       <!--id="FourWire0End" />-->
+    <!--<path-->
+       <!--id="FourWireHilite"-->
+       <!--style="fill:none;fill-rule:evenodd;stroke:#e6e6e6;stroke-width:0.44291338;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"-->
+       <!--d="M 256.20728,381.58878 L 256.20728,346.35019 C 256.20728,317.80727 89.915822,317.65883 89.956051,284.86108 L 90.000002,249.02942 L 99,230.19284 M 247.20728,381.58878 L 247.20728,346.35019 C 247.20728,317.80727 80.924548,317.65884 80.956044,284.86108 L 81.000002,249.02942 L 81,230.19284 M 238.20728,381.58878 L 238.20728,346.35019 C 238.20728,317.80727 71.929673,317.65885 71.956044,284.86108 L 72.000002,249.02942 L 72,230.19284 M 229.20728,381.58878 L 229.20728,346.35019 C 229.20728,317.80727 62.915804,317.65883 62.95604,284.86108 L 62.999998,249.02942 L 54,230.19284" />-->
+  <!--</g>-->
+  <!--<rect-->
+     <!--style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"-->
+     <!--id="connector0pin"-->
+     <!--width="9"-->
+     <!--height="9"-->
+     <!--x="224.70728"-->
+     <!--y="386.35019" />-->
+  <!--<rect-->
+     <!--y="386.35019"-->
+     <!--x="233.70728"-->
+     <!--height="9"-->
+     <!--width="9"-->
+     <!--id="connector1pin"-->
+     <!--style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />-->
+  <!--<rect-->
+     <!--style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"-->
+     <!--id="connector2pin"-->
+     <!--width="9"-->
+     <!--height="9"-->
+     <!--x="242.70728"-->
+     <!--y="386.35019" />-->
+  <!--<rect-->
+     <!--y="386.35019"-->
+     <!--x="251.70728"-->
+     <!--height="9"-->
+     <!--width="9"-->
+     <!--id="connector3pin"-->
+     <!--style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />-->
   </g>
 </svg>
