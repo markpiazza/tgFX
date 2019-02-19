@@ -416,7 +416,7 @@ public class TinyGConfigController implements Initializable {
             } catch (NumberFormatException ex) {
                 MainController.postConsoleMessage(tf.getText() +
                         " is an invalid Setting Entered.. Ignoring.");
-                logger.error(ex.getMessage());
+                logger.error(ex);
                 // This will reset the input that was bad to the current settings
                 TinygDriver.getInstance().queryHardwareSingleMotorSettings(_motor.getIdNumber());
             }
@@ -440,7 +440,7 @@ public class TinyGConfigController implements Initializable {
                     TinygDriver.getInstance().applyHardwareAxisSettings(_axis, tf);
                 } catch (NumberFormatException ex) {
                     MainController.postConsoleMessage("Invalid Setting Entered.. Ignoring.");
-                    logger.error(ex.getMessage());
+                    logger.error(ex);
                     // This will reset the input that was bad to the current settings
                     // FIXME: Possible NPE
                     TinygDriver.getInstance().queryHardwareSingleAxisSettings(_axis.getAxisName());

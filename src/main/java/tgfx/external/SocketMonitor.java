@@ -48,7 +48,7 @@ public class SocketMonitor {
                 final Socket socket = server.accept();
                 ConnectionHandler connectionHandler = new ConnectionHandler(socket);
             } catch (IOException ex) {
-                logger.error("Error: " + ex.getMessage());
+                logger.error(ex);
             }
 //        }
         logger.info("Socket Monitor Terminated...");

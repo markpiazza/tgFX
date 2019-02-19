@@ -40,9 +40,7 @@ class ConnectionHandler implements Runnable, Observer {
                 this.write(line + "\n");
             } catch (IOException ex) {
                 disconnect = true;
-                logger.error("update(): " + ex.getMessage());
-            } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(ex);
             }
         }
     }
@@ -70,7 +68,7 @@ class ConnectionHandler implements Runnable, Observer {
                 } catch (IOException ex) {
                     disconnect = true;
                 } catch (InterruptedException ex) {
-                    logger.error("run(): " + ex.getMessage());
+                    logger.error(ex);
                     break;
                 }
             }

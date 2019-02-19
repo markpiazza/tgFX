@@ -30,7 +30,7 @@
                                 <VBox.margin>
                                     <Insets right="5.0"/>
                                 </VBox.margin>
-                                <Label id="whiteFill" alignment="CENTER" contentDisplay="CENTER" text="Misc"/>
+                                <Label textFill="white" alignment="CENTER" contentDisplay="CENTER" text="Misc"/>
                             </HBox>
 
                             <GridPane id="miscGP" hgap="15.0" vgap="15.0">
@@ -42,7 +42,7 @@
                                     <RowConstraints maxHeight="21.0" minHeight="10.0" prefHeight="21.0" vgrow="ALWAYS"/>
                                     <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="ALWAYS"/>
                                 </rowConstraints>
-                                <Label id="whiteFill" text="Switch Type" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                <Label textFill="white" text="Switch Type" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                                 <ChoiceBox fx:id="machineSwitchType" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
@@ -52,7 +52,7 @@
                                     </items>
                                 </ChoiceBox>
 
-                                <Label id="whiteFill" text="Machine Unit Mode" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                <Label textFill="white" text="Machine Unit Mode" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                                 <ChoiceBox fx:id="machineUnitMode" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
@@ -85,7 +85,7 @@
                             <padding>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                             </padding>
-                            <Label id="whiteFill" alignment="CENTER" contentDisplay="CENTER" text="Machine Config Loader" HBox.hgrow="NEVER"/>
+                            <Label textFill="white" alignment="CENTER" contentDisplay="CENTER" text="Machine Config Loader" HBox.hgrow="NEVER"/>
                         </HBox>
                         <ListView fx:id="configsListView" maxWidth="350.0" VBox.vgrow="ALWAYS">
                             <VBox.margin>

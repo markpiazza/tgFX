@@ -16,7 +16,7 @@
             <padding>
                 <Insets bottom="5.0" top="5.0"/>
             </padding>
-            <Label id="whiteFill" text="Version Information" alignment="CENTER" contentDisplay="CENTER"/>
+            <Label textFill="white" text="Version Information" alignment="CENTER" contentDisplay="CENTER"/>
         </HBox>
         <VBox id="alphaVBox" prefHeight="300.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="NEVER">
             <padding>
@@ -36,21 +36,21 @@
                             <RowConstraints maxHeight="18.0" prefHeight="18.0" vgrow="ALWAYS"/>
                             <RowConstraints maxHeight="18.0" prefHeight="18.0" vgrow="ALWAYS"/>
                         </rowConstraints>
-                        <Label id="whiteFill" text="Hardware ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <Label id="whiteFill" fx:id="hardwareId" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Label textFill="white" text="Hardware ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label textFill="white" fx:id="hardwareId" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-                        <Label id="whiteFill" text="Hardware Version:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <Label id="whiteFill" fx:id="hwVersion" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label textFill="white" text="Hardware Version:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label textFill="white" fx:id="hwVersion" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-                        <Label id="whiteFill" text="Firmware Version:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                        <Label id="whiteFill" fx:id="firmwareVersion" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Label textFill="white" text="Firmware Version:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label textFill="white" fx:id="firmwareVersion" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                        <Label id="whiteFill" text="Latest Firmware Build:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                        <Label id="whiteFill" fx:id="latestFirmwareBuild" text="Click Check for Updates"
+                        <Label textFill="white" text="Latest Firmware Build:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <Label textFill="white" fx:id="latestFirmwareBuild" text="Click Check for Updates"
                                GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-                        <Label id="whiteFill" text="Your Firmware Build:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                        <Label id="whiteFill" fx:id="buildNumb" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        <Label textFill="white" text="Your Firmware Build:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <Label textFill="white" fx:id="buildNumb" text="Unavailable" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                     </GridPane>
                 </VBox>
             </HBox>

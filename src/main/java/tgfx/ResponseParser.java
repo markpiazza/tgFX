@@ -280,7 +280,7 @@ public class ResponseParser extends Observable implements Runnable {
                 }
             }
         } catch (JSONException ex) {
-            logger.error("Error in applySetting(JsonObject js) : " + ex.getMessage());
+            logger.error("Error in applySetting(JsonObject js)", ex);
             logger.error("JSON String Was: " + js.toString());
             logger.error("Error in Line: " + js);
         }

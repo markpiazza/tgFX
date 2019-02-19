@@ -101,7 +101,7 @@ public class HardwarePlatformManager {
                         HardwarePlatform hp = gson.fromJson(br, HardwarePlatform.class);
                         availablePlatforms.add(hp);
                     } catch (FileNotFoundException | JsonSyntaxException | JsonIOException ex) {
-                        logger.error("Error loading hardware platforms: {}", ex.getMessage());
+                        logger.error("Error loading hardware platforms: {}", ex);
                     }
                 }
             }

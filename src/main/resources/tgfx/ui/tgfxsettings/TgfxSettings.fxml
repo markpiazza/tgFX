@@ -21,23 +21,23 @@
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </padding>
-                    <Label id="whiteFill" text="Build Info"/>
+                    <Label textFill="white" text="Build Info"/>
                 </HBox>
                 <VBox>
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </padding>
                     <HBox spacing="15.0">
-                        <Label id="whiteFill" text="Version:"/>
-                        <Label id="whiteFill" fx:id="tgfxVersion" textFill="white"/>
+                        <Label textFill="white" text="Version:"/>
+                        <Label textFill="white" fx:id="tgfxVersion"/>
                     </HBox>
                     <HBox spacing="15.0">
-                        <Label id="whiteFill" text="Build Number:"/>
-                        <Label id="whiteFill" fx:id="tgfxBuildNumber" textFill="white"/>
+                        <Label textFill="white" text="Build Number:"/>
+                        <Label textFill="white" fx:id="tgfxBuildNumber"/>
                     </HBox>
                     <HBox spacing="15.0">
-                        <Label id="whiteFill" text="Build Date:"/>
-                        <Label id="whiteFill" fx:id="tgfxBuildDate" textFill="white"/>
+                        <Label textFill="white" text="Build Date:"/>
+                        <Label textFill="white" fx:id="tgfxBuildDate"/>
                     </HBox>
                 </VBox>
             </VBox>
@@ -49,10 +49,10 @@
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </padding>
-                    <Label id="whiteFill" text="Render"/>
+                    <Label textFill="white" text="Render"/>
                 </HBox>
                 <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
-                    <Label id="whiteFill" text="Draw Preview"/>
+                    <Label textFill="white" text="Draw Preview"/>
                     <ToggleButton fx:id="settingDrawBtn" maxWidth="77.0" minWidth="77.0" mnemonicParsing="false"
                           focusTraversable="false" onAction="#handleTogglePreview" prefWidth="77.0" text="Enabled" />
                 </HBox>
@@ -65,10 +65,10 @@
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </padding>
-                    <Label id="whiteFill" text="Debug"/>
+                    <Label textFill="white" text="Debug"/>
                 </HBox>
                 <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
-                    <Label id="whiteFill" text="Debug Mode"/>
+                    <Label textFill="white" text="Debug Mode"/>
                     <ToggleButton fx:id="settingDebugBtn" maxWidth="77.0" minWidth="77.0"
                           focusTraversable="false" mnemonicParsing="false" prefWidth="77.0" selected="true" text="Enabled"/>
                 </HBox>

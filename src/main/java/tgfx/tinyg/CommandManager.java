@@ -56,27 +56,21 @@ public class CommandManager {
      * Query All Motors for their current settings
      */
     public void queryAllMotorSettings() {
-        try {
-            DRIVER.write(CMD_QUERY_MOTOR_1_SETTINGS);
-            logger.info("Getting Motor 1 Settings");
-            MainController.postConsoleMessage("Getting TinyG Motor 1 Settings...");
+        DRIVER.write(CMD_QUERY_MOTOR_1_SETTINGS);
+        logger.info("Getting Motor 1 Settings");
+        MainController.postConsoleMessage("Getting TinyG Motor 1 Settings...");
 
-            DRIVER.write(CMD_QUERY_MOTOR_2_SETTINGS);
-            logger.info("Getting Motor 2 Settings");
-            MainController.postConsoleMessage("Getting TinyG Motor 2 Settings...");
+        DRIVER.write(CMD_QUERY_MOTOR_2_SETTINGS);
+        logger.info("Getting Motor 2 Settings");
+        MainController.postConsoleMessage("Getting TinyG Motor 2 Settings...");
 
-            DRIVER.write(CMD_QUERY_MOTOR_3_SETTINGS);
-            logger.info("Getting Motor 3 Settings");
-            MainController.postConsoleMessage("Getting TinyG Motor 3 Settings...");
+        DRIVER.write(CMD_QUERY_MOTOR_3_SETTINGS);
+        logger.info("Getting Motor 3 Settings");
+        MainController.postConsoleMessage("Getting TinyG Motor 3 Settings...");
 
-            DRIVER.write(CMD_QUERY_MOTOR_4_SETTINGS);
-            logger.info("Getting Motor 4 Settings");
-            MainController.postConsoleMessage("Getting TinyG Motor 4 Settings...");
-
-        } catch (Exception ex) {
-            logger.error("Exception in queryAllMotorSettings()...");
-            logger.error(ex.getMessage());
-        }
+        DRIVER.write(CMD_QUERY_MOTOR_4_SETTINGS);
+        logger.info("Getting Motor 4 Settings");
+        MainController.postConsoleMessage("Getting TinyG Motor 4 Settings...");
     }
 
     public void inhibitAllAxis() throws InterruptedException {
