@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -90,7 +92,6 @@ public class MainController extends Stage implements Initializable, Observer, Qu
     @FXML
     @SuppressWarnings("unused") // IDE says it's unused, but don't believe it
     private TinyGConfigController tinygConfigTabController;
-
 
     @FXML
     @SuppressWarnings("unused") // IDE says it's unused, but don't believe it
@@ -271,6 +272,7 @@ public class MainController extends Stage implements Initializable, Observer, Qu
 
         // console text update binding
         console.textProperty().bindBidirectional(consoleText);
+        consoleText.addListener((observable, oldValue, newValue) -> console.setScrollTop(Double.MAX_VALUE));
 
         // start the serial writer thread
         startSerialWriterThread();

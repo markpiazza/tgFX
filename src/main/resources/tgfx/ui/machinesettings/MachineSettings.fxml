@@ -70,8 +70,8 @@
                             <VBox.margin>
                                 <Insets bottom="5.0" top="5.0"/>
                             </VBox.margin>
-                            <Button mnemonicParsing="false" onAction="#handleQueryMachineSettings" text="Query" focusTraversable="false"/>
-                            <Button mnemonicParsing="false" onAction="#handleApplyMachineSettings" text="Apply" focusTraversable="false"/>
+                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleQueryMachineSettings" text="Query" />
+                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleApplyMachineSettings" text="Apply" />
                         </HBox>
                     </VBox>
 
@@ -104,12 +104,12 @@
                             <VBox.margin>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                             </VBox.margin>
-                            <Button text="Import" onAction="#handleImportConfig" focusTraversable="false"/>
-                            <Button fx:id="loadButton" onAction="#handleLoadConfig" focusTraversable="false" text="Load"/>
-                            <Button mnemonicParsing="false" onAction="#handleSaveCurrentSettings" focusTraversable="false" text="Save"/>
+                            <Button focusTraversable="false" text="Import" onAction="#handleImportConfig" />
+                            <Button focusTraversable="false" fx:id="loadButton" onAction="#handleLoadConfig" text="Load"/>
+                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleSaveCurrentSettings" text="Save"/>
                         </HBox>
                         <HBox alignment="CENTER" VBox.vgrow="NEVER">
-                            <Button onAction="#handleApplyDefaultSettings" text="Restore Hardware Defaults" focusTraversable="false" HBox.hgrow="ALWAYS"/>
+                            <Button focusTraversable="false" onAction="#handleApplyDefaultSettings" text="Restore Hardware Defaults" HBox.hgrow="ALWAYS"/>
                         </HBox>
                     </VBox>
                 </HBox>

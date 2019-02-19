@@ -277,12 +277,12 @@ public class CNCMachine extends Pane {
         }
 
         // FIXME: not moving from point 160x160 (magnification+80)
-        double newX = unitMagnification * (MACHINE.getAxisByName("X").getWorkPosition().get() + 80);
-        double newY = unitMagnification * (MACHINE.getAxisByName("Y").getWorkPosition().get() + 80);
+//        double newX = unitMagnification * (MACHINE.getAxisByName("X").getWorkPosition().get() + 80);
+//        double newY = unitMagnification * (MACHINE.getAxisByName("Y").getWorkPosition().get() + 80);
 
         //FIXME: copied from below, seems to work better than above, but still not quite right
-//        double newX = MACHINE.getAxisByName("x").machinePositionProperty().get() * 2;
-//        double newY = this.getHeight() - MACHINE.getAxisByName("y").machinePositionProperty().get() * 2;
+        double newX = MACHINE.getAxisByName("x").machinePositionProperty().get() * 2;
+        double newY = this.getHeight() - MACHINE.getAxisByName("y").machinePositionProperty().get() * 2;
 
 
         if (newX > getGcodePane().getWidth() || newX > getGcodePane().getWidth()) {

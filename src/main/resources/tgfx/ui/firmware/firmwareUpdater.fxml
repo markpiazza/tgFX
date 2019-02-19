@@ -58,14 +58,14 @@
                 <padding>
                     <Insets bottom="10.0" right="5.0"/>
                 </padding>
-                <Button id="checkFirmwareUpdate" mnemonicParsing="false" onAction="#checkFirmwareUpdate"
+                <Button focusTraversable="false" id="checkFirmwareUpdate" mnemonicParsing="false" onAction="#checkFirmwareUpdate"
                         text="Check For Updates"/>
                 <!-- TODO: can't have this button in a static context anymore -->
                 <!-- need to expose the controller statically to affect it -->
                 <!-- @see Tgfx -->
                 <!--<Button fx:id="handleUpdateFirmware" mnemonicParsing="false" onAction="#handleUpdateFirmware"-->
                         <!--text="Update Firmware"/>-->
-                <Button fx:id="handleUpdateFirmware" mnemonicParsing="false"
+                <Button focusTraversable="false" fx:id="handleUpdateFirmware" mnemonicParsing="false"
                         text="Update Firmware"/>
             </HBox>
         </VBox>
