@@ -9,8 +9,6 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -53,11 +51,23 @@ import static tgfx.tinyg.Commands.*;
 public class MainController extends Stage implements Initializable, Observer, QueuedTimerable<String> {
     private static final Logger logger = LogManager.getLogger();
 
-    private static StringProperty consoleText =  new SimpleStringProperty();
+    private static final TinygDriver DRIVER = TinygDriver.getInstance();
+    private static final  Machine MACHINE = DRIVER.getMachine();
+    private static final  Draw2d DRAW2D = Draw2d.getInstance();
 
-    private TinygDriver DRIVER = TinygDriver.getInstance();
-    private Machine MACHINE = DRIVER.getMachine();
-    private Draw2d DRAW2D = Draw2d.getInstance();
+    private final static StringConverter<Number> STRING_CONVERTER = new StringConverter<Number>() {
+        @Override
+        public String toString(Number n) {
+            return String.valueOf(n.floatValue());
+        }
+
+        @Override
+        public Number fromString(String s) {
+            return Integer.valueOf(s);
+        }
+    };
+
+    private static StringProperty consoleText =  new SimpleStringProperty();
 
     private GcodeHistory commandHistory = new GcodeHistory();
 
@@ -71,18 +81,6 @@ public class MainController extends Stage implements Initializable, Observer, Qu
 
     //this is checked upon initial connect.  Once this is set to true
     private boolean buildChecked = false;
-
-    private final static StringConverter<Number> STRING_CONVERTER = new StringConverter<Number>() {
-        @Override
-        public String toString(Number n) {
-            return String.valueOf(n.floatValue());
-        }
-
-        @Override
-        public Number fromString(String s) {
-            return Integer.valueOf(s);
-        }
-    };
 
 
     @FXML

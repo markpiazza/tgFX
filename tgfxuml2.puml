@@ -1,0 +1,111 @@
+@startuml
+
+hide members
+hide tgfx.system.enums
+hide tgfx.external
+
+
+class tgfx.TgFX
+class tgfx.MainController
+'class tgfx.ResponseFooter
+'class tgfx.ResponseParser
+'class tgfx.SerialDriver
+'class tgfx.SerialWriter
+'class tgfx.TgFXConstants
+'class tgfx.external.ConnectionHandler
+'class tgfx.external.SocketMonitor
+'class tgfx.hardwarePlatforms.HardwarePlatform
+'class tgfx.hardwarePlatforms.HardwarePlatformManager
+'class tgfx.render.CNCMachine
+'class tgfx.render.Draw2d
+'enum tgfx.system.enums.AxisMode
+'enum tgfx.system.enums.AxisName
+'enum tgfx.system.enums.AxisType
+'enum tgfx.system.enums.GcodeCoordinateSystem
+'enum tgfx.system.enums.GcodeDistanceMode
+'enum tgfx.system.enums.GcodePathControl
+'enum tgfx.system.enums.GcodeSelectionPlane
+'enum tgfx.system.enums.GcodeSelectPlane
+'enum tgfx.system.enums.GcodeUnitMode
+'enum tgfx.system.enums.MachineState
+'enum tgfx.system.enums.MotionMode
+'enum tgfx.system.enums.SwitchMode
+'class tgfx.system.Axis
+'class tgfx.system.CoordinateManager
+'class tgfx.system.CoordinateSystem
+'class tgfx.system.Machine
+'class tgfx.system.Motor
+'class tgfx.system.StatusCode
+'class tgfx.tinyg.CommandManager
+'class tgfx.tinyg.Commands
+'class tgfx.tinyg.MnemonicManager
+'class tgfx.tinyg.Mnemonics
+'class tgfx.tinyg.QueueReport
+'class tgfx.tinyg.ResponseCommand
+'class tgfx.tinyg.TinygDriver
+'class tgfx.ui.firmware.FirmwareUpdaterController
+'class tgfx.ui.gcode.GcodeHistory
+'class tgfx.ui.gcode.GcodeLine
+'class tgfx.ui.gcode.GcodeTabController
+'class tgfx.ui.machinesettings.MachineSettingsController
+'class tgfx.ui.tgfxsettings.TgfxSettingsController
+'class tgfx.ui.tinygconfig.TinyGConfigController
+'
+'interface tgfx.utility.QueuedTimerable
+'interface tgfx.utility.Timeable
+'class tgfx.utility.AsyncTimer
+'class tgfx.utility.QueueUsingTimer
+'class tgfx.utility.UtilityFunctions
+'class tgfx.utility.TimerTest
+
+
+Stage <|-- tgfx.MainController
+Application <|-- tgfx.TgFX
+
+tgfx.TgFX --> tgfx.MainController
+
+tgfx.MainController --> tgfx.tinyg.TinygDriver
+tgfx.MainController --> tgfx.system.Machine
+tgfx.MainController --> tgfx.render.Draw2d
+tgfx.MainController --> tgfx.ui.gcode.GcodeHistory
+tgfx.MainController --> tgfx.utility.QueueUsingTimer
+
+tgfx.MainController --> tgfx.ui.gcode.GcodeTabController
+tgfx.MainController --> tgfx.ui.tinygconfig.TinyGConfigController
+tgfx.MainController --> tgfx.ui.machinesettings.MachineSettingsController
+
+tgfx.tinyg.TinygDriver --> tgfx.system.Machine
+tgfx.tinyg.TinygDriver --> tgfx.SerialWriter
+
+tgfx.ui.gcode.GcodeTabController --> tgfx.tinyg.TinygDriver
+tgfx.ui.gcode.GcodeTabController --> tgfx.system.Machine
+tgfx.ui.gcode.GcodeTabController --> tgfx.SerialWriter
+tgfx.ui.gcode.GcodeTabController --> tgfx.render.Draw2d
+
+tgfx.SerialWriter --> tgfx.SerialDriver
+tgfx.SerialDriver --> SerialPort
+
+tgfx.ResponseParser --> tgfx.ResponseFooter
+tgfx.ResponseParser --> tgfx.system.Machine
+tgfx.ResponseParser --> tgfx.tinyg.TinygDriver
+
+
+'
+'tgfx.tinyg.TinygDriver --> tgfx.ResponseParser
+'
+'tgfx.tinyg.TinygDriver --> tgfx.tinyg.TinygDriver
+'tgfx.tinyg.TinygDriver --> tgfx.hardwarePlatforms.HardwarePlatformManager
+'tgfx.tinyg.TinygDriver --> tgfx.SerialDriver
+'tgfx.tinyg.TinygDriver --> tgfx.tinyg.QueueReport
+'tgfx.tinyg.TinygDriver --> tgfx.system.Machine
+'
+'tgfx.system.Machine --> tgfx.system.Machine : <<singleton>>
+'
+'tgfx.system.Machine --> tgfx.hardwarePlatforms.HardwarePlatform
+'
+'tgfx.ui.firmware.FirmwareUpdaterController --> tgfx.tinyg.TinygDriver : <<singleton>>
+'tgfx.ui.firmware.FirmwareUpdaterController --> tgfx.system.Machine : <<singleton>>
+'
+'tgfx.ui.machinesettings.MachineSettingsController --> tgfx.ui.firmware.FirmwareUpdaterController : <<singleton>>
+
+@enduml

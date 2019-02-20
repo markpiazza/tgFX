@@ -12,6 +12,7 @@ import java.io.IOException;
 
 /**
  * TgFX
+ * JavaFX Application class
  *
  */
 public class TgFX extends Application {
@@ -19,9 +20,9 @@ public class TgFX extends Application {
 
 
     /**
-     *
-     * @param stage
-     * @throws IOException
+     * Application entry point
+     * @param stage Main stage
+     * @throws IOException IO exception on missing FXML
      */
     @Override
     public void start(Stage stage) throws IOException {
@@ -38,8 +39,8 @@ public class TgFX extends Application {
 
 
     /**
-     *
-     * @param args
+     * Application main method
+     * @param args command line arguments
      */
     public static void main(String[] args) {
         logger.info("Starting up TgFX");
