@@ -2,12 +2,15 @@ package tgfx.ui.tinygconfig;
 
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputEvent;
@@ -35,11 +38,32 @@ public class TinyGConfigController implements Initializable {
     private static DecimalFormat decimalFormat = new DecimalFormat("#0.000");
 
     @FXML
+    private TabPane axisTabPane, motorTabPane;
+
+
+    // axises
+    @FXML
     private TextField
             motor1ConfigTravelPerRev, motor2ConfigTravelPerRev,
             motor3ConfigTravelPerRev, motor4ConfigTravelPerRev,
             motor1ConfigStepAngle, motor2ConfigStepAngle,
-            motor3ConfigStepAngle, motor4ConfigStepAngle,
+            motor3ConfigStepAngle, motor4ConfigStepAngle;
+
+    @FXML
+    private ChoiceBox
+            axisAmode, axisBmode, axisCmode,
+            axisXmode, axisYmode, axisZmode,
+            axisAswitchModeMin, axisAswitchModeMax,
+            axisBswitchModeMin, axisBswitchModeMax,
+            axisCswitchModeMin, axisCswitchModeMax,
+            axisXswitchModeMin, axisXswitchModeMax,
+            axisYswitchModeMin, axisYswitchModeMax,
+            axisZswitchModeMin, axisZswitchModeMax;
+
+
+    // motors
+    @FXML
+    private TextField
             axisAmaxFeedRate, axisBmaxFeedRate, axisCmaxFeedRate,
             axisXmaxFeedRate, axisYmaxFeedRate, axisZmaxFeedRate,
             axisAmaxTravel, axisBmaxTravel, axisCmaxTravel,
@@ -69,18 +93,9 @@ public class TinyGConfigController implements Initializable {
             motor1ConfigPolarity, motor2ConfigPolarity,
             motor3ConfigPolarity, motor4ConfigPolarity,
             motor1ConfigPowerMode, motor2ConfigPowerMode,
-            motor3ConfigPowerMode, motor4ConfigPowerMode,
-            axisAmode, axisBmode, axisCmode,
-            axisXmode, axisYmode, axisZmode,
-            axisAswitchModeMin, axisAswitchModeMax,
-            axisBswitchModeMin, axisBswitchModeMax,
-            axisCswitchModeMin, axisCswitchModeMax,
-            axisXswitchModeMin, axisXswitchModeMax,
-            axisYswitchModeMin, axisYswitchModeMax,
-            axisZswitchModeMin, axisZswitchModeMax;
+            motor3ConfigPowerMode, motor4ConfigPowerMode;
 
-    @FXML
-    private TabPane motorTabPane, axisTabPane;
+
 
     /**
      * Initializes the controller class.
@@ -90,52 +105,9 @@ public class TinyGConfigController implements Initializable {
         logger.info("Initializing TinyGConfigController");
     }
 
-    /* gui config state */
-
-    private void updateGUIConfigState() {
-        //Update the GUI for config settings
-        Platform.runLater(() -> {
-            //We are now back in the EventThread and can update the GUI for the CMD SETTINGS
-            //Right now this is how I am doing this.  However I think there can be a more optimized way
-            //Perhaps by passing a routing message as to which motor was updated then not all have to be updated
-            //every time one is.
-            Machine machine = DRIVER.getMachine();
-            for (Motor motor : machine.getMotors()) {
-                if (motor.getIdNumber() == 1) {
-                    motor1ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
-                    motor1ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
-                    motor1ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
-                    motor1ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
-                    motor1ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
-                    motor1ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
-                } else if (motor.getIdNumber() == 2) {
-                    motor2ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
-                    motor2ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
-                    motor2ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
-                    motor2ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
-                    motor2ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
-                    motor2ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
-                } else if (motor.getIdNumber() == 3) {
-                    motor3ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
-                    motor3ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
-                    motor3ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
-                    motor3ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
-                    motor3ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
-                    motor3ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
-                } else if (motor.getIdNumber() == 4) {
-                    motor4ConfigMapAxis.getSelectionModel().select(motor.getMapToAxis());
-                    motor4ConfigMicroSteps.getSelectionModel().select(motor.getMicrosteps());
-                    motor4ConfigPolarity.getSelectionModel().select(motor.isPolarityInt());
-                    motor4ConfigPowerMode.getSelectionModel().select(motor.isPowerManagementInt());
-                    motor4ConfigStepAngle.setText(String.valueOf(motor.getStepAngle()));
-                    motor4ConfigTravelPerRev.setText(String.valueOf(motor.getTravelPerRevolution()));
-                }
-            }
-        });
-    }
-
 
     /* axis enable/disable */
+
 
     @FXML
     private void handleEnableAllAxis(ActionEvent evt) throws Exception {
@@ -149,6 +121,7 @@ public class TinyGConfigController implements Initializable {
         }
 
     }
+
 
     @FXML
     private void handleInhibitAllAxis(ActionEvent evt) throws Exception {
@@ -164,6 +137,7 @@ public class TinyGConfigController implements Initializable {
 
 
     /* axis handlers */
+
 
     @FXML
     private void handleAxisEnter(final InputEvent event) {
@@ -190,12 +164,14 @@ public class TinyGConfigController implements Initializable {
         }
     }
 
+
     @FXML
     private void handleAxisQuerySettings(ActionEvent evt) {
         String _axisSelected = axisTabPane.getSelectionModel().getSelectedItem().getText().toLowerCase();
         MainController.postConsoleMessage("Querying Axis: " + _axisSelected + "\n");
         DRIVER.queryHardwareSingleAxisSettings(_axisSelected.charAt(0));
     }
+
 
     @FXML
     private void handleAxisApplySettings(ActionEvent evt) {
@@ -211,6 +187,7 @@ public class TinyGConfigController implements Initializable {
             logger.error(ex);
         }
     }
+
 
     /**
      * called from main controller
@@ -240,6 +217,7 @@ public class TinyGConfigController implements Initializable {
         Axis ax = DRIVER.getMachine().getAxisByName(axname);
         _updateGuiAxisSettings(ax);
     }
+
 
     private void _updateGuiAxisSettings(Axis ax) {
         switch (ax.getAxisName().toLowerCase()) {
@@ -336,8 +314,8 @@ public class TinyGConfigController implements Initializable {
     }
 
 
-
     /* motor handlers */
+
 
     @FXML
     private void handleMotorEnter(final InputEvent event) {
@@ -364,6 +342,7 @@ public class TinyGConfigController implements Initializable {
         }
     }
 
+
     @FXML
     private void handleMotorQuerySettings(ActionEvent evt) {
         logger.info("Querying Motor Config...");
@@ -385,6 +364,7 @@ public class TinyGConfigController implements Initializable {
         }
     }
 
+
     @FXML
     private void handleMotorApplySettings(ActionEvent evt) {
         MainController.postConsoleMessage("Applying Motor.......\n");
@@ -392,10 +372,6 @@ public class TinyGConfigController implements Initializable {
                 motorTabPane.getSelectionModel().getSelectedItem());
     }
 
-    private void updateGuiMotorSettings() {
-        //No motor was provided... Update them all.
-        updateGuiMotorSettings(null);
-    }
 
     /**
      * called from main controller
@@ -420,6 +396,7 @@ public class TinyGConfigController implements Initializable {
             }
         });
     }
+
 
     private void _updateGuiMotorSettings(String motorNumber) {
         Machine machine = DRIVER.getMachine();
