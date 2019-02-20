@@ -48,7 +48,7 @@ public class TinygDriver extends Observable {
 
     private static ArrayBlockingQueue<GcodeLine[]> writerQueue = new ArrayBlockingQueue<>(50000);
     private static ArrayBlockingQueue<String> jsonQueue = new ArrayBlockingQueue<>(10000);
-    private static ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(30);
+    private static ArrayBlockingQueue<byte[]> responseQueue = new ArrayBlockingQueue<>(30);
 
     private String[] message = new String[2];
 
@@ -698,13 +698,13 @@ public class TinygDriver extends Observable {
 
 
     /**
-     * append response queue
+     * append response responseQueue
      * @param queue bytes to append
      */
     public synchronized void appendResponseQueue(byte[] queue) {
-        // Add byte arrays to the buffer queue from tinyG's responses.
+        // Add byte arrays to the buffer responseQueue from tinyG's responses.
         try {
-            TinygDriver.queue.put(queue);
+            TinygDriver.responseQueue.put(queue);
         } catch (InterruptedException e) {
             logger.error("ERROR appending to the Response Queue");
         }

@@ -2,9 +2,12 @@ package tgfx.system;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONException;
 import org.json.JSONObject;
 import tgfx.tinyg.TinygDriver;
 import tgfx.tinyg.ResponseCommand;
+
+import java.util.Iterator;
 
 import static tgfx.tinyg.Mnemonics.*;
 
@@ -124,13 +127,13 @@ public class Motor {
         // This is really ugly looking but this is how it works
         // with combo boxes or selection models.. ugh
         switch (microsteps) {
-            case 1:
+            case 1: // full step
                 return 0;
-            case 2:
+            case 2: // half step
                 return 1;
-            case 4:
+            case 4: // quarter step
                 return 2;
-            case 8:
+            case 8: // eighth step
                 return 3;
             default:
                 return 1;
@@ -236,67 +239,68 @@ public class Motor {
         this.travelPerRevolution = travelPerRevolution;
     }
 
+    /* json formatters */
 
-    /**
-     * This is the main method to parser a JSON Motor object
-     * @param js json object
-     * @param parent parent
-     */
     public void applyJsonSystemSetting(JSONObject js, String parent) {
         logger.info("Applying JSON Object to " + parent + " Group");
-
-        Machine machine = TinygDriver.getInstance().getMachine();
-        for (Object o : js.keySet()) {
-            String key = o.toString();
-            String val = js.get(key).toString();
-            ResponseCommand rc = new ResponseCommand(parent, key, val);
-            Motor motor = machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()));
-            if(motor == null){
-                logger.error("Invalid Motor number");
-                continue;
+        Iterator<String> ii = js.keySet().iterator();
+        try {
+            while (ii.hasNext()) {
+                String key = ii.next();
+                String val = js.get(key).toString();
+                ResponseCommand rc = new ResponseCommand(parent, key, val);
+                applyJsonSystemSetting(rc);
             }
 
-            switch (key) {
-                case MNEMONIC_MOTOR_MAP_AXIS:
-                    motor.setMapToAxis(Integer.valueOf(rc.getSettingValue()));
-                    logger.info( "applied map axis: {}, {} : {}",
-                            rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
-                    break;
-
-                case MNEMONIC_MOTOR_MICROSTEPS:
-                    motor.setMicrosteps(Integer.valueOf(rc.getSettingValue()));
-                    logger.info( "applied microsteps: {}, {} : {}",
-                            rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
-                    break;
-
-                case MNEMONIC_MOTOR_POLARITY:
-                    motor.setPolarity(Integer.valueOf(rc.getSettingValue()));
-                    logger.info( "applied polarity: {}, {} : {}",
-                            rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
-                    break;
-
-                case MNEMONIC_MOTOR_POWER_MANAGEMENT:
-                    motor.setPowerManagement(Integer.valueOf(rc.getSettingValue()));
-                    logger.info( "applied power management: {}, {} : {}",
-                            rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
-                    break;
-
-                case MNEMONIC_MOTOR_STEP_ANGLE:
-                    motor.setStepAngle(Float.valueOf(rc.getSettingValue()));
-                    logger.info( "applied step angle: {}, {} : {}",
-                            rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
-                    break;
-
-                case MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION:
-                    motor.setTravelPerRevolution(Float.valueOf(rc.getSettingValue()));
-                    logger.info( "applied travel per revolution: {}, {} : {}",
-                            rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
-                    break;
-                default:
-                    logger.error("unknown motor property: : {}, {} : {}",
-                            rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
-                    break;
-            }
+        } catch (JSONException | NumberFormatException ex) {
+            logger.error("Error in applyJsonSystemSetting in Motor");
         }
+    }
+
+
+
+    private void applyJsonSystemSetting(ResponseCommand rc) {
+        Machine machine = TinygDriver.getInstance().getMachine();
+        Motor motor = machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()));
+        if(motor == null){
+            logger.error("Invalid Motor: {}", rc.getSettingParent());
+            return;
+        }
+
+        switch (rc.getSettingKey()) {
+            case MNEMONIC_MOTOR_MAP_AXIS:
+                motor.setMapToAxis(Integer.valueOf(rc.getSettingValue()));
+                logMotorInfo("map axis", rc);
+                break;
+            case MNEMONIC_MOTOR_MICROSTEPS:
+                motor.setMicrosteps(Integer.valueOf(rc.getSettingValue()));
+                logMotorInfo("microsteps", rc);
+                break;
+            case MNEMONIC_MOTOR_POLARITY:
+                motor.setPolarity(Integer.valueOf(rc.getSettingValue()));
+                logMotorInfo("polarity", rc);
+                break;
+            case MNEMONIC_MOTOR_POWER_MANAGEMENT:
+                motor.setPowerManagement(Integer.valueOf(rc.getSettingValue()));
+                logMotorInfo("power management", rc);
+                break;
+            case MNEMONIC_MOTOR_STEP_ANGLE:
+                motor.setStepAngle(Float.valueOf(rc.getSettingValue()));
+                logMotorInfo("step angle", rc);
+                break;
+            case MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION:
+                motor.setTravelPerRevolution(Float.valueOf(rc.getSettingValue()));
+                logMotorInfo("travel per revolution", rc);
+                break;
+            default:
+                logMotorInfo("", rc);
+                break;
+        }
+    }
+
+    private void logMotorInfo(String name, ResponseCommand rc){
+        String rcName = name != null ? "applied " + name : "unknown property";
+        logger.info( "{}: {}, {} : {}", rcName,
+                rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
     }
 }

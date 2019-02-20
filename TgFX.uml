@@ -3,897 +3,887 @@
   <ID>JAVA</ID>
   <OriginalElement>tgfx.utility.QueuedTimerable</OriginalElement>
   <nodes>
-    <node x="3325.592813107912" y="766.0">tgfx.render.CNCMachine</node>
-    <node x="3890.2417818031927" y="1084.0">tgfx.SerialDriver</node>
-    <node x="176.5" y="159.0">tgfx.tinyg.MnemonicManager</node>
-    <node x="3498.4012990388" y="607.0">tgfx.tinyg.Commands</node>
-    <node x="0.0" y="1472.0">tgfx.utility.TimerTest</node>
-    <node x="1625.0644543009048" y="0.0">tgfx.tinyg.Mnemonics</node>
-    <node x="2731.739911054893" y="925.0">tgfx.system.StatusCode</node>
-    <node x="1163.835009094108" y="368.0">tgfx.system.enums.MachineState</node>
-    <node x="1000.0752051725394" y="368.0">tgfx.system.enums.MotionMode</node>
-    <node x="1936.3037765106042" y="1084.0">tgfx.ResponseFooter</node>
-    <node x="2168.5331882753103" y="368.0">tgfx.system.enums.GcodeDistanceMode</node>
-    <node x="3903.3281697871" y="607.0">tgfx.utility.UtilityFunctions</node>
-    <node x="441.0493197278911" y="925.0">tgfx.ui.tinygconfig.TinyGConfigController</node>
-    <node x="4053.680210603426" y="607.0">tgfx.TgFX</node>
-    <node x="1218.585009094108" y="159.0">tgfx.system.enums.AxisName</node>
-    <node x="3014.439911054893" y="925.0">tgfx.ui.machinesettings.MachineSettingsController</node>
-    <node x="1904.3037765106042" y="1183.0">tgfx.ResponseParser</node>
-    <node x="1441.9344487795117" y="607.0">tgfx.system.Machine</node>
-    <node x="3278.6540891721843" y="925.0">tgfx.ui.gcode.GcodeTabController</node>
-    <node x="36.5" y="1183.0">tgfx.utility.AsyncTimer</node>
-    <node x="2527.2232443882262" y="766.0">tgfx.utility.QueuedTimerable</node>
-    <node x="2860.739911054893" y="925.0">tgfx.ui.gcode.GcodeHistory</node>
-    <node x="1686.5331882753103" y="368.0">tgfx.system.enums.GcodePathControl</node>
-    <node x="3564.946617075544" y="766.0">tgfx.ui.tgfxsettings.TgfxSettingsController</node>
-    <node x="1503.4344487795117" y="159.0">tgfx.system.CoordinateSystem</node>
-    <node x="1850.5331882753103" y="368.0">tgfx.system.enums.GcodeSelectPlane</node>
-    <node x="537.9725425361985" y="0.0">tgfx.tinyg.ResponseCommand</node>
-    <node x="23.25" y="1084.0">tgfx.utility.Timeable</node>
-    <node x="352.6972789115646" y="1183.0">tgfx.tinyg.QueueReport</node>
-    <node x="3416.9012990388" y="368.0">tgfx.TgFXConstants</node>
-    <node x="1032.3756252500996" y="159.0">tgfx.system.enums.AxisMode</node>
-    <node x="3271.984632372133" y="607.0">tgfx.render.Draw2d</node>
-    <node x="2013.5331882753103" y="368.0">tgfx.system.enums.GcodeUnitMode</node>
-    <node x="674.2959683873546" y="159.0">tgfx.system.enums.SwitchMode</node>
-    <node x="807.2959683873546" y="159.0">tgfx.system.Motor</node>
-    <node x="1507.5408914470495" y="368.0">tgfx.system.CoordinateManager</node>
-    <node x="0.0" y="1635.0">tgfx.system.enums.GcodeSelectionPlane</node>
-    <node x="3691.3281697871" y="607.0">tgfx.hardwarePlatforms.HardwarePlatformManager</node>
-    <node x="3465.6540891721843" y="1183.0">tgfx.SerialWriter</node>
-    <node x="3955.2417818031927" y="766.0">tgfx.tinyg.CommandManager</node>
-    <node x="4008.6040267011517" y="1561.0">tgfx.ui.firmware.FirmwareUpdaterController</node>
-    <node x="1304.835009094108" y="368.0">tgfx.system.enums.GcodeCoordinateSystem</node>
-    <node x="2831.8831882753107" y="1084.0">tgfx.MainController</node>
-    <node x="908.2959683873546" y="159.0">tgfx.system.enums.AxisType</node>
-    <node x="2347.5331882753103" y="368.0">tgfx.hardwarePlatforms.HardwarePlatform</node>
-    <node x="3132.9594797745785" y="766.0">tgfx.ui.gcode.GcodeLine</node>
-    <node x="2562.3899110548928" y="925.0">tgfx.utility.QueueUsingTimer</node>
-    <node x="787.1527036179621" y="368.0">tgfx.system.Axis</node>
-    <node x="2823.2403311324533" y="1472.0">tgfx.tinyg.TinygDriver</node>
+    <node x="2094.291345132212" y="288.0">tgfx.render.CNCMachine</node>
+    <node x="3491.860315111508" y="746.0">tgfx.SerialDriver</node>
+    <node x="1915.0956929582985" y="288.0">tgfx.tinyg.MnemonicManager</node>
+    <node x="2212.044562566037" y="109.0">tgfx.tinyg.Commands</node>
+    <node x="3956.6519817781746" y="1184.0">tgfx.utility.TimerTest</node>
+    <node x="1386.0898524211086" y="0.0">tgfx.tinyg.Mnemonics</node>
+    <node x="2776.1624890245516" y="527.0">tgfx.system.StatusCode</node>
+    <node x="1343.60293933511" y="1184.0">tgfx.system.enums.MachineState</node>
+    <node x="801.8385818691712" y="1184.0">tgfx.system.enums.MotionMode</node>
+    <node x="1210.239533932518" y="746.0">tgfx.ResponseFooter</node>
+    <node x="10.5" y="288.0">tgfx.system.enums.GcodeDistanceMode</node>
+    <node x="2484.1624890245516" y="109.0">tgfx.utility.UtilityFunctions</node>
+    <node x="1660.1901208465194" y="527.0">tgfx.ui.tinygconfig.TinyGConfigController</node>
+    <node x="3320.6096505577552" y="109.0">tgfx.TgFX</node>
+    <node x="3741.860315111508" y="1184.0">tgfx.system.enums.AxisName</node>
+    <node x="3215.5124890245515" y="527.0">tgfx.ui.machinesettings.MachineSettingsController</node>
+    <node x="1392.9825286199057" y="865.0">tgfx.ResponseParser</node>
+    <node x="623.6158619532384" y="1443.0">tgfx.system.Machine</node>
+    <node x="2404.888958686242" y="527.0">tgfx.ui.gcode.GcodeTabController</node>
+    <node x="3908.985315111508" y="865.0">tgfx.utility.AsyncTimer</node>
+    <node x="3017.3458223578846" y="288.0">tgfx.utility.QueuedTimerable</node>
+    <node x="2911.5124890245515" y="527.0">tgfx.ui.gcode.GcodeHistory</node>
+    <node x="939.8385818691712" y="1184.0">tgfx.system.enums.GcodePathControl</node>
+    <node x="2465.1624890245516" y="288.0">tgfx.ui.tgfxsettings.TgfxSettingsController</node>
+    <node x="328.3072437254564" y="865.0">tgfx.system.CoordinateSystem</node>
+    <node x="630.938581869171" y="1184.0">tgfx.system.enums.GcodeSelectPlane</node>
+    <node x="1462.5352295421717" y="109.0">tgfx.tinyg.ResponseCommand</node>
+    <node x="3937.0824766447117" y="746.0">tgfx.utility.Timeable</node>
+    <node x="2020.0445625660368" y="865.0">tgfx.tinyg.QueueReport</node>
+    <node x="2809.684650557755" y="0.0">tgfx.TgFXConstants</node>
+    <node x="3621.860315111508" y="1184.0">tgfx.system.enums.AxisMode</node>
+    <node x="2350.7596505577553" y="109.0">tgfx.render.Draw2d</node>
+    <node x="417.6072437254563" y="109.0">tgfx.system.enums.GcodeUnitMode</node>
+    <node x="4077.6519817781746" y="1443.0">tgfx.system.enums.SwitchMode</node>
+    <node x="529.938581869171" y="288.0">tgfx.system.Motor</node>
+    <node x="273.5" y="1184.0">tgfx.system.CoordinateManager</node>
+    <node x="0.0" y="1666.0">tgfx.system.enums.GcodeSelectionPlane</node>
+    <node x="1002.3511904761905" y="865.0">tgfx.hardwarePlatforms.HardwarePlatformManager</node>
+    <node x="3425.860315111508" y="865.0">tgfx.SerialWriter</node>
+    <node x="1734.8855480307623" y="288.0">tgfx.tinyg.CommandManager</node>
+    <node x="2052.544562566037" y="527.0">tgfx.ui.firmware.FirmwareUpdaterController</node>
+    <node x="1103.8385818691713" y="1184.0">tgfx.system.enums.GcodeCoordinateSystem</node>
+    <node x="2842.4534490038695" y="746.0">tgfx.MainController</node>
+    <node x="3793.985315111508" y="865.0">tgfx.system.enums.AxisType</node>
+    <node x="190.5" y="746.0">tgfx.hardwarePlatforms.HardwarePlatform</node>
+    <node x="2651.1624890245516" y="288.0">tgfx.ui.gcode.GcodeLine</node>
+    <node x="3052.5124890245515" y="527.0">tgfx.utility.QueueUsingTimer</node>
+    <node x="1930.36605524774" y="1592.0">tgfx.system.Axis</node>
+    <node x="1876.6502657740557" y="1184.0">tgfx.tinyg.TinygDriver</node>
   </nodes>
   <notes />
   <edges>
     <edge source="tgfx.ui.firmware.FirmwareUpdaterController" target="tgfx.system.Machine">
-      <point x="-82.28571428571422" y="-14.5" />
-      <point x="4022.3183124154375" y="1541.0" />
-      <point x="155.0" y="1541.0" />
-      <point x="155.0" y="706.0" />
-      <point x="1446.5344487795116" y="706.0" />
-      <point x="-41.40000000000009" y="14.5" />
+      <point x="-76.80000000000018" y="14.5" />
+      <point x="2071.7445625660366" y="706.0" />
+      <point x="791.3385818691712" y="706.0" />
+      <point x="791.3385818691712" y="1273.0" />
+      <point x="679.9658619532383" y="1273.0" />
+      <point x="10.349999999999909" y="-14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.MainController">
-      <point x="0.0" y="-14.5" />
-      <point x="-18.14285714285711" y="14.5" />
+      <point x="22.304347826086996" y="-14.5" />
+      <point x="1952.9546136001427" y="1024.0" />
+      <point x="2924.0963061467264" y="1024.0" />
+      <point x="18.142857142857338" y="14.5" />
     </edge>
     <edge source="tgfx.ResponseParser" target="tgfx.tinyg.ResponseCommand">
-      <point x="-55.71428571428578" y="-14.5" />
-      <point x="1913.5894907963184" y="1163.0" />
-      <point x="616.5493197278911" y="1163.0" />
-      <point x="616.5493197278911" y="517.0" />
-      <point x="456.3975340136053" y="517.0" />
-      <point x="456.3975340136053" y="109.0" />
-      <point x="586.6543607180165" y="109.0" />
-      <point x="-27.818181818181984" y="14.5" />
+      <point x="10.833333333333258" y="-14.5" />
+      <point x="1468.8158619532387" y="795.0" />
+      <point x="1494.52798316536" y="795.0" />
+      <point x="1494.52798316536" y="258.0" />
+      <point x="1525.1261386330807" y="258.0" />
+      <point x="-13.909090909090992" y="14.5" />
     </edge>
     <edge source="tgfx.ResponseParser" target="tgfx.tinyg.TinygDriver">
-      <point x="52.0" y="14.5" />
-      <point x="2021.3037765106042" y="1232.0" />
-      <point x="2872.8321678671473" y="1232.0" />
-      <point x="-4.40816326530603" y="-14.5" />
+      <point x="54.16666666666674" y="14.5" />
+      <point x="1512.1491952865722" y="1084.0" />
+      <point x="1894.2589614262297" y="1084.0" />
+      <point x="-36.39130434782601" y="-14.5" />
     </edge>
     <edge source="tgfx.system.Motor" target="tgfx.tinyg.TinygDriver">
-      <point x="-26.666666666666515" y="14.5" />
-      <point x="820.6293017206881" y="258.0" />
-      <point x="469.6016156462583" y="258.0" />
-      <point x="469.6016156462583" y="537.0" />
-      <point x="328.97278911564626" y="537.0" />
-      <point x="328.97278911564626" y="1382.0" />
-      <point x="2839.770943377351" y="1382.0" />
-      <point x="-37.469387755101934" y="-14.5" />
+      <point x="26.666666666666742" y="14.5" />
+      <point x="596.6052485358377" y="467.0" />
+      <point x="1540.20914258565" y="467.0" />
+      <point x="1540.20914258565" y="1064.0" />
+      <point x="1898.9546136001427" y="1064.0" />
+      <point x="-31.695652173913004" y="-14.5" />
     </edge>
     <edge source="tgfx.SerialWriter" target="tgfx.SerialDriver">
       <point x="41.25" y="-14.5" />
-      <point x="3561.9040891721843" y="1163.0" />
-      <point x="3922.9417818031925" y="1163.0" />
-      <point x="-21.80000000000001" y="14.5" />
+      <point x="3522.110315111508" y="845.0" />
+      <point x="3524.560315111508" y="845.0" />
+      <point x="-21.800000000000182" y="14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.system.enums.GcodeDistanceMode">
-      <point x="20.666666666666515" y="-14.5" />
-      <point x="3376.820755838851" y="845.0" />
-      <point x="3452.092813107912" y="845.0" />
-      <point x="3452.092813107912" y="527.0" />
-      <point x="2301.0331882753103" y="527.0" />
+      <point x="-71.96428571428578" y="-14.5" />
+      <point x="2410.424672971956" y="417.0" />
+      <point x="143.0" y="417.0" />
       <point x="53.0" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.ResponseParser">
-      <point x="-11.020408163265301" y="-14.5" />
-      <point x="2866.219922969188" y="1262.0" />
-      <point x="1943.3037765106042" y="1262.0" />
-      <point x="-26.0" y="14.5" />
+      <point x="-43.434782608695514" y="-14.5" />
+      <point x="1887.2154831653602" y="1114.0" />
+      <point x="1447.1491952865722" y="1114.0" />
+      <point x="-10.833333333333258" y="14.5" />
     </edge>
     <edge source="tgfx.ui.machinesettings.MachineSettingsController" target="tgfx.tinyg.Commands">
-      <point x="46.75" y="-14.5" />
-      <point x="3154.689911054893" y="905.0" />
-      <point x="3101.1916742061976" y="905.0" />
-      <point x="3101.1916742061976" y="726.0" />
-      <point x="3521.544156181657" y="726.0" />
-      <point x="-30.85714285714289" y="14.5" />
+      <point x="-46.75" y="-14.5" />
+      <point x="3262.2624890245515" y="507.0" />
+      <point x="3299.1096505577552" y="507.0" />
+      <point x="3299.1096505577552" y="188.0" />
+      <point x="2312.330276851751" y="188.0" />
+      <point x="46.28571428571422" y="14.5" />
     </edge>
     <edge source="tgfx.ui.firmware.FirmwareUpdaterController" target="tgfx.tinyg.TinygDriver">
-      <point x="-27.42857142857156" y="-14.5" />
-      <point x="4077.17545527258" y="1521.0" />
-      <point x="2904.2403311324533" y="1521.0" />
-      <point x="27.0" y="14.5" />
+      <point x="-38.40000000000009" y="14.5" />
+      <point x="2110.1445625660367" y="716.0" />
+      <point x="2009.5445625660366" y="716.0" />
+      <point x="2009.5445625660366" y="944.0" />
+      <point x="1934.1720049044907" y="944.0" />
+      <point x="3.5217391304349803" y="-14.5" />
     </edge>
     <edge source="tgfx.hardwarePlatforms.HardwarePlatformManager" target="tgfx.tinyg.TinygDriver">
       <point x="64.0" y="14.5" />
-      <point x="3851.3281697871" y="706.0" />
-      <point x="4115.741781803193" y="706.0" />
-      <point x="4115.741781803193" y="1442.0" />
-      <point x="2927.9342086834736" y="1442.0" />
-      <point x="50.69387755102048" y="-14.5" />
+      <point x="1162.3511904761904" y="1134.0" />
+      <point x="1882.5198309914472" y="1134.0" />
+      <point x="-48.13043478260852" y="-14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.ui.gcode.GcodeHistory">
-      <point x="3.1749999999999545" y="-14.5" />
-      <point x="2898.5581882753104" y="974.0" />
-      <point x="2950.739911054893" y="974.0" />
+      <point x="22.22499999999991" y="-14.5" />
+      <point x="2928.1784490038694" y="666.0" />
+      <point x="3001.5124890245515" y="666.0" />
       <point x="30.0" y="14.5" />
     </edge>
     <edge source="tgfx.ui.tinygconfig.TinyGConfigController" target="tgfx.system.Machine">
-      <point x="55.0" y="-14.5" />
-      <point x="578.5493197278911" y="905.0" />
-      <point x="549.2126718307791" y="905.0" />
-      <point x="549.2126718307791" y="746.0" />
-      <point x="1483.3344487795118" y="746.0" />
-      <point x="-4.599999999999909" y="14.5" />
+      <point x="-41.25" y="14.5" />
+      <point x="1701.4401208465194" y="696.0" />
+      <point x="789.0385818691711" y="696.0" />
+      <point x="789.0385818691711" y="1263.0" />
+      <point x="677.6658619532384" y="1263.0" />
+      <point x="8.049999999999955" y="-14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.enums.MachineState">
-      <point x="-9.470588235294144" y="-14.5" />
-      <point x="1478.4638605442176" y="447.0" />
-      <point x="1223.835009094108" y="447.0" />
+      <point x="28.75" y="-14.5" />
+      <point x="698.3658619532384" y="1353.0" />
+      <point x="1403.60293933511" y="1353.0" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.render.CNCMachine" target="tgfx.system.enums.GcodeUnitMode">
-      <point x="23.200000000000045" y="-14.5" />
-      <point x="3406.7928131079125" y="706.0" />
-      <point x="3413.3512990388" y="706.0" />
-      <point x="3413.3512990388" y="537.0" />
-      <point x="2126.0331882753103" y="537.0" />
+      <point x="-43.5" y="-14.5" />
+      <point x="2108.791345132212" y="178.0" />
+      <point x="530.1072437254563" y="178.0" />
       <point x="45.0" y="14.5" />
     </edge>
     <edge source="tgfx.system.Axis" target="tgfx.system.enums.AxisMode">
-      <point x="20.125" y="-14.5" />
-      <point x="841.7777036179621" y="328.0" />
-      <point x="1049.042291916766" y="328.0" />
-      <point x="-33.333333333333485" y="14.5" />
+      <point x="10.894736842105203" y="-14.5" />
+      <point x="1975.760792089845" y="1512.0" />
+      <point x="3740.3324766447117" y="1512.0" />
+      <point x="3740.3324766447117" y="1413.0" />
+      <point x="3705.1936484448415" y="1413.0" />
+      <point x="33.33333333333326" y="14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.utility.QueueUsingTimer">
-      <point x="-34.924999999999955" y="-14.5" />
-      <point x="2860.4581882753105" y="1024.0" />
-      <point x="2668.8899110548928" y="1024.0" />
+      <point x="41.27500000000009" y="-14.5" />
+      <point x="2947.2284490038696" y="696.0" />
+      <point x="3159.0124890245515" y="696.0" />
       <point x="35.5" y="14.5" />
     </edge>
     <edge source="tgfx.SerialWriter" target="tgfx.MainController">
       <point x="-41.25" y="-14.5" />
-      <point x="3479.4040891721843" y="1163.0" />
-      <point x="2913.5260454181675" y="1163.0" />
-      <point x="18.14285714285711" y="14.5" />
+      <point x="3439.610315111508" y="845.0" />
+      <point x="2960.382020432441" y="845.0" />
+      <point x="54.42857142857156" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.enums.AxisType">
-      <point x="-20.29411764705901" y="-14.5" />
-      <point x="1467.6403311324527" y="487.0" />
-      <point x="1132.9869698784214" y="487.0" />
-      <point x="1132.9869698784214" y="248.0" />
-      <point x="991.4209683873546" y="248.0" />
-      <point x="35.625" y="14.5" />
+      <point x="40.25" y="-14.5" />
+      <point x="709.8658619532384" y="1403.0" />
+      <point x="2839.633089878325" y="1403.0" />
+      <point x="2839.633089878325" y="1144.0" />
+      <point x="3829.610315111508" y="1144.0" />
+      <point x="-11.875" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.SerialWriter">
-      <point x="19.836734693877588" y="-14.5" />
-      <point x="2897.077065826331" y="1302.0" />
-      <point x="3520.6540891721843" y="1302.0" />
+      <point x="36.39130434782601" y="-14.5" />
+      <point x="1967.0415701218817" y="1084.0" />
+      <point x="3480.860315111508" y="1084.0" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.system.Axis">
-      <point x="-35.26530612244892" y="-14.5" />
-      <point x="2841.975025010004" y="1372.0" />
-      <point x="331.1768707482993" y="1372.0" />
-      <point x="331.1768707482993" y="557.0" />
-      <point x="792.0812750465336" y="557.0" />
-      <point x="-29.57142857142844" y="14.5" />
+      <point x="43.19999999999982" y="14.5" />
+      <point x="1973.8502657740555" y="1393.0" />
+      <point x="1964.86605524774" y="1393.0" />
+      <point x="0.0" y="-14.5" />
     </edge>
     <edge source="tgfx.SerialDriver" target="tgfx.tinyg.TinygDriver">
-      <point x="21.799999999999955" y="14.5" />
-      <point x="3966.541781803193" y="1153.0" />
-      <point x="3948.572626587151" y="1153.0" />
-      <point x="3948.572626587151" y="1372.0" />
-      <point x="2912.505637254902" y="1372.0" />
-      <point x="35.26530612244892" y="-14.5" />
+      <point x="43.59999999999991" y="14.5" />
+      <point x="3589.960315111508" y="845.0" />
+      <point x="3555.690028132126" y="845.0" />
+      <point x="3555.690028132126" y="1124.0" />
+      <point x="1976.4328744697077" y="1124.0" />
+      <point x="45.782608695652016" y="-14.5" />
     </edge>
     <edge source="tgfx.system.Axis" target="tgfx.system.enums.AxisType">
-      <point x="8.625" y="-14.5" />
-      <point x="830.2777036179621" y="308.0" />
-      <point x="920.1709683873546" y="308.0" />
-      <point x="-35.625" y="14.5" />
+      <point x="21.789473684210634" y="-14.5" />
+      <point x="1986.6555289319504" y="1542.0" />
+      <point x="3890.919099451729" y="1542.0" />
+      <point x="3890.919099451729" y="1144.0" />
+      <point x="3877.110315111508" y="1144.0" />
+      <point x="35.625" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.system.Motor">
-      <point x="-39.67346938775495" y="-14.5" />
-      <point x="2837.566861744698" y="1392.0" />
-      <point x="256.4081632653065" y="1392.0" />
-      <point x="256.4081632653065" y="527.0" />
-      <point x="467.3975340136053" y="527.0" />
-      <point x="467.3975340136053" y="248.0" />
-      <point x="811.740412831799" y="248.0" />
-      <point x="-35.55555555555566" y="14.5" />
+      <point x="-34.043478260869506" y="-14.5" />
+      <point x="1896.6067875131862" y="1074.0" />
+      <point x="1537.8613164986934" y="1074.0" />
+      <point x="1537.8613164986934" y="477.0" />
+      <point x="587.7163596469488" y="477.0" />
+      <point x="17.77777777777783" y="14.5" />
     </edge>
     <edge source="tgfx.system.Motor" target="tgfx.system.Machine">
-      <point x="17.77777777777783" y="14.5" />
-      <point x="865.0737461651324" y="278.0" />
-      <point x="989.5752051725394" y="278.0" />
-      <point x="989.5752051725394" y="527.0" />
-      <point x="1456.8168017206883" y="527.0" />
-      <point x="-31.117647058823422" y="-14.5" />
+      <point x="0.0" y="14.5" />
+      <point x="569.938581869171" y="507.0" />
+      <point x="563.349692980282" y="507.0" />
+      <point x="563.349692980282" y="1263.0" />
+      <point x="661.5658619532385" y="1263.0" />
+      <point x="-8.049999999999955" y="-14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.tinyg.MnemonicManager">
-      <point x="-41.877551020407964" y="-14.5" />
-      <point x="2835.362780112045" y="1402.0" />
-      <point x="254.20408163265324" y="1402.0" />
-      <point x="254.20408163265324" y="348.0" />
-      <point x="302.3333333333335" y="348.0" />
-      <point x="50.333333333333485" y="14.5" />
+      <point x="-8.217391304347984" y="-14.5" />
+      <point x="1922.4328744697077" y="964.0" />
+      <point x="1862.5226398401858" y="964.0" />
+      <point x="1862.5226398401858" y="457.0" />
+      <point x="1940.262359624965" y="457.0" />
+      <point x="-50.33333333333326" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.enums.GcodeSelectPlane">
-      <point x="23.0" y="-14.5" />
-      <point x="1510.9344487795117" y="507.0" />
-      <point x="1886.2831882753103" y="507.0" />
+      <point x="-1.150000000000091" y="-14.5" />
+      <point x="668.4658619532383" y="1233.0" />
+      <point x="666.688581869171" y="1233.0" />
       <point x="-35.75" y="14.5" />
     </edge>
     <edge source="tgfx.system.Motor" target="tgfx.tinyg.ResponseCommand">
-      <point x="0.0" y="-14.5" />
-      <point x="847.2959683873546" y="69.0" />
-      <point x="656.199815263471" y="69.0" />
-      <point x="41.72727272727252" y="14.5" />
+      <point x="26.66666666666663" y="-14.5" />
+      <point x="596.6052485358377" y="228.0" />
+      <point x="1483.398865905808" y="228.0" />
+      <point x="-55.63636363636374" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.MnemonicManager" target="tgfx.tinyg.ResponseCommand">
       <point x="0.0" y="-14.5" />
-      <point x="252.0" y="99.0" />
-      <point x="572.745269808926" y="99.0" />
-      <point x="-41.72727272727252" y="14.5" />
+      <point x="1990.5956929582985" y="198.0" />
+      <point x="1580.7625022694444" y="198.0" />
+      <point x="41.72727272727275" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.CoordinateManager">
-      <point x="9.470588235294144" y="-14.5" />
-      <point x="1497.4050370148059" y="457.0" />
-      <point x="1635.874224780383" y="457.0" />
+      <point x="-26.450000000000045" y="-14.5" />
+      <point x="643.1658619532384" y="1343.0" />
+      <point x="401.8333333333335" y="1343.0" />
       <point x="51.333333333333485" y="14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.SerialWriter">
-      <point x="62.0" y="14.5" />
-      <point x="3418.1540891721843" y="1054.0" />
-      <point x="3506.9040891721843" y="1054.0" />
+      <point x="64.58333333333348" y="14.5" />
+      <point x="2546.9722920195754" y="576.0" />
+      <point x="3467.110315111508" y="576.0" />
       <point x="-13.75" y="-14.5" />
     </edge>
     <edge source="tgfx.ResponseParser" target="tgfx.system.Machine">
-      <point x="-18.57142857142844" y="-14.5" />
-      <point x="1950.7323479391757" y="1143.0" />
-      <point x="1492.5344487795116" y="1143.0" />
-      <point x="4.599999999999909" y="14.5" />
+      <point x="-54.16666666666674" y="14.5" />
+      <point x="1403.8158619532387" y="1164.0" />
+      <point x="1474.10293933511" y="1164.0" />
+      <point x="1474.10293933511" y="1363.0" />
+      <point x="700.6658619532384" y="1363.0" />
+      <point x="31.049999999999955" y="-14.5" />
     </edge>
     <edge source="tgfx.ui.machinesettings.MachineSettingsController" target="tgfx.TgFXConstants">
-      <point x="-46.75" y="-14.5" />
-      <point x="3061.189911054893" y="905.0" />
-      <point x="3090.1916742061976" y="905.0" />
-      <point x="3090.1916742061976" y="587.0" />
-      <point x="3448.1512990388" y="587.0" />
-      <point x="-31.25" y="14.5" />
+      <point x="46.75" y="-14.5" />
+      <point x="3355.7624890245515" y="507.0" />
+      <point x="3310.1096505577552" y="507.0" />
+      <point x="3310.1096505577552" y="79.0" />
+      <point x="2903.434650557755" y="79.0" />
+      <point x="31.25" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.tinyg.Mnemonics">
-      <point x="52.89795918367349" y="-14.5" />
-      <point x="2930.1382903161266" y="1452.0" />
-      <point x="4140.532251419752" y="1452.0" />
-      <point x="4140.532251419752" y="119.0" />
-      <point x="1725.350168586619" y="119.0" />
-      <point x="46.28571428571422" y="14.5" />
+      <point x="-27.0" y="-14.5" />
+      <point x="1903.6502657740557" y="1044.0" />
+      <point x="1626.0352295421717" y="1044.0" />
+      <point x="1626.0352295421717" y="79.0" />
+      <point x="1455.51842384968" y="79.0" />
+      <point x="15.428571428571331" y="14.5" />
     </edge>
     <edge source="tgfx.utility.QueueUsingTimer" target="tgfx.utility.QueuedTimerable">
       <point x="-35.5" y="-14.5" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.ui.firmware.FirmwareUpdaterController" target="tgfx.utility.UtilityFunctions">
-      <point x="82.28571428571422" y="-14.5" />
-      <point x="4186.889740986866" y="1541.0" />
-      <point x="4184.833271827916" y="1541.0" />
-      <point x="4184.833271827916" y="686.0" />
-      <point x="4009.9948364537663" y="686.0" />
-      <point x="42.66666666666674" y="14.5" />
+      <point x="48.0" y="-14.5" />
+      <point x="2196.544562566037" y="507.0" />
+      <point x="2250.46525817569" y="507.0" />
+      <point x="2250.46525817569" y="268.0" />
+      <point x="2505.495822357885" y="268.0" />
+      <point x="-42.666666666666515" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.ui.gcode.GcodeLine">
-      <point x="8.816326530612287" y="-14.5" />
-      <point x="2886.0566576630654" y="1252.0" />
-      <point x="3268.1540891721843" y="1252.0" />
-      <point x="3268.1540891721843" y="885.0" />
-      <point x="3158.9594797745785" y="885.0" />
-      <point x="-26.0" y="14.5" />
+      <point x="29.347826086956502" y="-14.5" />
+      <point x="1959.9980918610122" y="1054.0" />
+      <point x="3413.0124890245515" y="1054.0" />
+      <point x="3413.0124890245515" y="497.0" />
+      <point x="2729.1624890245516" y="497.0" />
+      <point x="26.0" y="14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.tinyg.TinygDriver">
-      <point x="-36.28571428571422" y="14.5" />
-      <point x="2859.0974739895964" y="1163.0" />
-      <point x="2875.0362494998003" y="1163.0" />
-      <point x="-2.204081632653015" y="-14.5" />
+      <point x="0.0" y="14.5" />
+      <point x="2905.9534490038695" y="845.0" />
+      <point x="2921.7484800597704" y="845.0" />
+      <point x="2921.7484800597704" y="1014.0" />
+      <point x="1950.6067875131862" y="1014.0" />
+      <point x="19.956521739130494" y="-14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.ui.gcode.GcodeTabController">
-      <point x="47.625" y="-14.5" />
-      <point x="2943.0081882753107" y="1044.0" />
-      <point x="3294.1540891721843" y="1044.0" />
-      <point x="-62.0" y="14.5" />
+      <point x="-22.22499999999991" y="-14.5" />
+      <point x="2883.7284490038696" y="636.0" />
+      <point x="2495.3056253529085" y="636.0" />
+      <point x="12.916666666666515" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.tinyg.ResponseCommand">
-      <point x="-48.489795918367236" y="-14.5" />
-      <point x="2828.750535214086" y="1432.0" />
-      <point x="166.0" y="1432.0" />
-      <point x="166.0" y="79.0" />
-      <point x="544.927087990744" y="79.0" />
-      <point x="-69.5454545454545" y="14.5" />
+      <point x="-29.347826086956502" y="-14.5" />
+      <point x="1901.3024396870992" y="1054.0" />
+      <point x="1562.20914258565" y="1054.0" />
+      <point x="1562.20914258565" y="268.0" />
+      <point x="1552.9443204512627" y="268.0" />
+      <point x="13.909090909090992" y="14.5" />
     </edge>
     <edge source="tgfx.system.Axis" target="tgfx.tinyg.Mnemonics">
-      <point x="2.875" y="-14.5" />
-      <point x="824.5277036179621" y="298.0" />
-      <point x="897.7959683873546" y="298.0" />
-      <point x="897.7959683873546" y="139.0" />
-      <point x="1663.6358828723332" y="139.0" />
-      <point x="-15.428571428571558" y="14.5" />
-    </edge>
-    <edge source="tgfx.system.Axis" target="tgfx.system.Machine">
-      <point x="29.57142857142844" y="14.5" />
-      <point x="851.2241321893905" y="547.0" />
-      <point x="1451.4050370148059" y="547.0" />
-      <point x="-36.529411764705856" y="-14.5" />
-    </edge>
-    <edge source="tgfx.system.Motor" target="tgfx.tinyg.Mnemonics">
-      <point x="26.666666666666515" y="-14.5" />
-      <point x="873.9626350540211" y="129.0" />
-      <point x="1648.2073114437621" y="129.0" />
-      <point x="-30.857142857142662" y="14.5" />
-    </edge>
-    <edge source="tgfx.ui.firmware.FirmwareUpdaterController" target="tgfx.MainController">
-      <point x="27.428571428571104" y="-14.5" />
-      <point x="4132.032598129723" y="1531.0" />
-      <point x="4162.833271827916" y="1531.0" />
-      <point x="4162.833271827916" y="1133.0" />
-      <point x="2949.8117597038818" y="1133.0" />
-      <point x="54.42857142857133" y="14.5" />
-    </edge>
-    <edge source="tgfx.tinyg.MnemonicManager" target="tgfx.tinyg.Mnemonics">
-      <point x="50.333333333333485" y="-14.5" />
-      <point x="302.3333333333335" y="119.0" />
-      <point x="1632.7787400151906" y="119.0" />
+      <point x="-32.68421052631584" y="-14.5" />
+      <point x="1932.181844721424" y="1572.0" />
+      <point x="0.0" y="1572.0" />
+      <point x="0.0" y="69.0" />
+      <point x="1393.8041381353944" y="69.0" />
       <point x="-46.28571428571422" y="14.5" />
     </edge>
+    <edge source="tgfx.system.Axis" target="tgfx.system.Machine">
+      <point x="-18.15789473684208" y="-14.5" />
+      <point x="1946.7081605108979" y="1532.0" />
+      <point x="635.1158619532384" y="1532.0" />
+      <point x="-34.5" y="14.5" />
+    </edge>
+    <edge source="tgfx.system.Motor" target="tgfx.tinyg.Mnemonics">
+      <point x="-26.666666666666742" y="-14.5" />
+      <point x="543.2719152025043" y="208.0" />
+      <point x="629.1696060017771" y="208.0" />
+      <point x="629.1696060017771" y="89.0" />
+      <point x="1424.6612809925373" y="89.0" />
+      <point x="-15.428571428571331" y="14.5" />
+    </edge>
+    <edge source="tgfx.ui.firmware.FirmwareUpdaterController" target="tgfx.MainController">
+      <point x="76.80000000000018" y="14.5" />
+      <point x="2225.344562566037" y="666.0" />
+      <point x="2864.6784490038694" y="666.0" />
+      <point x="-41.27500000000009" y="-14.5" />
+    </edge>
+    <edge source="tgfx.tinyg.MnemonicManager" target="tgfx.tinyg.Mnemonics">
+      <point x="50.33333333333326" y="-14.5" />
+      <point x="2040.9290262916315" y="188.0" />
+      <point x="1981.5916640153114" y="188.0" />
+      <point x="1981.5916640153114" y="59.0" />
+      <point x="1470.9469952782515" y="59.0" />
+      <point x="30.85714285714289" y="14.5" />
+    </edge>
     <edge source="tgfx.ResponseParser" target="tgfx.MainController">
-      <point x="55.71428571428578" y="-14.5" />
-      <point x="2025.01806222489" y="1163.0" />
-      <point x="2840.954616846739" y="1163.0" />
-      <point x="-54.42857142857133" y="14.5" />
+      <point x="54.16666666666674" y="-14.5" />
+      <point x="1512.1491952865722" y="845.0" />
+      <point x="2887.810591861012" y="845.0" />
+      <point x="-18.142857142857338" y="14.5" />
     </edge>
     <edge source="tgfx.system.Axis" target="tgfx.system.Motor">
-      <point x="-2.875" y="-14.5" />
-      <point x="818.7777036179621" y="288.0" />
-      <point x="847.2959683873546" y="288.0" />
-      <point x="0.0" y="14.5" />
+      <point x="-29.052631578947285" y="-14.5" />
+      <point x="1935.8134236687924" y="1562.0" />
+      <point x="36.534210526315746" y="1562.0" />
+      <point x="36.534210526315746" y="467.0" />
+      <point x="534.3830263136156" y="467.0" />
+      <point x="-35.55555555555543" y="14.5" />
     </edge>
     <edge source="tgfx.ui.tgfxsettings.TgfxSettingsController" target="tgfx.utility.UtilityFunctions">
       <point x="0.0" y="-14.5" />
-      <point x="3647.946617075544" y="746.0" />
-      <point x="3924.661503120433" y="746.0" />
-      <point x="-42.66666666666663" y="14.5" />
+      <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.tinyg.Commands">
-      <point x="22.22499999999991" y="-14.5" />
-      <point x="2917.6081882753106" y="1004.0" />
-      <point x="3003.939911054893" y="1004.0" />
-      <point x="3003.939911054893" y="716.0" />
-      <point x="3506.115584753086" y="716.0" />
-      <point x="-46.28571428571422" y="14.5" />
+      <point x="-9.525000000000091" y="-14.5" />
+      <point x="2896.4284490038694" y="616.0" />
+      <point x="2765.6624890245516" y="616.0" />
+      <point x="2765.6624890245516" y="218.0" />
+      <point x="2296.9017054231795" y="218.0" />
+      <point x="30.857142857142662" y="14.5" />
     </edge>
     <edge source="tgfx.render.CNCMachine" target="tgfx.system.Machine">
-      <point x="-46.39999999999998" y="-14.5" />
-      <point x="3337.192813107912" y="676.0" />
-      <point x="1529.3344487795118" y="676.0" />
-      <point x="41.40000000000009" y="14.5" />
+      <point x="-48.333333333333485" y="14.5" />
+      <point x="2103.958011798878" y="487.0" />
+      <point x="786.7385818691711" y="487.0" />
+      <point x="786.7385818691711" y="1253.0" />
+      <point x="675.3658619532384" y="1253.0" />
+      <point x="5.75" y="-14.5" />
     </edge>
     <edge source="tgfx.render.CNCMachine" target="tgfx.render.Draw2d">
-      <point x="-23.200000000000045" y="-14.5" />
-      <point x="3360.392813107912" y="666.0" />
-      <point x="3338.734632372133" y="666.0" />
-      <point x="22.25" y="14.5" />
+      <point x="14.5" y="-14.5" />
+      <point x="2166.791345132212" y="248.0" />
+      <point x="2358.176317224422" y="248.0" />
+      <point x="-37.083333333333485" y="14.5" />
     </edge>
     <edge source="tgfx.system.Axis" target="tgfx.tinyg.TinygDriver">
-      <point x="-19.71428571428578" y="14.5" />
-      <point x="801.9384179036763" y="567.0" />
-      <point x="333.3809523809523" y="567.0" />
-      <point x="333.3809523809523" y="1362.0" />
-      <point x="2844.179106642657" y="1362.0" />
-      <point x="-33.061224489795904" y="-14.5" />
+      <point x="-3.6315789473683253" y="-14.5" />
+      <point x="1961.2344763003716" y="1393.0" />
+      <point x="1952.2502657740556" y="1393.0" />
+      <point x="21.59999999999991" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.enums.GcodeUnitMode">
-      <point x="31.117647058823422" y="-14.5" />
-      <point x="1519.0520958383352" y="537.0" />
-      <point x="2081.0331882753103" y="537.0" />
+      <point x="-14.950000000000045" y="-14.5" />
+      <point x="654.6658619532384" y="1293.0" />
+      <point x="485.1072437254563" y="1293.0" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.system.Axis" target="tgfx.system.enums.SwitchMode">
-      <point x="-14.375" y="-14.5" />
-      <point x="807.2777036179621" y="208.0" />
-      <point x="759.0459683873546" y="208.0" />
+      <point x="32.68421052631584" y="-14.5" />
+      <point x="1997.5502657740558" y="1572.0" />
+      <point x="4162.401981778175" y="1572.0" />
       <point x="28.25" y="14.5" />
     </edge>
     <edge source="tgfx.utility.UtilityFunctions" target="tgfx.TgFXConstants">
       <point x="0.0" y="-14.5" />
-      <point x="3967.3281697871" y="487.0" />
-      <point x="3510.6512990388" y="487.0" />
-      <point x="31.25" y="14.5" />
+      <point x="2548.1624890245516" y="89.0" />
+      <point x="2861.7679838910885" y="89.0" />
+      <point x="-10.416666666666515" y="14.5" />
     </edge>
     <edge source="tgfx.render.CNCMachine" target="tgfx.tinyg.Commands">
-      <point x="46.39999999999998" y="-14.5" />
-      <point x="3429.9928131079123" y="736.0" />
-      <point x="3536.9727276102285" y="736.0" />
-      <point x="-15.428571428571331" y="14.5" />
+      <point x="-14.5" y="-14.5" />
+      <point x="2137.791345132212" y="238.0" />
+      <point x="2250.6159911374652" y="238.0" />
+      <point x="-15.428571428571558" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.CoordinateSystem">
-      <point x="-1.352941176470722" y="-14.5" />
-      <point x="1486.581507603041" y="417.0" />
-      <point x="1494.335009094108" y="417.0" />
-      <point x="1494.335009094108" y="328.0" />
-      <point x="1513.720163065226" y="328.0" />
-      <point x="-61.71428571428578" y="14.5" />
+      <point x="-24.149999999999864" y="-14.5" />
+      <point x="645.4658619532386" y="1333.0" />
+      <point x="452.9822437254561" y="1333.0" />
+      <point x="452.9822437254561" y="1164.0" />
+      <point x="420.8786722968848" y="1164.0" />
+      <point x="20.57142857142844" y="14.5" />
     </edge>
     <edge source="tgfx.hardwarePlatforms.HardwarePlatformManager" target="tgfx.TgFXConstants">
       <point x="64.0" y="-14.5" />
-      <point x="3851.3281697871" y="497.0" />
-      <point x="3489.8179657054666" y="497.0" />
-      <point x="10.416666666666629" y="14.5" />
+      <point x="1162.3511904761904" y="815.0" />
+      <point x="1551.20914258565" y="815.0" />
+      <point x="1551.20914258565" y="437.0" />
+      <point x="1724.3855480307623" y="437.0" />
+      <point x="1724.3855480307623" y="69.0" />
+      <point x="2820.1013172244216" y="69.0" />
+      <point x="-52.083333333333485" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.CommandManager" target="tgfx.MainController">
-      <point x="-28.125" y="14.5" />
-      <point x="4002.1167818031927" y="905.0" />
-      <point x="3444.1540891721843" y="905.0" />
-      <point x="3444.1540891721843" y="1064.0" />
-      <point x="2955.7081882753105" y="1064.0" />
-      <point x="60.325000000000045" y="-14.5" />
+      <point x="28.125" y="14.5" />
+      <point x="1838.0105480307623" y="447.0" />
+      <point x="2255.044562566037" y="447.0" />
+      <point x="2255.044562566037" y="656.0" />
+      <point x="2871.0284490038694" y="656.0" />
+      <point x="-34.92500000000018" y="-14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.MainController">
-      <point x="-31.0" y="14.5" />
-      <point x="3325.1540891721843" y="1054.0" />
-      <point x="2949.3581882753106" y="1054.0" />
-      <point x="53.97499999999991" y="-14.5" />
+      <point x="38.75" y="14.5" />
+      <point x="2521.138958686242" y="626.0" />
+      <point x="2890.0784490038695" y="626.0" />
+      <point x="-15.875" y="-14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.hardwarePlatforms.HardwarePlatformManager">
-      <point x="30.85714285714289" y="-14.5" />
-      <point x="2908.097473989596" y="1352.0" />
-      <point x="3787.3281697871" y="1352.0" />
+      <point x="-50.47826086956502" y="-14.5" />
+      <point x="1880.1720049044907" y="1144.0" />
+      <point x="1098.3511904761904" y="1144.0" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.ui.tinygconfig.TinyGConfigController" target="tgfx.MainController">
-      <point x="61.875" y="14.5" />
-      <point x="585.4243197278911" y="1054.0" />
-      <point x="2841.4081882753107" y="1054.0" />
+      <point x="68.75" y="14.5" />
+      <point x="1811.4401208465194" y="686.0" />
+      <point x="2851.9784490038696" y="686.0" />
       <point x="-53.97499999999991" y="-14.5" />
     </edge>
     <edge source="tgfx.ResponseParser" target="tgfx.ResponseFooter">
-      <point x="18.57142857142844" y="-14.5" />
-      <point x="1987.8752050820326" y="1143.0" />
-      <point x="2035.3037765106042" y="1143.0" />
+      <point x="-32.5" y="-14.5" />
+      <point x="1425.4825286199057" y="795.0" />
+      <point x="1309.239533932518" y="795.0" />
       <point x="33.0" y="14.5" />
     </edge>
     <edge source="tgfx.render.CNCMachine" target="tgfx.tinyg.TinygDriver">
-      <point x="46.40000000000009" y="14.5" />
-      <point x="3429.9928131079123" y="825.0" />
-      <point x="3586.1540891721843" y="825.0" />
-      <point x="3586.1540891721843" y="1322.0" />
-      <point x="2901.485229091637" y="1322.0" />
-      <point x="24.244897959183618" y="-14.5" />
+      <point x="-9.666666666666515" y="14.5" />
+      <point x="2142.624678465545" y="507.0" />
+      <point x="2007.1967364790796" y="507.0" />
+      <point x="2007.1967364790796" y="934.0" />
+      <point x="1931.8241788175337" y="934.0" />
+      <point x="1.1739130434780236" y="-14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.tinyg.Commands">
-      <point x="41.333333333333485" y="-14.5" />
-      <point x="3397.4874225055178" y="865.0" />
-      <point x="3509.3011464412457" y="865.0" />
-      <point x="3509.3011464412457" y="746.0" />
-      <point x="3552.4012990388" y="746.0" />
-      <point x="0.0" y="14.5" />
+      <point x="-16.607142857142662" y="-14.5" />
+      <point x="2465.7818158290993" y="367.0" />
+      <point x="2378.7596505577553" y="367.0" />
+      <point x="2378.7596505577553" y="228.0" />
+      <point x="2281.4731339946084" y="228.0" />
+      <point x="15.428571428571558" y="14.5" />
     </edge>
     <edge source="tgfx.ui.tinygconfig.TinyGConfigController" target="tgfx.system.Axis">
-      <point x="0.0" y="-14.5" />
-      <point x="523.5493197278911" y="905.0" />
-      <point x="502.7126718307791" y="905.0" />
-      <point x="502.7126718307791" y="577.0" />
-      <point x="811.7955607608194" y="577.0" />
-      <point x="-9.857142857142662" y="14.5" />
+      <point x="-68.75" y="14.5" />
+      <point x="1673.9401208465194" y="686.0" />
+      <point x="43.7973684210524" y="686.0" />
+      <point x="43.7973684210524" y="1542.0" />
+      <point x="1943.076581563529" y="1542.0" />
+      <point x="-21.789473684210634" y="-14.5" />
     </edge>
     <edge source="tgfx.system.Axis" target="tgfx.system.enums.AxisName">
-      <point x="31.625" y="-14.5" />
-      <point x="853.2777036179621" y="348.0" />
-      <point x="1243.835009094108" y="348.0" />
-      <point x="-25.25" y="14.5" />
+      <point x="14.526315789473756" y="-14.5" />
+      <point x="1979.3923710372137" y="1522.0" />
+      <point x="3817.610315111508" y="1522.0" />
+      <point x="25.25" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.tinyg.Commands">
-      <point x="26.448979591836633" y="-14.5" />
-      <point x="2903.68931072429" y="1332.0" />
-      <point x="3782.9200065217933" y="1332.0" />
-      <point x="3782.9200065217933" y="736.0" />
-      <point x="3567.8298704673716" y="736.0" />
-      <point x="15.428571428571331" y="14.5" />
+      <point x="12.913043478260988" y="-14.5" />
+      <point x="1943.5633092523167" y="984.0" />
+      <point x="2299.46525817569" y="984.0" />
+      <point x="2299.46525817569" y="238.0" />
+      <point x="2266.044562566037" y="238.0" />
+      <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.ui.tinygconfig.TinyGConfigController" target="tgfx.system.Motor">
-      <point x="-55.0" y="-14.5" />
-      <point x="468.5493197278911" y="905.0" />
-      <point x="439.2441586461273" y="905.0" />
-      <point x="439.2441586461273" y="547.0" />
-      <point x="502.29064390689837" y="547.0" />
-      <point x="502.29064390689837" y="268.0" />
-      <point x="829.5181906095768" y="268.0" />
-      <point x="-17.77777777777783" y="14.5" />
+      <point x="0.0" y="-14.5" />
+      <point x="1742.6901208465194" y="427.0" />
+      <point x="605.4941374247264" y="427.0" />
+      <point x="35.55555555555554" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.enums.MotionMode">
-      <point x="-28.411764705882433" y="-14.5" />
-      <point x="1459.5226840736293" y="517.0" />
-      <point x="1058.5752051725394" y="517.0" />
+      <point x="12.650000000000091" y="-14.5" />
+      <point x="682.2658619532385" y="1283.0" />
+      <point x="860.3385818691712" y="1283.0" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.hardwarePlatforms.HardwarePlatformManager" target="tgfx.hardwarePlatforms.HardwarePlatform">
       <point x="-64.0" y="-14.5" />
-      <point x="3723.3281697871" y="517.0" />
-      <point x="2449.0331882753103" y="517.0" />
+      <point x="1034.3511904761904" y="845.0" />
+      <point x="292.0" y="845.0" />
       <point x="29.0" y="14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.render.CNCMachine">
-      <point x="0.0" y="-14.5" />
-      <point x="3356.1540891721843" y="905.0" />
-      <point x="3360.392813107912" y="905.0" />
-      <point x="-23.200000000000045" y="14.5" />
+      <point x="-38.75" y="-14.5" />
+      <point x="2443.638958686242" y="387.0" />
+      <point x="2181.291345132212" y="387.0" />
+      <point x="29.0" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.enums.GcodeDistanceMode">
-      <point x="36.529411764705856" y="-14.5" />
-      <point x="1524.4638605442176" y="557.0" />
-      <point x="2248.0331882753103" y="557.0" />
-      <point x="0.0" y="14.5" />
+      <point x="-44.84999999999991" y="-14.5" />
+      <point x="624.7658619532385" y="1423.0" />
+      <point x="55.12236842105244" y="1423.0" />
+      <point x="55.12236842105244" y="457.0" />
+      <point x="37.0" y="457.0" />
+      <point x="-53.0" y="14.5" />
     </edge>
     <edge source="tgfx.SerialDriver" target="tgfx.utility.UtilityFunctions">
       <point x="0.0" y="-14.5" />
-      <point x="3944.7417818031927" y="746.0" />
-      <point x="3967.3281697871" y="746.0" />
-      <point x="0.0" y="14.5" />
+      <point x="3546.360315111508" y="178.0" />
+      <point x="2590.829155691218" y="178.0" />
+      <point x="42.666666666666515" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.enums.AxisName">
-      <point x="-6.764705882353155" y="-14.5" />
-      <point x="1481.1697428971586" y="437.0" />
-      <point x="1294.335009094108" y="437.0" />
-      <point x="25.25" y="14.5" />
+      <point x="44.84999999999991" y="-14.5" />
+      <point x="714.4658619532383" y="1423.0" />
+      <point x="3767.110315111508" y="1423.0" />
+      <point x="-25.25" y="14.5" />
     </edge>
     <edge source="tgfx.ui.machinesettings.MachineSettingsController" target="tgfx.MainController">
       <point x="0.0" y="14.5" />
-      <point x="3107.939911054893" y="1024.0" />
-      <point x="2930.3081882753104" y="1024.0" />
-      <point x="34.924999999999955" y="-14.5" />
+      <point x="3309.0124890245515" y="726.0" />
+      <point x="2966.2784490038694" y="726.0" />
+      <point x="60.32499999999982" y="-14.5" />
     </edge>
     <edge source="tgfx.system.Axis" target="tgfx.tinyg.ResponseCommand">
-      <point x="-25.875" y="-14.5" />
-      <point x="795.7777036179621" y="228.0" />
-      <point x="663.7959683873546" y="228.0" />
-      <point x="663.7959683873546" y="89.0" />
-      <point x="628.3816334452895" y="89.0" />
-      <point x="13.909090909090992" y="14.5" />
+      <point x="25.42105263157896" y="-14.5" />
+      <point x="1990.2871078793187" y="1552.0" />
+      <point x="4067.1519817781746" y="1552.0" />
+      <point x="4067.1519817781746" y="158.0" />
+      <point x="1608.5806840876262" y="158.0" />
+      <point x="69.5454545454545" y="14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.ui.tgfxsettings.TgfxSettingsController">
-      <point x="51.66666666666663" y="-14.5" />
-      <point x="3407.820755838851" y="875.0" />
-      <point x="3647.946617075544" y="875.0" />
+      <point x="27.67857142857156" y="-14.5" />
+      <point x="2510.0675301148135" y="467.0" />
+      <point x="2548.1624890245516" y="467.0" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.Motor">
-      <point x="-25.70588235294099" y="-14.5" />
-      <point x="1462.2285664265708" y="507.0" />
-      <point x="1127.5752051725394" y="507.0" />
-      <point x="1127.5752051725394" y="268.0" />
-      <point x="873.9626350540211" y="268.0" />
-      <point x="26.666666666666515" y="14.5" />
+      <point x="-5.75" y="-14.5" />
+      <point x="663.8658619532384" y="1253.0" />
+      <point x="588.5996929802818" y="1253.0" />
+      <point x="588.5996929802818" y="507.0" />
+      <point x="578.8274707580599" y="507.0" />
+      <point x="8.888888888888914" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.tinyg.CommandManager">
-      <point x="41.87755102040819" y="-14.5" />
-      <point x="2919.1178821528615" y="1402.0" />
-      <point x="4024.697626587151" y="1402.0" />
-      <point x="4024.697626587151" y="875.0" />
-      <point x="4039.6167818031927" y="875.0" />
-      <point x="9.375" y="14.5" />
+      <point x="-22.304347826086996" y="-14.5" />
+      <point x="1908.3459179479687" y="1024.0" />
+      <point x="1644.9944686726064" y="1024.0" />
+      <point x="1644.9944686726064" y="457.0" />
+      <point x="1763.0105480307623" y="457.0" />
+      <point x="-46.875" y="14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.system.Machine">
-      <point x="-28.575000000000045" y="-14.5" />
-      <point x="2866.8081882753104" y="1014.0" />
-      <point x="2714.8899110548928" y="1014.0" />
-      <point x="2714.8899110548928" y="746.0" />
-      <point x="1501.734448779512" y="746.0" />
-      <point x="13.800000000000182" y="14.5" />
+      <point x="-54.42857142857156" y="14.5" />
+      <point x="2851.524877575298" y="825.0" />
+      <point x="1293.3385818691713" y="825.0" />
+      <point x="1293.3385818691713" y="1333.0" />
+      <point x="693.7658619532385" y="1333.0" />
+      <point x="24.15000000000009" y="-14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.utility.AsyncTimer">
-      <point x="-52.897959183673265" y="-14.5" />
-      <point x="2824.34237194878" y="1452.0" />
-      <point x="104.0" y="1452.0" />
-      <point x="13.5" y="14.5" />
+      <point x="50.47826086956502" y="-14.5" />
+      <point x="1981.1285266436207" y="1154.0" />
+      <point x="3922.485315111508" y="1154.0" />
+      <point x="-40.5" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.enums.GcodePathControl">
-      <point x="17.588235294117567" y="-14.5" />
-      <point x="1505.5226840736293" y="487.0" />
-      <point x="1722.5331882753103" y="487.0" />
+      <point x="17.25" y="-14.5" />
+      <point x="686.8658619532384" y="1303.0" />
+      <point x="975.8385818691712" y="1303.0" />
       <point x="-36.0" y="14.5" />
     </edge>
     <edge source="tgfx.system.CoordinateManager" target="tgfx.system.CoordinateSystem">
       <point x="19.25" y="-14.5" />
-      <point x="1603.7908914470495" y="348.0" />
-      <point x="1596.0058773509402" y="348.0" />
-      <point x="20.57142857142844" y="14.5" />
+      <point x="369.75" y="1164.0" />
+      <point x="379.73581515402793" y="1164.0" />
+      <point x="-20.57142857142844" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.tinyg.ResponseCommand">
-      <point x="-12.176470588235134" y="-14.5" />
-      <point x="1475.7579781912766" y="457.0" />
-      <point x="1153.335009094108" y="457.0" />
-      <point x="1153.335009094108" y="49.0" />
-      <point x="684.017997081653" y="49.0" />
-      <point x="69.5454545454545" y="14.5" />
+      <point x="-3.4500000000000455" y="-14.5" />
+      <point x="666.1658619532384" y="1243.0" />
+      <point x="620.438581869171" y="1243.0" />
+      <point x="620.438581869171" y="238.0" />
+      <point x="1497.307956814899" y="238.0" />
+      <point x="-41.72727272727275" y="14.5" />
     </edge>
     <edge source="tgfx.TgFX" target="tgfx.TgFXConstants">
       <point x="0.0" y="-14.5" />
-      <point x="4090.680210603426" y="477.0" />
-      <point x="3531.4846323721335" y="477.0" />
-      <point x="52.08333333333337" y="14.5" />
+      <point x="3357.6096505577552" y="69.0" />
+      <point x="2924.2679838910885" y="69.0" />
+      <point x="52.083333333333485" y="14.5" />
     </edge>
     <edge source="tgfx.utility.AsyncTimer" target="tgfx.utility.Timeable">
       <point x="-27.0" y="-14.5" />
-      <point x="63.5" y="1163.0" />
-      <point x="71.75" y="1163.0" />
-      <point x="7.105427357601002E-15" y="14.5" />
+      <point x="3935.985315111508" y="845.0" />
+      <point x="3953.2491433113782" y="845.0" />
+      <point x="-32.333333333333485" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.Axis">
-      <point x="-41.94117647058829" y="-14.5" />
-      <point x="1445.9932723089235" y="567.0" />
-      <point x="831.5098464751047" y="567.0" />
-      <point x="9.857142857142662" y="14.5" />
+      <point x="11.5" y="14.5" />
+      <point x="681.1158619532384" y="1512.0" />
+      <point x="1953.9713184056345" y="1512.0" />
+      <point x="-10.894736842105203" y="-14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.ui.firmware.FirmwareUpdaterController">
-      <point x="36.28571428571422" y="14.5" />
-      <point x="2931.668902561025" y="1143.0" />
-      <point x="4151.833271827916" y="1143.0" />
-      <point x="4151.833271827916" y="1521.0" />
-      <point x="4104.604026701152" y="1521.0" />
-      <point x="0.0" y="-14.5" />
+      <point x="-47.625" y="-14.5" />
+      <point x="2858.3284490038695" y="676.0" />
+      <point x="2186.944562566037" y="676.0" />
+      <point x="38.40000000000009" y="14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.ui.gcode.GcodeLine">
-      <point x="-41.33333333333326" y="-14.5" />
-      <point x="3314.8207558388513" y="845.0" />
-      <point x="3228.292813107912" y="845.0" />
-      <point x="43.33333333333337" y="14.5" />
+      <point x="71.96428571428578" y="-14.5" />
+      <point x="2554.3532444005277" y="507.0" />
+      <point x="2711.829155691218" y="507.0" />
+      <point x="8.666666666666515" y="14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.tinyg.CommandManager">
-      <point x="62.0" y="-14.5" />
-      <point x="3418.1540891721843" y="885.0" />
-      <point x="3964.6167818031927" y="885.0" />
-      <point x="-65.625" y="14.5" />
+      <point x="-60.89285714285734" y="-14.5" />
+      <point x="2421.4961015433846" y="407.0" />
+      <point x="1856.7605480307623" y="407.0" />
+      <point x="46.875" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.tinyg.QueueReport">
-      <point x="-19.836734693877588" y="-14.5" />
-      <point x="2857.4035964385757" y="1302.0" />
-      <point x="441.1972789115646" y="1302.0" />
+      <point x="8.217391304347984" y="-14.5" />
+      <point x="1938.8676570784037" y="964.0" />
+      <point x="2108.544562566037" y="964.0" />
       <point x="29.5" y="14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.render.Draw2d">
-      <point x="9.525000000000091" y="-14.5" />
-      <point x="2904.9081882753107" y="984.0" />
-      <point x="2991.239911054893" y="984.0" />
-      <point x="2991.239911054893" y="696.0" />
-      <point x="3279.4012990387996" y="696.0" />
-      <point x="-37.083333333333485" y="14.5" />
+      <point x="3.175000000000182" y="-14.5" />
+      <point x="2909.1284490038697" y="596.0" />
+      <point x="2894.6624890245516" y="596.0" />
+      <point x="2894.6624890245516" y="208.0" />
+      <point x="2417.5096505577553" y="208.0" />
+      <point x="22.25" y="14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.ui.machinesettings.MachineSettingsController">
-      <point x="28.575000000000045" y="-14.5" />
-      <point x="2923.9581882753105" y="1014.0" />
-      <point x="3045.6065777215595" y="1014.0" />
-      <point x="-62.33333333333326" y="14.5" />
+      <point x="53.97499999999991" y="-14.5" />
+      <point x="2959.9284490038694" y="716.0" />
+      <point x="3246.679155691218" y="716.0" />
+      <point x="-62.333333333333485" y="14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.TgFXConstants">
-      <point x="-9.525000000000091" y="-14.5" />
-      <point x="2885.8581882753106" y="984.0" />
-      <point x="2850.239911054893" y="984.0" />
-      <point x="2850.239911054893" y="577.0" />
-      <point x="3427.3179657054666" y="577.0" />
-      <point x="-52.083333333333485" y="14.5" />
+      <point x="47.625" y="-14.5" />
+      <point x="2953.5784490038695" y="706.0" />
+      <point x="3205.0124890245515" y="706.0" />
+      <point x="3205.0124890245515" y="89.0" />
+      <point x="2882.6013172244216" y="89.0" />
+      <point x="10.416666666666515" y="14.5" />
     </edge>
     <edge source="tgfx.utility.TimerTest" target="tgfx.utility.AsyncTimer">
-      <point x="33.33333333333334" y="-14.5" />
-      <point x="83.33333333333326" y="1452.0" />
-      <point x="77.0" y="1452.0" />
-      <point x="-13.5" y="14.5" />
+      <point x="0.0" y="-14.5" />
+      <point x="4006.6519817781746" y="1164.0" />
+      <point x="4003.485315111508" y="1164.0" />
+      <point x="40.5" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.enums.GcodeCoordinateSystem">
-      <point x="-4.058823529411711" y="-14.5" />
-      <point x="1483.8756252501" y="427.0" />
-      <point x="1394.335009094108" y="427.0" />
+      <point x="21.84999999999991" y="-14.5" />
+      <point x="691.4658619532383" y="1323.0" />
+      <point x="1193.3385818691713" y="1323.0" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.system.enums.AxisType">
-      <point x="-30.857142857142662" y="-14.5" />
-      <point x="2846.3831882753107" y="1352.0" />
-      <point x="335.58503401360554" y="1352.0" />
-      <point x="335.58503401360554" y="587.0" />
-      <point x="978.5752051725394" y="587.0" />
-      <point x="978.5752051725394" y="318.0" />
-      <point x="967.6709683873546" y="318.0" />
-      <point x="11.875" y="14.5" />
+      <point x="48.13043478260852" y="-14.5" />
+      <point x="1978.7807005566642" y="1134.0" />
+      <point x="3805.860315111508" y="1134.0" />
+      <point x="-35.625" y="14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.ui.tinygconfig.TinyGConfigController">
-      <point x="-60.325000000000045" y="-14.5" />
-      <point x="2835.0581882753104" y="1064.0" />
-      <point x="544.1743197278911" y="1064.0" />
-      <point x="20.625" y="14.5" />
+      <point x="-60.32499999999982" y="-14.5" />
+      <point x="2845.6284490038697" y="696.0" />
+      <point x="1783.9401208465194" y="696.0" />
+      <point x="41.25" y="14.5" />
     </edge>
     <edge source="tgfx.ui.machinesettings.MachineSettingsController" target="tgfx.tinyg.TinygDriver">
-      <point x="62.33333333333326" y="14.5" />
-      <point x="3170.273244388226" y="1024.0" />
-      <point x="3144.9165216086435" y="1024.0" />
-      <point x="3144.9165216086435" y="1232.0" />
-      <point x="2881.6484943977594" y="1232.0" />
-      <point x="4.40816326530603" y="-14.5" />
+      <point x="62.333333333333485" y="14.5" />
+      <point x="3371.345822357885" y="726.0" />
+      <point x="3347.4526087842855" y="726.0" />
+      <point x="3347.4526087842855" y="1044.0" />
+      <point x="1957.6502657740557" y="1044.0" />
+      <point x="27.0" y="-14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.render.Draw2d">
-      <point x="-20.666666666666515" y="-14.5" />
-      <point x="3335.4874225055178" y="825.0" />
-      <point x="3304.7594797745787" y="825.0" />
-      <point x="3304.7594797745787" y="706.0" />
-      <point x="3309.0679657054666" y="706.0" />
+      <point x="-5.535714285714221" y="-14.5" />
+      <point x="2476.8532444005277" y="357.0" />
+      <point x="2412.454155691218" y="357.0" />
+      <point x="2412.454155691218" y="258.0" />
+      <point x="2387.842983891089" y="258.0" />
       <point x="-7.416666666666515" y="14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.system.Machine">
-      <point x="-31.0" y="-14.5" />
-      <point x="3325.1540891721843" y="835.0" />
-      <point x="3294.4261464412457" y="835.0" />
-      <point x="3294.4261464412457" y="686.0" />
-      <point x="1520.1344487795116" y="686.0" />
-      <point x="32.19999999999982" y="14.5" />
+      <point x="-64.58333333333348" y="14.5" />
+      <point x="2417.8056253529085" y="726.0" />
+      <point x="929.3385818691712" y="726.0" />
+      <point x="929.3385818691712" y="1293.0" />
+      <point x="684.5658619532385" y="1293.0" />
+      <point x="14.950000000000045" y="-14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.TgFXConstants">
-      <point x="31.0" y="-14.5" />
-      <point x="3387.1540891721843" y="855.0" />
-      <point x="3462.4261464412457" y="855.0" />
-      <point x="3462.4261464412457" y="587.0" />
-      <point x="3468.9846323721335" y="587.0" />
-      <point x="-10.416666666666515" y="14.5" />
+      <point x="16.607142857142662" y="-14.5" />
+      <point x="2498.9961015433846" y="337.0" />
+      <point x="2454.6624890245516" y="337.0" />
+      <point x="2454.6624890245516" y="79.0" />
+      <point x="2840.934650557755" y="79.0" />
+      <point x="-31.25" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.tinyg.Mnemonics">
-      <point x="14.882352941176578" y="-14.5" />
-      <point x="1502.8168017206883" y="477.0" />
-      <point x="1676.0331882753103" y="477.0" />
-      <point x="1676.0331882753103" y="139.0" />
-      <point x="1679.0644543009048" y="139.0" />
-      <point x="0.0" y="14.5" />
+      <point x="-40.25" y="-14.5" />
+      <point x="629.3658619532384" y="1403.0" />
+      <point x="180.0" y="1403.0" />
+      <point x="180.0" y="79.0" />
+      <point x="1409.2327095639657" y="79.0" />
+      <point x="-30.85714285714289" y="14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.utility.QueuedTimerable">
-      <point x="-47.625" y="-14.5" />
-      <point x="2847.7581882753107" y="1044.0" />
-      <point x="2551.8899110548928" y="1044.0" />
+      <point x="28.574999999999818" y="-14.5" />
+      <point x="2934.5284490038694" y="676.0" />
+      <point x="3042.0124890245515" y="676.0" />
       <point x="-47.666666666666515" y="14.5" />
     </edge>
     <edge source="tgfx.ui.tinygconfig.TinyGConfigController" target="tgfx.tinyg.TinygDriver">
-      <point x="-61.875" y="14.5" />
-      <point x="461.6743197278911" y="1064.0" />
-      <point x="481.1972789115646" y="1064.0" />
-      <point x="481.1972789115646" y="1292.0" />
-      <point x="2859.6076780712287" y="1292.0" />
-      <point x="-17.632653061224346" y="-14.5" />
+      <point x="-13.75" y="14.5" />
+      <point x="1728.9401208465194" y="696.0" />
+      <point x="1741.5162078030412" y="696.0" />
+      <point x="1741.5162078030412" y="994.0" />
+      <point x="1915.3893962088382" y="994.0" />
+      <point x="-15.26086956521749" y="-14.5" />
     </edge>
     <edge source="tgfx.tinyg.Commands" target="tgfx.tinyg.Mnemonics">
       <point x="0.0" y="-14.5" />
-      <point x="3552.4012990388" y="129.0" />
-      <point x="1709.9215971580475" y="129.0" />
-      <point x="30.857142857142662" y="14.5" />
+      <point x="2266.044562566037" y="49.0" />
+      <point x="1486.3755667068228" y="49.0" />
+      <point x="46.28571428571422" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.CommandManager" target="tgfx.tinyg.Commands">
       <point x="0.0" y="-14.5" />
-      <point x="4030.2417818031927" y="716.0" />
-      <point x="3583.258441895943" y="716.0" />
-      <point x="30.85714285714289" y="14.5" />
+      <point x="1809.8855480307623" y="218.0" />
+      <point x="2219.7588482803226" y="218.0" />
+      <point x="-46.28571428571422" y="14.5" />
     </edge>
     <edge source="tgfx.utility.TimerTest" target="tgfx.utility.Timeable">
-      <point x="-33.33333333333326" y="-14.5" />
-      <point x="16.666666666666742" y="1452.0" />
-      <point x="26.0" y="1452.0" />
-      <point x="26.0" y="1163.0" />
-      <point x="39.41666666666674" y="1163.0" />
-      <point x="-32.33333333333326" y="14.5" />
+      <point x="33.333333333333485" y="-14.5" />
+      <point x="4039.985315111508" y="1164.0" />
+      <point x="4027.485315111508" y="1164.0" />
+      <point x="4027.485315111508" y="845.0" />
+      <point x="4017.915809978045" y="845.0" />
+      <point x="32.333333333333485" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.system.enums.AxisMode">
-      <point x="-17.588235294117567" y="-14.5" />
-      <point x="1470.3462134853942" y="477.0" />
-      <point x="1135.6928522313628" y="477.0" />
-      <point x="1135.6928522313628" y="238.0" />
-      <point x="1115.708958583433" y="238.0" />
-      <point x="33.333333333333485" y="14.5" />
+      <point x="42.549999999999955" y="-14.5" />
+      <point x="712.1658619532384" y="1413.0" />
+      <point x="3638.5269817781746" y="1413.0" />
+      <point x="-33.33333333333326" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.tinyg.TinygDriver">
-      <point x="-13.800000000000182" y="14.5" />
-      <point x="1474.1344487795116" y="736.0" />
-      <point x="342.1972789115646" y="736.0" />
-      <point x="342.1972789115646" y="1322.0" />
-      <point x="2852.9954331732697" y="1322.0" />
-      <point x="-24.244897959183618" y="-14.5" />
+      <point x="33.34999999999991" y="-14.5" />
+      <point x="702.9658619532383" y="1373.0" />
+      <point x="1887.4502657740559" y="1373.0" />
+      <point x="-43.19999999999982" y="14.5" />
     </edge>
     <edge source="tgfx.MainController" target="tgfx.system.StatusCode">
-      <point x="-15.875" y="-14.5" />
-      <point x="2879.5081882753107" y="994.0" />
-      <point x="2785.739911054893" y="994.0" />
+      <point x="-3.175000000000182" y="-14.5" />
+      <point x="2902.7784490038694" y="606.0" />
+      <point x="2830.1624890245516" y="606.0" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.SerialDriver">
-      <point x="37.469387755101934" y="-14.5" />
-      <point x="2914.709718887555" y="1382.0" />
-      <point x="3950.7767082198043" y="1382.0" />
-      <point x="3950.7767082198043" y="1163.0" />
-      <point x="3988.3417818031926" y="1163.0" />
-      <point x="43.59999999999991" y="14.5" />
+      <point x="43.434782608695514" y="-14.5" />
+      <point x="1974.0850483827512" y="1114.0" />
+      <point x="3553.3422020451694" y="1114.0" />
+      <point x="3553.3422020451694" y="835.0" />
+      <point x="3568.160315111508" y="835.0" />
+      <point x="21.800000000000182" y="14.5" />
     </edge>
     <edge source="tgfx.system.Machine" target="tgfx.hardwarePlatforms.HardwarePlatform">
-      <point x="44.64705882352928" y="-14.5" />
-      <point x="1532.581507603041" y="587.0" />
-      <point x="2420.0331882753103" y="587.0" />
+      <point x="-33.34999999999991" y="-14.5" />
+      <point x="636.2658619532385" y="1373.0" />
+      <point x="263.0" y="1373.0" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.CommandManager" target="tgfx.tinyg.TinygDriver">
-      <point x="-9.375" y="14.5" />
-      <point x="4020.8667818031927" y="905.0" />
-      <point x="4022.4935449544982" y="905.0" />
-      <point x="4022.4935449544982" y="1392.0" />
-      <point x="2916.9138005202085" y="1392.0" />
-      <point x="39.673469387755176" y="-14.5" />
+      <point x="-65.625" y="14.5" />
+      <point x="1744.2605480307623" y="447.0" />
+      <point x="1642.64664258565" y="447.0" />
+      <point x="1642.64664258565" y="1034.0" />
+      <point x="1905.9980918610122" y="1034.0" />
+      <point x="-24.652173913043498" y="-14.5" />
     </edge>
     <edge source="tgfx.ResponseParser" target="tgfx.tinyg.Mnemonics">
-      <point x="37.14285714285734" y="-14.5" />
-      <point x="2006.4466336534615" y="1153.0" />
-      <point x="2516.7232443882262" y="1153.0" />
-      <point x="2516.7232443882262" y="139.0" />
-      <point x="1694.4930257294764" y="139.0" />
-      <point x="15.428571428571558" y="14.5" />
+      <point x="-10.833333333333258" y="-14.5" />
+      <point x="1447.1491952865722" y="805.0" />
+      <point x="1452.0352295421717" y="805.0" />
+      <point x="1452.0352295421717" y="89.0" />
+      <point x="1440.0898524211086" y="89.0" />
+      <point x="0.0" y="14.5" />
     </edge>
     <edge source="tgfx.ui.gcode.GcodeTabController" target="tgfx.tinyg.TinygDriver">
-      <point x="0.0" y="14.5" />
-      <point x="3356.1540891721843" y="1262.0" />
-      <point x="2888.2607392957184" y="1262.0" />
-      <point x="11.020408163265301" y="-14.5" />
+      <point x="-38.75" y="14.5" />
+      <point x="2443.638958686242" y="716.0" />
+      <point x="2436.4045359603915" y="716.0" />
+      <point x="2436.4045359603915" y="994.0" />
+      <point x="1945.9111353392732" y="994.0" />
+      <point x="15.26086956521749" y="-14.5" />
     </edge>
     <edge source="tgfx.ui.firmware.FirmwareUpdaterController" target="tgfx.tinyg.Commands">
-      <point x="54.85714285714266" y="-14.5" />
-      <point x="4159.461169558294" y="1541.0" />
-      <point x="4173.833271827916" y="1541.0" />
-      <point x="4173.833271827916" y="696.0" />
-      <point x="3598.6870133245143" y="696.0" />
-      <point x="46.28571428571422" y="14.5" />
+      <point x="-48.0" y="-14.5" />
+      <point x="2100.544562566037" y="477.0" />
+      <point x="2083.791345132212" y="477.0" />
+      <point x="2083.791345132212" y="228.0" />
+      <point x="2235.187419708894" y="228.0" />
+      <point x="-30.857142857142662" y="14.5" />
     </edge>
     <edge source="tgfx.tinyg.TinygDriver" target="tgfx.system.Machine">
-      <point x="-28.653061224489647" y="-14.5" />
-      <point x="2848.5872699079637" y="1342.0" />
-      <point x="337.78911564625855" y="1342.0" />
-      <point x="337.78911564625855" y="716.0" />
-      <point x="1455.734448779512" y="716.0" />
-      <point x="-32.19999999999982" y="14.5" />
+      <point x="0.0" y="14.5" />
+      <point x="1930.6502657740557" y="1393.0" />
+      <point x="707.5658619532385" y="1393.0" />
+      <point x="37.950000000000045" y="-14.5" />
     </edge>
     <edge source="tgfx.render.CNCMachine" target="tgfx.MainController">
-      <point x="-46.40000000000009" y="14.5" />
-      <point x="3337.192813107912" y="905.0" />
-      <point x="3254.9500075395313" y="905.0" />
-      <point x="3254.9500075395313" y="1034.0" />
-      <point x="2936.6581882753107" y="1034.0" />
-      <point x="41.27500000000009" y="-14.5" />
+      <point x="9.666666666666515" y="14.5" />
+      <point x="2161.958011798878" y="437.0" />
+      <point x="2394.388958686242" y="437.0" />
+      <point x="2394.388958686242" y="646.0" />
+      <point x="2877.3784490038697" y="646.0" />
+      <point x="-28.574999999999818" y="-14.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.4818137013307048" x="2277.437996727388" y="791.9200669228094" />
-  <SelectedNodes>
-    <node>tgfx.system.enums.GcodeSelectionPlane</node>
-  </SelectedNodes>
+  <settings layout="Hierarchic Group" zoom="0.7185941581572072" x="2095.5000000000005" y="847.5" />
+  <SelectedNodes />
   <Categories />
   <SCOPE>Project Files</SCOPE>
   <VISIBILITY>private</VISIBILITY>

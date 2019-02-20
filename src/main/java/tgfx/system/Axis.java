@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,9 +17,6 @@ import tgfx.tinyg.TinygDriver;
 import tgfx.tinyg.ResponseCommand;
 
 import static tgfx.tinyg.Mnemonics.*;
-
-/*
- */
 
 /**
  * Axis Model
@@ -107,148 +103,6 @@ public final class Axis {
      */
     public void setCurrentAxisJsonObject(String currentAxisJsonObject) {
         this.currentAxisJsonObject = currentAxisJsonObject;
-    }
-
-
-    /**
-     * set axis command
-     * @param cmd command
-     * @param value value
-     */
-    public void setAxisCommand(String cmd, String value) {
-        // https://github.com/synthetos/TinyG/wiki/TinyG-Command-Line
-
-        // This is a blind command mode...  meaning that
-        // if 2 strings (key, val) are passed to the axis class
-        // Then we parse the command and set the value.
-        switch (cmd) {
-            case MNEMONIC_AXIS_AXIS_MODE: {
-                int val = Double.valueOf(value).intValue();
-                this.setAxisMode(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Axis Mode to: " + AxisMode.getAxisMode(val).name());
-                break;
-            }
-            case MNEMONIC_AXIS_VELOCITY_MAXIMUM: {
-                int val = (int) Double.parseDouble(value);
-                this.setVelocityMaximum(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Velocity Max to: " + this.getVelocityMaximum());
-                break;
-            }
-            case MNEMONIC_AXIS_FEEDRATE_MAXIMUM: {
-                int val = (int) Double.parseDouble(value);
-                this.setFeedRateMaximum(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Feed Rate Max to: " + this.getFeedRateMaximum());
-                break;
-            }
-            case MNEMONIC_AXIS_TRAVEL_MAXIMUM: {
-                int val = (int) Double.parseDouble(value);
-                this.setTravelMaximum(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Travel Max to: " + this.getTravelMaximum());
-                break;
-            }
-            case MNEMONIC_AXIS_JERK_MAXIMUM: {
-                int val = (int) Double.parseDouble(value);
-                this.setJerkMaximum(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Jerk Max to: " + this.getJerkMaximum());
-                break;
-            }
-            case MNEMONIC_AXIS_JERK_HOMING: {
-                int val = (int) Double.parseDouble(value);
-                this.setJerkHomingMaximum(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Jerk Homing to: " + this.getJerkHomingMaximum());
-                break;
-            }
-            case MNEMONIC_AXIS_JUNCTION_DEVIATION: {
-                int val = (int) Double.parseDouble(value);
-                this.setJunctionDeviation(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Junction Deviation Max to: " + this.getJunctionDeviation());
-                break;
-            }
-            case MNEMONIC_AXIS_MIN_SWITCH_MODE: {
-                int val = Double.valueOf(value).intValue();
-                String switchMode = getSwitchMode(val);
-                this.setMinSwitchMode(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Axis Mode to: " + switchMode);
-                break;
-            }
-            case MNEMONIC_AXIS_MAX_SWITCH_MODE: {
-                int val = Double.valueOf(value).intValue();
-                String switchMode = getSwitchMode(val);
-                this.setMaxSwitchMode(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Axis Mode to: " + switchMode);
-                break;
-            }
-            case MNEMONIC_AXIS_SEARCH_VELOCITY: {
-                int val = (int) Double.parseDouble(value);
-                this.setSearchVelocity(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Search Velocity to: " + this.getSearchVelocity());
-                break;
-            }
-            case MNEMONIC_AXIS_LATCH_VELOCITY: {
-                int val = (int) Double.parseDouble(value);
-                this.setLatchVelocity(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Latch Velocity to: " + this.getLatchVelocity());
-                break;
-            }
-            case MNEMONIC_AXIS_LATCH_BACKOFF: {
-                int val = (int) Double.parseDouble(value);
-                this.setLatchBackoff(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Latch Back Off to: " + this.getLatchBackoff());
-                break;
-            }
-            case MNEMONIC_AXIS_ZERO_BACKOFF: {
-                int val = (int) Double.parseDouble(value);
-                this.setZeroBackoff(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Zero Back Off to: " + this.getZeroBackoff());
-                break;
-            }
-            case MNEMONIC_AXIS_RADIUS: {
-                int val = (int) Double.parseDouble(value);
-                this.setRadius(val);
-                logger.info("\tSet Axis: " + this.getAxisName() +
-                        " Radius to: " + this.getRadius());
-                break;
-            }
-            default: {
-                logger.info("Error... No such setting: " +
-                        value + " in Axis Settings...");
-            }
-        }
-    }
-
-
-    /**
-     * get the switch mode string
-     * @param mode switch mode int
-     * @return switch mode string
-     */
-    private String getSwitchMode(int mode){
-        String switchMode = "UNKNOWN";
-        switch (mode) {
-            case 0:
-                switchMode = "DISABLED";
-                break;
-            case 1:
-                switchMode = "HOMING ONLY";
-                break;
-            case 2:
-                switchMode = "HOMING AND LIMIT";
-                break;
-        }
-        return switchMode;
     }
 
 
@@ -581,49 +435,6 @@ public final class Axis {
         this.radius = radius;
     }
 
-
-    public void setMotorCommand(String cmd, String value) {
-        // Generic command parser when a single axis command has been given.
-        // IE: $xsr=1200
-        // cmd would be sr and value would be 1200
-        switch (cmd) {
-            case MNEMONIC_AXIS_AXIS_MODE:
-                setAxisMode((int) Double.parseDouble(value));
-                break;
-            case MNEMONIC_AXIS_VELOCITY_MAXIMUM:
-                setVelocityMaximum(Float.valueOf(value));
-                break;
-            case MNEMONIC_AXIS_FEEDRATE_MAXIMUM:
-                setFeedRateMaximum(Float.valueOf(value));
-                break;
-            case MNEMONIC_AXIS_TRAVEL_MAXIMUM:
-                setTravelMaximum(Float.valueOf(value));
-                break;
-            case MNEMONIC_AXIS_JERK_MAXIMUM:
-                setJerkMaximum(Double.valueOf(value));
-                break;
-            case MNEMONIC_AXIS_JUNCTION_DEVIATION:
-                setJunctionDeviation(Float.valueOf(value));
-                break;
-            case MNEMONIC_AXIS_MIN_SWITCH_MODE:
-                setMaxSwitchMode((int) Double.parseDouble(value));
-                break;
-            case MNEMONIC_AXIS_SEARCH_VELOCITY:
-                setSearchVelocity(Double.parseDouble(value));
-                break;
-            case MNEMONIC_AXIS_LATCH_VELOCITY:
-                setLatchVelocity(Float.parseFloat(value));
-                break;
-            case MNEMONIC_AXIS_LATCH_BACKOFF:
-                setLatchBackoff(Float.parseFloat(value));
-                break;
-            case MNEMONIC_AXIS_ZERO_BACKOFF:
-                setZeroBackoff(Float.parseFloat(value));
-                break;
-            default:
-                break;
-        }
-    }
 
     /* work position */
 
