@@ -21,28 +21,15 @@ import tgfx.tinyg.TinygDriver;
 public class HardwarePlatformManager {
     private static final Logger logger = LogManager.getLogger();
 
-    private static HardwarePlatformManager hardwarePlatformManagerInstance;
 
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
 
     /**
      * constructor, loads the platforms
      */
-    private HardwarePlatformManager() {
+    public HardwarePlatformManager() {
         logger.info("Starting HardwarePlatformManager");
         this.loadPlatformConfigs();
-    }
-
-
-    /**
-     * get hardware platform singleton
-     * @return get a hardware platform manager singleton
-     */
-    public static HardwarePlatformManager getInstance() {
-        if(hardwarePlatformManagerInstance == null){
-            hardwarePlatformManagerInstance = new HardwarePlatformManager();
-        }
-        return hardwarePlatformManagerInstance;
     }
 
 

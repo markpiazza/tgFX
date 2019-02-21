@@ -59,6 +59,7 @@
             <version>8.0-r6</version>
         </dependency>
 
+        <!-- Gauge controls for JavaFX -->
         <!-- https://mvnrepository.com/artifact/eu.hansolo/Medusa -->
         <dependency>
             <groupId>eu.hansolo</groupId>

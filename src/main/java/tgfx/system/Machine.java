@@ -27,31 +27,34 @@ import static tgfx.tinyg.Mnemonics.*;
 @SuppressWarnings({"FieldCanBeLocal","unused"})
 public final class Machine {
     private static final Logger logger = LogManager.getLogger();
-    private static Machine machineInstance;
 
+    private CoordinateManager coordinateManager = new CoordinateManager();
     private HardwarePlatform hardwarePlatform = new HardwarePlatform();
 
     //TG Specific Machine EEPROM Values binding
+    private SimpleStringProperty hardwareId = new SimpleStringProperty("");
+    private SimpleStringProperty hardwareVersion = new SimpleStringProperty("");
+    private SimpleStringProperty firmwareVersion = new SimpleStringProperty("");
+    private SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty(0.0);
+    private SimpleStringProperty coordinateSystem = new SimpleStringProperty();
+    private SimpleStringProperty machineState = new SimpleStringProperty();
+    private SimpleStringProperty motionMode = new SimpleStringProperty();
+    private SimpleStringProperty gcodeUnitMode = new SimpleStringProperty("");
+
     private SimpleDoubleProperty longestTravelAxisValue = new SimpleDoubleProperty();
     private SimpleIntegerProperty xjoggingIncrement = new SimpleIntegerProperty();
     private SimpleIntegerProperty yjoggingIncrement = new SimpleIntegerProperty();
     private SimpleIntegerProperty zjoggingIncrement = new SimpleIntegerProperty();
     private SimpleIntegerProperty ajoggingIncrement = new SimpleIntegerProperty();
+    private SimpleIntegerProperty lineNumber = new SimpleIntegerProperty(0);
 
-    private StringProperty hardwareId = new SimpleStringProperty("");
-    private StringProperty hardwareVersion = new SimpleStringProperty("");
-    private StringProperty firmwareVersion = new SimpleStringProperty("");
-    private SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty(0.0);
-
-    private SimpleStringProperty machineState = new SimpleStringProperty();
-    private SimpleStringProperty motionMode = new SimpleStringProperty();
-
-    private SimpleDoubleProperty velocity = new SimpleDoubleProperty();
-    private StringProperty gcodeUnitMode = new SimpleStringProperty("");
     private SimpleDoubleProperty gcodeUnitDivision = new SimpleDoubleProperty(1);
+    private SimpleDoubleProperty velocity = new SimpleDoubleProperty();
 
-    private int switchType = 0; //0=normally closed 1 = normally open
-    private int statusReportInterval;
+    private final List<Motor> motors = new ArrayList<>();
+    private final List<Axis> axis = new ArrayList<>();
+
+    private List<CoordinateSystem> gcodeCoordinateSystems = new ArrayList<>();
 
     private GcodeUnitMode gcodeStartupUnits;
     private GcodeSelectPlane gcodeSelectPlane;
@@ -59,32 +62,26 @@ public final class Machine {
     private GcodePathControl gcodePathControl;
     private GcodeDistanceMode gcodeDistanceMode = GcodeDistanceMode.ABSOLUTE;
 
+    private String lastMessage = "";
+    private String machineName;
+    private double minSegmentTime;
     private float junctionAcceleration;
     private float minLineSegment;
     private float minArcSegment;
-    private double minSegmentTime;
+    private int switchType = 0; //0=normally closed 1 = normally open
+    private int statusReportInterval;
     private boolean enableAcceleration;
     private boolean enableCrOnTx;
     private boolean enableEcho;
     private boolean enableXonXoff;
     private boolean enableHashcode;
 
-    private final List<Motor> motors = new ArrayList<>();
-    private final List<Axis> axis = new ArrayList<>();
-
-    private List<CoordinateSystem> gcodeCoordinateSystems = new ArrayList<>();
-    private CoordinateManager coordinateManager = new CoordinateManager();
-    private SimpleStringProperty coordinateSystem = new SimpleStringProperty();
-    private SimpleIntegerProperty lineNumber = new SimpleIntegerProperty(0);
-
-    private String lastMessage = "";
-    private String machineName;
 
     /**
      * Machine
      * machine constructor
      */
-    private Machine() {
+    public Machine() {
         motors.add(new Motor(1));
         motors.add(new Motor(2));
         motors.add(new Motor(3));
@@ -101,18 +98,6 @@ public final class Machine {
         xjoggingIncrement.bind(getAxisByName("X").travelMaximumProperty());
         yjoggingIncrement.bind(getAxisByName("Y").travelMaximumProperty());
         zjoggingIncrement.bind(getAxisByName("Z").travelMaximumProperty());
-    }
-
-
-    /**
-     * get singleton instance of a machine
-     * @return singleton machine
-     */
-    public static Machine getInstance(){
-        if(machineInstance == null){
-            machineInstance = new Machine();
-        }
-        return machineInstance;
     }
 
 

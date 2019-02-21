@@ -38,9 +38,16 @@ public class TinygDriver extends Observable {
 
     private static TinygDriver instance;
 
-    private final HardwarePlatformManager hardwarePlatformManager = HardwarePlatformManager.getInstance();
     private final SerialDriver serialDriver = SerialDriver.getInstance();
-    private final Machine MACHINE = Machine.getInstance();
+
+    private HardwarePlatformManager hardwarePlatformManager = new HardwarePlatformManager();
+    private ResponseParser responseParser = new ResponseParser();
+    private SerialWriter serialWriter = new SerialWriter(writerQueue);
+    private MnemonicManager mnemonicManager = new MnemonicManager();
+    private CommandManager commandManager = new CommandManager();
+    private QueueReport queueReport = new QueueReport();
+    private Machine machine = new Machine();
+    private AsyncTimer connectionTimer;
 
     private final AtomicBoolean connectionSemaphore = new AtomicBoolean(false);
 
@@ -55,12 +62,6 @@ public class TinygDriver extends Observable {
     private boolean paused = false;
     private boolean timedout = false;
 
-    private ResponseParser responseParser = new ResponseParser();
-    private SerialWriter serialWriter = new SerialWriter(writerQueue);
-    private MnemonicManager mnemonicManager = new MnemonicManager();
-    private CommandManager commandManager = new CommandManager();
-    private QueueReport queueReport = new QueueReport();
-    private AsyncTimer connectionTimer;
 
 
 
@@ -93,11 +94,11 @@ public class TinygDriver extends Observable {
 
 
     /**
-     * get the MACHINE
-     * @return MACHINE
+     * get the machine
+     * @return machine
      */
     public Machine getMachine(){
-        return MACHINE;
+        return machine;
     }
 
 
@@ -236,24 +237,24 @@ public class TinygDriver extends Observable {
      */
     public void notifyBuildChanged() throws JSONException {
         // FIXME: NPE
-        //if(MACHINE.getHardwarePlatform().getMinimalBuildVersion() < this.MACHINE.getFirmwareBuildVersion()){
+        //if(machine.getHardwarePlatform().getMinimalBuildVersion() < this.machine.getFirmwareBuildVersion()){
             // This checks to see if the current build version on
             // TinyG is greater than what tgFX's hardware profile needs.
         //}
 
-        if (MACHINE.getFirmwareBuildVersion() < MACHINE
+        if (machine.getFirmwareBuildVersion() < machine
                 .getHardwarePlatform().getMinimalBuildVersion() &&
-                this.MACHINE.getFirmwareBuildVersion() != 0.0) {
+                this.machine.getFirmwareBuildVersion() != 0.0) {
             // too old of a build  we need to tell the GUI about this...
             // This is where PUB/SUB will fix this
             // bad way of alerting the gui about model changes.
             message[0] = "BUILD_ERROR";
-            message[1] = Double.toString(MACHINE.getFirmwareBuildVersion());
+            message[1] = Double.toString(machine.getFirmwareBuildVersion());
             setChanged();
             notifyObservers(message);
-            logger.debug("Build Version: " + MACHINE.getFirmwareBuildVersion() + " is NOT OK");
-        } else if(MACHINE.getFirmwareBuildVersion() != 0.0){
-            logger.debug("Build Version: " + MACHINE.getFirmwareBuildVersion() + " is OK");
+            logger.debug("Build Version: " + machine.getFirmwareBuildVersion() + " is NOT OK");
+        } else if(machine.getFirmwareBuildVersion() != 0.0){
+            logger.debug("Build Version: " + machine.getFirmwareBuildVersion() + " is OK");
             message[0] = "BUILD_OK";
             message[1] = null;
             setChanged();
@@ -335,7 +336,7 @@ public class TinygDriver extends Observable {
      */
     public void applyHardwareAxisSettings(Tab tab) {
         GridPane gridPane = (GridPane) tab.getContent();
-        Axis axis = this.MACHINE.getAxisByName(String.valueOf(gridPane.getId().charAt(0)));
+        Axis axis = this.machine.getAxisByName(String.valueOf(gridPane.getId().charAt(0)));
 
         if(axis==null){
             logger.error("Invalid Axis)");
@@ -497,39 +498,39 @@ public class TinygDriver extends Observable {
         char axis;
         switch (rc.getSettingKey()) {
             case MNEMONIC_STATUS_REPORT_LINE:
-                MACHINE.setLineNumber(Integer.valueOf(rc.getSettingValue()));
+                machine.setLineNumber(Integer.valueOf(rc.getSettingValue()));
                 logger.info("applied line number: {}, {} : {}",
                         rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_STATUS_REPORT_MOTION_MODE:
-                MACHINE.setMotionMode(Integer.valueOf(rc.getSettingValue()));
+                machine.setMotionMode(Integer.valueOf(rc.getSettingValue()));
                 logger.info("not applying motion mode: {}, {} : {}",
                         rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_STATUS_REPORT_POSA:
                 axis = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                MACHINE.getAxisByName(String.valueOf(axis))
+                machine.getAxisByName(String.valueOf(axis))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
                 logger.info("applied POS A: {}, {} : {}",
                         rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_STATUS_REPORT_POSX:
                 axis = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                MACHINE.getAxisByName(String.valueOf(axis))
+                machine.getAxisByName(String.valueOf(axis))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
                 logger.info("applied POS X: {}, {} : {}",
                         rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_STATUS_REPORT_POSY:
                 axis = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                MACHINE.getAxisByName(String.valueOf(axis))
+                machine.getAxisByName(String.valueOf(axis))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
                 logger.info("applied POS Y: {}, {} : {}",
                         rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_STATUS_REPORT_POSZ:
                 axis = rc.getSettingKey().charAt(rc.getSettingKey().length() - 1);
-                MACHINE.getAxisByName(String.valueOf(axis))
+                machine.getAxisByName(String.valueOf(axis))
                         .setWorkPosition(Float.valueOf(rc.getSettingValue()));
                 logger.info("applied POS Z: {}, {} : {}",
                         rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
@@ -540,7 +541,7 @@ public class TinygDriver extends Observable {
                         rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
             case MNEMONIC_STATUS_REPORT_VELOCITY:
-                MACHINE.setVelocity(Double.valueOf(rc.getSettingValue()));
+                machine.setVelocity(Double.valueOf(rc.getSettingValue()));
                 logger.info("applied velocity: {}, {} : {}",
                         rc.getSettingParent(), rc.getSettingKey(), rc.getSettingValue());
                 break;
@@ -562,7 +563,7 @@ public class TinygDriver extends Observable {
          */
         Tab selectedTab = tab.getTabPane().getSelectionModel().getSelectedItem();
         int motorNumber = Integer.valueOf(selectedTab.getText().split(" ")[1]);
-        Motor motor = MACHINE.getMotorByNumber(motorNumber);
+        Motor motor = machine.getMotorByNumber(motorNumber);
 
         GridPane gridPane = (GridPane) tab.getContent();
 
@@ -834,7 +835,7 @@ public class TinygDriver extends Observable {
      * @return list of axises
      */
     public List<Axis> getInternalAllAxis() {
-        return MACHINE.getAllAxis();
+        return machine.getAllAxis();
     }
 
 
