@@ -85,7 +85,7 @@ public class SerialWriter implements Runnable {
      * get buffer value
      * @return buffer value
      */
-    synchronized int getBufferValue() {
+    public synchronized int getBufferValue() {
         return bufferAvailable.get();
     }
 
@@ -104,7 +104,7 @@ public class SerialWriter implements Runnable {
      * add bytes returned to buffer
      * @param lenBytesReturned length returned
      */
-    synchronized void addBytesReturnedToBuffer(int lenBytesReturned) {
+    public synchronized void addBytesReturnedToBuffer(int lenBytesReturned) {
         bufferAvailable.set(getBufferValue() + lenBytesReturned);
         logger.debug("Returned " + lenBytesReturned + " to buffer. " +
                 "Buffer is now at " + bufferAvailable);

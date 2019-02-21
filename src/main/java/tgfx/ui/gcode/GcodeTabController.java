@@ -33,7 +33,7 @@ import org.apache.logging.log4j.Logger;
 import tgfx.MainController;
 import tgfx.SerialWriter;
 import tgfx.TgFXConstants;
-import tgfx.render.CNCMachine;
+import tgfx.render.CNCMachinePane;
 import tgfx.system.Machine;
 import tgfx.system.enums.GcodeDistanceMode;
 import tgfx.tinyg.CommandManager;
@@ -116,7 +116,7 @@ public class GcodeTabController implements Initializable {
 
     //lives inside of the gcodePane
     @FXML
-    private CNCMachine cncMachinePane;
+    private CNCMachinePane cncMachinePane;
 
     // below the gcode Pane
     @FXML
@@ -743,7 +743,7 @@ public class GcodeTabController implements Initializable {
         };
     }
 
-    public CNCMachine getCncMachinePane(){
+    public CNCMachinePane getCncMachinePane(){
         return cncMachinePane;
     }
 
@@ -865,7 +865,7 @@ public class GcodeTabController implements Initializable {
     private void handleMaxHeightChange() {
         logger.info("handleMaxHeightChange");
 
-        // FIXME: makes the CNCMachine stage too large
+        // FIXME: makes the CNCMachinePane stage too large
 //        scaleAmount = getScale();
 //        cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
 
@@ -887,7 +887,7 @@ public class GcodeTabController implements Initializable {
     private void handleMaxWidthChange() {
         logger.info("handleMaxWidthChange");
 
-        // FIXME: makes the CNCMachine stage too large
+        // FIXME: makes the CNCMachinePane stage too large
 //        scaleAmount = getScale();
 //        cncMachinePane.autoScaleWorkTravelSpace(scaleAmount);
 

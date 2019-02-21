@@ -33,10 +33,10 @@ import tgfx.tinyg.TinygDriver;
 import static tgfx.tinyg.Commands.*;
 
 /**
- * CNCMachine pane
+ * CNCMachinePane
  *
  */
-public class CNCMachine extends Pane {
+public class CNCMachinePane extends Pane {
     private static final Logger logger = LogManager.getLogger();
 
     private final Circle cursorPoint = new Circle(2, javafx.scene.paint.Color.RED);
@@ -46,7 +46,7 @@ public class CNCMachine extends Pane {
 
     private Draw2d draw2d = new Draw2d();
 
-    private StackPane gcodePane = new StackPane(); //Holds CNCMachine
+    private StackPane gcodePane = new StackPane(); //Holds CNCMachinePane
 
     private double xPrevious;
     private double yPrevious;
@@ -60,10 +60,10 @@ public class CNCMachine extends Pane {
     private double magnification = 1;
 
     /**
-     * CNCMachine
-     * CNCMachine constructor
+     * CNCMachinePane
+     * CNCMachinePane constructor
      */
-    public CNCMachine() {
+    public CNCMachinePane() {
         //Cursor point indicator
         cursorPoint.setRadius(1);
 
@@ -85,7 +85,7 @@ public class CNCMachine extends Pane {
         // initial layout setup in constructor
         setupLayout();
 
-        // mouse moved inside the CNCMachine
+        // mouse moved inside the CNCMachinePane
         ChangeListener posChangeListener = (observableValue, oldValue, newValue) -> {
             boolean showCursor = true;
             if (MACHINE.getAxisByName("y").getMachinePosition() > heightProperty().get()
@@ -96,20 +96,20 @@ public class CNCMachine extends Pane {
 
         };
 
-        // mouse exited the CNCMachine
+        // mouse exited the CNCMachinePane
         this.setOnMouseExited(me -> {
             // gcodePane.getChildren().remove(c);
             getChildren().remove(cursorText);
             setFocusForJogging(false);
         });
 
-        // mouse entered the CNCMachine
+        // mouse entered the CNCMachinePane
         this.setOnMouseEntered(me -> {
             setFocusForJogging(true);
             requestFocus();
         });
 
-        //  mouse clicked the CNCMachine
+        //  mouse clicked the CNCMachinePane
         this.setOnMouseClicked(me -> {
             logger.info("set machine position");
             //T his is so we can set our machine position when a machine does not have homing switches
@@ -151,7 +151,7 @@ public class CNCMachine extends Pane {
         cursorPoint.layoutXProperty().addListener(posChangeListener);
         cursorPoint.layoutYProperty().addListener(posChangeListener);
 
-        logger.info("CNCMachine preview pane initialized");
+        logger.info("CNCMachinePane preview pane initialized");
     }
 
 
@@ -160,7 +160,7 @@ public class CNCMachine extends Pane {
     }
 
     /**
-     * get the pane that the CNCMachine lives in
+     * get the pane that the CNCMachinePane lives in
      * @return gcode pane
      */
     private StackPane getGcodePane() {
@@ -174,7 +174,7 @@ public class CNCMachine extends Pane {
      */
     private void hideOrShowCursor(boolean choice) {
         //logger.info(choice?"show cursor":"hide cursor");
-        // FIXME: RuntimeException: CNCMachine.visible : A bound value cannot be set
+        // FIXME: RuntimeException: CNCMachinePane.visible : A bound value cannot be set
         // this.visibleProperty().set(choice);
     }
 
@@ -255,7 +255,7 @@ public class CNCMachine extends Pane {
      * reset layout
      */
     public void clearScreen() {
-        logger.info("screen clear triggered CNCMachine layout setup");
+        logger.info("screen clear triggered CNCMachinePane layout setup");
         this.getChildren().clear();
         draw2d.setFirstDraw(true);  //We don't want to draw a line from where the previous point was when a clear screen is called.
         setupLayout();  //re-draw the needed elements.
@@ -414,7 +414,7 @@ public class CNCMachine extends Pane {
      * setup layout
      */
     private void setupLayout() {
-        logger.info("Setting up CNCMachine layout");
+        logger.info("Setting up CNCMachinePane layout");
         //This draws the x axis text as well as grid etc
         Text xText = new Text("X Axis");
         Text yText = new Text("Y Axis");

@@ -7,7 +7,7 @@
 <?import eu.hansolo.medusa.*?>
 
 <?import java.net.URL?>
-<?import tgfx.render.CNCMachine?>
+<?import tgfx.render.CNCMachinePane?>
 
 <Tab text="Gcode" closable="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
      fx:controller="tgfx.ui.gcode.GcodeTabController">
@@ -91,7 +91,7 @@
 
                     <!-- preview pane -->
                     <StackPane fx:id="gcodePane" id="topPreviewPane" minHeight="400.0" minWidth="400.0" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
-                        <CNCMachine fx:id="cncMachinePane"/>
+                        <CNCMachinePane fx:id="cncMachinePane"/>
                     </StackPane>
 
                     <!-- information -->

@@ -1,0 +1,68 @@
+@startuml
+
+class TgFX
+class MainController
+class SerialDriver
+class SerialWriter
+TgFX --> MainController
+MainController --> tinyg.TinygDriver
+MainController --> ui.gcode.GcodeTabController
+MainController --> ui.gcode.GcodeHistory
+MainController --> ui.machinesettings.MachineSettingsController
+MainController --> ui.tgfxsettings.TgFXSettingsController
+MainController --> ui.tinygconfig.TinyGConfigController
+MainController --> ui.firmware.FirmwareUpdaterController
+'SerialWriter ..> SerialDriver ' TODO - SerialDriver should own SerialWriter
+
+class hardwarePlatforms.HardwarePlatform
+class hardwarePlatforms.HardwarePlatformManager
+
+class render.CNCMachinePane
+class render.Draw2d
+render.CNCMachinePane --> render.Draw2d
+
+class system.Axis
+class system.CoordinateManager
+class system.CoordinateSystem
+class system.Motor
+class system.StatusCode
+system.Machine --> hardwarePlatforms.HardwarePlatform
+system.Machine *--> system.Axis
+system.Machine *--> system.Motor
+system.Machine --> system.enum.GcodeUnitMode
+system.Machine --> system.enum.GcodeSelectPlane
+system.Machine --> system.enum.CoordinateSystem
+system.Machine --> system.enum.GcodePathControl
+system.Machine --> system.enum.GcodeDistanceMode
+
+class tinyg.CommandManager
+class tinyg.Commands
+class tinyg.MnemonicManager
+class tinyg.Mnemonics
+class tinyg.QueueReport
+class tinyg.ResponseCommand
+class tinyg.ResponseParser
+class tinyg.ResponseFooter
+class tinyg.TinygDriver
+tinyg.TinygDriver --> tinyg.ResponseParser
+tinyg.TinygDriver --> system.Machine
+tinyg.TinygDriver --> tinyg.MnemonicManager
+tinyg.TinygDriver --> tinyg.CommandManager
+tinyg.TinygDriver --> SerialWriter
+tinyg.TinygDriver --> SerialDriver
+tinyg.ResponseParser --> tinyg.ResponseFooter
+tinyg.CommandManager --> tinyg.Commands
+tinyg.MnemonicManager --> tinyg.Mnemonics
+
+
+class ui.gcode.GcodeTabController
+class ui.gcode.GcodeLine
+ui.gcode.GcodeTabController *--> ui.gcode.GcodeLine
+ui.gcode.GcodeTabController --> render.CNCMachinePane
+
+class ui.firmware.FirmwareUpdaterController
+class ui.machinesettings.MachineSettingsController
+class ui.tgfxsettings.TgFXSettingsController
+class ui.tinygconfig.TinyGConfigController
+
+@enduml

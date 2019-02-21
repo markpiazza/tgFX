@@ -1,4 +1,4 @@
-package tgfx;
+package tgfx.tinyg;
 
 import jssc.SerialPortException;
 import org.apache.logging.log4j.LogManager;
@@ -15,9 +15,8 @@ import static tgfx.tinyg.Mnemonics.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
+import tgfx.MainController;
 import tgfx.system.Machine;
-import tgfx.tinyg.TinygDriver;
-import tgfx.tinyg.ResponseCommand;
 
 /**
  * ResponseParser

@@ -14,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import tgfx.MainController;
-import tgfx.ResponseParser;
 import tgfx.SerialDriver;
 import tgfx.SerialWriter;
 import tgfx.system.enums.AxisType;
@@ -41,7 +40,6 @@ public class TinygDriver extends Observable {
 
     private final HardwarePlatformManager hardwarePlatformManager = HardwarePlatformManager.getInstance();
     private final SerialDriver serialDriver = SerialDriver.getInstance();
-    private final QueueReport QUEUE = QueueReport.getInstance();
     private final Machine MACHINE = Machine.getInstance();
 
     private final AtomicBoolean connectionSemaphore = new AtomicBoolean(false);
@@ -50,21 +48,20 @@ public class TinygDriver extends Observable {
     private static ArrayBlockingQueue<String> jsonQueue = new ArrayBlockingQueue<>(10000);
     private static ArrayBlockingQueue<byte[]> responseQueue = new ArrayBlockingQueue<>(30);
 
-    private String[] message = new String[2];
-
     private SimpleBooleanProperty connectionStatus = new SimpleBooleanProperty(false);
 
-    private MnemonicManager mnemonicManager = new MnemonicManager();
-    private CommandManager commandManager = new CommandManager();
-
-    private AsyncTimer connectionTimer;
-
     private ArrayList<String> connections = new ArrayList<>();
+    private String[] message = new String[2];
     private boolean paused = false;
     private boolean timedout = false;
 
     private ResponseParser responseParser = new ResponseParser();
     private SerialWriter serialWriter = new SerialWriter(writerQueue);
+    private MnemonicManager mnemonicManager = new MnemonicManager();
+    private CommandManager commandManager = new CommandManager();
+    private QueueReport queueReport = new QueueReport();
+    private AsyncTimer connectionTimer;
+
 
 
     /**
@@ -91,7 +88,7 @@ public class TinygDriver extends Observable {
      * @return queue report
      */
     public QueueReport getQueryReport(){
-        return QUEUE;
+        return queueReport;
     }
 
 

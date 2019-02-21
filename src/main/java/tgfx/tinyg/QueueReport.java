@@ -17,19 +17,10 @@ public class QueueReport {
     private int added = 0;
     private int removed = 0;
 
-    private static QueueReport queueReportInstance;
-
-    private QueueReport() {
+    public QueueReport() {
     }
 
-    public static QueueReport getInstance(){
-        if(queueReportInstance==null){
-            queueReportInstance = new QueueReport();
-        }
-        return queueReportInstance;
-    }
-
-    public synchronized void parse(JSONObject js) throws JSONException {
+    synchronized void parse(JSONObject js) throws JSONException {
         logger.info("QUEUE REPORT");
         JSONArray jsa = js.getJSONArray("qr");
         setAvailableBufferSize(jsa.getInt(0));
