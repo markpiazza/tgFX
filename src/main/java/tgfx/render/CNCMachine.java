@@ -43,9 +43,10 @@ public class CNCMachine extends Pane {
 
     private TinygDriver DRIVER = TinygDriver.getInstance();
     private Machine MACHINE = DRIVER.getMachine();
-    private Draw2d DRAW2D = Draw2d.getInstance();
 
-    private static StackPane gcodePane = new StackPane(); //Holds CNCMachine
+    private Draw2d draw2d = new Draw2d();
+
+    private StackPane gcodePane = new StackPane(); //Holds CNCMachine
 
     private double xPrevious;
     private double yPrevious;
@@ -118,10 +119,10 @@ public class CNCMachine extends Pane {
                 MenuItem menuItem1 = new MenuItem("Set Machine Position");
                 menuItem1.setOnAction(t -> {
                     // We do not want to draw a line from our previous position
-                    DRAW2D.setFirstDraw(true);
+                    draw2d.setFirstDraw(true);
                     DRIVER.getCommandManager().setMachinePosition(getNormalizedX(me.getX()), getNormalizedY(me.getY()));
                     // This allows us to move our drawing to a new place without drawing a line from the old.
-                    DRAW2D.setFirstDraw(true);
+                    draw2d.setFirstDraw(true);
                     DRIVER.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
                     DRIVER.write(CMD_QUERY_STATUS_REPORT);
                     // G92 does not invoke a status report... So we need to generate one to have
@@ -153,6 +154,10 @@ public class CNCMachine extends Pane {
         logger.info("CNCMachine preview pane initialized");
     }
 
+
+    public Draw2d getDraw2d() {
+        return draw2d;
+    }
 
     /**
      * get the pane that the CNCMachine lives in
@@ -252,7 +257,7 @@ public class CNCMachine extends Pane {
     public void clearScreen() {
         logger.info("screen clear triggered CNCMachine layout setup");
         this.getChildren().clear();
-        DRAW2D.setFirstDraw(true);  //We don't want to draw a line from where the previous point was when a clear screen is called.
+        draw2d.setFirstDraw(true);  //We don't want to draw a line from where the previous point was when a clear screen is called.
         setupLayout();  //re-draw the needed elements.
     }
 
@@ -317,10 +322,10 @@ public class CNCMachine extends Pane {
 //        double newX = MACHINE.getAxisByName("x").machinePositionProperty().get(); // + magnification;
 //        double newY = this.getHeight() - MACHINE.getAxisByName("y").machinePositionProperty().get(); // + magnification;
 
-        if (DRAW2D.isFirstDraw()) {
+        if (draw2d.isFirstDraw()) {
             //This is to not have us draw a line on the first connect.
             l = new Line(newX, this.getHeight(), newX, this.getHeight());
-            DRAW2D.setFirstDraw(false);
+            draw2d.setFirstDraw(false);
         } else {
             l = new Line(xPrevious, yPrevious, newX, newY);
             l.setStrokeWidth(.5);
@@ -335,8 +340,8 @@ public class CNCMachine extends Pane {
             l.getStrokeDashArray().addAll(1d, 5d);
             l.setStroke(Draw2d.TRAVERSE);
         } else {
-            l.setStroke(DRAW2D.getLineColorFromVelocity(vel));
-            l.setStroke(DRAW2D.FAST);
+            l.setStroke(draw2d.getLineColorFromVelocity(vel));
+            l.setStroke(Draw2d.FAST);
         }
 
         if (this.checkBoundsX(l) && this.checkBoundsY(l)) {
@@ -357,7 +362,7 @@ public class CNCMachine extends Pane {
                 //This should be fairly harmless as it will always show the cursor if its the inital connect size 21,21
                 //its a bit of a hack but it works for now.
                     cursorPoint.visibleProperty().set(false);
-                    DRAW2D.setFirstDraw(true);
+                    draw2d.setFirstDraw(true);
                 if (getChildren().contains(cursorPoint)) { //If cursor is in the group we are going to remove it util above is true
                     getChildren().remove(this.getChildren().indexOf(cursorPoint)); //Remove it.
                     if (!msgSent) {
@@ -380,7 +385,7 @@ public class CNCMachine extends Pane {
         logger.info("zeroSystem");
         if (DRIVER.isConnected().get()) {
             try {
-                DRAW2D.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
+                draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
                 DRIVER.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
                 //G92 does not invoke a status report... So we need to generate one to have
                 //Our GUI update the coordinates to zero

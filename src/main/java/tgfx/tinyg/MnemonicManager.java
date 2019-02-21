@@ -14,7 +14,7 @@ public class MnemonicManager {
 
 
 
-    MnemonicManager() {
+    public MnemonicManager() {
     }
 
     public boolean isMasterGroupObject(String strToLookup) {

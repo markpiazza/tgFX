@@ -34,7 +34,6 @@ import tgfx.MainController;
 import tgfx.SerialWriter;
 import tgfx.TgFXConstants;
 import tgfx.render.CNCMachine;
-import tgfx.render.Draw2d;
 import tgfx.system.Machine;
 import tgfx.system.enums.GcodeDistanceMode;
 import tgfx.tinyg.CommandManager;
@@ -53,10 +52,10 @@ import static tgfx.tinyg.Commands.*;
 public class GcodeTabController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
 
-    private static TinygDriver DRIVER = TinygDriver.getInstance();
-    private static Machine MACHINE = DRIVER.getMachine();
-    private static SerialWriter WRITER = DRIVER.getSerialWriter();
-    private static Draw2d DRAW2D = Draw2d.getInstance();
+    private final TinygDriver DRIVER = TinygDriver.getInstance();
+    private final Machine MACHINE = DRIVER.getMachine();
+
+    private final SerialWriter WRITER = DRIVER.getSerialWriter();
 
     private CommandManager commandManager = new CommandManager();
 
@@ -204,7 +203,7 @@ public class GcodeTabController implements Initializable {
 
         if (DRIVER.isConnected().get()) {
             //We set this so we do not draw lines for the previous position to the new zero.
-            DRAW2D.setFirstDraw(true);
+            cncMachinePane.getDraw2d().setFirstDraw(true);
             switch (axis) {
                 case "x":
                     DRIVER.write(CMD_APPLY_ZERO_X_AXIS);
@@ -280,7 +279,6 @@ public class GcodeTabController implements Initializable {
         MainController.postConsoleMessage("Clearing Screen...\n");
         cncMachinePane.clearScreen();
         //clear this so our first line added draws correctly
-        DRAW2D.setFirstDraw(true);
     }
 
 

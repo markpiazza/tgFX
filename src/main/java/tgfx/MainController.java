@@ -31,7 +31,6 @@ import org.json.JSONException;
 import tgfx.system.Machine;
 import tgfx.tinyg.TinygDriver;
 import tgfx.system.StatusCode;
-import tgfx.render.Draw2d;
 import tgfx.ui.gcode.GcodeHistory;
 import tgfx.ui.gcode.GcodeTabController;
 import tgfx.ui.machinesettings.MachineSettingsController;
@@ -51,9 +50,8 @@ import static tgfx.tinyg.Commands.*;
 public class MainController extends Stage implements Initializable, Observer, QueuedTimerable<String> {
     private static final Logger logger = LogManager.getLogger();
 
-    private static final TinygDriver DRIVER = TinygDriver.getInstance();
-    private static final  Machine MACHINE = DRIVER.getMachine();
-    private static final  Draw2d DRAW2D = Draw2d.getInstance();
+    private final TinygDriver DRIVER = TinygDriver.getInstance();
+    private final Machine MACHINE = DRIVER.getMachine();
 
     private final static StringConverter<Number> STRING_CONVERTER = new StringConverter<Number>() {
         @Override
@@ -707,7 +705,6 @@ public class MainController extends Stage implements Initializable, Observer, Qu
                 machine.setMachineState(0);
                 machine.setLineNumber(0);
                 machine.setMotionMode(0);
-                DRAW2D.setFirstDraw(true);
                 //Once we disconnect we hide our gcode preview.
                 gcodeTabController.setCNCMachineVisible(false);
 

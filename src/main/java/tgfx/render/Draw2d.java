@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class Draw2d {
     private static final Logger logger = LogManager.getLogger();
-    private static Draw2d instance;
 
     static Paint retPaint;
     static Paint FAST = Color.web("#85ff22");
@@ -29,14 +28,7 @@ public class Draw2d {
     private static double strokeIncrement = .1;
     private static boolean firstDraw = true;
 
-    private Draw2d(){
-    }
-
-    public static Draw2d getInstance(){
-        if(instance == null){
-            instance = new Draw2d();
-        }
-        return instance;
+    public Draw2d(){
     }
 
     public boolean isFirstDraw() {

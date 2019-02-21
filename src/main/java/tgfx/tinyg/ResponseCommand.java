@@ -19,7 +19,7 @@ public class ResponseCommand {
     private String settingKey;
     private String settingValue;
     
-    ResponseCommand(){
+    public ResponseCommand(){
         
     }
 
