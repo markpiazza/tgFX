@@ -39,8 +39,8 @@ import static tgfx.tinyg.Commands.CMD_APPLY_BOOTLOADER_MODE;
 public class FirmwareUpdaterController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
 
-    private static TinygDriver DRIVER = TinygDriver.getInstance();
-    private static Machine MACHINE = DRIVER.getMachine();
+    private static final TinygDriver DRIVER = TinygDriver.getInstance();
+    private static final Machine MACHINE = DRIVER.getMachine();
 
     @FXML
     private static Label firmwareVersion;
@@ -201,7 +201,7 @@ public class FirmwareUpdaterController implements Initializable {
                 String _currentVersionString = new String(buffer);
                 latestFirmwareBuild.setText(_currentVersionString);
                 Double currentVal;
-                if (MACHINE.getFirmwareBuildVersion() <
+                if (MACHINE.getFirmwareBuild() <
                         Double.parseDouble(_currentVersionString)) {
                     //We need to update your firmware
                     Platform.runLater(() -> {
@@ -252,14 +252,10 @@ public class FirmwareUpdaterController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        NumberExpression ne = new SimpleDoubleProperty(_currentVersionString.doubleValue())
-                .subtract(MACHINE.getFirmwareBuild());
-
-        hardwareId.textProperty().bind(MACHINE.getHardwareId());
-        hwVersion.textProperty().bind(MACHINE.getHardwareVersion());
-        //firmwareVersion.textProperty().bind(MACHINE.getFirmwareVersion());
-        buildNumb.textProperty().bind(MACHINE.getFirmwareBuild().asString());
+        hardwareId.textProperty().bind(MACHINE.hardwareIdProperty());
+        hwVersion.textProperty().bind(MACHINE.hardwareVersionProperty());
+        //firmwareVersion.textProperty().bind(MACHINE.firmwareVersionProperty());
+        buildNumb.textProperty().bind(MACHINE.firmwareBuildProperty().asString());
 
     }
 

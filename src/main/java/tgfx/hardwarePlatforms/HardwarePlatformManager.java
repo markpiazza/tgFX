@@ -21,14 +21,16 @@ import tgfx.tinyg.TinygDriver;
 public class HardwarePlatformManager {
     private static final Logger logger = LogManager.getLogger();
 
-
     private ArrayList<HardwarePlatform> availablePlatforms = new ArrayList<>();
+
+    private TinygDriver driver;
 
     /**
      * constructor, loads the platforms
      */
-    public HardwarePlatformManager() {
+    public HardwarePlatformManager(TinygDriver driver) {
         logger.info("Starting HardwarePlatformManager");
+        this.driver = driver;
         this.loadPlatformConfigs();
     }
 
@@ -94,12 +96,5 @@ public class HardwarePlatformManager {
             }
         }
         logger.info("Loaded " + availablePlatforms.size() + " platform files");
-    }
-
-    /**
-     * update platform files
-     */
-    private void updatePlatformFiles() {
-        // TODO: code in support for updating platform files from remote server
     }
 }

@@ -24,14 +24,14 @@ import tgfx.system.Machine;
 public class ResponseParser extends Observable implements Runnable {
     private static final Logger logger = LogManager.getLogger();
 
+    private TinygDriver driver;
+
     // These values are for mapping what element in the json
     // footer array maps to which values.
     private static final int FOOTER_ELEMENT_PROTOCOL_VERSION = 0;
     private static final int FOOTER_ELEMENT_STATUS_CODE = 1;
     private static final int FOOTER_ELEMENT_RX_RECVD = 2;
     private static final int FOOTER_ELEMENT_CHECKSUM = 3;
-
-    private static final TinygDriver DRIVER = TinygDriver.getInstance();
 
     //our holder for ResponseFooter Data
     private ResponseFooter responseFooter = new ResponseFooter();
@@ -43,7 +43,8 @@ public class ResponseParser extends Observable implements Runnable {
     /**
      * constructor
      */
-    public ResponseParser() {
+    public ResponseParser(TinygDriver driver) {
+        this.driver = driver;
     }
 
     /**
@@ -88,9 +89,9 @@ public class ResponseParser extends Observable implements Runnable {
                         message[1] = "JSON Response Detected... Leaving Text mode..  " +
                                         "Querying System State....\n";
                         notifyObservers(message);
-                        DRIVER.getCommandManager().queryAllMachineSettings();
-                        DRIVER.getCommandManager().queryAllHardwareAxisSettings();
-                        DRIVER.getCommandManager().queryAllMotorSettings();
+                        driver.getCommandManager().queryAllMachineSettings();
+                        driver.getCommandManager().queryAllHardwareAxisSettings();
+                        driver.getCommandManager().queryAllMotorSettings();
 
                     }
                     parseJSON(line);  //Take a line from the response queue when its ready and parse it.
@@ -158,7 +159,7 @@ public class ResponseParser extends Observable implements Runnable {
                         // error codes.. bytes available in hardware buffer etc.
                         parseFooter(js.getJSONArray("f"));
                     } else {
-                        ResponseCommand rc = DRIVER.getMnemonicManager()
+                        ResponseCommand rc = driver.getMnemonicManager()
                                 .lookupSingleGroupMaster(key, pg);
 
                         // This happens when a new mnemonic has been added to the tinyG firmware
@@ -196,7 +197,7 @@ public class ResponseParser extends Observable implements Runnable {
         for (Object o : js.keySet()) {
             String key = o.toString();
             ResponseCommand rc = new ResponseCommand(MNEMONIC_GROUP_SYSTEM, key, js.get(key).toString());
-            DRIVER.getMachine().applyJsonStatusReport(rc);
+            driver.getMachine().applyJsonStatusReport(rc);
             // we will supply the parent object name for each key pair
             // applySettings(rc.buildJsonObject(), rc.getSettingParent());
         }
@@ -241,15 +242,15 @@ public class ResponseParser extends Observable implements Runnable {
                             notifyObservers(message);
                             break;
                         case MNEMONIC_SYSTEM_REPORT_RX_BUFFER:
-                            DRIVER.getSerialWriter().setBuffer(js.getInt(key));
+                            driver.getSerialWriter().setBuffer(js.getInt(key));
                             break;
                         default:
-                            if (DRIVER.getMnemonicManager().isMasterGroupObject(key)) {
+                            if (driver.getMnemonicManager().isMasterGroupObject(key)) {
                                 // logger.info("Group Status Report Detected: " + key);
                                 applySettingMasterGroup(js.getJSONObject(key), key);
                                 continue;
                             }
-                            ResponseCommand rc = DRIVER.getMnemonicManager().lookupSingleGroup(key);
+                            ResponseCommand rc = driver.getMnemonicManager().lookupSingleGroup(key);
                             rc.setSettingValue(js.get(key).toString());
                             // we will supply the parent object name for each key pair
                             applySettings(rc.buildJsonObject(), rc.getSettingParent());
@@ -292,7 +293,7 @@ public class ResponseParser extends Observable implements Runnable {
      * @param pg parent group
      */
     private void applySettings(JSONObject js, String pg) {
-        Machine machine = DRIVER.getMachine();
+        Machine machine = driver.getMachine();
         switch (pg) {
             case MNEMONIC_GROUP_MOTOR_1:
                 machine.getMotorByNumber(MNEMONIC_GROUP_MOTOR_1)
@@ -414,7 +415,7 @@ public class ResponseParser extends Observable implements Runnable {
             default:
                 //This is for single settings xfr, 1tr etc...
                 //This is pretty ugly but it gets the key and the value. For single values.
-                ResponseCommand rc = DRIVER.getMnemonicManager().lookupSingleGroup(pg);
+                ResponseCommand rc = driver.getMnemonicManager().lookupSingleGroup(pg);
                 if (rc != null) {
                     // I changed this to deal with the fb mnemonic.. not sure if this works all over.
                     rc.setSettingValue(String.valueOf(js.get(js.keys().next())));
@@ -459,15 +460,15 @@ public class ResponseParser extends Observable implements Runnable {
         responseFooter.setCheckSum(footerValues.getInt(FOOTER_ELEMENT_STATUS_CODE));
         //Out footer object is not populated
 
-        int beforeBytesReturned = DRIVER.getSerialWriter().getBufferValue();
+        int beforeBytesReturned = driver.getSerialWriter().getBufferValue();
         // Make sure we do not add bytes to a already full buffer
         if (beforeBytesReturned != TinygDriver.MAX_BUFFER) {
-            DRIVER.getSerialWriter().addBytesReturnedToBuffer(responseFooter.getRxRecvd());
-            int afterBytesReturned = DRIVER.getSerialWriter().getBufferValue();
+            driver.getSerialWriter().addBytesReturnedToBuffer(responseFooter.getRxRecvd());
+            int afterBytesReturned = driver.getSerialWriter().getBufferValue();
             logger.debug("Returned {} to buffer... Buffer was {}  is now {}",
                     responseFooter.getRxRecvd(), beforeBytesReturned, afterBytesReturned );
             // We let our serialWriter thread know we have added some space to the buffer.
-            DRIVER.getSerialWriter().notifyAck();
+            driver.getSerialWriter().notifyAck();
             //Lets tell the UI the new size of the buffer
             message[0] = "BUFFER_UPDATE";
             message[1] = String.valueOf(afterBytesReturned);
@@ -529,7 +530,7 @@ public class ResponseParser extends Observable implements Runnable {
             });
 
         } else if (js.has(MNEMONIC_GROUP_QUERY_REPORT)) {
-            DRIVER.getQueryReport().parse(js);
+            driver.getQueryReport().parse(js);
         } else if (js.has(MNEMONIC_GROUP_EMERGENCY_SHUTDOWN)) {
             applySetting(js);
         }
@@ -569,7 +570,7 @@ public class ResponseParser extends Observable implements Runnable {
                 case YES:
                     logger.info("Clicked Yes");
                     try {
-                        DRIVER.priorityWrite((byte) 0x18);
+                        driver.priorityWrite((byte) 0x18);
                     } catch (SerialPortException ex) {
                         logger.error(ex);
                     }

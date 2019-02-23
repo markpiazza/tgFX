@@ -50,8 +50,8 @@ import static tgfx.tinyg.Commands.*;
 public class MainController extends Stage implements Initializable, Observer, QueuedTimerable<String> {
     private static final Logger logger = LogManager.getLogger();
 
-    private final TinygDriver DRIVER = TinygDriver.getInstance();
-    private final Machine MACHINE = DRIVER.getMachine();
+    private static final TinygDriver DRIVER = TinygDriver.getInstance();
+    private static final Machine MACHINE = DRIVER.getMachine();
 
     private final static StringConverter<Number> STRING_CONVERTER = new StringConverter<Number>() {
         @Override
@@ -250,7 +250,7 @@ public class MainController extends Stage implements Initializable, Observer, Qu
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        logger.info("tgFX is starting....");
+        logger.info("Initializing MainController");
         gcodeTabController.setGcodeText("TinyG Disconnected.");
 
         // Add the tinyg driver to this observer
@@ -275,16 +275,15 @@ public class MainController extends Stage implements Initializable, Observer, Qu
         // start the response parser thread
         startResponseParserThread();
 
-        srMomo.textProperty().bind(MACHINE.getMotionMode());
-        srVer.textProperty().bind(MACHINE.getFirmwareVersion());
-        srBuild.textProperty().bindBidirectional(MACHINE.getFirmwareBuild(), STRING_CONVERTER);
-        srState.textProperty().bind(MACHINE.getMachineState());
-        srCoord.textProperty().bind(MACHINE.getCoordinateSystem());
-        srUnits.textProperty().bind(MACHINE.getGcodeUnitMode());
+        srMomo.textProperty().bind(MACHINE.motionModeProperty());
+        srVer.textProperty().bind(MACHINE.firmwareVersionProperty());
+        srBuild.textProperty().bindBidirectional(MACHINE.firmwareBuildProperty(), STRING_CONVERTER);
+        srState.textProperty().bind(MACHINE.machineStateProperty());
+        srCoord.textProperty().bind(MACHINE.coordinateSystemProperty());
+        srUnits.textProperty().bind(MACHINE.gcodeUnitModeProperty());
         srCoord.textProperty().bind(MACHINE.getGcodeCoordinateManager()
                 .getCurrentGcodeCoordinateSystemName());
-        srGcodeLine.textProperty().bind(MACHINE.getLineNumberSimple().asString());
-
+        srGcodeLine.textProperty().bind(MACHINE.lineNumberProperty().asString());
     }
 
 
@@ -296,23 +295,22 @@ public class MainController extends Stage implements Initializable, Observer, Qu
      */
     @Override
     public synchronized void update(Observable o, Object arg) {
-        //We process status code messages here first.
-        // TODO: can we use StatusCode.class and not the canonical name?
-        if (arg.getClass().getCanonicalName().equals("tgfx.system.StatusCode")) {
+        // We process status code messages here first.
+        if (arg instanceof StatusCode ){
             //We got an error condition.. lets route it to where it goes!
             StatusCode statuscode = (StatusCode) arg;
             MainController.postConsoleMessage("[->] TinyG Response: " + statuscode.getStatusType() +
                     ":" + statuscode.getMessage() + "\n");
-        } else {
-            try {
-                final String[] updateMessage = (String[]) arg;
-                final String routingKey = updateMessage[0];
-                final String keyArgument = updateMessage[1];
+        } else if(arg instanceof String[]){
+            final String[] updateMessage = (String[]) arg;
+            final String routingKey = updateMessage[0];
+            final String keyArgument = updateMessage[1];
 
-                /*
-                 * This is our update routing switch From here we update
-                 * different parts of the GUI that is not bound to properties.
-                 */
+            /*
+             * This is our update routing switch From here we update
+             * different parts of the GUI that is not bound to properties.
+             */
+            try {
                 switch (routingKey) {
                     case ROUTING_STATUS_REPORT:
                         doStatusReport();
@@ -492,7 +490,7 @@ public class MainController extends Stage implements Initializable, Observer, Qu
             mono.setTitleText("TinyG Firware Build Outdated...");
             mono.setMessage("Your TinyG firmware is too old to be used with tgFX. \n" +
                     "Your build version: " +
-                    DRIVER.getMachine().getFirmwareBuild() + "\n" +
+                    DRIVER.getMachine().firmwareBuildProperty() + "\n" +
                     "Minimal Needed Version: " +
                     DRIVER.getMachine().getHardwarePlatform()
                             .getMinimalBuildVersion().toString() + "\n\n" +
@@ -613,6 +611,7 @@ public class MainController extends Stage implements Initializable, Observer, Qu
         serialPorts.getItems().clear();
         String[] portArray = DRIVER.listSerialPorts();
         serialPorts.getItems().addAll(Arrays.asList(portArray));
+        serialPorts.getSelectionModel().selectFirst();
     }
 
 

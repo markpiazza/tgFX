@@ -39,13 +39,12 @@ import static tgfx.tinyg.Commands.*;
 public class CNCMachinePane extends Pane {
     private static final Logger logger = LogManager.getLogger();
 
+    private static final TinygDriver DRIVER = TinygDriver.getInstance();
+    private static final Machine MACHINE = DRIVER.getMachine();
+
     private final Circle cursorPoint = new Circle(2, javafx.scene.paint.Color.RED);
 
-    private TinygDriver DRIVER = TinygDriver.getInstance();
-    private Machine MACHINE = DRIVER.getMachine();
-
     private Draw2d draw2d = new Draw2d();
-
     private StackPane gcodePane = new StackPane(); //Holds CNCMachinePane
 
     private double xPrevious;
@@ -58,6 +57,7 @@ public class CNCMachinePane extends Pane {
     private DecimalFormat df = new DecimalFormat("#.###");
     private boolean msgSent = false;
     private double magnification = 1;
+
 
     /**
      * CNCMachinePane
@@ -155,6 +155,10 @@ public class CNCMachinePane extends Pane {
     }
 
 
+    /**
+     * get the draw plotter
+     * @return Draw2D
+     */
     public Draw2d getDraw2d() {
         return draw2d;
     }
@@ -275,7 +279,7 @@ public class CNCMachinePane extends Pane {
         double scale = 1;
         double unitMagnification = 1;
 
-        if (MACHINE.getGcodeUnitMode().get().equals(GcodeUnitMode.INCHES.toString())) {
+        if (MACHINE.gcodeUnitModeProperty().get().equals(GcodeUnitMode.INCHES.toString())) {
             unitMagnification = 5;  //INCHES
         } else {
             unitMagnification = 2; //MM
@@ -288,7 +292,6 @@ public class CNCMachinePane extends Pane {
         //FIXME: copied from below, seems to work better than above, but still not quite right
         double newX = MACHINE.getAxisByName("x").machinePositionProperty().get() * 2;
         double newY = this.getHeight() - MACHINE.getAxisByName("y").machinePositionProperty().get() * 2;
-
 
         if (newX > getGcodePane().getWidth() || newX > getGcodePane().getWidth()) {
             scale = scale / 2;
@@ -312,8 +315,6 @@ public class CNCMachinePane extends Pane {
                 }
             }
 
-
-            //            MainController.postConsoleMessage("Finished Drawing Preview Scale Change.\n");
             getGcodePane().setScaleX(scale);
             getGcodePane().setScaleY(scale);
         }
@@ -331,11 +332,10 @@ public class CNCMachinePane extends Pane {
             l.setStrokeWidth(.5);
         }
 
-        // TODO: Pull these out to CNC machine or Draw2d these are out of place
         xPrevious = newX;
         yPrevious = newY;
 
-        if (MACHINE.getMotionMode().get().equals("traverse")) {
+        if (MACHINE.motionModeProperty().get().equals("traverse")) {
             //G0 Moves
             l.getStrokeDashArray().addAll(1d, 5d);
             l.setStroke(Draw2d.TRAVERSE);
@@ -345,15 +345,17 @@ public class CNCMachinePane extends Pane {
         }
 
         if (this.checkBoundsX(l) && this.checkBoundsY(l)) {
-            //Line is within the travel max gcode preview box.  So we will draw it.
+            // Line is within the travel max gcode preview box.  So we will draw it.
             this.getChildren().add(l);  //Add the line to the Pane
             logger.info("Line : ({},{}), ({},{})",
                     l.getStartX(), l.getStartY(),
                     l.getEndX(), l.getEndY() );
             cursorPoint.visibleProperty().set(true);
             msgSent = false;
-            if (!getChildren().contains(cursorPoint)) { //If the cursorPoint is not in the Group and we are in bounds
-                this.getChildren().add(cursorPoint);  //Adding the cursorPoint back
+            // If the cursorPoint is not in the Group and we are in bounds
+            if (!getChildren().contains(cursorPoint)) {
+                // Adding the cursorPoint back
+                this.getChildren().add(cursorPoint);
             }
         } else {
             logger.info("Outside of Bounds X");
@@ -384,17 +386,13 @@ public class CNCMachinePane extends Pane {
     public void zeroSystem() {
         logger.info("zeroSystem");
         if (DRIVER.isConnected().get()) {
-            try {
-                draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
-                DRIVER.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
-                //G92 does not invoke a status report... So we need to generate one to have
-                //Our GUI update the coordinates to zero
-                DRIVER.write(CMD_QUERY_STATUS_REPORT);
-                //We need to set these to 0 so we do not draw a line from the last place we were to 0,0
-                resetDrawingCoords();
-            } catch (Exception ex) {
-                logger.error(ex);
-            }
+            draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
+            DRIVER.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
+            //G92 does not invoke a status report... So we need to generate one to have
+            //Our GUI update the coordinates to zero
+            DRIVER.write(CMD_QUERY_STATUS_REPORT);
+            //We need to set these to 0 so we do not draw a line from the last place we were to 0,0
+            resetDrawingCoords();
         }
     }
 
@@ -457,5 +455,30 @@ public class CNCMachinePane extends Pane {
                 l.setStrokeWidth(stroke);
             }
         }
+    }
+
+
+    public double getCncHeight() {
+        return cncHeight.get();
+    }
+
+    public SimpleDoubleProperty cncHeightProperty() {
+        return cncHeight;
+    }
+
+    public double getCncWidth() {
+        return cncWidth.get();
+    }
+
+    public SimpleDoubleProperty cncWidthProperty() {
+        return cncWidth;
+    }
+
+    public Boolean getCursorVisibleBinding() {
+        return cursorVisibleBinding.get();
+    }
+
+    public BooleanExpression cursorVisibleBindingProperty() {
+        return cursorVisibleBinding;
     }
 }

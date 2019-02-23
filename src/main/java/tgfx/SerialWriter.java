@@ -17,8 +17,9 @@ public class SerialWriter implements Runnable {
     private static final Object MUTEX = new Object();
     private static final int BUFFER_SIZE = 180;
 
-    private static SerialDriver SERIAL = SerialDriver.getInstance();
     private static boolean THROTTLED = false;
+
+    private SerialDriver serialDriver;
 
     private AtomicInteger bufferAvailable = new AtomicInteger(BUFFER_SIZE);
     private BlockingQueue queue;
@@ -33,7 +34,8 @@ public class SerialWriter implements Runnable {
      * Serial Writer constructor
      * @param queue blocking queue
      */
-    public SerialWriter(BlockingQueue queue) {
+    public SerialWriter(SerialDriver serialDriver, BlockingQueue queue) {
+        this.serialDriver = serialDriver;
         this.queue = queue;
     }
 
@@ -173,13 +175,7 @@ public class SerialWriter implements Runnable {
     public void write(String str) {
         try {
             synchronized (MUTEX) {
-//                int _currentPlanningBuffer = TinygDriver.getInstance().getQueryReport().getAvailableBufferSize();
-
-//                if(_currentPlanningBuffer < 28){
-//                    //if we have less that 28 moves in the planning buffer send a line
-//                }
-
-                while (THROTTLED) {
+               while (THROTTLED) {
                     if (str.length() > getBufferValue()) {
                         logger.debug("Throttling: Line Length: " + str.length() +
                                 " is smaller than buffer length: " + bufferAvailable);
@@ -207,7 +203,7 @@ public class SerialWriter implements Runnable {
                 sendUiMessage(str);
             }
 
-            SERIAL.write(str);
+            serialDriver.write(str);
             
         } catch (InterruptedException ex) {
             logger.error("Error in SerialDriver Write");

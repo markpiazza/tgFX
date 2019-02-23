@@ -43,7 +43,7 @@ public class TgFX extends Application {
      * @param args command line arguments
      */
     public static void main(String[] args) {
-        logger.info("Starting up TgFX");
+        logger.info("Launching TgFX");
         Application.launch(TgFX.class, args);
     }
 }

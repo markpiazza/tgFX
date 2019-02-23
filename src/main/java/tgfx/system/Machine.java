@@ -145,12 +145,22 @@ public final class Machine {
         this.lastMessage = lastMessage;
     }
 
+
     /**
      * get hardware id
      * @return hardware id
      */
-    public StringProperty getHardwareId(){
+    public StringProperty hardwareIdProperty(){
         return hardwareId;
+    }
+
+
+    /**
+     * get hardware id
+     * @return hardware id
+     */
+    public String getHardwareId(){
+        return hardwareId.getValue();
     }
 
 
@@ -165,10 +175,19 @@ public final class Machine {
 
     /**
      * get hardware version
+     * @return hardware version property
+     */
+    public StringProperty hardwareVersionProperty(){
+        return hardwareVersion;
+    }
+
+
+    /**
+     * get hardware version
      * @return hardware version
      */
-    public StringProperty getHardwareVersion(){
-        return hardwareVersion;
+    public String getHardwareVersion(){
+        return hardwareVersion.getValue();
     }
 
 
@@ -178,6 +197,376 @@ public final class Machine {
      */
     public void setHardwareVersion(String hardwareVersion){
         this.hardwareVersion.setValue(hardwareVersion);
+    }
+
+
+    /**
+     * get longest travel axis value
+     * @return longest travel
+     */
+    public SimpleDoubleProperty longestTravelAxisValueProperty() {
+        return longestTravelAxisValue;
+    }
+
+
+    /**
+     * get longest travel axis value
+     * @return longest travel
+     */
+    public double getLongestTravelAxisValue() {
+        return longestTravelAxisValue.get();
+    }
+
+
+    /**
+     * set longest travel axis value
+     * @param value longest travel
+     */
+    public void setLongestTravelAxisValue(double value){
+        longestTravelAxisValue.set(value);
+    }
+
+
+    /**
+     * get gcode unit mode
+     * @return gcode unit mode
+     */
+    public StringProperty gcodeUnitModeProperty() {
+        return gcodeUnitMode;
+    }
+
+
+    /**
+     * get gcode unit mode as an int
+     * @return gcode unit mode
+     */
+    public int getGcodeUnitModeAsInt() {
+        return gcodeUnitMode.get().equals(GcodeUnitMode.MM.toString()) ? 1 : 0;
+    }
+
+
+    /**
+     * set gcode units by string
+     * @param gcu gcode units
+     */
+    public void setGcodeUnitMode(String gcu) {
+        switch (Integer.valueOf(gcu)) {
+            case 0:
+                gcodeUnitMode.set(GcodeUnitMode.INCHES.toString());
+                break;
+            case 1:
+                gcodeUnitMode.set(GcodeUnitMode.MM.toString());
+                break;
+        }
+    }
+
+
+    /**
+     * set gcode units by int
+     * @param unitMode gcode units
+     */
+    private void setGcodeUnits(int unitMode) {
+        if (unitMode == 0) {
+            gcodeUnitMode.setValue("inches");
+            gcodeUnitDivision.set(25.4);  //mm to inches conversion
+        } else if (unitMode == 1) {
+            gcodeUnitMode.setValue("mm");
+            gcodeUnitDivision.set(1.0);
+        }
+    }
+
+
+    public SimpleDoubleProperty getGcodeUnitDivision(){
+        return gcodeUnitDivision;
+    }
+
+
+    /**
+     * get motion mode property
+     * @return motion mode property
+     */
+    public SimpleStringProperty motionModeProperty() {
+        return motionMode;
+    }
+
+
+    /**
+     * set motion mode
+     * @param mode motion mode
+     */
+    public void setMotionMode(int mode) {
+        switch (mode) {
+            case 0:
+                motionMode.set(MotionMode.TRAVERSE.toString());
+                break;
+            case 1:
+                motionMode.set(MotionMode.FEED.toString());
+                break;
+            case 2:
+                motionMode.set(MotionMode.CW_ARC.toString());
+                break;
+            case 3:
+                motionMode.set(MotionMode.CCW_ARC.toString());
+                break;
+            default:
+                motionMode.set(MotionMode.CANCEL.toString());
+                break;
+        }
+    }
+
+
+    /**
+     * get firmware build
+     * @return firmware build property
+     */
+    public SimpleDoubleProperty firmwareBuildProperty(){
+        return firmwareBuild;
+    }
+
+
+    /**
+     * get firmware build version
+     * @return firmware build version
+     */
+    public double getFirmwareBuild(){
+        return firmwareBuild.getValue();
+    }
+
+
+    /**
+     * set firmware build
+     * @param firmware_build firmware build
+     */
+    public void setFirmwareBuild(double firmware_build) {
+        this.firmwareBuild.set(firmware_build);
+        TinygDriver.getInstance().notifyBuildChanged();
+    }
+
+
+    /**
+     * get firmware version
+     * @return firmware version
+     */
+    public StringProperty firmwareVersionProperty() {
+        return firmwareVersion;
+    }
+
+
+    /**
+     * set firmware version
+     * @param fv firmware version
+     */
+    public void setFirmwareVersion(String fv) {
+        this.firmwareVersion.setValue(fv);
+    }
+
+
+    /**
+     * get line number property
+     * @return line number property
+     */
+    public SimpleIntegerProperty lineNumberProperty() {
+        return lineNumber;
+    }
+
+
+    /**
+     * get line number
+     * @return line number
+     */
+    public int getLineNumber() {
+        return lineNumber.get();
+    }
+
+
+    /**
+     * set line number
+     * @param lineNumber line number
+     */
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber.set(lineNumber);
+    }
+
+
+    /**
+     * get coordinate system property
+     * @return coordinate system
+     */
+    public SimpleStringProperty coordinateSystemProperty() {
+        return this.coordinateSystem;
+    }
+
+
+    /**
+     * get coordinate system by name
+     * @param name coordinate system name
+     * @return coordinate system
+     */
+    public CoordinateSystem getCoordinateSystemByName(String name) {
+        for (CoordinateSystem coordinateSystem : gcodeCoordinateSystems) {
+            if (coordinateSystem.getCoordinate().equals(name)) {
+                return coordinateSystem;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * get coordinate system by number mnemonic
+     * @param number number mnemonic
+     * @return coordinate system
+     */
+    public CoordinateSystem getCoordinateSystemByNumberMnemonic(int number) {
+        for (CoordinateSystem coordinateSystem : gcodeCoordinateSystems) {
+            if (coordinateSystem.getCoordinateNumberMnemonic() == number) {
+                return coordinateSystem;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * get coordinate system by tg number
+     * @param number tg number
+     * @return coordinate system
+     */
+    public CoordinateSystem getCoordinateSystemByTgNumber(int number) {
+        for (CoordinateSystem coordinateSystem : gcodeCoordinateSystems) {
+            if (coordinateSystem.getCoordinateNumberByTgFormat() == number) {
+                return coordinateSystem;
+            }
+        }
+        return null;
+    }
+
+
+    public void setCoordinateSystem(String cord) {
+        setCoordinateSystem(Integer.valueOf(cord));
+    }
+
+
+    public void setCoordinateSystem(double m) {
+        setCoordinateSystem((int) m);
+    }
+
+
+    public void setCoordinateSystem(int c) {
+        switch (c) {
+            case 1:
+                coordinateSystem.set(GcodeCoordinateSystem.G54.toString());
+                break;
+            case 2:
+                coordinateSystem.set(GcodeCoordinateSystem.G55.toString());
+                break;
+            case 3:
+                coordinateSystem.set(GcodeCoordinateSystem.G56.toString());
+                break;
+            case 4:
+                coordinateSystem.set(GcodeCoordinateSystem.G57.toString());
+                break;
+            case 5:
+                coordinateSystem.set(GcodeCoordinateSystem.G58.toString());
+                break;
+            case 6:
+                coordinateSystem.set(GcodeCoordinateSystem.G59.toString());
+                break;
+            default:
+                coordinateSystem.set(GcodeCoordinateSystem.G54.toString());
+                break;
+        }
+    }
+
+
+    /**
+     * get machine state
+     * @return machine state
+     */
+    public SimpleStringProperty machineStateProperty() {
+        return machineState;
+    }
+
+
+    /**
+     * set machine state
+     * @param state machine state
+     */
+    public void setMachineState(int state) {
+        switch (state) {
+            case 1:
+                machineState.set(MachineState.RESET.toString());
+                break;
+            case 2:
+                machineState.set(MachineState.CYCLE.toString());
+                break;
+            case 3:
+                machineState.set(MachineState.STOP.toString());
+                break;
+            case 4:
+                machineState.set(MachineState.END.toString());
+                break;
+            case 5:
+                machineState.set(MachineState.RUN.toString());
+                break;
+            case 6:
+                machineState.set(MachineState.HOLD.toString());
+                break;
+            case 7:
+                machineState.set(MachineState.HOMING.toString());
+                break;
+            case 8:
+                machineState.set(MachineState.PROBE.toString());
+                break;
+            case 9:
+                machineState.set(MachineState.JOG.toString());
+                break;
+        }
+    }
+
+
+    /**
+     * get velocity
+     * @return velocity
+     */
+    public SimpleDoubleProperty velocityProperty() {
+        return velocity;
+    }
+
+
+    /**
+     * get velocity
+     * @return velocity
+     */
+    public Double getVelocity() {
+        return velocity.get();
+    }
+
+
+    /**
+     * set velocity
+     * @param vel velocity
+     */
+    public void setVelocity(double vel) {
+        velocity.set(vel);
+    }
+
+
+    /**
+     * get machine name
+     * @return machine name
+     */
+    public String getMachineName() {
+        return machineName;
+    }
+
+
+    /**
+     * set machine name
+     * @param machineName machine name
+     */
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
     }
 
 
@@ -205,24 +594,6 @@ public final class Machine {
      */
     public String getSwitchTypeAsString() {
         return switchType == 0 ? "Normally Open" : "Normally Closed";
-    }
-
-
-    /**
-     * get longest travel axis value
-     * @return longest travel
-     */
-    public double getLongestTravelAxisValue() {
-        return longestTravelAxisValue.get();
-    }
-
-
-    /**
-     * set longest travel axis value
-     * @param value longest travel
-     */
-    public void setLongestTravelAxisValue(double value){
-        longestTravelAxisValue.set(value);
     }
 
 
@@ -397,6 +768,120 @@ public final class Machine {
 
 
     /**
+     * get min arc segment
+     * @return min arc segment
+     */
+    public float getMinArcSegment() {
+        return minArcSegment;
+    }
+
+
+    /**
+     * set min arc segment
+     * @param minArcSegment min arc segment
+     */
+    public void setMinArcSegment(float minArcSegment) {
+        this.minArcSegment = minArcSegment;
+    }
+
+
+    /**
+     * get min line segment
+     * @return min line segment
+     */
+    public float getMinLineSegment() {
+        return minLineSegment;
+    }
+
+
+    /**
+     * set min line segment
+     * @param minLineSegment min line segment
+     */
+    public void setMinLineSegment(float minLineSegment) {
+        this.minLineSegment = minLineSegment;
+    }
+
+
+    /**
+     * get min segment time
+     * @return min segment time
+     */
+    public double getMinSegmentTime() {
+        return minSegmentTime;
+    }
+
+
+    /**
+     * set min segment time
+     * @param minSegmentTime min segment time
+     */
+    public void setMinSegmentTime(double minSegmentTime) {
+        this.minSegmentTime = minSegmentTime;
+    }
+
+
+    /**
+     * get jogging increment by axis
+     * @param axisName axis name
+     * @return jogging increment
+     */
+    public double getJoggingIncrementByAxis(String axisName) {
+        return getAxisByName(axisName).travelMaximumProperty().get();
+    }
+
+
+    /**
+     * get all axis list
+     * @return axis list
+     */
+    public List<Axis> getAllAxis() {
+        return axis;
+    }
+
+
+    /**
+     * get all linear axis list
+     * @return linear axis list
+     */
+    List<Axis> getAllLinearAxis() {
+        List<Axis> allAxis = getAllAxis();
+        List<Axis> retAxisList = new ArrayList<>();
+        for (Axis a : allAxis) {
+            if (a.getAxisType().equals(AxisType.LINEAR)) {
+                retAxisList.add(a);
+            }
+        }
+        return retAxisList;
+    }
+
+
+    /**
+     * get axis by name
+     * @param c axis name character
+     * @return axis
+     */
+    private Axis getAxisByName(char c) {
+        return getAxisByName(String.valueOf(c));
+    }
+
+
+    /**
+     * get axis by name
+     * @param name axis name string
+     * @return axis
+     */
+    public Axis getAxisByName(String name) {
+        for (Axis tmpAxis : axis) {
+            if (tmpAxis.getAxisName().equals(name.toUpperCase())) {
+                return tmpAxis;
+            }
+        }
+        return null;
+    }
+
+
+    /**
      * get motors
      * @return motor list
      */
@@ -415,107 +900,50 @@ public final class Machine {
 
 
     /**
-     * get machine name
-     * @return machine name
+     * get motor by number
+     * @param m motor number string
+     * @return motor
      */
-    public String getMachineName() {
-        return machineName;
+    public Motor getMotorByNumber(String m) {
+        //Little stub method to allow calling getMotorByNumber with String arg.
+        return getMotorByNumber(Integer.valueOf(m));
     }
 
 
     /**
-     * set machine name
-     * @param machineName machine name
+     * get motor by number
+     * @param i motor number int
+     * @return motor
      */
-    public void setMachineName(String machineName) {
-        this.machineName = machineName;
-    }
-
-
-    /**
-     * get gcode unit mode
-     * @return gcode unit mode
-     */
-    public StringProperty getGcodeUnitMode() {
-        return gcodeUnitMode;
-    }
-
-
-    /**
-     * get gcode unit mode as an int
-     * @return gcode unit mode
-     */
-    public int getGcodeUnitModeAsInt() {
-        return gcodeUnitMode.get().equals(GcodeUnitMode.MM.toString()) ? 1 : 0;
-    }
-
-
-    /**
-     * set gcode units by string
-     * @param gcu gcode units
-     */
-    public void setGcodeUnits(String gcu) {
-        switch (Integer.valueOf(gcu)) {
-            case 0:
-                gcodeUnitMode.set(GcodeUnitMode.INCHES.toString());
-                break;
-            case 1:
-                gcodeUnitMode.set(GcodeUnitMode.MM.toString());
-                break;
+    public Motor getMotorByNumber(int i) {
+        for (Motor m : motors) {
+            if (m.getIdNumber() == i) {
+                return m;
+            }
         }
+        return null;
     }
 
 
     /**
-     * set gcode units by int
-     * @param unitMode gcode units
+     * get motor axis
+     * @param m motor
+     * @return axis number
      */
-    private void setGcodeUnits(int unitMode) {
-        if (unitMode == 0) {
-            gcodeUnitMode.setValue("inches");
-            gcodeUnitDivision.set(25.4);  //mm to inches conversion
-        } else if (unitMode == 1) {
-            gcodeUnitMode.setValue("mm");
-            gcodeUnitDivision.set(1.0);
-        }
-    }
-
-    public SimpleDoubleProperty getGcodeUnitDivision(){
-        return gcodeUnitDivision;
+    public int getMotorAxis(Motor m) {
+        return m.getIdNumber();
     }
 
 
     /**
-     * get motion mode property
-     * @return motion mode property
+     * set motor axis
+     * @param motorNumber motor number
+     * @param x axis
      */
-    public SimpleStringProperty getMotionMode() {
-        return motionMode;
-    }
-
-
-    /**
-     * set motion mode
-     * @param mode motion mode
-     */
-    public void setMotionMode(int mode) {
-        switch (mode) {
-            case 0:
-                motionMode.set(MotionMode.TRAVERSE.toString());
-                break;
-            case 1:
-                motionMode.set(MotionMode.FEED.toString());
-                break;
-            case 2:
-                motionMode.set(MotionMode.CW_ARC.toString());
-                break;
-            case 3:
-                motionMode.set(MotionMode.CCW_ARC.toString());
-                break;
-            default:
-                motionMode.set(MotionMode.CANCEL.toString());
-                break;
-        }
+    public void setMotorAxis(int motorNumber, int x) {
+        Motor m = getMotorByNumber(motorNumber);
+        // FIXME: possible NPE
+        m.setMapToAxis(x);
     }
 
 
@@ -592,403 +1020,6 @@ public final class Machine {
 
 
     /**
-     * get firmware build
-     * @return firmware build property
-     */
-    public SimpleDoubleProperty getFirmwareBuild(){
-        return firmwareBuild;
-    }
-
-
-    /**
-     * get firmware build version
-     * @return firmware build version
-     */
-    public double getFirmwareBuildVersion(){
-        return firmwareBuild.getValue();
-    }
-
-
-    /**
-     * set firmware build
-     * @param firmware_build firmware build
-     * @throws JSONException json exception
-     */
-    public void setFirmwareBuild(double firmware_build) throws JSONException {
-        this.firmwareBuild.set(firmware_build);
-        TinygDriver.getInstance().notifyBuildChanged();
-    }
-
-
-    /**
-     * get firmware version
-     * @return firmware version
-     */
-    public StringProperty getFirmwareVersion() {
-        return firmwareVersion;
-    }
-
-
-    /**
-     * set firmware version
-     * @param fv firmware version
-     */
-    public void setFirmwareVersion(String fv) {
-        this.firmwareVersion.setValue(fv);
-    }
-
-
-    /**
-     * get line number
-     * @return line number
-     */
-    public int getLineNumber() {
-        return lineNumber.get();
-    }
-
-
-    /**
-     * get line number property
-     * @return line number property
-     */
-    public SimpleIntegerProperty getLineNumberSimple() {
-        return lineNumber;
-    }
-
-
-    /**
-     * set line number
-     * @param lineNumber line number
-     */
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber.set(lineNumber);
-    }
-
-
-    /**
-     * get coordinate system property
-     * @return coordinate system
-     */
-    public SimpleStringProperty getCoordinateSystem() {
-        return this.coordinateSystem;
-    }
-
-
-    /**
-     * get coordinate system by name
-     * @param name coordinate system name
-     * @return coordinate system
-     */
-    public CoordinateSystem getCoordinateSystemByName(String name) {
-        for (CoordinateSystem coordinateSystem : gcodeCoordinateSystems) {
-            if (coordinateSystem.getCoordinate().equals(name)) {
-                return coordinateSystem;
-            }
-        }
-        return null;
-    }
-
-
-    /**
-     * get coordinate system by number mnemonic
-     * @param number number mnemonic
-     * @return coordinate system
-     */
-    public CoordinateSystem getCoordinateSystemByNumberMnemonic(int number) {
-        for (CoordinateSystem coordinateSystem : gcodeCoordinateSystems) {
-            if (coordinateSystem.getCoordinateNumberMnemonic() == number) {
-                return coordinateSystem;
-            }
-        }
-        return null;
-    }
-
-
-    /**
-     * get coordinate system by tg number
-     * @param number tg number
-     * @return coordinate system
-     */
-    public CoordinateSystem getCoordinateSystemByTgNumber(int number) {
-        for (CoordinateSystem coordinateSystem : gcodeCoordinateSystems) {
-            if (coordinateSystem.getCoordinateNumberByTgFormat() == number) {
-                return coordinateSystem;
-            }
-        }
-        return null;
-    }
-
-        public void setCoordinateSystem(String cord) {
-            setCoordinateSystem(Integer.valueOf(cord));
-        }
-
-        public void setCoordinateSystem(double m) {
-            setCoordinateSystem((int) m);
-        }
-
-        public void setCoordinateSystem(int c) {
-            switch (c) {
-                case 1:
-                    coordinateSystem.set(GcodeCoordinateSystem.G54.toString());
-                    break;
-                case 2:
-                    coordinateSystem.set(GcodeCoordinateSystem.G55.toString());
-                    break;
-                case 3:
-                    coordinateSystem.set(GcodeCoordinateSystem.G56.toString());
-                    break;
-                case 4:
-                    coordinateSystem.set(GcodeCoordinateSystem.G57.toString());
-                    break;
-                case 5:
-                    coordinateSystem.set(GcodeCoordinateSystem.G58.toString());
-                    break;
-                case 6:
-                    coordinateSystem.set(GcodeCoordinateSystem.G59.toString());
-                    break;
-                default:
-                    coordinateSystem.set(GcodeCoordinateSystem.G54.toString());
-                    break;
-            }
-        }
-
-
-    /**
-     * get machine state
-     * @return machine state
-     */
-    public SimpleStringProperty getMachineState() {
-        return machineState;
-    }
-
-
-    /**
-     * set machine state
-     * @param state machine state
-     */
-    public void setMachineState(int state) {
-        switch (state) {
-            case 1:
-                machineState.set(MachineState.RESET.toString());
-                break;
-            case 2:
-                machineState.set(MachineState.CYCLE.toString());
-                break;
-            case 3:
-                machineState.set(MachineState.STOP.toString());
-                break;
-            case 4:
-                machineState.set(MachineState.END.toString());
-                break;
-            case 5:
-                machineState.set(MachineState.RUN.toString());
-                break;
-            case 6:
-                machineState.set(MachineState.HOLD.toString());
-                break;
-            case 7:
-                machineState.set(MachineState.HOMING.toString());
-                break;
-            case 8:
-                machineState.set(MachineState.PROBE.toString());
-                break;
-            case 9:
-                machineState.set(MachineState.JOG.toString());
-                break;
-        }
-    }
-
-
-    /**
-     * get min arc segment
-     * @return min arc segment
-     */
-    public float getMinArcSegment() {
-        return minArcSegment;
-    }
-
-
-    /**
-     * set min arc segment
-     * @param minArcSegment min arc segment
-     */
-    public void setMinArcSegment(float minArcSegment) {
-        this.minArcSegment = minArcSegment;
-    }
-
-
-    /**
-     * get min line segment
-     * @return min line segment
-     */
-    public float getMinLineSegment() {
-        return minLineSegment;
-    }
-
-
-    /**
-     * set min line segment
-     * @param minLineSegment min line segment
-     */
-    public void setMinLineSegment(float minLineSegment) {
-        this.minLineSegment = minLineSegment;
-    }
-
-
-    /**
-     * get min segment time
-     * @return min segment time
-     */
-    public double getMinSegmentTime() {
-        return minSegmentTime;
-    }
-
-
-    /**
-     * set min segment time
-     * @param minSegmentTime min segment time
-     */
-    public void setMinSegmentTime(double minSegmentTime) {
-        this.minSegmentTime = minSegmentTime;
-    }
-
-
-    /**
-     * get velocity
-     * @return velocity
-     */
-    public SimpleDoubleProperty velocityProperty() {
-        return velocity;
-    }
-
-    /**
-     * get velocity
-     * @return velocity
-     */
-    public Double getVelocity() {
-        return velocity.get();
-    }
-
-
-    /**
-     * set velocity
-     * @param vel velocity
-     */
-    public void setVelocity(double vel) {
-        velocity.set(vel);
-    }
-
-
-    /**
-     * get jogging increment by axis
-     * @param axisName axis name
-     * @return jogging increment
-     */
-    public double getJoggingIncrementByAxis(String axisName) {
-        // FIXME: possible NPE
-        return getAxisByName(axisName).travelMaximumProperty().get();
-    }
-
-
-    /**
-     * get all axis list
-     * @return axis list
-     */
-    public List<Axis> getAllAxis() {
-        return axis;
-    }
-
-
-    /**
-     * get all linear axis list
-     * @return linear axis list
-     */
-    List<Axis> getAllLinearAxis() {
-        List<Axis> allAxis = getAllAxis();
-        List<Axis> retAxisList = new ArrayList<>();
-        for (Axis a : allAxis) {
-            if (a.getAxisType().equals(AxisType.LINEAR)) {
-                retAxisList.add(a);
-            }
-        }
-        return retAxisList;
-    }
-
-
-    /**
-     * get axis by name
-     * @param c axis name character
-     * @return axis
-     */
-    private Axis getAxisByName(char c) {
-        return getAxisByName(String.valueOf(c));
-    }
-
-
-    /**
-     * get axis by name
-     * @param name axis name string
-     * @return axis
-     */
-    public Axis getAxisByName(String name) {
-        for (Axis tmpAxis : axis) {
-            if (tmpAxis.getAxisName().equals(name.toUpperCase())) {
-                return tmpAxis;
-            }
-        }
-        return null;
-    }
-
-
-    /**
-     * get motor by number
-     * @param m motor number string
-     * @return motor
-     */
-    public Motor getMotorByNumber(String m) {
-        //Little stub method to allow calling getMotorByNumber with String arg.
-        return getMotorByNumber(Integer.valueOf(m));
-    }
-
-
-    /**
-     * get motor by number
-     * @param i motor number int
-     * @return motor
-     */
-    public Motor getMotorByNumber(int i) {
-        for (Motor m : motors) {
-            if (m.getIdNumber() == i) {
-                return m;
-            }
-        }
-        return null;
-    }
-
-
-    /**
-     * get motor axis
-     * @param m motor
-     * @return axis number
-     */
-    public int getMotorAxis(Motor m) {
-        return m.getIdNumber();
-    }
-
-
-    /**
-     * set motor axis
-     * @param motorNumber motor number
-     * @param x axis
-     */
-    public void setMotorAxis(int motorNumber, int x) {
-        Motor m = getMotorByNumber(motorNumber);
-        // FIXME: possible NPE
-        m.setMapToAxis(x);
-    }
-
-
-    /**
      * apply json status report
      * @param rc response command
      */
@@ -1005,35 +1036,35 @@ public final class Machine {
             //Machine Position Cases
             case MNEMONIC_STATUS_REPORT_MACHINEPOSX:
                 machine.getAxisByName(rc.getSettingKey().charAt(3))
-                    .setMachinePosition(Double.valueOf(rc.getSettingValue()));
+                        .setMachinePosition(Double.valueOf(rc.getSettingValue()));
                 break;
             case MNEMONIC_STATUS_REPORT_MACHINEPOSY:
                 machine.getAxisByName(rc.getSettingKey().charAt(3))
-                    .setMachinePosition(Double.valueOf(rc.getSettingValue()));
+                        .setMachinePosition(Double.valueOf(rc.getSettingValue()));
                 break;
             case MNEMONIC_STATUS_REPORT_MACHINEPOSZ:
                 machine.getAxisByName(rc.getSettingKey().charAt(3))
-                    .setMachinePosition(Double.valueOf(rc.getSettingValue()));
+                        .setMachinePosition(Double.valueOf(rc.getSettingValue()));
                 break;
             case MNEMONIC_STATUS_REPORT_MACHINEPOSA:
                 machine.getAxisByName(rc.getSettingKey().charAt(3))
-                    .setMachinePosition(Double.valueOf(rc.getSettingValue()));
+                        .setMachinePosition(Double.valueOf(rc.getSettingValue()));
                 break;
             case MNEMONIC_STATUS_REPORT_WORKOFFSETX:
                 machine.getAxisByName(rc.getSettingKey().charAt(3))
-                    .setOffset(Double.valueOf(rc.getSettingValue()));
+                        .setOffset(Double.valueOf(rc.getSettingValue()));
                 break;
             case MNEMONIC_STATUS_REPORT_WORKOFFSETY:
                 machine.getAxisByName(rc.getSettingKey().charAt(3))
-                    .setOffset(Double.valueOf(rc.getSettingValue()));
+                        .setOffset(Double.valueOf(rc.getSettingValue()));
                 break;
             case MNEMONIC_STATUS_REPORT_WORKOFFSETZ:
                 machine.getAxisByName(rc.getSettingKey().charAt(3))
-                    .setOffset(Double.valueOf(rc.getSettingValue()));
+                        .setOffset(Double.valueOf(rc.getSettingValue()));
                 break;
             case MNEMONIC_STATUS_REPORT_WORKOFFSETA:
                 machine.getAxisByName(rc.getSettingKey().charAt(3))
-                    .setOffset(Double.valueOf(rc.getSettingValue()));
+                        .setOffset(Double.valueOf(rc.getSettingValue()));
                 break;
             case MNEMONIC_STATUS_REPORT_TINYG_DISTANCE_MODE:
                 machine.setGcodeDistanceMode(rc.getSettingValue());

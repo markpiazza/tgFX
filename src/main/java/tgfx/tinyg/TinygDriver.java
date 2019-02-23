@@ -38,15 +38,15 @@ public class TinygDriver extends Observable {
 
     private static TinygDriver instance;
 
-    private final SerialDriver serialDriver = SerialDriver.getInstance();
+    private SerialDriver serialDriver;
 
-    private HardwarePlatformManager hardwarePlatformManager = new HardwarePlatformManager();
-    private ResponseParser responseParser = new ResponseParser();
-    private SerialWriter serialWriter = new SerialWriter(writerQueue);
-    private MnemonicManager mnemonicManager = new MnemonicManager();
-    private CommandManager commandManager = new CommandManager();
-    private QueueReport queueReport = new QueueReport();
-    private Machine machine = new Machine();
+    private HardwarePlatformManager hardwarePlatformManager;
+    private ResponseParser responseParser;
+    private SerialWriter serialWriter;
+    private MnemonicManager mnemonicManager;
+    private CommandManager commandManager;
+    private QueueReport queueReport;
+    private Machine machine;
     private AsyncTimer connectionTimer;
 
     private final AtomicBoolean connectionSemaphore = new AtomicBoolean(false);
@@ -63,12 +63,19 @@ public class TinygDriver extends Observable {
     private boolean timedout = false;
 
 
-
-
     /**
      * make TingygDriver private so the caller needs to call get instance
      */
     private TinygDriver() {
+        logger.info("Setting up TinygDriver");
+        serialDriver = new SerialDriver();
+        serialWriter = new SerialWriter(serialDriver, writerQueue);
+        hardwarePlatformManager = new HardwarePlatformManager(this);
+        responseParser = new ResponseParser(this);
+        commandManager = new CommandManager(this);
+        mnemonicManager = new MnemonicManager();
+        queueReport = new QueueReport();
+        machine = new Machine();
     }
 
 
@@ -81,6 +88,50 @@ public class TinygDriver extends Observable {
             instance = new TinygDriver();
         }
         return instance;
+    }
+
+
+    /**
+     * get serial writer
+     * @return SerialWriter
+     */
+    public SerialWriter getSerialWriter() {
+        return serialWriter;
+    }
+
+
+    /**
+     * get the platform manager
+     * @return hardware platform manager
+     */
+    public HardwarePlatformManager getHardwarePlatformManager() {
+        return hardwarePlatformManager;
+    }
+
+    /**
+     * get response parser
+     * @return ResponseParser
+     */
+    public ResponseParser getResponseParser() {
+        return responseParser;
+    }
+
+
+    /**
+     * get the command manager
+     * @return command manager
+     */
+    public CommandManager getCommandManager(){
+        return commandManager;
+    }
+
+
+    /**
+     * get the mnemonic manager
+     * @return mnemonic manager
+     */
+    public MnemonicManager getMnemonicManager(){
+        return mnemonicManager;
     }
 
 
@@ -110,71 +161,6 @@ public class TinygDriver extends Observable {
         return jsonQueue;
     }
 
-
-    /**
-     * get the platform manager
-     * @return hardware platform manager
-     */
-    public HardwarePlatformManager getHardwarePlatformManager() {
-        return hardwarePlatformManager;
-    }
-
-
-    /**
-     * get the mnemonic manager
-     * @return mnemonic manager
-     */
-    public MnemonicManager getMnemonicManager(){
-        return mnemonicManager;
-    }
-
-
-    /**
-     * get the command manager
-     * @return command manager
-     */
-    public CommandManager getCommandManager(){
-        return commandManager;
-    }
-
-
-    /**
-     * get serial writer
-     * @return SerialWriter
-     */
-    public SerialWriter getSerialWriter() {
-        return serialWriter;
-    }
-
-
-    /**
-     * set serial writer
-     * @param serialWriter
-     * TODO: might be good for mocking
-     */
-    public void setSerialWriter(SerialWriter serialWriter) {
-        this.serialWriter = serialWriter;
-    }
-
-
-    /**
-     * get response parser
-     * @return ResponseParser
-     */
-    public ResponseParser getResponseParser() {
-        return responseParser;
-    }
-
-
-    /**
-     * set response parser
-     * @param responseParser response parser
-     */
-    public void setResponseParser(ResponseParser responseParser) {
-        this.responseParser = responseParser;
-    }
-
-
     /**
      * get the connection status
      * @return connection status
@@ -200,8 +186,6 @@ public class TinygDriver extends Observable {
     public void setAsyncTimer(AsyncTimer connectionTimer){
         this.connectionTimer = connectionTimer;
     }
-
-
 
 
     /**
@@ -236,25 +220,19 @@ public class TinygDriver extends Observable {
      * @throws JSONException json exception
      */
     public void notifyBuildChanged() throws JSONException {
-        // FIXME: NPE
-        //if(machine.getHardwarePlatform().getMinimalBuildVersion() < this.machine.getFirmwareBuildVersion()){
-            // This checks to see if the current build version on
-            // TinyG is greater than what tgFX's hardware profile needs.
-        //}
-
-        if (machine.getFirmwareBuildVersion() < machine
+        if (machine.getFirmwareBuild() < machine
                 .getHardwarePlatform().getMinimalBuildVersion() &&
-                this.machine.getFirmwareBuildVersion() != 0.0) {
+                this.machine.getFirmwareBuild() != 0.0) {
             // too old of a build  we need to tell the GUI about this...
             // This is where PUB/SUB will fix this
             // bad way of alerting the gui about model changes.
             message[0] = "BUILD_ERROR";
-            message[1] = Double.toString(machine.getFirmwareBuildVersion());
+            message[1] = Double.toString(machine.getFirmwareBuild());
             setChanged();
             notifyObservers(message);
-            logger.debug("Build Version: " + machine.getFirmwareBuildVersion() + " is NOT OK");
-        } else if(machine.getFirmwareBuildVersion() != 0.0){
-            logger.debug("Build Version: " + machine.getFirmwareBuildVersion() + " is OK");
+            logger.debug("Build Version: " + machine.getFirmwareBuild() + " is NOT OK");
+        } else if(machine.getFirmwareBuild() != 0.0){
+            logger.debug("Build Version: " + machine.getFirmwareBuild() + " is OK");
             message[0] = "BUILD_OK";
             message[1] = null;
             setChanged();
@@ -293,7 +271,6 @@ public class TinygDriver extends Observable {
      * @param c axis to query
      */
     public void queryHardwareSingleAxisSettings(char c) {
-        //Our queryHardwareSingleAxisSetting function for chars
         queryHardwareSingleAxisSettings(String.valueOf(c));
     }
 

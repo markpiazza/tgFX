@@ -17,8 +17,6 @@ import java.util.List;
 public class SerialDriver implements SerialPortEventListener {
     private static final Logger logger = LogManager.getLogger();
 
-    private static SerialDriver serialDriverInstance;
-
     private static byte[] lineBuffer = new byte[1024];
     private static int lineIdx = 0;
 
@@ -26,22 +24,7 @@ public class SerialDriver implements SerialPortEventListener {
 
     private SerialPort serialPort;
 
-    /**
-     * private constructor since this is a singleton
-     */
-    private SerialDriver() {
-    }
-
-
-    /**
-     * get serial driver instance
-     * @return serial driver instance
-     */
-    public static SerialDriver getInstance() {
-        if(serialDriverInstance == null){
-            serialDriverInstance = new SerialDriver();
-        }
-        return serialDriverInstance;
+    public SerialDriver() {
     }
 
 
@@ -166,9 +149,9 @@ public class SerialDriver implements SerialPortEventListener {
 
         for (String port : ports) {
             SerialPort serialPort = new SerialPort(port);
-            if (!serialPort.getPortName().contains("Bluetooth")) {
-                logger.info("Found Bluetooth Serial Port");
-            }
+//            if (!serialPort.getPortName().contains("Bluetooth")) {
+//                logger.info("Found Bluetooth Serial Port");
+//            }
 
             if (UtilityFunctions.getOperatingSystem().equals("mac")) {
                 if (serialPort.getPortName().contains("tty")) {

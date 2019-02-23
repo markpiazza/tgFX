@@ -52,12 +52,10 @@ import static tgfx.tinyg.Commands.*;
 public class GcodeTabController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
 
-    private final TinygDriver DRIVER = TinygDriver.getInstance();
-    private final Machine MACHINE = DRIVER.getMachine();
-
-    private final SerialWriter WRITER = DRIVER.getSerialWriter();
-
-    private CommandManager commandManager = new CommandManager();
+    private static final TinygDriver DRIVER = TinygDriver.getInstance();
+    private static final Machine MACHINE = DRIVER.getMachine();
+    private static final SerialWriter WRITER = DRIVER.getSerialWriter();
+    private static final CommandManager commandManager = DRIVER.getCommandManager();
 
     private static final byte[] BAD_BYTES = {(byte) 0x21, (byte) 0x18, (byte) 0x7e};
     private static double TRAVERSE_FEED_RATE = 1;  //%100
@@ -613,8 +611,8 @@ public class GcodeTabController implements Initializable {
         });
 
         /* gcodeUnitMode listener */
-        MACHINE.getGcodeUnitMode().addListener((ov, oldValue, newValue) -> {
-            String gcodeUnitMode = MACHINE.getGcodeUnitMode().get();
+        MACHINE.gcodeUnitModeProperty().addListener((ov, oldValue, newValue) -> {
+            String gcodeUnitMode = MACHINE.gcodeUnitModeProperty().get();
             MainController.postConsoleMessage("Gcode Unit Mode Changed to: " + gcodeUnitMode + "\n");
 
             try {
@@ -674,7 +672,6 @@ public class GcodeTabController implements Initializable {
         if(TgFXConstants.DISABLE_UI_CONNECTION_CHECK) {
             setCNCMachineVisible(true);
         }
-
     }
 
 
@@ -812,7 +809,7 @@ public class GcodeTabController implements Initializable {
     public void drawCanvasUpdate() {
         logger.info("drawCanvasUpdate");
         if (TgfxSettingsController.isDrawPreview()) {
-            cncMachinePane.drawLine(MACHINE.getMotionMode().get(), MACHINE.getVelocity());
+            cncMachinePane.drawLine(MACHINE.motionModeProperty().get(), MACHINE.getVelocity());
         }
     }
 
@@ -872,10 +869,10 @@ public class GcodeTabController implements Initializable {
         // this was already commented out
 //        widthSize.textProperty().bind( Bindings.format("%s",
 //        cncMachinePane.widthProperty().divide(MACHINE.gcodeUnitDivision)
-//                .asString().concat(MACHINE.getGcodeUnitMode())    ));
+//                .asString().concat(MACHINE.gcodeUnitModeProperty())    ));
 //
 //        heightSize.setText(decimalFormat.format(MACHINE.getAxisByName("y").
-//                getTravelMaximum()) + " " + MACHINE.getGcodeUnitMode().getValue());
+//                getTravelMaximum()) + " " + MACHINE.gcodeUnitModeProperty().getValue());
     }
 
 
@@ -894,7 +891,7 @@ public class GcodeTabController implements Initializable {
         // this was already commented out
 //        widthSize.setText(decimalFormat.format(DRIVER
 //        .m.getAxisByName("x").getTravelMaximum()) + " " + DRIVER
-//        .m.getGcodeUnitMode().getValue());
+//        .m.gcodeUnitModeProperty().getValue());
     }
 
 

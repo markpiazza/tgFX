@@ -1,6 +1,7 @@
 package tgfx.ui.tgfxsettings;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -67,8 +68,10 @@ public class TgfxSettingsController implements Initializable {
         logger.info("Initializing TgfxSettingsController");
         settingDrawBtn.setSelected(true);  //We set drawing preview to default
         settingDrawBtn.setText("Enabled");
-        
-        tgfxBuildNumber.setText(UtilityFunctions.getBuildInfo("BUILD"));
+        String buildNumber = Optional
+                .ofNullable(UtilityFunctions.getBuildInfo("BUILD"))
+                .orElse("Build Number Not Available");
+        tgfxBuildNumber.setText(buildNumber);
         tgfxVersion.setText(".95");
 
         tgfxBuildDate.setId("lblMachine");
