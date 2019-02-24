@@ -886,7 +886,7 @@ public final class Machine {
      * @return motor list
      */
     public List<Motor> getMotors() {
-        return this.motors;
+        return motors;
     }
 
 

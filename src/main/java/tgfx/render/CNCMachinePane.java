@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.render;
 
 import java.text.DecimalFormat;
@@ -30,6 +26,7 @@ import tgfx.system.Machine;
 import tgfx.system.enums.GcodeUnitMode;
 import tgfx.tinyg.TinygDriver;
 
+import static javafx.scene.paint.Color.RED;
 import static tgfx.tinyg.Commands.*;
 
 /**
@@ -42,19 +39,20 @@ public class CNCMachinePane extends Pane {
     private static final TinygDriver DRIVER = TinygDriver.getInstance();
     private static final Machine MACHINE = DRIVER.getMachine();
 
-    private final Circle cursorPoint = new Circle(2, javafx.scene.paint.Color.RED);
-
-    private Draw2d draw2d = new Draw2d();
-    private StackPane gcodePane = new StackPane(); //Holds CNCMachinePane
-
-    private double xPrevious;
-    private double yPrevious;
+    private final Circle cursorPoint = new Circle(2, RED);
 
     private SimpleDoubleProperty cncHeight = new SimpleDoubleProperty();
     private SimpleDoubleProperty cncWidth = new SimpleDoubleProperty();
     private BooleanExpression cursorVisibleBinding;
 
     private DecimalFormat df = new DecimalFormat("#.###");
+
+    private StackPane gcodePane = new StackPane();
+    private Draw2d draw2d = new Draw2d();
+
+    private double xPrevious;
+    private double yPrevious;
+
     private boolean msgSent = false;
     private double magnification = 1;
 
@@ -64,6 +62,7 @@ public class CNCMachinePane extends Pane {
      * CNCMachinePane constructor
      */
     public CNCMachinePane() {
+
         //Cursor point indicator
         cursorPoint.setRadius(1);
 
@@ -76,20 +75,14 @@ public class CNCMachinePane extends Pane {
         this.setFocusTraversable(true);
         this.setFocused(true);
 
-        // PositionCursor Set
-        final Circle c = new Circle(2, Color.RED);
-        final Text cursorText = new Text("None");
-        cursorText.setFill(Color.YELLOW);
-        cursorText.setFont(Font.font("Arial", 6));
-
         // initial layout setup in constructor
         setupLayout();
 
         // mouse moved inside the CNCMachinePane
         ChangeListener posChangeListener = (observableValue, oldValue, newValue) -> {
             boolean showCursor = true;
-            if (MACHINE.getAxisByName("y").getMachinePosition() > heightProperty().get()
-                    || MACHINE.getAxisByName("x").getMachinePosition() > widthProperty().get()) {
+            if (MACHINE.getAxisByName("y").getMachinePosition() > heightProperty().get() ||
+                 MACHINE.getAxisByName("x").getMachinePosition() > widthProperty().get()) {
                 showCursor = false;
             }
             hideOrShowCursor(showCursor);
@@ -97,11 +90,7 @@ public class CNCMachinePane extends Pane {
         };
 
         // mouse exited the CNCMachinePane
-        this.setOnMouseExited(me -> {
-            // gcodePane.getChildren().remove(c);
-            getChildren().remove(cursorText);
-            setFocusForJogging(false);
-        });
+        this.setOnMouseExited(me -> setFocusForJogging(false));
 
         // mouse entered the CNCMachinePane
         this.setOnMouseEntered(me -> {
@@ -120,7 +109,9 @@ public class CNCMachinePane extends Pane {
                 menuItem1.setOnAction(t -> {
                     // We do not want to draw a line from our previous position
                     draw2d.setFirstDraw(true);
-                    DRIVER.getCommandManager().setMachinePosition(getNormalizedX(me.getX()), getNormalizedY(me.getY()));
+                    DRIVER.getCommandManager().setMachinePosition(
+                            getNormalizedX(me.getX()),
+                            getNormalizedY(me.getY()));
                     // This allows us to move our drawing to a new place without drawing a line from the old.
                     draw2d.setFirstDraw(true);
                     DRIVER.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
@@ -134,15 +125,15 @@ public class CNCMachinePane extends Pane {
         });
 
 
-        maxHeightProperty().bind(MACHINE.getAxisByName("y")
-                .travelMaximumProperty().multiply(MACHINE.getGcodeUnitDivision()));
-        maxWidthProperty().bind(MACHINE.getAxisByName("x")
-                .travelMaximumProperty().multiply(MACHINE.getGcodeUnitDivision()));
+        maxHeightProperty().bind(MACHINE.getAxisByName("y").travelMaximumProperty()
+                .multiply(MACHINE.getGcodeUnitDivision()));
+        maxWidthProperty().bind(MACHINE.getAxisByName("x").travelMaximumProperty()
+                .multiply(MACHINE.getGcodeUnitDivision()));
 
-        cursorPoint.translateYProperty()
-                .bind(this.heightProperty().subtract(MACHINE.getAxisByName("y").machinePositionProperty()));
-        cursorPoint.layoutXProperty()
-                .bind(MACHINE.getAxisByName("x").machinePositionProperty());
+        cursorPoint.translateYProperty().bind(
+                heightProperty().subtract(MACHINE.getAxisByName("y").machinePositionProperty()));
+        cursorPoint.layoutXProperty().bind(
+                MACHINE.getAxisByName("x").machinePositionProperty());
 
         cncHeight.bind(this.heightProperty());
         cncWidth.bind(this.widthProperty());

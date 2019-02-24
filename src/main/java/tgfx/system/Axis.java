@@ -2,12 +2,10 @@ package tgfx.system;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javafx.beans.property.SimpleDoubleProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONException;
 import org.json.JSONObject;
 import tgfx.system.enums.AxisMode;
 import tgfx.system.enums.AxisName;
@@ -78,9 +76,9 @@ public final class Axis {
      * @param axisMode axis's mode
      */
     public Axis(AxisName axisName, AxisType axisType, AxisMode axisMode) {
+        this.axisName = axisName.name();
+        this.axisType = axisType;
         this.axisMode = axisMode;
-        this.setAxisName(axisName.name());
-        this.setAxisType(axisType);
         this.workPosition = new SimpleDoubleProperty();
         this.machinePosition = new SimpleDoubleProperty();
         this.travelMaximum = new SimpleDoubleProperty();
@@ -129,7 +127,7 @@ public final class Axis {
      * @return axis type
      */
     public AxisType getAxisType() {
-        return this.axisType;
+        return axisType;
     }
 
 
@@ -511,17 +509,10 @@ public final class Axis {
 
     public void applyJsonSystemSetting(JSONObject js, String parent) {
         logger.info("Applying JSON Object to " + parent + " Group");
-        Iterator<String> ii = js.keySet().iterator();
-        try {
-            while (ii.hasNext()) {
-                String key = ii.next();
-                String val = js.get(key).toString();
-                ResponseCommand rc = new ResponseCommand(parent, key, val);
-                applyJsonSystemSetting(rc);
-            }
-
-        } catch (JSONException | NumberFormatException ex) {
-            logger.error("Error in applyJsonSystemSetting in Axis");
+        for (String key : js.keySet()) {
+            String val = js.get(key).toString();
+            ResponseCommand rc = new ResponseCommand(parent, key, val);
+            applyJsonSystemSetting(rc);
         }
     }
 

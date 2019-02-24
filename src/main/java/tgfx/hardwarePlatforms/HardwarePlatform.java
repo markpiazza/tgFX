@@ -1,7 +1,7 @@
 package tgfx.hardwarePlatforms;
 
 /**
- * HardwarePlatform
+ * HardwarePlatform POJO
  * holds the hardware platform information
  */
 public class HardwarePlatform {

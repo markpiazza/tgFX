@@ -43,7 +43,7 @@ public class HardwarePlatformManager {
         //we are not using this until all platforms have the $hp element.
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getPlatformName().equals(name)) {
-                TinygDriver.getInstance().getMachine().setHardwarePlatform(platform);
+                driver.getMachine().setHardwarePlatform(platform);
                 logger.info("Applied {} hardware Profile to System", name);
                 return;
             }
@@ -58,7 +58,7 @@ public class HardwarePlatformManager {
     public void setHardwarePlatformByVersionNumber(int verNumber) {
         for(HardwarePlatform platform : availablePlatforms){
             if (platform.getHardwarePlatformVersion() == verNumber) {
-                TinygDriver.getInstance().getMachine().setHardwarePlatform(platform);
+                driver.getMachine().setHardwarePlatform(platform);
                 logger.info("Applied {} hardware platform id number to System", verNumber);
                 return;
             }
