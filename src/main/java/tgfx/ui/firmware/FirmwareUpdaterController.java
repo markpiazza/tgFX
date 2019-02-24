@@ -11,7 +11,6 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
-import javafx.beans.binding.NumberExpression;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;

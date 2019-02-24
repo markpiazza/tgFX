@@ -39,7 +39,6 @@ public class TinygDriver extends Observable {
     private static TinygDriver instance;
 
     private SerialDriver serialDriver;
-
     private HardwarePlatformManager hardwarePlatformManager;
     private ResponseParser responseParser;
     private SerialWriter serialWriter;

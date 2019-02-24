@@ -1,11 +1,13 @@
 package tgfx;
 
 /**
- * TgFXCONSTANTS
+ * TgFXConstants
  *
  */
 @SuppressWarnings("WeakerAccess") // these accessors _can_ be package-private, but I don't want them to be
 public class TgFXConstants {
+
+    // Default stage size
     public static final int STAGE_MIN_WIDTH = 1152;
     public static final int STAGE_MIN_HEIGHT = 648;
 
@@ -22,6 +24,7 @@ public class TgFXConstants {
 
     public static final String STAGE_FXML_MAIN = "/tgfx/Main.fxml";
 
+    // Main controller routing - to update different parts of the GUI not bound to properties.
     public static final String ROUTING_STATUS_REPORT = "STATUS_REPORT";
     public static final String ROUTING_CMD_GET_AXIS_SETTINGS = "CMD_GET_AXIS_SETTINGS"; 
     public static final String ROUTING_CMD_GET_MACHINE_SETTINGS = "CMD_GET_MACHINE_SETTINGS"; 
@@ -38,12 +41,21 @@ public class TgFXConstants {
     public static final String ROUTING_DISCONNECT = "DISCONNECT"; 
     public static final String ROUTING_RECONNECT = "RECONNECT";
 
+    // StatusCode types
+    public static final String ERR_COMMAND = "COMMAND";
+    public static final String ERR_INPUT = "INPUT";
+    public static final String ERR_JSON = "JSON";
+    public static final String ERR_GCODE = "GCODE";
+    public static final String ERR_MOVEMENT = "MOVEMENT";
+
+    // Serial port rate
     public static final int SERIAL_DATA_RATE = 115200;
 
+    // TODO: need to write mock serial interface
     // This disables the serial connection check so we can debug things
     // when there's no machine available.
-    // TODO: need to write mock serial interface
     public static final boolean DISABLE_UI_CONNECTION_CHECK = false;
 
+    // TODO: find a better way to do this
     public static final String PATH = "/Users/Mark/Desktop/Workspace/tgfx/";
 }

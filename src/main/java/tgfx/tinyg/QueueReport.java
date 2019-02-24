@@ -7,7 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * QueueReport
+ * QueueReport POJO
  *
  */
 public class QueueReport {

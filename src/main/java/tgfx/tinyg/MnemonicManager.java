@@ -1,18 +1,12 @@
 package tgfx.tinyg;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import static tgfx.tinyg.Mnemonics.*;
 
 /**
  * MnemonicManager
- *
+ * Retrieves Mnemonics
  */
 public class MnemonicManager {
-    private static final Logger logger = LogManager.getLogger();
-
-
 
     public MnemonicManager() {
     }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tgfx.tinyg;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +8,7 @@ import static tgfx.tinyg.Commands.*;
 
 /**
  * CommandManager
- *
+ * Processes commands
  */
 public class CommandManager {
     private static final Logger logger = LogManager.getLogger();
@@ -37,7 +33,6 @@ public class CommandManager {
         driver.priorityWrite(CMD_APPLY_PAUSE);
         Thread.sleep(40);
         driver.priorityWrite(CMD_APPLY_QUEUE_FLUSH);
-//        MainController.postConsoleMessage("Stopping Job Clearing Serial Queue...\n");
     }
 
     public void setIncrementalMovementMode() {
@@ -133,6 +128,18 @@ public class CommandManager {
      * writes the commands to query current hardware settings on the tinyg board
      */
     public void queryAllHardwareAxisSettings() {
+        driver.write(CMD_QUERY_AXIS_X);
+        logger.info("Getting X AXIS Settings");
+        MainController.postConsoleMessage("Getting TinyG Axis X Settings...");
+
+        driver.write(CMD_QUERY_AXIS_Y);
+        logger.info("Getting Y AXIS Settings");
+        MainController.postConsoleMessage("Getting TinyG Axis Y Settings...");
+
+        driver.write(CMD_QUERY_AXIS_Z);
+        logger.info("Getting Z AXIS Settings");
+        MainController.postConsoleMessage("Getting TinyG Axis Z Settings...");
+
         logger.info("Getting A AXIS Settings");
         driver.write(CMD_QUERY_AXIS_A);
         MainController.postConsoleMessage("Getting TinyG Axis A Settings...");
@@ -145,16 +152,5 @@ public class CommandManager {
         driver.write(CMD_QUERY_AXIS_C);
         MainController.postConsoleMessage("Getting TinyG Axis C Settings...");
 
-        driver.write(CMD_QUERY_AXIS_X);
-        logger.info("Getting X AXIS Settings");
-        MainController.postConsoleMessage("Getting TinyG Axis X Settings...");
-
-        driver.write(CMD_QUERY_AXIS_Y);
-        logger.info("Getting Y AXIS Settings");
-        MainController.postConsoleMessage("Getting TinyG Axis Y Settings...");
-
-        driver.write(CMD_QUERY_AXIS_Z);
-        logger.info("Getting Z AXIS Settings");
-        MainController.postConsoleMessage("Getting TinyG Axis Z Settings...");
     }
 }

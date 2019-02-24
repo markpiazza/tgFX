@@ -2,17 +2,20 @@ package tgfx.tinyg;
 
 import java.util.ArrayList;
 
+/**
+ * Mnemonics from return responses
+ */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class Mnemonics {
 
-    //Group holder Mnemonics
+    // Group holder Mnemonics
     public static final ArrayList<String> GROUP_MNEMONICS = new ArrayList<>();
     public static final ArrayList<String> AXIS_MNEMONICS = new ArrayList<>();
     public static final ArrayList<String> SYS_MNEMONICS = new ArrayList<>();
     public static final ArrayList<String> MOTOR_MNEMONICS = new ArrayList<>();
     public static final ArrayList<String> STATUS_MNEMONICS = new ArrayList<>();
 
-    //Group Mnemonics
+    // Group Mnemonics
     public static final String MNEMONIC_GROUP_TGFX = "tgfx";
     public static final String MNEMONIC_GROUP_SYSTEM = "sys";
     public static final String MNEMONIC_GROUP_EMERGENCY_SHUTDOWN = "er";
@@ -35,7 +38,7 @@ public class Mnemonics {
     public static final String MNEMONIC_GROUP_AXIS_B = "b";
     public static final String MNEMONIC_GROUP_AXIS_C = "c";
 
-    //AXIS Mnemonics
+    // AXIS Mnemonics
     public static final String MNEMONIC_AXIS_AXIS_MODE = "am";
     public static final String MNEMONIC_AXIS_VELOCITY_MAXIMUM = "vm";
     public static final String MNEMONIC_AXIS_FEEDRATE_MAXIMUM = "fr";
@@ -51,7 +54,7 @@ public class Mnemonics {
     public static final String MNEMONIC_AXIS_ZERO_BACKOFF = "zb";
     public static final String MNEMONIC_AXIS_RADIUS = "ra";
 
-    //MOTOR Mnemonics
+    // MOTOR Mnemonics
     public static final String MNEMONIC_MOTOR_MAP_AXIS = "ma";
     public static final String MNEMONIC_MOTOR_STEP_ANGLE = "sa";
     public static final String MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION = "tr";
@@ -59,31 +62,31 @@ public class Mnemonics {
     public static final String MNEMONIC_MOTOR_POLARITY = "po";
     public static final String MNEMONIC_MOTOR_POWER_MANAGEMENT = "pm";
 
-    //Status Report
+    // Position
     public static final String MNEMONIC_STATUS_REPORT_POSX = "posx";
     public static final String MNEMONIC_STATUS_REPORT_POSY = "posy";
     public static final String MNEMONIC_STATUS_REPORT_POSZ = "posz";
     public static final String MNEMONIC_STATUS_REPORT_POSA = "posa";
 
-    //Homed Status
+    // Homed Status
     public static final String MNEMONIC_STATUS_REPORT_HOMEDX = "homx";
     public static final String MNEMONIC_STATUS_REPORT_HOMEDY = "homy";
     public static final String MNEMONIC_STATUS_REPORT_HOMEDZ = "homz";
     public static final String MNEMONIC_STATUS_REPORT_HOMEDA = "homa";
 
-    //Machine Positions
-    public static final String MNEMONIC_STATUS_REPORT_MACHINEPOSX = "mpox"; //Machine Position
-    public static final String MNEMONIC_STATUS_REPORT_MACHINEPOSY = "mpoy"; //Machine Position
-    public static final String MNEMONIC_STATUS_REPORT_MACHINEPOSZ = "mpoz"; //Machine Position
-    public static final String MNEMONIC_STATUS_REPORT_MACHINEPOSA = "mpoa"; //Machine Position
+    // Machine Positions
+    public static final String MNEMONIC_STATUS_REPORT_MACHINEPOSX = "mpox";
+    public static final String MNEMONIC_STATUS_REPORT_MACHINEPOSY = "mpoy";
+    public static final String MNEMONIC_STATUS_REPORT_MACHINEPOSZ = "mpoz";
+    public static final String MNEMONIC_STATUS_REPORT_MACHINEPOSA = "mpoa";
 
-    //Offsets
+    // Work Offsets
     public static final String MNEMONIC_STATUS_REPORT_WORKOFFSETA = "ofsa";
     public static final String MNEMONIC_STATUS_REPORT_WORKOFFSETX = "ofsx";
     public static final String MNEMONIC_STATUS_REPORT_WORKOFFSETY = "ofsy";
     public static final String MNEMONIC_STATUS_REPORT_WORKOFFSETZ = "ofsz";
 
-    //
+    // Status Line
     public static final String MNEMONIC_STATUS_REPORT_LINE = "line";
     public static final String MNEMONIC_STATUS_REPORT_VELOCITY = "vel";
     public static final String MNEMONIC_STATUS_REPORT_MOTION_MODE = "momo";
@@ -91,7 +94,7 @@ public class Mnemonics {
     public static final String MNEMONIC_STATUS_REPORT_UNIT = "unit";
     public static final String MNEMONIC_STATUS_REPORT_COORDNIATE_MODE = "coor";
 
-    //System MNEMONICS
+    // System
     public static final String MNEMONIC_SYSTEM_DEFAULT_GCODE_UNIT_MODE = "gun";
     public static final String MNEMONIC_SYSTEM_DEFAULT_GCODE_PLANE = "gpl";
     public static final String MNEMONIC_SYSTEM_DEFAULT_GCODE_COORDINATE_SYSTEM = "gco";

@@ -18,7 +18,7 @@ public class ResponseFooter {
     private static int rxRecvd = 254;
     private static long checkSum;    
 
-    ResponseFooter(){
+    public ResponseFooter(){
     }
 
     int getRxRecvd() {

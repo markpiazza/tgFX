@@ -299,16 +299,20 @@ public class MainController extends Stage implements Initializable, Observer, Qu
         if (arg instanceof StatusCode ){
             //We got an error condition.. lets route it to where it goes!
             StatusCode statuscode = (StatusCode) arg;
-            MainController.postConsoleMessage("[->] TinyG Response: " + statuscode.getStatusType() +
-                    ":" + statuscode.getMessage() + "\n");
+            MainController.postConsoleMessage(
+                    "[->] TinyG Response: " +
+                    statuscode.getStatusType() + ":" +
+                    statuscode.getMessage() + "\n");
+
         } else if(arg instanceof String[]){
             final String[] updateMessage = (String[]) arg;
             final String routingKey = updateMessage[0];
             final String keyArgument = updateMessage[1];
 
             /*
-             * This is our update routing switch From here we update
-             * different parts of the GUI that is not bound to properties.
+             * This is our update routing switch.
+             * From here we update different parts of the
+             * GUI that is not bound to properties.
              */
             try {
                 switch (routingKey) {
