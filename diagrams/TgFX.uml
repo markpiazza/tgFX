@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>tgfx.system.Machine</OriginalElement>
+  <nodes>
+    <node x="1817.0" y="2185.0">tgfx.ui.tgfxsettings.TgfxSettingsController</node>
+    <node x="1428.0" y="1418.0">tgfx.system.CoordinateSystem</node>
+    <node x="360.0" y="1824.0">tgfx.SerialDriver</node>
+    <node x="388.0" y="2512.0">tgfx.system.enums.GcodeSelectPlane</node>
+    <node x="1479.0" y="1824.0">tgfx.tinyg.ResponseCommand</node>
+    <node x="1281.0" y="2371.0">tgfx.utility.Timeable</node>
+    <node x="306.0" y="2185.0">tgfx.tinyg.QueueReport</node>
+    <node x="756.0" y="2512.0">tgfx.TgFXConstants</node>
+    <node x="876.0" y="2185.0">tgfx.tinyg.MnemonicManager</node>
+    <node x="2142.0" y="2185.0">tgfx.system.enums.AxisMode</node>
+    <node x="576.0" y="2512.0">tgfx.system.enums.GcodeUnitMode</node>
+    <node x="904.0" y="1824.0">tgfx.render.Draw2d</node>
+    <node x="1253.0" y="2512.0">tgfx.system.enums.SwitchMode</node>
+    <node x="1048.0" y="1418.0">tgfx.system.Motor</node>
+    <node x="0.0" y="2512.0">tgfx.tinyg.CommandConstants</node>
+    <node x="2181.0" y="2371.0">tgfx.tinyg.MnemonicConstants</node>
+    <node x="926.0" y="2512.0">tgfx.system.enums.MachineState</node>
+    <node x="1091.0" y="2512.0">tgfx.system.enums.MotionMode</node>
+    <node x="644.0" y="1824.0">tgfx.tinyg.ResponseFooter</node>
+    <node x="378.0" y="2371.0">tgfx.system.CoordinateManager</node>
+    <node x="1878.0" y="0.0">tgfx.render.CNCMachinePane</node>
+    <node x="1977.0" y="2371.0">tgfx.system.enums.GcodeDistanceMode</node>
+    <node x="1772.0" y="2371.0">tgfx.system.enums.GcodeSelectionPlane</node>
+    <node x="1312.0" y="2185.0">tgfx.system.enums.StatusCode</node>
+    <node x="546.0" y="2185.0">tgfx.hardwarePlatforms.HardwarePlatformManager</node>
+    <node x="2164.0" y="1824.0">tgfx.utility.UtilityFunctions</node>
+    <node x="383.0" y="1418.0">tgfx.SerialWriter</node>
+    <node x="1780.0" y="1418.0">tgfx.ui.tinygconfig.TinyGConfigController</node>
+    <node x="1068.0" y="2371.0">tgfx.TgFX</node>
+    <node x="717.0" y="1418.0">tgfx.tinyg.CommandManager</node>
+    <node x="1814.0" y="1824.0">tgfx.ui.firmware.FirmwareUpdaterController</node>
+    <node x="1411.0" y="2512.0">tgfx.system.enums.AxisName</node>
+    <node x="0.0" y="1824.0">tgfx.ui.machinesettings.MachineSettingsController</node>
+    <node x="0.0" y="0.0">tgfx.system.Machine</node>
+    <node x="1548.0" y="2371.0">tgfx.system.enums.GcodeCoordinateSystem</node>
+    <node x="1558.0" y="101.0">tgfx.MainController</node>
+    <node x="1231.0" y="0.0">tgfx.ui.gcode.GcodeTabController</node>
+    <node x="1557.0" y="2512.0">tgfx.system.enums.AxisType</node>
+    <node x="0.0" y="1418.0">tgfx.tinyg.ResponseParser</node>
+    <node x="1230.0" y="1824.0">tgfx.hardwarePlatforms.HardwarePlatform</node>
+    <node x="1584.0" y="2185.0">tgfx.ui.gcode.GcodeLine</node>
+    <node x="1606.5" y="0.0">tgfx.utility.QueuedTimerable</node>
+    <node x="754.0" y="2371.0">tgfx.utility.AsyncTimer</node>
+    <node x="0.0" y="2371.0">tgfx.utility.QueueUsingTimer</node>
+    <node x="0.0" y="2185.0">tgfx.ui.gcode.GcodeHistory</node>
+    <node x="851.0" y="0.0">tgfx.system.Axis</node>
+    <node x="460.0" y="0.0">tgfx.tinyg.TinygDriver</node>
+    <node x="199.0" y="2512.0">tgfx.system.enums.GcodePathControl</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="tgfx.MainController" target="tgfx.utility.QueuedTimerable">
+      <point x="0.0" y="-245.5" />
+      <point x="0.0" y="25.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.054084798345398" x="817.6935151574611" y="1951.0171686451486" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>Project Files</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -83,8 +83,8 @@ public class CNCMachinePane extends Pane {
         // mouse moved inside the CNCMachinePane
         ChangeListener posChangeListener = (observableValue, oldValue, newValue) -> {
             boolean showCursor = true;
-            if (MACHINE.getAxisByName("y").getMachinePosition() > heightProperty().get() ||
-                 MACHINE.getAxisByName("x").getMachinePosition() > widthProperty().get()) {
+            if (MACHINE.getAxisByName(Y).getMachinePosition() > heightProperty().get() ||
+                 MACHINE.getAxisByName(X).getMachinePosition() > widthProperty().get()) {
                 showCursor = false;
             }
             hideOrShowCursor(showCursor);
@@ -127,15 +127,15 @@ public class CNCMachinePane extends Pane {
         });
 
 
-        maxHeightProperty().bind(MACHINE.getAxisByName("y").travelMaximumProperty()
+        maxHeightProperty().bind(MACHINE.getAxisByName(Y).travelMaximumProperty()
                 .multiply(MACHINE.getGcodeUnitDivision()));
-        maxWidthProperty().bind(MACHINE.getAxisByName("x").travelMaximumProperty()
+        maxWidthProperty().bind(MACHINE.getAxisByName(X).travelMaximumProperty()
                 .multiply(MACHINE.getGcodeUnitDivision()));
 
         cursorPoint.translateYProperty()
-                .bind(heightProperty().subtract(MACHINE.getAxisByName("y").machinePositionProperty()));
+                .bind(heightProperty().subtract(MACHINE.getAxisByName(Y).machinePositionProperty()));
         cursorPoint.layoutXProperty()
-                .bind(MACHINE.getAxisByName("x").machinePositionProperty());
+                .bind(MACHINE.getAxisByName(X).machinePositionProperty());
 
         cncHeight.bind(heightProperty());
         cncWidth.bind(widthProperty());
@@ -282,8 +282,8 @@ public class CNCMachinePane extends Pane {
         }
 
         // FIXME: not moving from point 160x160 (magnification+80)
-//        double newX = unitMagnification * (MACHINE.getAxisByName("X").getWorkPosition().get() + 80);
-//        double newY = unitMagnification * (MACHINE.getAxisByName("Y").getWorkPosition().get() + 80);
+//        double newX = unitMagnification * (MACHINE.getAxisByName(X).getWorkPosition().get() + 80);
+//        double newY = unitMagnification * (MACHINE.getAxisByName(Y).getWorkPosition().get() + 80);
 
         //FIXME: copied from below, seems to work better than above, but still not quite right
         double newX = MACHINE.getAxisByName(X).machinePositionProperty().get();
@@ -315,9 +315,9 @@ public class CNCMachinePane extends Pane {
             getGcodePane().setScaleY(scale);
         }
 
-//        MainController.print(gcodePane.getHeight() - MACHINE.getAxisByName("y").getWorkPosition().get());
-//        double newX = MACHINE.getAxisByName("x").machinePositionProperty().get(); // + magnification;
-//        double newY = this.getHeight() - MACHINE.getAxisByName("y").machinePositionProperty().get(); // + magnification;
+//        MainController.print(gcodePane.getHeight() - MACHINE.getAxisByName(Y).getWorkPosition().get());
+//        double newX = MACHINE.getAxisByName(X).machinePositionProperty().get(); // + magnification;
+//        double newY = this.getHeight() - MACHINE.getAxisByName(Y).machinePositionProperty().get(); // + magnification;
 
         if (draw2d.isFirstDraw()) {
             //This is to not have us draw a line on the first connect.
