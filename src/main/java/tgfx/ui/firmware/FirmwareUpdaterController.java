@@ -38,8 +38,8 @@ import static tgfx.tinyg.CommandConstants.CMD_APPLY_BOOTLOADER_MODE;
 public class FirmwareUpdaterController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
 
-    private static final TinygDriver DRIVER = TinygDriver.getInstance();
-    private static final Machine MACHINE = DRIVER.getMachine();
+    private TinygDriver driver;
+    private Machine machine;
 
     @FXML
     private Label hwVersion, buildNumb, hardwareId, latestFirmwareBuild;
@@ -51,16 +51,23 @@ public class FirmwareUpdaterController implements Initializable {
     private Label currentFirmwareVersionLabel;
 
     @FXML
-    private static Button handleUpdateFirmware;
+    private Button handleUpdateFirmware;
 
-    private static String avrdudePath = "";
-    private static String avrconfigPath = "";
+    private String avrdudePath = "";
+    private String avrconfigPath = "";
 
-    private SimpleDoubleProperty currentVersionString = new SimpleDoubleProperty();
+    private SimpleDoubleProperty currentVersionString;
 
-    private HashMap<String, String> platformSetup = new HashMap<>();
+    private HashMap<String, String> platformSetup;
 
-    private static Task updateFirmware() {
+    public FirmwareUpdaterController(){
+        driver = TinygDriver.getInstance();
+        machine = driver.getMachine();
+        currentVersionString = new SimpleDoubleProperty();
+        platformSetup = new HashMap<>();
+    }
+
+    private Task updateFirmware() {
         Task task = new Task<Void>() {
             @Override
             public Void call() {
@@ -85,7 +92,7 @@ public class FirmwareUpdaterController implements Initializable {
                 //Download TinyG.hex
                 URL url;
                 try {
-                    url = new URL(MACHINE.getHardwarePlatform().getFirmwareUrl());
+                    url = new URL(machine.getHardwarePlatform().getFirmwareUrl());
                     URLConnection urlConnection = url.openConnection();
                     logger.info("Opened Connection to Github");
                     postConsoleMessage("Downloading tinyg.hex file from github.com");
@@ -107,7 +114,7 @@ public class FirmwareUpdaterController implements Initializable {
                 } catch (MalformedURLException ex) {
                     logger.error(ex);
                     postConsoleMessage("Error downloading the TinyG update from: " +
-                            MACHINE.getHardwarePlatform().getFirmwareUrl());
+                            machine.getHardwarePlatform().getFirmwareUrl());
                     postConsoleMessage("Check your internetion connection and try again. " +
                             "Firmware update aborted...");
                 } catch (IOException ex) {
@@ -123,20 +130,20 @@ public class FirmwareUpdaterController implements Initializable {
                     Process process = rt.exec(avrdudePath +
                             " -p x192a3 -C " + avrconfigPath +
                             " -c avr109 -b 115200 -P " +
-                            DRIVER.getPortName() +
+                            driver.getPortName() +
                             " -U flash:w:tinyg.hex");
                     InputStream is = process.getInputStream();
                     postConsoleMessage("Attempting to update TinyG's firmware.");
                     process.waitFor();
                     Thread.sleep(2000);//sleep a bit and let the firmware init
-                    DRIVER.sendReconnectRequest();
+                    driver.sendReconnectRequest();
 
                     postConsoleMessage("Firmware update complete.");
                     toggleUpdateFirmwareButton(true);
 
                 } catch (MalformedURLException ex) {
                     postConsoleMessage("TinyG update URL: " +
-                            MACHINE.getHardwarePlatform().getFirmwareUrl() +
+                            machine.getHardwarePlatform().getFirmwareUrl() +
                             " is invalid, check the platform config "
                             + "file you are using in the configs directory.");
                     postConsoleMessage("Firmware update aborted...");
@@ -150,7 +157,7 @@ public class FirmwareUpdaterController implements Initializable {
         return task;
     }
 
-    private static void toggleUpdateFirmwareButton(boolean choice) {
+    private void toggleUpdateFirmwareButton(boolean choice) {
         final boolean bChoice = choice;
         Platform.runLater(() -> {
             // when we are updating we dont want to hit it 2x
@@ -162,15 +169,15 @@ public class FirmwareUpdaterController implements Initializable {
      * Initializes the controller class.
      */
     @FXML
-    public static void handleUpdateFirmware(ActionEvent event) {
+    public void handleUpdateFirmware(ActionEvent event) {
 
-        if (MACHINE.getHardwarePlatform().getHardwarePlatformVersion() == -1) {
+        if (machine.getHardwarePlatform().getHardwarePlatformVersion() == -1) {
             //This code checks to see if a hardware platform has been applied.
             //if the hpv is -1 then it has not.  So we guess that the board is a v8 TinyG.
-            DRIVER.getHardwarePlatformManager().setPlatformByName("TinyG");
+            driver.getHardwarePlatformManager().setPlatformByName("TinyG");
         }
 
-        if (DRIVER.isTimedout() || MACHINE.getHardwarePlatform().isIsUpgradeable()) {
+        if (driver.isTimedout() || machine.getHardwarePlatform().isIsUpgradeable()) {
             //This platform can be upgraded  
             
             toggleUpdateFirmwareButton(false);
@@ -189,7 +196,7 @@ public class FirmwareUpdaterController implements Initializable {
         logger.info("Checking current Firmware Version");
         Platform.runLater(() -> {
             try {
-                URL url = new URL(MACHINE.getHardwarePlatform().getLatestVersionUrl());
+                URL url = new URL(machine.getHardwarePlatform().getLatestVersionUrl());
                 URLConnection urlConnection = url.openConnection();
 
                 InputStream input;
@@ -200,7 +207,7 @@ public class FirmwareUpdaterController implements Initializable {
                 String _currentVersionString = new String(buffer);
                 latestFirmwareBuild.setText(_currentVersionString);
                 Double currentVal;
-                if (MACHINE.getFirmwareBuild() <
+                if (machine.getFirmwareBuild() <
                         Double.parseDouble(_currentVersionString)) {
                     //We need to update your firmware
                     Platform.runLater(() -> {
@@ -238,7 +245,7 @@ public class FirmwareUpdaterController implements Initializable {
                     });
 
                 } else {
-                    postConsoleMessage("Your " + MACHINE.getHardwarePlatform().getPlatformName() +
+                    postConsoleMessage("Your " + machine.getHardwarePlatform().getPlatformName() +
                             "'s firmware is up to date...\n");
                 }
 
@@ -251,25 +258,25 @@ public class FirmwareUpdaterController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        hardwareId.textProperty().bind(MACHINE.hardwareIdProperty());
-        hwVersion.textProperty().bind(MACHINE.hardwareVersionProperty());
-        firmwareVersion.textProperty().bind(MACHINE.firmwareVersionProperty());
-        buildNumb.textProperty().bind(MACHINE.firmwareBuildProperty().asString());
+        hardwareId.textProperty().bind(machine.hardwareIdProperty());
+        hwVersion.textProperty().bind(machine.hardwareVersionProperty());
+        firmwareVersion.textProperty().bind(machine.firmwareVersionProperty());
+        buildNumb.textProperty().bind(machine.firmwareBuildProperty().asString());
 
     }
 
-    private static void enterBootloaderMode() {
-        if (DRIVER.isConnected().get()) {
+    private void enterBootloaderMode() {
+        if (driver.isConnected().get()) {
             //We need to disconnect from tinyg after issuing out boot command.
             try {
                 //Set our board into bootloader mode.
-                DRIVER.priorityWrite(CMD_APPLY_BOOTLOADER_MODE);
+                driver.priorityWrite(CMD_APPLY_BOOTLOADER_MODE);
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 logger.error(ex);
             }
             try {
-                DRIVER.sendDisconnectRequest();
+                driver.sendDisconnectRequest();
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
                 logger.error(ex);

@@ -2,7 +2,6 @@ package tgfx.render;
 
 import java.text.DecimalFormat;
 import java.util.Iterator;
-import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
@@ -22,7 +21,6 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tgfx.MainController;
-import tgfx.TgFXConstants;
 import tgfx.system.Machine;
 import tgfx.system.enums.GcodeUnitMode;
 import tgfx.tinyg.TinygDriver;
@@ -38,19 +36,18 @@ import static tgfx.tinyg.CommandConstants.*;
 public class CNCMachinePane extends Pane {
     private static final Logger logger = LogManager.getLogger();
 
-    private static final TinygDriver DRIVER = TinygDriver.getInstance();
-    private static final Machine MACHINE = DRIVER.getMachine();
+    private TinygDriver driver;
+    private Machine machine;
 
     private final Circle cursorPoint = new Circle(2, RED);
 
-    private SimpleDoubleProperty cncHeight = new SimpleDoubleProperty();
-    private SimpleDoubleProperty cncWidth = new SimpleDoubleProperty();
-    private BooleanExpression cursorVisibleBinding;
+    private SimpleDoubleProperty cncHeight;
+    private SimpleDoubleProperty cncWidth;
 
     private DecimalFormat df = new DecimalFormat("#.###");
 
-    private StackPane gcodePane = new StackPane();
-    private Draw2d draw2d = new Draw2d();
+    private StackPane gcodePane;
+    private Draw2d draw2d;
 
     private double xPrevious;
     private double yPrevious;
@@ -64,35 +61,28 @@ public class CNCMachinePane extends Pane {
      * CNCMachinePane constructor
      */
     public CNCMachinePane() {
+        driver = TinygDriver.getInstance();
+        machine = driver.getMachine();
 
-        //Cursor point indicator
+        gcodePane = new StackPane();
+        draw2d = new Draw2d();
+
+        cncHeight = new SimpleDoubleProperty();
+        cncWidth = new SimpleDoubleProperty();
+
+
         cursorPoint.setRadius(1);
 
+
         // hide this element until we connect
-        this.setMaxSize(0, 0);
+        setMaxSize(0, 0);
 
-        // Set our machine size from tinyg travel max
-        this.setVisible(false);
-        this.setPadding(new Insets(10));
-        this.setFocusTraversable(true);
-        this.setFocused(true);
+        setVisible(false);
+        setPadding(new Insets(10));
+        setFocusTraversable(true);
+        setFocused(true);
 
-        // initial layout setup in constructor
         setupLayout();
-
-        // mouse moved inside the CNCMachinePane
-        ChangeListener posChangeListener = (observableValue, oldValue, newValue) -> {
-            boolean showCursor = true;
-            if (MACHINE.getAxisByName(Y).getMachinePosition() > heightProperty().get() ||
-                 MACHINE.getAxisByName(X).getMachinePosition() > widthProperty().get()) {
-                showCursor = false;
-            }
-            hideOrShowCursor(showCursor);
-
-        };
-
-        // mouse exited the CNCMachinePane
-        this.setOnMouseExited(me -> setFocusForJogging(false));
 
         // mouse entered the CNCMachinePane
         this.setOnMouseEntered(me -> {
@@ -100,10 +90,15 @@ public class CNCMachinePane extends Pane {
             requestFocus();
         });
 
+        // mouse exited the CNCMachinePane
+        this.setOnMouseExited(me -> {
+            setFocusForJogging(false);
+        });
+
         //  mouse clicked the CNCMachinePane
         this.setOnMouseClicked(me -> {
             logger.info("set machine position");
-            //T his is so we can set our machine position when a machine does not have homing switches
+            // This is so we can set our machine position when a machine does not have homing switches
             if (me.getButton().equals(MouseButton.SECONDARY)) {
                 // Right Clicked
                 ContextMenu cm = new ContextMenu();
@@ -111,13 +106,13 @@ public class CNCMachinePane extends Pane {
                 menuItem1.setOnAction(t -> {
                     // We do not want to draw a line from our previous position
                     draw2d.setFirstDraw(true);
-                    DRIVER.getCommandManager().setMachinePosition(
+                    driver.getCommandManager().setMachinePosition(
                             getNormalizedX(me.getX()),
                             getNormalizedY(me.getY()));
                     // This allows us to move our drawing to a new place without drawing a line from the old.
                     draw2d.setFirstDraw(true);
-                    DRIVER.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
-                    DRIVER.write(CMD_QUERY_STATUS_REPORT);
+                    driver.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
+                    driver.write(CMD_QUERY_STATUS_REPORT);
                     // G92 does not invoke a status report... So we need to generate one to have
                     // Our GUI update the coordinates to zero
                 });
@@ -126,25 +121,36 @@ public class CNCMachinePane extends Pane {
             }
         });
 
+        // mouse moved inside the CNCMachinePane
+        ChangeListener posChangeListener = (observableValue, oldValue, newValue) -> {
+            boolean showCursor = true;
+            if (machine.getAxisByName(Y).getMachinePosition() > heightProperty().get() ||
+                    machine.getAxisByName(X).getMachinePosition() > widthProperty().get()) {
+                showCursor = false;
+            }
+            hideOrShowCursor(showCursor);
+        };
 
-        maxHeightProperty().bind(MACHINE.getAxisByName(Y).travelMaximumProperty()
-                .multiply(MACHINE.getGcodeUnitDivision()));
-        maxWidthProperty().bind(MACHINE.getAxisByName(X).travelMaximumProperty()
-                .multiply(MACHINE.getGcodeUnitDivision()));
-
-        cursorPoint.translateYProperty()
-                .bind(heightProperty().subtract(MACHINE.getAxisByName(Y).machinePositionProperty()));
+        //When the x or y pos changes we see if we want to show or hide the cursor
         cursorPoint.layoutXProperty()
-                .bind(MACHINE.getAxisByName(X).machinePositionProperty());
+                .addListener(posChangeListener);
+        cursorPoint.layoutYProperty()
+                .addListener(posChangeListener);
+        cursorPoint.layoutXProperty()
+                .bind(machine.getAxisByName(X).machinePositionProperty());
+        cursorPoint.translateYProperty()
+                .bind(heightProperty().subtract(machine.getAxisByName(Y).machinePositionProperty()));
 
         cncHeight.bind(heightProperty());
         cncWidth.bind(widthProperty());
 
-        //When the x or y pos changes we see if we want to show or hide the cursor
-        cursorPoint.layoutXProperty().addListener(posChangeListener);
-        cursorPoint.layoutYProperty().addListener(posChangeListener);
+        maxHeightProperty().bind(machine.getAxisByName(Y).travelMaximumProperty()
+                .multiply(machine.getGcodeUnitDivision()));
+        maxWidthProperty().bind(machine.getAxisByName(X).travelMaximumProperty()
+                .multiply(machine.getGcodeUnitDivision()));
 
         logger.info("CNCMachinePane preview pane initialized");
+
     }
 
 
@@ -155,6 +161,7 @@ public class CNCMachinePane extends Pane {
     public Draw2d getDraw2d() {
         return draw2d;
     }
+
 
     /**
      * get the pane that the CNCMachinePane lives in
@@ -172,7 +179,7 @@ public class CNCMachinePane extends Pane {
     private void hideOrShowCursor(boolean choice) {
         //logger.info(choice?"show cursor":"hide cursor");
         // FIXME: RuntimeException: CNCMachinePane.visible : A bound value cannot be set
-        // this.visibleProperty().set(choice);
+        visibleProperty().set(choice);
     }
 
 
@@ -191,7 +198,7 @@ public class CNCMachinePane extends Pane {
      * @return normalized x position
      */
     private double getNormalizedX(double x) {
-        return x / MACHINE.getGcodeUnitDivision().get();
+        return x / machine.getGcodeUnitDivision().get();
     }
 
 
@@ -201,7 +208,7 @@ public class CNCMachinePane extends Pane {
      * @return normalized y position
      */
     private double getNormalizedY(double y) {
-        return (getHeight() - y) / MACHINE.getGcodeUnitDivision().get();
+        return (getHeight() - y) / machine.getGcodeUnitDivision().get();
     }
 
 
@@ -275,19 +282,19 @@ public class CNCMachinePane extends Pane {
         double scale = 1;
         double unitMagnification = 1;
 
-        if (MACHINE.gcodeUnitModeProperty().get().equals(GcodeUnitMode.INCHES.toString())) {
+        if (machine.gcodeUnitModeProperty().get().equals(GcodeUnitMode.INCHES.toString())) {
             unitMagnification = 5;  //INCHES
         } else {
             unitMagnification = 2; //MM
         }
 
         // FIXME: not moving from point 160x160 (magnification+80)
-//        double newX = unitMagnification * (MACHINE.getAxisByName(X).getWorkPosition().get() + 80);
-//        double newY = unitMagnification * (MACHINE.getAxisByName(Y).getWorkPosition().get() + 80);
+//        double newX = unitMagnification * (machine.getAxisByName(X).getWorkPosition().get() + 80);
+//        double newY = unitMagnification * (machine.getAxisByName(Y).getWorkPosition().get() + 80);
 
         //FIXME: copied from below, seems to work better than above, but still not quite right
-        double newX = MACHINE.getAxisByName(X).machinePositionProperty().get();
-        double newY = this.getHeight() - MACHINE.getAxisByName(Y).machinePositionProperty().get();
+        double newX = machine.getAxisByName(X).machinePositionProperty().get();
+        double newY = this.getHeight() - machine.getAxisByName(Y).machinePositionProperty().get();
 
         if (newX > getGcodePane().getWidth() || newX > getGcodePane().getWidth()) {
             scale = scale / 2;
@@ -315,9 +322,9 @@ public class CNCMachinePane extends Pane {
             getGcodePane().setScaleY(scale);
         }
 
-//        MainController.print(gcodePane.getHeight() - MACHINE.getAxisByName(Y).getWorkPosition().get());
-//        double newX = MACHINE.getAxisByName(X).machinePositionProperty().get(); // + magnification;
-//        double newY = this.getHeight() - MACHINE.getAxisByName(Y).machinePositionProperty().get(); // + magnification;
+//        MainController.print(gcodePane.getHeight() - machine.getAxisByName(Y).getWorkPosition().get());
+//        double newX = machine.getAxisByName(X).machinePositionProperty().get(); // + magnification;
+//        double newY = this.getHeight() - machine.getAxisByName(Y).machinePositionProperty().get(); // + magnification;
 
         if (draw2d.isFirstDraw()) {
             //This is to not have us draw a line on the first connect.
@@ -331,7 +338,7 @@ public class CNCMachinePane extends Pane {
         xPrevious = newX;
         yPrevious = newY;
 
-        if (MACHINE.motionModeProperty().get().equals("traverse")) {
+        if (machine.motionModeProperty().get().equals("traverse")) {
             //G0 Moves
             l.getStrokeDashArray().addAll(1d, 5d);
             l.setStroke(Draw2d.TRAVERSE);
@@ -381,12 +388,12 @@ public class CNCMachinePane extends Pane {
      */
     public void zeroSystem() {
         logger.info("zeroSystem");
-        if (DRIVER.isConnected().get()) {
+        if (driver.isConnected().get()) {
             draw2d.setFirstDraw(true); //This allows us to move our drawing to a new place without drawing a line from the old.
-            DRIVER.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
+            driver.write(CMD_APPLY_SYSTEM_ZERO_ALL_AXES);
             //G92 does not invoke a status report... So we need to generate one to have
             //Our GUI update the coordinates to zero
-            DRIVER.write(CMD_QUERY_STATUS_REPORT);
+            driver.write(CMD_QUERY_STATUS_REPORT);
             //We need to set these to 0 so we do not draw a line from the last place we were to 0,0
             resetDrawingCoords();
         }
@@ -470,11 +477,4 @@ public class CNCMachinePane extends Pane {
         return cncWidth;
     }
 
-    public Boolean getCursorVisibleBinding() {
-        return cursorVisibleBinding.get();
-    }
-
-    public BooleanExpression cursorVisibleBindingProperty() {
-        return cursorVisibleBinding;
-    }
 }

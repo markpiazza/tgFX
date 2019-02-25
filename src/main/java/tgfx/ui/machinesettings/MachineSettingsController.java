@@ -60,17 +60,13 @@ public class MachineSettingsController implements Initializable {
     @FXML
     private ProgressBar configProgress;
 
+
     public MachineSettingsController() {
         driver = TinygDriver.getInstance();
         machine = driver.getMachine();
         commandManager = driver.getCommandManager();
     }
 
-
-    public void updateGuiMachineSettings() {
-        machineUnitMode.getSelectionModel().select(machine.getGcodeUnitModeAsInt());
-        machineSwitchType.getSelectionModel().select(machine.getSwitchType());
-    }
 
     /**
      * Initializes the controller class.
@@ -83,27 +79,13 @@ public class MachineSettingsController implements Initializable {
 
 
     @FXML
-    private void handleSaveCurrentSettings(ActionEvent event) {
-        postConsoleMessage("Saving current of Config Files is unsupported at this time.");
-//        Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-                
-//                FileChooser fc = new FileChooser();
-//                fc.setInitialDirectory(new File(System.getProperty("user.dir") +
-//                      System.getProperty("file.separator") + "configs" +
-//                      System.getProperty("file.separator")));
-//                fc.setTitle("Save Current TinyG Configuration");
-//                File f = fc.showSaveDialog(null);
-//                if (f.canWrite()) {
-//                }
-//            }
-//        });
-    }
-
-    @FXML
-    private void handleImportConfig(ActionEvent event) {
-        postConsoleMessage("Importing of Config Files is unsupported at this time.");
+    private void handleApplyDefaultSettings(ActionEvent evt) {
+        if (checkConectedMessage().equals("true")) {
+            driver.write(CMD_APPLY_DEFAULT_SETTINGS);
+        } else {
+            logger.error(checkConectedMessage());
+            postConsoleMessage(checkConectedMessage());
+        }
     }
 
 
@@ -118,17 +100,6 @@ public class MachineSettingsController implements Initializable {
     private void handleQueryMachineSettings() {
         commandManager.queryMachineSwitchMode();
         commandManager.queryAllMachineSettings();
-    }
-
-
-    @FXML
-    private void handleApplyDefaultSettings(ActionEvent evt) {
-        if (checkConectedMessage().equals("true")) {
-            driver.write(CMD_APPLY_DEFAULT_SETTINGS);
-        } else {
-            logger.error(checkConectedMessage());
-            postConsoleMessage(checkConectedMessage());
-        }
     }
 
 
@@ -212,6 +183,30 @@ public class MachineSettingsController implements Initializable {
     }
 
 
+    @FXML
+    private void handleSaveCurrentSettings(ActionEvent event) {
+        postConsoleMessage("Saving current of Config Files is unsupported at this time.");
+//        Platform.runLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                FileChooser fc = new FileChooser();
+//                fc.setInitialDirectory(new File(System.getProperty("user.dir") +
+//                      System.getProperty("file.separator") + "configs" +
+//                      System.getProperty("file.separator")));
+//                fc.setTitle("Save Current TinyG Configuration");
+//                File f = fc.showSaveDialog(null);
+//                if (f.canWrite()) {
+//                }
+//            }
+//        });
+    }
+
+    @FXML
+    private void handleImportConfig(ActionEvent event) {
+        postConsoleMessage("Importing of Config Files is unsupported at this time.");
+    }
+
+
     private void populateConfigFiles() {
         // FIXME: god damned java file loading
         String path = TgFXConstants.PATH+ "/configs";
@@ -236,6 +231,12 @@ public class MachineSettingsController implements Initializable {
             }
         }
         logger.info("Loaded " + configsListView.getItems().size() + " platform files");
+    }
+
+
+    public void updateGuiMachineSettings() {
+        machineUnitMode.getSelectionModel().select(machine.getGcodeUnitModeAsInt());
+        machineSwitchType.getSelectionModel().select(machine.getSwitchType());
     }
 
 
@@ -270,9 +271,9 @@ public class MachineSettingsController implements Initializable {
 
     private String checkConectedMessage() {
         if (driver.isConnected().get()) {
-            return ("true");
+            return "true";
         } else {
-            return ("TinyG is Not Connected");
+            return "TinyG is Not Connected";
         }
     }
 }

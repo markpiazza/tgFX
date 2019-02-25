@@ -88,6 +88,9 @@ public class MainController extends Stage implements Initializable, Observer, Qu
     private MachineSettingsController machineSettingsTabController;
 
     @FXML
+    private FirmwareUpdaterController firmwareUpdaterController;
+
+    @FXML
     private TabPane topTabPane;
 
     @FXML
@@ -575,7 +578,7 @@ public class MainController extends Stage implements Initializable, Observer, Qu
                 case CUSTOM2:
                     logger.info("Clicked Auto Upgrade");
                     Platform.runLater(() -> {
-                        FirmwareUpdaterController.handleUpdateFirmware(null);
+                        firmwareUpdaterController.handleUpdateFirmware(null);
                         try {
                             DRIVER.disconnect();
                         } catch (SerialPortException ex) {
