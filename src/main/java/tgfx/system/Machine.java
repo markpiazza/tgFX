@@ -96,7 +96,6 @@ public final class Machine {
         axis.add(new Axis(AxisName.B, AxisType.ROTATIONAL, AxisMode.STANDARD));
         axis.add(new Axis(AxisName.C, AxisType.ROTATIONAL, AxisMode.STANDARD));
 
-        setMotionMode(0);
         xjoggingIncrement = new SimpleIntegerProperty();
         xjoggingIncrement.bind(getAxisByName("X").travelMaximumProperty());
         yjoggingIncrement = new SimpleIntegerProperty();
@@ -122,6 +121,8 @@ public final class Machine {
         gcodeDistanceMode = GcodeDistanceMode.ABSOLUTE;
         switchType = 0;
         lastMessage = "";
+
+        setMotionMode(0);
     }
 
 

@@ -41,6 +41,7 @@ import tgfx.tinyg.TinygDriver;
 import tgfx.ui.tgfxsettings.TgfxSettingsController;
 
 
+import static tgfx.TgFXConstants.*;
 import static tgfx.tinyg.CommandConstants.*;
 
 /**
@@ -65,9 +66,6 @@ public class GcodeTabController implements Initializable {
 
     private Date timeStartDt;
     private int totalGcodeLines = 0;
-
-    private String buildDate;
-    private int buildNumber;
 
     private double scaleAmount;
     private double jogDial = 0;
@@ -178,16 +176,16 @@ public class GcodeTabController implements Initializable {
 
         if (driver.isConnected().get()) {
             switch (axis) {
-                case "x":
+                case X:
                     driver.write(CMD_APPLY_HOME_X_AXIS);
                     break;
-                case "y":
+                case Y:
                     driver.write(CMD_APPLY_HOME_Y_AXIS);
                     break;
-                case "z":
+                case Z:
                     driver.write(CMD_APPLY_HOME_Z_AXIS);
                     break;
-                case "a":
+                case A:
                     driver.write(CMD_APPLY_HOME_A_AXIS);
                     break;
             }
@@ -211,16 +209,16 @@ public class GcodeTabController implements Initializable {
             //We set this so we do not draw lines for the previous position to the new zero.
             cncMachinePane.getDraw2d().setFirstDraw(true);
             switch (axis) {
-                case "x":
+                case X:
                     driver.write(CMD_APPLY_ZERO_X_AXIS);
                     break;
-                case "y":
+                case Y:
                     driver.write(CMD_APPLY_ZERO_Y_AXIS);
                     break;
-                case "z":
+                case Z:
                     driver.write(CMD_APPLY_ZERO_Z_AXIS);
                     break;
-                case "a":
+                case A:
                     driver.write(CMD_APPLY_ZERO_A_AXIS);
                     break;
             }

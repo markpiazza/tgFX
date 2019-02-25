@@ -31,7 +31,7 @@ public class TgfxSettingsController implements Initializable {
     private ToggleButton settingDrawBtn;
     
     @FXML
-    public static ToggleButton settingDebugBtn;
+    private ToggleButton settingDebugBtn;
 
     @FXML
     private void handleTogglePreview(ActionEvent event) {
@@ -42,13 +42,6 @@ public class TgfxSettingsController implements Initializable {
         }else{
             setDrawPreview(false);
             settingDrawBtn.setText("Disabled");
-//        }
-//        if (settingDrawBtn.getText().equals("ON")) {
-//            settingDrawBtn.setText("OFF");
-//            setDrawPreview(true);
-//        } else {
-//            settingDrawBtn.setText("ON");
-//            setDrawPreview(false);
         }
     }
 
@@ -56,7 +49,7 @@ public class TgfxSettingsController implements Initializable {
         return drawPreview;
     }
 
-    private void setDrawPreview(boolean drawPreview) {
+    private static void setDrawPreview(boolean drawPreview) {
         TgfxSettingsController.drawPreview = drawPreview;
     }
 
@@ -66,16 +59,25 @@ public class TgfxSettingsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         logger.info("Initializing TgfxSettingsController");
-        settingDrawBtn.setSelected(true);  //We set drawing preview to default
-        settingDrawBtn.setText("Enabled");
+
         String buildNumber = Optional
                 .ofNullable(UtilityFunctions.getBuildInfo("BUILD"))
                 .orElse("Build Number Not Available");
-        tgfxBuildNumber.setText(buildNumber);
-        tgfxVersion.setText(".95");
+
+        String buildDate = Optional
+                .ofNullable(UtilityFunctions.getBuildInfo("DATE"))
+                .orElse("Build Date Not Available");
+
+        settingDrawBtn.setSelected(true);  //We set drawing preview to default
+        settingDrawBtn.setText("Enabled");
 
         tgfxBuildDate.setId("lblMachine");
+        tgfxBuildDate.setText(buildDate);
+
         tgfxBuildNumber.setId("lblMachine");
+        tgfxBuildNumber.setText(buildNumber);
+
         tgfxVersion.setId("lblMachine");
+        tgfxVersion.setText(".95");
     }
 }

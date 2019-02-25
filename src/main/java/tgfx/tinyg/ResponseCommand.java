@@ -4,16 +4,13 @@
  */
 package tgfx.tinyg;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 /**
- * ResponseCommand
+ * ResponseCommand POJO
  *
  */
 public class ResponseCommand {
-    private static final Logger logger = LogManager.getLogger();
 
     private String settingParent;
     private String settingKey;
@@ -54,7 +51,7 @@ public class ResponseCommand {
     }
     
     public JSONObject buildJsonObject() {
-        return(new JSONObject("{\"" + this.getSettingParent() + "\"" +
-                ":{\"" + this.getSettingKey() + "\":" + this.getSettingValue() + "}}"));
+        return new JSONObject("{\"" + this.getSettingParent() + "\"" +
+                ":{\"" + this.getSettingKey() + "\":" + this.getSettingValue() + "}}");
     }
 }

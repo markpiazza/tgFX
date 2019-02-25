@@ -1,18 +1,13 @@
 package tgfx.tinyg;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
  * ResponseFooter
  *
+ * {"b":{"xvm":12000},"f":[1,0,255,1234]}
+ * "f":[<protocol_version>, <status_code>, <input_available>, <checksum>]
  */
 public class ResponseFooter {
-    private static final Logger logger = LogManager.getLogger();
 
-    //{"b":{"xvm":12000},"f":[1,0,255,1234]}
-    //"f":[<protocol_version>, <status_code>, <input_available>, <checksum>]
-    
     private int protocolVersion;
     private static int statusCode = 0;
     private static int rxRecvd = 254;

@@ -28,7 +28,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 
-import tgfx.system.Machine;
 import tgfx.tinyg.TinygDriver;
 import tgfx.system.enums.StatusCode;
 import tgfx.ui.gcode.GcodeHistory;
@@ -51,7 +50,6 @@ public class MainController extends Stage implements Initializable, Observer, Qu
     private static final Logger logger = LogManager.getLogger();
 
     private static final TinygDriver DRIVER = TinygDriver.getInstance();
-    private static final Machine MACHINE = DRIVER.getMachine();
 
     private final static StringConverter<Number> STRING_CONVERTER = new StringConverter<Number>() {
         @Override
@@ -104,11 +102,11 @@ public class MainController extends Stage implements Initializable, Observer, Qu
 
     // output console
     @FXML
-    TextArea console;
+    private TextArea console;
 
     // input prompt
     @FXML
-    TextField input;
+    private TextField input;
 
     // status bar
     @FXML
@@ -271,17 +269,15 @@ public class MainController extends Stage implements Initializable, Observer, Qu
         // start the response parser thread
         startResponseParserThread();
 
-        srMomo.textProperty().bind(MACHINE.motionModeProperty());
-        srVer.textProperty().bind(MACHINE.firmwareVersionProperty());
-        srBuild.textProperty().bindBidirectional(MACHINE.firmwareBuildProperty(), STRING_CONVERTER);
-        srState.textProperty().bind(MACHINE.machineStateProperty());
-        srCoord.textProperty().bind(MACHINE.coordinateSystemProperty());
-        srUnits.textProperty().bind(MACHINE.gcodeUnitModeProperty());
-        srCoord.textProperty().bind(MACHINE.getGcodeCoordinateManager()
-                .getCurrentGcodeCoordinateSystemName());
-        srGcodeLine.textProperty().bind(MACHINE.lineNumberProperty().asString());
+        srMomo.textProperty().bind(DRIVER.getMachine().motionModeProperty());
+        srVer.textProperty().bind(DRIVER.getMachine().firmwareVersionProperty());
+        srBuild.textProperty().bindBidirectional(DRIVER.getMachine().firmwareBuildProperty(), STRING_CONVERTER);
+        srState.textProperty().bind(DRIVER.getMachine().machineStateProperty());
+        srCoord.textProperty().bind(DRIVER.getMachine().coordinateSystemProperty());
+        srUnits.textProperty().bind(DRIVER.getMachine().gcodeUnitModeProperty());
+        srCoord.textProperty().bind(DRIVER.getMachine().getGcodeCoordinateManager().getCurrentGcodeCoordinateSystemName());
+        srGcodeLine.textProperty().bind(DRIVER.getMachine().lineNumberProperty().asString());
     }
-
 
 
     /**
@@ -697,13 +693,12 @@ public class MainController extends Stage implements Initializable, Observer, Qu
         Platform.runLater(() -> {
             try {
                 connectBtn.setText("Connect");
-                Machine machine = DRIVER.getMachine();
-                machine.setFirmwareBuild(0.0);
-                machine.setFirmwareBuild(0);
-                machine.setFirmwareVersion("");
-                machine.setMachineState(0);
-                machine.setLineNumber(0);
-                machine.setMotionMode(0);
+                DRIVER.getMachine().setFirmwareBuild(0.0);
+                DRIVER.getMachine().setFirmwareBuild(0);
+                DRIVER.getMachine().setFirmwareVersion("");
+                DRIVER.getMachine().setMachineState(0);
+                DRIVER.getMachine().setLineNumber(0);
+                DRIVER.getMachine().setMotionMode(0);
                 //Once we disconnect we hide our gcode preview.
                 gcodeTabController.setCNCMachineVisible(false);
 

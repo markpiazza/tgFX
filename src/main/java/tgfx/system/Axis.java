@@ -518,8 +518,7 @@ public final class Axis {
 
 
     private void applyJsonSystemSetting(ResponseCommand rc) {
-        Machine machine = TinygDriver.getInstance().getMachine();
-        Axis axis = machine.getAxisByName(rc.getSettingParent());
+        Axis axis = TinygDriver.getInstance().getMachine().getAxisByName(rc.getSettingParent());
         if(axis == null){
             logger.error("Invalid Axis: {}", rc.getSettingParent());
             return;

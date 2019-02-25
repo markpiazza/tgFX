@@ -34,17 +34,29 @@ public class ResponseParser extends Observable implements Runnable {
     private static final int FOOTER_ELEMENT_CHECKSUM = 3;
 
     //our holder for ResponseFooter Data
-    private ResponseFooter responseFooter = new ResponseFooter();
-    private String[] message = new String[2];
+    private ResponseFooter responseFooter;
+    private String[] message;
     private String line;
-    private boolean textMode = false;
-    private boolean RUN = true;
+    private boolean textMode;
+    private boolean RUN;
 
     /**
      * constructor
      */
     public ResponseParser(TinygDriver driver) {
         this.driver = driver;
+        responseFooter = new ResponseFooter();
+        message = new String[2];
+        textMode = false;
+        RUN = true;
+    }
+
+    public boolean isRunning() {
+        return RUN;
+    }
+
+    public void setRunning(boolean run) {
+        this.RUN = run;
     }
 
     /**

@@ -48,6 +48,8 @@ public class TgFXConstants {
     public static final String ERR_GCODE = "GCODE";
     public static final String ERR_MOVEMENT = "MOVEMENT";
 
+    public static final String X="x", Y="y", Z="z", A="a", B="b", C="c";
+
     // Serial port rate
     public static final int SERIAL_DATA_RATE = 115200;
 

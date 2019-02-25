@@ -25,6 +25,7 @@ import tgfx.system.Motor;
 import tgfx.hardwarePlatforms.HardwarePlatformManager;
 import tgfx.utility.AsyncTimer;
 
+import static tgfx.TgFXConstants.*;
 import static tgfx.tinyg.CommandConstants.*;
 import static tgfx.tinyg.MnemonicConstants.*;
 
@@ -60,8 +61,6 @@ public class TinygDriver extends Observable {
     private String[] message = new String[2];
     private boolean paused = false;
     private boolean timedout = false;
-
-    public static final String X="x", Y="y", Z="z", A="a", B="b", C="c";
 
 
     /**
