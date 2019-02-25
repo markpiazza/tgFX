@@ -9,7 +9,7 @@ import tgfx.tinyg.ResponseCommand;
 
 import java.util.Iterator;
 
-import static tgfx.tinyg.Mnemonics.*;
+import static tgfx.tinyg.MnemonicConstants.*;
 
 /**
  * Motor Model

@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tgfx.MainController;
 
-import static tgfx.tinyg.Commands.*;
+import static tgfx.tinyg.CommandConstants.*;
 
 /**
  * CommandManager

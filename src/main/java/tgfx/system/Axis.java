@@ -14,7 +14,7 @@ import tgfx.system.enums.SwitchMode;
 import tgfx.tinyg.TinygDriver;
 import tgfx.tinyg.ResponseCommand;
 
-import static tgfx.tinyg.Mnemonics.*;
+import static tgfx.tinyg.MnemonicConstants.*;
 
 /**
  * Axis Model

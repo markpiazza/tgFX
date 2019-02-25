@@ -1,0 +1,475 @@
+@startuml
+
+hide Observer
+hide Initializable
+hide Observable
+hide Runnable
+hide Application
+hide Stage
+hide T
+hide Pane
+
+  package tgfx {
+    package tgfx.utility {
+      class AsyncTimer {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      class Axis {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum AxisMode {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum AxisName {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum AxisType {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.render {
+      class CNCMachinePane {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.tinyg {
+      class CommandManager {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.tinyg {
+      class Commands {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      class CoordinateManager {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      class CoordinateSystem {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.render {
+      class Draw2d {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.ui.firmware {
+      class FirmwareUpdaterController {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodeCoordinateSystem {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodeDistanceMode {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.ui.gcode {
+      class GcodeHistory {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.ui.gcode {
+      class GcodeLine {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodePathControl {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodeSelectPlane {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodeSelectionPlane {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.ui.gcode {
+      class GcodeTabController {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodeUnitMode {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.hardwarePlatforms {
+      class HardwarePlatform {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.hardwarePlatforms {
+      class HardwarePlatformManager {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      class Machine {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.ui.machinesettings {
+      class MachineSettingsController {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum MachineState {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    class MainController {
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.tinyg {
+      class MnemonicManager {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.tinyg {
+      class Mnemonics {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum MotionMode {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      class Motor {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.tinyg {
+      class QueueReport {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.utility {
+      class QueueUsingTimer {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.utility {
+      interface QueuedTimerable {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.tinyg {
+      class ResponseCommand {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.tinyg {
+      class ResponseFooter {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.tinyg {
+      class ResponseParser {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    class SerialDriver {
+    }
+  }
+  
+
+  package tgfx {
+    class SerialWriter {
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum StatusCode {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum SwitchMode {
+        }
+      }
+    }
+  }
+  
+
+  package tgfx {
+    class TgFX {
+    }
+  }
+  
+
+  package tgfx {
+    class TgFXConstants {
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.ui.tgfxsettings {
+      class TgfxSettingsController {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.utility {
+      interface Timeable {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.ui.tinygconfig {
+      class TinyGConfigController {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.tinyg {
+      class TinygDriver {
+      }
+    }
+  }
+  
+
+  package tgfx {
+    package tgfx.utility {
+      class UtilityFunctions {
+      }
+    }
+  }
+
+
+  AsyncTimer o-- Timeable : callback
+  Axis o-- AxisType : axisType
+  Axis o-- AxisMode : axisMode
+  Axis o-- SwitchMode : maxSwitchMode
+  Axis o-- SwitchMode : minSwitchMode
+  CNCMachinePane -up-|> Pane
+  CNCMachinePane o-- Draw2d : draw2d
+  CommandManager o-- TinygDriver : driver
+  CoordinateManager o-- CoordinateSystem : currentGcodeCoordinateSystem
+  FirmwareUpdaterController -up-|> Initializable
+  GcodeTabController -up-|> Initializable
+  GcodeTabController o-- TinygDriver : DRIVER
+  GcodeTabController o-- Machine : machine
+  GcodeTabController o-- SerialWriter : serialWriter
+  GcodeTabController o-- CommandManager : commandManager
+  GcodeTabController o-- CNCMachinePane : cncMachinePane
+  HardwarePlatformManager o-- TinygDriver : driver
+  Machine o-- CoordinateManager : coordinateManager
+  Machine o-- HardwarePlatform : hardwarePlatform
+  Machine o-- GcodeUnitMode : gcodeStartupUnits
+  Machine o-- GcodeSelectPlane : gcodeSelectPlane
+  Machine o-- CoordinateSystem : gcodeCoordinateSystem
+  Machine o-- GcodePathControl : gcodePathControl
+  Machine o-- GcodeDistanceMode : gcodeDistanceMode
+  MachineSettingsController -up-|> Initializable
+  MainController -up-|> Initializable
+  MainController -up-|> Observer
+  MainController -up-|> QueuedTimerable
+  MainController -up-|> Stage
+  MainController o-- GcodeHistory : commandHistory
+  MainController o-- GcodeTabController : gcodeTabController
+  MainController o-- TinyGConfigController : tinygConfigTabController
+  MainController o-- MachineSettingsController : machineSettingsTabController
+  QueueUsingTimer o-- T : makeEntryOf
+  ResponseParser -up-|> Runnable
+  ResponseParser -up-|> Observable
+  ResponseParser o-- TinygDriver : driver
+  ResponseParser o-- ResponseFooter : responseFooter
+  SerialDriver -up-|> SerialPortEventListener
+  SerialWriter -up-|> Runnable
+  SerialWriter o-- SerialDriver : serialDriver
+  TgFX -up-|> Application
+  TgfxSettingsController -up-|> Initializable
+  TinyGConfigController -up-|> Initializable
+  TinygDriver -up-|> Observable
+  TinygDriver o-- SerialDriver : serialDriver
+  TinygDriver o-- HardwarePlatformManager : hardwarePlatformManager
+  TinygDriver o-- ResponseParser : responseParser
+  TinygDriver o-- SerialWriter : serialWriter
+  TinygDriver o-- MnemonicManager : mnemonicManager
+  TinygDriver o-- CommandManager : commandManager
+  TinygDriver o-- QueueReport : queueReport
+  TinygDriver o-- Machine : machine
+  TinygDriver o-- AsyncTimer : connectionTimer
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

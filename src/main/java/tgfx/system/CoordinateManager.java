@@ -2,15 +2,12 @@ package tgfx.system;
 
 import java.util.ArrayList;
 import javafx.beans.property.StringProperty;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * CoordinateManager
  *
  */
 public class CoordinateManager {
-    private static final Logger logger = LogManager.getLogger();
 
     private CoordinateSystem currentGcodeCoordinateSystem;
     private ArrayList<CoordinateSystem> coordinateSystems = new ArrayList<>();

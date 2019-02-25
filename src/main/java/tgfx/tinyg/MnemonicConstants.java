@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Mnemonics from return responses
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class Mnemonics {
+public class MnemonicConstants {
 
     // Group holder Mnemonics
     public static final ArrayList<String> GROUP_MNEMONICS = new ArrayList<>();

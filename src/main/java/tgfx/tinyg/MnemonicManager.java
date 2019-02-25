@@ -1,6 +1,6 @@
 package tgfx.tinyg;
 
-import static tgfx.tinyg.Mnemonics.*;
+import static tgfx.tinyg.MnemonicConstants.*;
 
 /**
  * MnemonicManager

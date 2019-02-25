@@ -30,7 +30,7 @@ import org.json.JSONException;
 
 import tgfx.system.Machine;
 import tgfx.tinyg.TinygDriver;
-import tgfx.system.StatusCode;
+import tgfx.system.enums.StatusCode;
 import tgfx.ui.gcode.GcodeHistory;
 import tgfx.ui.gcode.GcodeTabController;
 import tgfx.ui.machinesettings.MachineSettingsController;
@@ -41,7 +41,7 @@ import tgfx.utility.QueuedTimerable;
 
 import static tgfx.TgFXConstants.*;
 
-import static tgfx.tinyg.Commands.*;
+import static tgfx.tinyg.CommandConstants.*;
 
 /**
  * MainController controller for the application
@@ -80,17 +80,13 @@ public class MainController extends Stage implements Initializable, Observer, Qu
     //this is checked upon initial connect.  Once this is set to true
     private boolean buildChecked = false;
 
-
     @FXML
-    @SuppressWarnings("unused") // IDE says it's unused, but don't believe it
     private GcodeTabController gcodeTabController;
 
     @FXML
-    @SuppressWarnings("unused") // IDE says it's unused, but don't believe it
     private TinyGConfigController tinygConfigTabController;
 
     @FXML
-    @SuppressWarnings("unused") // IDE says it's unused, but don't believe it
     private MachineSettingsController machineSettingsTabController;
 
     @FXML

@@ -1,4 +1,4 @@
-package tgfx.system;
+package tgfx.system.enums;
 
 import static tgfx.TgFXConstants.*;
 

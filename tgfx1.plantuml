@@ -1,0 +1,1621 @@
+@startuml
+
+'hide members
+'hide methods
+
+
+
+'-------------------
+' TGFX
+'-------------------
+
+  package tgfx {
+    class MainController {
+        {static} - logger : Logger
+        {static} - DRIVER : TinygDriver
+        {static} - MACHINE : Machine
+        {static} - STRING_CONVERTER : StringConverter<Number>
+        {static} - consoleText : StringProperty
+        - connectionTimer : QueueUsingTimer<String>
+        - delayValue : int
+        - oldLineNumber : int
+        - buildChecked : boolean
+        - topTabPane : TabPane
+        - serialPorts : ChoiceBox<String>
+        - connectBtn : Button
+        - consoleVBox : VBox
+        ~ console : TextArea
+        ~ input : TextField
+        - srMomo : Label
+        - srState : Label
+        - srBuild : Label
+        - srBuffer : Label
+        - srGcodeLine : Label
+        - srVer : Label
+        - srUnits : Label
+        - srCoord : Label
+        - handleRescanSerial()
+        - handleConnect()
+        - gcodeProgramClicks()
+        - handleGuiRefresh()
+        - handleKeyPress()
+        + addToQueue()
+        + initialize()
+        + update()
+        {static} + postConsoleMessage()
+        - doTinyGUserMessage()
+        - doConnect()
+        - doStatusReport()
+        - doBuildOK()
+        - doBuildError()
+        - doTinyGConnectionTimeout()
+        - rescanSerial()
+        - onConnectActions()
+        - onConnectActionsTwo()
+        - onDisconnectActions()
+        - startSerialWriterThread()
+        - startResponseParserThread()
+    }
+  }
+
+
+  package tgfx {
+    class SerialDriver {
+        {static} - logger : Logger
+        {static} - lineBuffer : byte[]
+        {static} - lineIdx : int
+        - connectionState : boolean
+        - serialPort : SerialPort
+        + SerialDriver()
+        + getSerialPort()
+        + write()
+        + priorityWrite()
+        + priorityWrite()
+        + disconnect()
+        + isConnected()
+        + setConnected()
+        + serialEvent()
+        + listSerialPorts()
+        + initialize()
+    }
+  }
+
+
+  package tgfx {
+    class SerialWriter {
+        {static} - logger : Logger
+        {static} - MUTEX : Object
+        {static} - BUFFER_SIZE : int
+        {static} - THROTTLED : boolean
+        - bufferAvailable : AtomicInteger
+        - queue : BlockingQueue
+        - run : boolean
+        - cleared : boolean
+        - isSendingFile : SimpleBooleanProperty
+        - gcodeComment : SimpleStringProperty
+        + SerialWriter()
+        ~ resetBuffer()
+        + clearQueueBuffer()
+        + isRun()
+        + setRun()
+        + getBufferValue()
+        + setBuffer()
+        + addBytesReturnedToBuffer()
+        + addCommandToBuffer()
+        + setThrottled()
+        + notifyAck()
+        - sendUiMessage()
+        + write()
+        + getIsSendingFile()
+        + getGcodeComment()
+        + run()
+    }
+  }
+
+
+  package tgfx {
+    class TgFX {
+        {static} - logger : Logger
+        + start()
+        {static} + main()
+    }
+  }
+
+
+  package tgfx {
+    class TgFXConstants {
+        {static} + STAGE_MIN_WIDTH : int
+        {static} + STAGE_MIN_HEIGHT : int
+        {static} + CONNECTION_TIMEOUT : int
+        {static} + CONNECTION_TIMEOUT_STRING : String
+        {static} + FIRMWARE_UPDATE_URL : String
+        {static} + OS : String
+        {static} + PROMPT : String
+        {static} + STAGE_FXML_MAIN : String
+        {static} + ROUTING_STATUS_REPORT : String
+        {static} + ROUTING_CMD_GET_AXIS_SETTINGS : String
+        {static} + ROUTING_CMD_GET_MACHINE_SETTINGS : String
+        {static} + ROUTING_CMD_GET_MOTOR_SETTINGS : String
+        {static} + ROUTING_NETWORK_MESSAGE : String
+        {static} + ROUTING_MACHINE_UPDATE : String
+        {static} + ROUTING_TEXTMODE_REPORT : String
+        {static} + ROUTING_BUFFER_UPDATE : String
+        {static} + ROUTING_UPDATE_LINE_NUMBER : String
+        {static} + ROUTING_BUILD_OK : String
+        {static} + ROUTING_TINYG_USER_MESSAGE : String
+        {static} + ROUTING_TINYG_CONNECTION_TIMEOUT : String
+        {static} + ROUTING_BUILD_ERROR : String
+        {static} + ROUTING_DISCONNECT : String
+        {static} + ROUTING_RECONNECT : String
+        {static} + ERR_COMMAND : String
+        {static} + ERR_INPUT : String
+        {static} + ERR_JSON : String
+        {static} + ERR_GCODE : String
+        {static} + ERR_MOVEMENT : String
+        {static} + SERIAL_DATA_RATE : int
+        {static} + DISABLE_UI_CONNECTION_CHECK : boolean
+        {static} + PATH : String
+    }
+  }
+
+
+  MainController -up-|> Initializable
+  MainController -up-|> Observer
+  MainController -up-|> QueuedTimerable
+  MainController -up-|> Stage
+  MainController o-- GcodeHistory : commandHistory
+  MainController o-- GcodeTabController : gcodeTabController
+  MainController o-- TinyGConfigController : tinygConfigTabController
+  MainController o-- MachineSettingsController : machineSettingsTabController
+  ResizableProperty -up-|> SimpleBooleanProperty
+  Listener -up-|> InvalidationListener
+  TKBoundsConfigurator -up-|> TKPulseListener
+  SceneModel -up-|> ReadOnlyObjectWrapper
+  ReadOnlyPropertyImpl -up-|> ReadOnlyObjectPropertyBase
+  Listener -up-|> InvalidationListener
+  SerialDriver -up-|> SerialPortEventListener
+  SerialWriter -up-|> Runnable
+  SerialWriter o-- SerialDriver : serialDriver
+  TgFX -up-|> Application
+
+
+'-------------------
+' Hardware Platforms
+'-------------------
+
+  package tgfx {
+    package tgfx.hardwarePlatforms {
+      class HardwarePlatform {
+          - platformName : String
+          - minimalBuildVersion : Double
+          - latestVersionUrl : String
+          - manufacturer : String
+          - firmwareUrl : String
+          - hardwarePlatformVersion : int
+          - isUpgradeable : boolean
+          + HardwarePlatform()
+          + getHardwarePlatformVersion()
+          + setHardwarePlatformVersion()
+          + isIsUpgradeable()
+          + setIsUpgradeable()
+          + getPlatformName()
+          + setPlatformName()
+          + getMinimalBuildVersion()
+          + setMinimalBuildVersion()
+          + getLatestVersionUrl()
+          + setLatestVersionUrl()
+          + getManufacturer()
+          + setManufacturer()
+          + getFirmwareUrl()
+          + setFirmwareUrl()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.hardwarePlatforms {
+      class HardwarePlatformManager {
+          {static} - logger : Logger
+          - availablePlatforms : ArrayList<HardwarePlatform>
+          + HardwarePlatformManager()
+          + setPlatformByName()
+          + setHardwarePlatformByVersionNumber()
+          - loadPlatformConfigs()
+      }
+    }
+  }
+
+
+  HardwarePlatformManager o-- TinygDriver : driver
+
+
+'-------------------
+' RENDER
+'-------------------
+
+  package tgfx {
+    package tgfx.render {
+      class CNCMachinePane {
+          {static} - logger : Logger
+          {static} - DRIVER : TinygDriver
+          {static} - MACHINE : Machine
+          - cursorPoint : Circle
+          - cncHeight : SimpleDoubleProperty
+          - cncWidth : SimpleDoubleProperty
+          - cursorVisibleBinding : BooleanExpression
+          - df : DecimalFormat
+          - gcodePane : StackPane
+          - xPrevious : double
+          - yPrevious : double
+          - msgSent : boolean
+          - magnification : double
+          + CNCMachinePane()
+          + getDraw2d()
+          - getGcodePane()
+          - hideOrShowCursor()
+          - setFocusForJogging()
+          - getNormalizedX()
+          - getNormalizedY()
+          + getNormalizedYasString()
+          + getNormalizedXasString()
+          - checkBoundsY()
+          - checkBoundsX()
+          + clearScreen()
+          + drawLine()
+          + zeroSystem()
+          + resetDrawingCoords()
+          - setupLayout()
+          + autoScaleWorkTravelSpace()
+          + getCncHeight()
+          + cncHeightProperty()
+          + getCncWidth()
+          + cncWidthProperty()
+          + getCursorVisibleBinding()
+          + cursorVisibleBindingProperty()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.render {
+      class Draw2d {
+          {static} - logger : Logger
+          {static} ~ retPaint : Paint
+          {static} ~ FAST : Paint
+          {static} ~ TRAVERSE : Paint
+          {static} - SLOWEST : Paint
+          {static} - SLOW : Paint
+          {static} - MEDIUM_SLOW : Paint
+          {static} - MEDUIM : Paint
+          {static} - FASTEST : Paint
+          - MAX_MACHINE_VELOCITY : float
+          {static} - stroke_weight : double
+          {static} - magnification : double
+          {static} - magZoomIncrement : double
+          {static} - strokeIncrement : double
+          {static} - firstDraw : boolean
+          + Draw2d()
+          + isFirstDraw()
+          + setFirstDraw()
+          + getMagnification()
+          + setMagnification()
+          - calculateStroke()
+          + incrementSetStrokeWeight()
+          + decrementSetStrokeWeight()
+          + getStrokeWeight()
+          + getLineColorFromVelocity()
+      }
+    }
+  }
+
+
+  CNCMachinePane -up-|> Pane
+  CNCMachinePane o-- Draw2d : draw2d
+  ShapeProperty -up-|> Runnable
+  ShapeProperty -up-|> StyleableObjectProperty
+  Listener -up-|> InvalidationListener
+  MinPrefMaxProperty -up-|> StyleableDoubleProperty
+  Listener -up-|> InvalidationListener
+  InsetsProperty -up-|> ReadOnlyObjectProperty
+  LazyBoundsProperty -up-|> ReadOnlyObjectProperty
+  LazyTransformProperty -up-|> ReadOnlyObjectProperty
+  TreeVisiblePropertyReadOnly -up-|> BooleanExpression
+  FocusedProperty -up-|> ReadOnlyBooleanPropertyBase
+  EffectiveOrientationProperty -up-|> ReadOnlyObjectPropertyBase
+  NodeTransformation +-down- LocalToSceneTransformProperty
+  LocalToSceneTransformProperty -up-|> LazyTransformProperty
+  ReadOnlyObjectWrapperManualFire -up-|> ReadOnlyObjectWrapper
+  ReadOnlyPropertyImpl -up-|> ReadOnlyObjectPropertyBase
+  Listener -up-|> InvalidationListener
+
+
+'-------------------
+' Enums
+'-------------------
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum AxisMode {
+          DISABLE
+          STANDARD
+          INHIBITED
+          RADIUS
+          SLAVE_X
+          SLAVE_Y
+          SLAVE_Z
+          SLAVE_XY
+          SLAVE_XZ
+          SLAVE_YZ
+          SLAVE_XYZ
+          UNKNOWN
+          axisMap
+          number
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum AxisName {
+          X
+          Y
+          Z
+          A
+          B
+          C
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum AxisType {
+          LINEAR
+          ROTATIONAL
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodeCoordinateSystem {
+          G54
+          G55
+          G56
+          G57
+          G58
+          G59
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodeDistanceMode {
+          ABSOLUTE
+          INCREMENTAL
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodePathControl {
+          G61
+          G61POINT1
+          G64
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodeSelectPlane {
+          XY
+          XZ
+          YZ
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodeSelectionPlane {
+          G17
+          G18
+          G19
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum GcodeUnitMode {
+          INCHES
+          MM
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum MachineState {
+          RESET
+          CYCLE
+          STOP
+          END
+          RUN
+          HOLD
+          HOMING
+          PROBE
+          JOG
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum MotionMode {
+          TRAVERSE
+          FEED
+          CW_ARC
+          CCW_ARC
+          CANCEL
+        }
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      package tgfx.system.enums {
+        enum SwitchMode {
+          DISABLED
+          HOMING_ONLY
+          LIMIT_ONLY
+          HOMING_AND_LIMIT
+        }
+      }
+    }
+  }
+
+
+'-------------------
+' SYSTEM
+'-------------------
+
+  package tgfx {
+    package tgfx.system {
+      class Axis {
+          {static} - logger : Logger
+          {static} - decimalFormat : DecimalFormat
+          {static} - decimalFormatJunctionDeviation : DecimalFormat
+          - motors : List<Motor>
+          - currentAxisJsonObject : String
+          - axisName : String
+          - machinePosition : SimpleDoubleProperty
+          - workPosition : SimpleDoubleProperty
+          - travelMaximum : SimpleDoubleProperty
+          - offset : SimpleDoubleProperty
+          - feedRateMaximum : double
+          - velocityMaximum : double
+          - jerkMaximum : double
+          - junctionDeviation : double
+          - jerkHomingMaximum : double
+          - radius : double
+          - zeroBackoff : double
+          - latchBackoff : double
+          - searchVelocity : double
+          - latchVelocity : float
+          + Axis()
+          + getCurrentAxisJsonObject()
+          + setCurrentAxisJsonObject()
+          + getAxisName()
+          - setAxisName()
+          + getAxisType()
+          - setAxisType()
+          + getAxisMode()
+          - setAxisMode()
+          + getVelocityMaximum()
+          - setVelocityMaximum()
+          + getFeedRateMaximum()
+          - setFeedRateMaximum()
+          + travelMaximumProperty()
+          + getTravelMaximum()
+          - setTravelMaximum()
+          + getJerkMaximum()
+          - setJerkMaximum()
+          + getJerkHomingMaximum()
+          + setJerkHomingMaximum()
+          + getJunctionDeviation()
+          - setJunctionDeviation()
+          + getMaxSwitchMode()
+          - setMaxSwitchMode()
+          + getMinSwitchMode()
+          - setMinSwitchMode()
+          - getSwitchModeByInt()
+          + getSearchVelocity()
+          - setSearchVelocity()
+          + getLatchVelocity()
+          - setLatchVelocity()
+          + getLatchBackoff()
+          - setLatchBackoff()
+          + getZeroBackoff()
+          - setZeroBackoff()
+          + getRadius()
+          - setRadius()
+          + getWorkPosition()
+          + setWorkPosition()
+          + machinePositionProperty()
+          + getMachinePosition()
+          + setMachinePosition()
+          + offsetProperty()
+          + setOffset()
+          + getMotors()
+          + addMotor()
+          - formatDoubleValue()
+          - formatFloatValue()
+          - formatJunctionDeviation()
+          - formatJerkMaximum()
+          + applyJsonSystemSetting()
+          - applyJsonSystemSetting()
+          - logAxisInfo()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      class CoordinateManager {
+          - coordinateSystems : ArrayList<CoordinateSystem>
+          + CoordinateManager()
+          + getCurrentGcodeCoordinateSystem()
+          + getCurrentGcodeCoordinateSystemName()
+          ~ setCurrentGcodeCoordinateSystem()
+          - setCurrentGcodeCoordinateSystem()
+          + setCurrentGcodeCoordinateSystem()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      class CoordinateSystem {
+          - coordinateSystemName : StringProperty
+          - coordinateNumber : int
+          - coordinateNumberTgFormat : int
+          - xOffset : double
+          - yOffset : double
+          - zOffset : double
+          - aOffset : double
+          - bOffset : double
+          - cOffset : double
+          + CoordinateSystem()
+          + CoordinateSystem()
+          + getGcodeCoordinateSystemProperty()
+          + getCoordinateNumberMnemonic()
+          + setCoordinateNumberMnemonic()
+          + getCoordinateNumberByTgFormat()
+          + setCoordinateNumberTgFormat()
+          + setCoordinateNumber()
+          + getCoordinate()
+          + setCoordinate()
+          + getxOffset()
+          + setxOffset()
+          + getyOffset()
+          + setyOffset()
+          + getzOffset()
+          + setzOffset()
+          + getaOffset()
+          + setaOffset()
+          + getbOffset()
+          + setbOffset()
+          + getcOffset()
+          + setcOffset()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      class Machine {
+          {static} - logger : Logger
+          - hardwareId : SimpleStringProperty
+          - hardwareVersion : SimpleStringProperty
+          - firmwareVersion : SimpleStringProperty
+          - firmwareBuild : SimpleDoubleProperty
+          - coordinateSystem : SimpleStringProperty
+          - machineState : SimpleStringProperty
+          - motionMode : SimpleStringProperty
+          - gcodeUnitMode : SimpleStringProperty
+          - longestTravelAxisValue : SimpleDoubleProperty
+          - xjoggingIncrement : SimpleIntegerProperty
+          - yjoggingIncrement : SimpleIntegerProperty
+          - zjoggingIncrement : SimpleIntegerProperty
+          - ajoggingIncrement : SimpleIntegerProperty
+          - lineNumber : SimpleIntegerProperty
+          - gcodeUnitDivision : SimpleDoubleProperty
+          - velocity : SimpleDoubleProperty
+          - motors : List<Motor>
+          - axis : List<Axis>
+          - gcodeCoordinateSystems : List<CoordinateSystem>
+          - lastMessage : String
+          - machineName : String
+          - minSegmentTime : double
+          - junctionAcceleration : float
+          - minLineSegment : float
+          - minArcSegment : float
+          - switchType : int
+          - statusReportInterval : int
+          - enableAcceleration : boolean
+          - enableCrOnTx : boolean
+          - enableEcho : boolean
+          - enableXonXoff : boolean
+          - enableHashcode : boolean
+          + Machine()
+          + getHardwarePlatform()
+          + setHardwarePlatform()
+          + getGcodeCoordinateManager()
+          + getLastMessage()
+          + setLastMessage()
+          + hardwareIdProperty()
+          + getHardwareId()
+          + setHardwareId()
+          + hardwareVersionProperty()
+          + getHardwareVersion()
+          + setHardwareVersion()
+          + longestTravelAxisValueProperty()
+          + getLongestTravelAxisValue()
+          + setLongestTravelAxisValue()
+          + gcodeUnitModeProperty()
+          + getGcodeUnitModeAsInt()
+          + setGcodeUnitMode()
+          - setGcodeUnits()
+          + getGcodeUnitDivision()
+          + motionModeProperty()
+          + setMotionMode()
+          + firmwareBuildProperty()
+          + getFirmwareBuild()
+          + setFirmwareBuild()
+          + firmwareVersionProperty()
+          + setFirmwareVersion()
+          + lineNumberProperty()
+          + getLineNumber()
+          + setLineNumber()
+          + coordinateSystemProperty()
+          + getCoordinateSystemByName()
+          + getCoordinateSystemByNumberMnemonic()
+          + getCoordinateSystemByTgNumber()
+          + setCoordinateSystem()
+          + setCoordinateSystem()
+          + setCoordinateSystem()
+          + machineStateProperty()
+          + setMachineState()
+          + velocityProperty()
+          + getVelocity()
+          + setVelocity()
+          + getMachineName()
+          + setMachineName()
+          + getSwitchType()
+          - setSwitchType()
+          + getSwitchTypeAsString()
+          + getGcodeDistanceMode()
+          - setGcodeDistanceMode()
+          - setGcodeDistanceMode()
+          + getGcodeSelectPlane()
+          - setGcodeSelectPlane()
+          - setGcodeSelectPlane()
+          + setGcodeSelectPlane()
+          + getGcodePathControl()
+          - setGcodePathControl()
+          - setGcodePathControl()
+          + isEnableCrOnTx()
+          + setEnableCrOnTx()
+          + isEnableHashcode()
+          + setEnableHashcode()
+          + getJunctionAcceleration()
+          + setJunctionAcceleration()
+          + getMinArcSegment()
+          + setMinArcSegment()
+          + getMinLineSegment()
+          + setMinLineSegment()
+          + getMinSegmentTime()
+          + setMinSegmentTime()
+          + getJoggingIncrementByAxis()
+          + getAllAxis()
+          ~ getAllLinearAxis()
+          - getAxisByName()
+          + getAxisByName()
+          + getMotors()
+          + getNumberOfMotors()
+          + getMotorByNumber()
+          + getMotorByNumber()
+          + getMotorAxis()
+          + setMotorAxis()
+          + getStatusReportInterval()
+          + setStatusReportInterval()
+          + isEnableAcceleration()
+          + setEnableAcceleration()
+          + isEnableEcho()
+          - setEnableEcho()
+          + isEnableXonXoff()
+          - setEnableXonXoff()
+          + applyJsonStatusReport()
+          + applyJsonSystemSetting()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      class Motor {
+          {static} - logger : Logger
+          - currentMotorJsonObject : String
+          - idNumber : int
+          - mapToAxis : int
+          - stepAngle : float
+          - travelPerRevolution : float
+          - microsteps : int
+          - polarity : boolean
+          - powerManagement : boolean
+          + Motor()
+          + getCurrentMotorJsonObject()
+          + setCurrentMotorJsonObject()
+          + isPolarityInt()
+          + isPowerManagementInt()
+          + getIdNumber()
+          + setIdNumber()
+          + getMapToAxis()
+          + setMapToAxis()
+          + getMicrosteps()
+          + setMicrosteps()
+          - isPolarity()
+          + setPolarity()
+          - setPolarity()
+          - isPowerManagement()
+          + setPowerManagement()
+          - setPowerManagement()
+          + getStepAngle()
+          - setStepAngle()
+          + getTravelPerRevolution()
+          - setTravelPerRevolution()
+          + applyJsonSystemSetting()
+          - applyJsonSystemSetting()
+          - logMotorInfo()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.system {
+      enum StatusCode {
+        TG_UNRECOGNIZED_COMMAND
+        TG_EXPECTED_COMMAND_LETTER
+        TG_BAD_NUMBER_FORMAT
+        TG_INPUT_EXCEEDS_MAX_LENGTH
+        TG_INPUT_VALUE_TOO_SMALL
+        TG_INPUT_VALUE_TOO_LARGE
+        TG_INPUT_VALUE_RANGE_ERROR
+        TG_INPUT_VALUE_UNSUPPORTED
+        TG_JSON_SYNTAX_ERROR
+        TG_JSON_TOO_MANY_PAIRS
+        TG_ZERO_LENGTH_MOVE
+        TG_GCODE_BLOCK_SKIPPED
+        TG_GCODE_INPUT_ERROR
+        TG_GCODE_FEEDRATE_ERROR
+        TG_GCODE_AXIS_WORD_MISSING
+        TG_MODAL_GROUP_VIOLATION
+        TG_HOMING_CYCLE_FAILED
+        TG_MAX_TRAVEL_EXCEEDED
+        TG_MAX_SPINDLE_SPEED_EXCEEDED
+        TG_ARC_SPECIFICATION_ERROR
+        statusNumber
+        message
+        statusType
+      }
+    }
+  }
+
+
+  Axis o-- AxisType : axisType
+  Axis o-- AxisMode : axisMode
+  Axis o-- SwitchMode : maxSwitchMode
+  Axis o-- SwitchMode : minSwitchMode
+  CoordinateManager o-- CoordinateSystem : currentGcodeCoordinateSystem
+  Machine o-- CoordinateManager : coordinateManager
+  Machine o-- HardwarePlatform : hardwarePlatform
+  Machine o-- GcodeUnitMode : gcodeStartupUnits
+  Machine o-- GcodeSelectPlane : gcodeSelectPlane
+  Machine o-- CoordinateSystem : gcodeCoordinateSystem
+  Machine o-- GcodePathControl : gcodePathControl
+  Machine o-- GcodeDistanceMode : gcodeDistanceMode
+
+
+'----------------------------
+' TINYG
+'----------------------------
+
+  package tgfx {
+    package tgfx.tinyg {
+      class CommandManager {
+          {static} - logger : Logger
+          + CommandManager()
+          + stopTinyGMovement()
+          + stopJogMovement()
+          + setIncrementalMovementMode()
+          + setAbsoluteMovementMode()
+          + setMachinePosition()
+          + queryAllMotorSettings()
+          + inhibitAllAxis()
+          + enableAllAxis()
+          + queryStatusReport()
+          + queryMachineSwitchMode()
+          + applyMachineSwitchMode()
+          + applyMachineUnitMode()
+          + queryAllMachineSettings()
+          + queryAllHardwareAxisSettings()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.tinyg {
+      class Commands {
+          {static} + CMD_QUERY_COORDINATE_SYSTEM : String
+          {static} + CMD_QUERY_HARDWARE_BUILD_NUMBER : String
+          {static} + CMD_QUERY_HARDWARE_FIRMWARE_NUMBER : String
+          {static} + CMD_QUERY_HARDWARE_PLATFORM : String
+          {static} + CMD_QUERY_OK_PROMPT : String
+          {static} + CMD_APPLY_STATUS_REPORT_FORMAT : String
+          {static} + CMD_QUERY_STATUS_REPORT : String
+          {static} + CMD_QUERY_HARDWARE_ID : String
+          {static} + CMD_QUERY_HARDWARE_VERSION : String
+          {static} + CMD_QUERY_AXIS_X : String
+          {static} + CMD_QUERY_AXIS_Y : String
+          {static} + CMD_QUERY_AXIS_Z : String
+          {static} + CMD_QUERY_AXIS_A : String
+          {static} + CMD_QUERY_AXIS_B : String
+          {static} + CMD_QUERY_AXIS_C : String
+          {static} + CMD_QUERY_MOTOR_1_SETTINGS : String
+          {static} + CMD_QUERY_MOTOR_2_SETTINGS : String
+          {static} + CMD_QUERY_MOTOR_3_SETTINGS : String
+          {static} + CMD_QUERY_MOTOR_4_SETTINGS : String
+          {static} + CMD_QUERY_SYSTEM_SETTINGS : String
+          {static} + CMD_APPLY_SYSTEM_ZERO_ALL_AXES : String
+          {static} + CMD_APPLY_SYSTEM_HOME_XYZ_AXES : String
+          {static} + CMD_APPLY_SYSTEM_GCODE_UNITS_INCHES : String
+          {static} + CMD_APPLY_SYSTEM_GCODE_UNITS_MM : String
+          {static} + CMD_APPLY_SYSTEM_DISABLE_LOCAL_ECHO : String
+          {static} + CMD_APPLY_SYSTEM_ENABLE_LOCAL_ECHO : String
+          {static} + CMD_APPLY_SYSTEM_MNEMONIC_SYSTEM_SWITCH_TYPE_NC : String
+          {static} + CMD_QUERY_SYSTEM_GCODE_UNIT_MODE : String
+          {static} + CMD_QUERY_SYSTEM_GCODE_PLANE : String
+          {static} + CMD_APPLY_DISABLE_HASHCODE : String
+          {static} + CMD_APPLY_DEFAULT_SETTINGS : String
+          {static} + CMD_APPLY_STATUS_UPDATE_INTERVAL : String
+          {static} + CMD_APPLY_JSON_VERBOSITY : String
+          {static} + CMD_APPLY_ENABLE_JSON_MODE : String
+          {static} + CMD_DEFAULT_ENABLE_JSON : String
+          {static} + CMD_APPLY_TEXT_VERBOSITY : String
+          {static} + CMD_APPLY_NOOP : String
+          {static} + CMD_QUERY_SWITCHMODE : String
+          {static} + CMD_APPLY_SWITCHMODE_NORMALLY_OPEN : String
+          {static} + CMD_APPLY_SWITCHMODE_NORMALLY_CLOSED : String
+          {static} + CMD_APPLY_UNITMODE_INCHES : String
+          {static} + CMD_APPLY_UNITMODE_MM : String
+          {static} + CMD_APPLY_PAUSE : String
+          {static} + CMD_APPLY_RESUME : String
+          {static} + CMD_APPLY_QUEUE_FLUSH : String
+          {static} + CMD_APPLY_HOME_X_AXIS : String
+          {static} + CMD_APPLY_HOME_Y_AXIS : String
+          {static} + CMD_APPLY_HOME_Z_AXIS : String
+          {static} + CMD_APPLY_HOME_A_AXIS : String
+          {static} + CMD_APPLY_ZERO_X_AXIS : String
+          {static} + CMD_APPLY_ZERO_Y_AXIS : String
+          {static} + CMD_APPLY_ZERO_Z_AXIS : String
+          {static} + CMD_APPLY_ZERO_A_AXIS : String
+          {static} + CMD_APPLY_INHIBIT_ALL_AXIS : String
+          {static} + CMD_APPLY_INHIBIT_X_AXIS : String
+          {static} + CMD_APPLY_INHIBIT_Y_AXIS : String
+          {static} + CMD_APPLY_INHIBIT_Z_AXIS : String
+          {static} + CMD_APPLY_INHIBIT_A_AXIS : String
+          {static} + CMD_APPLY_ENABLE_X_AXIS : String
+          {static} + CMD_APPLY_ENABLE_Y_AXIS : String
+          {static} + CMD_APPLY_ENABLE_Z_AXIS : String
+          {static} + CMD_APPLY_ENABLE_A_AXIS : String
+          {static} + CMD_APPLY_INCREMENTAL_POSITION_MODE : String
+          {static} + CMD_APPLY_ABSOLUTE_POSITION_MODE : String
+          {static} + CMD_APPLY_ENABLE_ALL_AXIS : String
+          {static} + CMD_QUERY_SYSTEM_SERIAL_BUFFER_LENGTH : String
+          {static} + CMD_APPLY_FLOWCONTROL : String
+          {static} + CMD_ZERO_ALL_AXIS : String
+          {static} + CMD_APPLY_BOOTLOADER_MODE : String
+          {static} + CMD_APPLY_RESET : Byte
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.tinyg {
+      class MnemonicManager {
+          + MnemonicManager()
+          + isMasterGroupObject()
+          + lookupSingleGroupMaster()
+          + lookupSingleGroup()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.tinyg {
+      class Mnemonics {
+          {static} + GROUP_MNEMONICS : ArrayList<String>
+          {static} + AXIS_MNEMONICS : ArrayList<String>
+          {static} + SYS_MNEMONICS : ArrayList<String>
+          {static} + MOTOR_MNEMONICS : ArrayList<String>
+          {static} + STATUS_MNEMONICS : ArrayList<String>
+          {static} + MNEMONIC_GROUP_TGFX : String
+          {static} + MNEMONIC_GROUP_SYSTEM : String
+          {static} + MNEMONIC_GROUP_EMERGENCY_SHUTDOWN : String
+          {static} + MNEMONIC_GROUP_STATUS_REPORT : String
+          {static} + MNEMONIC_GROUP_RESPONSE : String
+          {static} + MNEMONIC_GROUP_FOOTER : String
+          {static} + MNEMONIC_GROUP_QUERY_REPORT : String
+          {static} + MNEMONIC_GROUP_HOME : String
+          {static} + MNEMONIC_GROUP_POS : String
+          {static} + MNEMONIC_GROUP_MSG : String
+          {static} + MNEMONIC_GROUP_MOTOR_1 : String
+          {static} + MNEMONIC_GROUP_MOTOR_2 : String
+          {static} + MNEMONIC_GROUP_MOTOR_3 : String
+          {static} + MNEMONIC_GROUP_MOTOR_4 : String
+          {static} + MNEMONIC_GROUP_AXIS_X : String
+          {static} + MNEMONIC_GROUP_AXIS_Y : String
+          {static} + MNEMONIC_GROUP_AXIS_Z : String
+          {static} + MNEMONIC_GROUP_AXIS_A : String
+          {static} + MNEMONIC_GROUP_AXIS_B : String
+          {static} + MNEMONIC_GROUP_AXIS_C : String
+          {static} + MNEMONIC_AXIS_AXIS_MODE : String
+          {static} + MNEMONIC_AXIS_VELOCITY_MAXIMUM : String
+          {static} + MNEMONIC_AXIS_FEEDRATE_MAXIMUM : String
+          {static} + MNEMONIC_AXIS_TRAVEL_MAXIMUM : String
+          {static} + MNEMONIC_AXIS_JERK_MAXIMUM : String
+          {static} + MNEMONIC_AXIS_JERK_HOMING : String
+          {static} + MNEMONIC_AXIS_JUNCTION_DEVIATION : String
+          {static} + MNEMONIC_AXIS_MAX_SWITCH_MODE : String
+          {static} + MNEMONIC_AXIS_MIN_SWITCH_MODE : String
+          {static} + MNEMONIC_AXIS_SEARCH_VELOCITY : String
+          {static} + MNEMONIC_AXIS_LATCH_VELOCITY : String
+          {static} + MNEMONIC_AXIS_LATCH_BACKOFF : String
+          {static} + MNEMONIC_AXIS_ZERO_BACKOFF : String
+          {static} + MNEMONIC_AXIS_RADIUS : String
+          {static} + MNEMONIC_MOTOR_MAP_AXIS : String
+          {static} + MNEMONIC_MOTOR_STEP_ANGLE : String
+          {static} + MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION : String
+          {static} + MNEMONIC_MOTOR_MICROSTEPS : String
+          {static} + MNEMONIC_MOTOR_POLARITY : String
+          {static} + MNEMONIC_MOTOR_POWER_MANAGEMENT : String
+          {static} + MNEMONIC_STATUS_REPORT_POSX : String
+          {static} + MNEMONIC_STATUS_REPORT_POSY : String
+          {static} + MNEMONIC_STATUS_REPORT_POSZ : String
+          {static} + MNEMONIC_STATUS_REPORT_POSA : String
+          {static} + MNEMONIC_STATUS_REPORT_HOMEDX : String
+          {static} + MNEMONIC_STATUS_REPORT_HOMEDY : String
+          {static} + MNEMONIC_STATUS_REPORT_HOMEDZ : String
+          {static} + MNEMONIC_STATUS_REPORT_HOMEDA : String
+          {static} + MNEMONIC_STATUS_REPORT_MACHINEPOSX : String
+          {static} + MNEMONIC_STATUS_REPORT_MACHINEPOSY : String
+          {static} + MNEMONIC_STATUS_REPORT_MACHINEPOSZ : String
+          {static} + MNEMONIC_STATUS_REPORT_MACHINEPOSA : String
+          {static} + MNEMONIC_STATUS_REPORT_WORKOFFSETA : String
+          {static} + MNEMONIC_STATUS_REPORT_WORKOFFSETX : String
+          {static} + MNEMONIC_STATUS_REPORT_WORKOFFSETY : String
+          {static} + MNEMONIC_STATUS_REPORT_WORKOFFSETZ : String
+          {static} + MNEMONIC_STATUS_REPORT_LINE : String
+          {static} + MNEMONIC_STATUS_REPORT_VELOCITY : String
+          {static} + MNEMONIC_STATUS_REPORT_MOTION_MODE : String
+          {static} + MNEMONIC_STATUS_REPORT_STAT : String
+          {static} + MNEMONIC_STATUS_REPORT_UNIT : String
+          {static} + MNEMONIC_STATUS_REPORT_COORDNIATE_MODE : String
+          {static} + MNEMONIC_SYSTEM_DEFAULT_GCODE_UNIT_MODE : String
+          {static} + MNEMONIC_SYSTEM_DEFAULT_GCODE_PLANE : String
+          {static} + MNEMONIC_SYSTEM_DEFAULT_GCODE_COORDINATE_SYSTEM : String
+          {static} + MNEMONIC_SYSTEM_DEFAULT_GCODE_PATH_CONTROL : String
+          {static} + MNEMONIC_SYSTEM_DEFAULT_GCODE_DISTANCE_MODE : String
+          {static} + MNEMONIC_SYSTEM_FIRMWARE_BUILD : String
+          {static} + MNEMONIC_SYSTEM_SWITCH_TYPE : String
+          {static} + MNEMONIC_SYSTEM_FIRMWARE_VERSION : String
+          {static} + MNEMONIC_SYSTEM_HARDWARE_PLATFORM : String
+          {static} + MNEMONIC_SYSTEM_HARDWARE_VERSION : String
+          {static} + MNEMONIC_SYSTEM_JUNCTION_ACCELERATION : String
+          {static} + MNEMONIC_SYSTEM_MIN_LINE_SEGMENT : String
+          {static} + MNEMONIC_SYSTEM_MIN_ARC_SEGMENT : String
+          {static} + MNEMONIC_SYSTEM_MIN_TIME_SEGMENT : String
+          {static} + MNEMONIC_SYSTEM_IGNORE_CR : String
+          {static} + MNEMONIC_SYSTEM_ENABLE_ECHO : String
+          {static} + MNEMONIC_SYSTEM_ENABLE_XON : String
+          {static} + MNEMONIC_SYSTEM_QUEUE_REPORTS : String
+          {static} + MNEMONIC_SYSTEM_ENABLE_JSON_MODE : String
+          {static} + MNEMONIC_SYSTEM_JSON_VEBORSITY : String
+          {static} + MNEMONIC_SYSTEM_TEXT_VERBOSITY : String
+          {static} + MNEMONIC_SYSTEM_STATUS_REPORT_INTERVAL : String
+          {static} + MNEMONIC_SYSTEM_BAUDRATE : String
+          {static} + MNEMONIC_SYSTEM_LAST_MESSAGE : String
+          {static} + MNEMONIC_SYSTEM_EXPAND_LF_TO_CRLF_ON_TX : String
+          {static} + MNEMONIC_SYSTEM_CHORDAL_TOLERANCE : String
+          {static} + MNEMONIC_SYSTEM_TINYG_ID_VERSION : String
+          {static} + MNEMONIC_STATUS_REPORT_TINYG_DISTANCE_MODE : String
+          {static} + MNEMONIC_SYSTEM_REPORT_RX_BUFFER : String
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.tinyg {
+      class QueueReport {
+          {static} - logger : Logger
+          - availableBufferSize : int
+          - added : int
+          - removed : int
+          + QueueReport()
+          ~ parse()
+          + getAdded()
+          + setAdded()
+          + getRemoved()
+          - setRemoved()
+          + getAvailableBufferSize()
+          - setAvailableBufferSize()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.tinyg {
+      class ResponseCommand {
+          {static} - logger : Logger
+          - settingParent : String
+          - settingKey : String
+          - settingValue : String
+          + ResponseCommand()
+          + ResponseCommand()
+          + getSettingParent()
+          ~ setSettingParent()
+          + getSettingKey()
+          ~ setSettingKey()
+          + getSettingValue()
+          + setSettingValue()
+          + buildJsonObject()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.tinyg {
+      class ResponseFooter {
+          {static} - logger : Logger
+          - protocolVersion : int
+          {static} - statusCode : int
+          {static} - rxRecvd : int
+          {static} - checkSum : long
+          + ResponseFooter()
+          ~ getRxRecvd()
+          ~ getCheckSum()
+          ~ setProtocolVersion()
+          ~ setStatusCode()
+          ~ setRxRecvd()
+          ~ setCheckSum()
+          ~ getProtocolVersion()
+          ~ getBufferAvailable()
+          {static} ~ getStatusCode()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.tinyg {
+      class ResponseParser {
+          {static} - logger : Logger
+          {static} - FOOTER_ELEMENT_PROTOCOL_VERSION : int
+          {static} - FOOTER_ELEMENT_STATUS_CODE : int
+          {static} - FOOTER_ELEMENT_RX_RECVD : int
+          {static} - FOOTER_ELEMENT_CHECKSUM : int
+          - message : String[]
+          - line : String
+          - textMode : boolean
+          - RUN : boolean
+          + ResponseParser()
+          - isTextMode()
+          - setTextMode()
+          + run()
+          - isJsonObject()
+          - applySettingMasterGroup()
+          - applySettingStatusReport()
+          + setHasChanged()
+          - applySetting()
+          - applySettings()
+          + applySettings()
+          - parseFooter()
+          - parseJSON()
+          - doEmergencyShutdown()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.tinyg {
+      class TinygDriver {
+          {static} - logger : Logger
+          {static} + MAX_BUFFER : int
+          {static} - instance : TinygDriver
+          - connectionSemaphore : AtomicBoolean
+          {static} - writerQueue : ArrayBlockingQueue<GcodeLine[]>
+          {static} - jsonQueue : ArrayBlockingQueue<String>
+          {static} - responseQueue : ArrayBlockingQueue<byte[]>
+          - connectionStatus : SimpleBooleanProperty
+          - connections : ArrayList<String>
+          - message : String[]
+          - paused : boolean
+          - timedout : boolean
+          - TinygDriver()
+          {static} + getInstance()
+          + getSerialWriter()
+          + getHardwarePlatformManager()
+          + getResponseParser()
+          + getCommandManager()
+          + getMnemonicManager()
+          + getQueryReport()
+          + getMachine()
+          {static} + getJsonQueue()
+          + getConnectionStatus()
+          + getAsyncTimer()
+          + setAsyncTimer()
+          + getConnectionSemaphore()
+          + isTimedout()
+          + setTimedout()
+          + notifyBuildChanged()
+          + sendReconnectRequest()
+          + sendDisconnectRequest()
+          + queryHardwareSingleAxisSettings()
+          + queryHardwareSingleAxisSettings()
+          + applyHardwareAxisSettings()
+          + applyHardwareMotorSettings()
+          + applyHardwareAxisSettings()
+          + getMotorSettings()
+          + applyResponseCommand()
+          + applyHardwareMotorSettings()
+          + queryHardwareSingleMotorSettings()
+          + addObserver()
+          + appendJsonQueue()
+          + appendResponseQueue()
+          + isPaused()
+          + setPaused()
+          + setConnected()
+          + initialize()
+          + disconnect()
+          + isConnected()
+          + write()
+          + priorityWrite()
+          + priorityWrite()
+          + listSerialPorts()
+          + getPortName()
+          + getInternalAllAxis()
+      }
+    }
+  }
+
+
+  CommandManager o-- TinygDriver : driver
+  ResponseParser -up-|> Runnable
+  ResponseParser -up-|> Observable
+  ResponseParser o-- TinygDriver : driver
+  ResponseParser o-- ResponseFooter : responseFooter
+  TinygDriver -up-|> Observable
+  TinygDriver o-- SerialDriver : serialDriver
+  TinygDriver o-- HardwarePlatformManager : hardwarePlatformManager
+  TinygDriver o-- ResponseParser : responseParser
+  TinygDriver o-- SerialWriter : serialWriter
+  TinygDriver o-- MnemonicManager : mnemonicManager
+  TinygDriver o-- CommandManager : commandManager
+  TinygDriver o-- QueueReport : queueReport
+  TinygDriver o-- Machine : machine
+  TinygDriver o-- AsyncTimer : connectionTimer
+
+
+'-------------------
+' UI Firmware
+'-------------------
+
+  package tgfx {
+    package tgfx.ui.firmware {
+      class FirmwareUpdaterController {
+          {static} - logger : Logger
+          {static} - DRIVER : TinygDriver
+          {static} - MACHINE : Machine
+          {static} - firmwareVersion : Label
+          - hwVersion : Label
+          - buildNumb : Label
+          - hardwareId : Label
+          - latestFirmwareBuild : Label
+          - currentFirmwareVersionLabel : Label
+          {static} - handleUpdateFirmware : Button
+          {static} - avrdudePath : String
+          {static} - avrconfigPath : String
+          - _currentVersionString : SimpleDoubleProperty
+          {static} ~ platformSetup : HashMap<String, String>
+          {static} - updateFirmware()
+          {static} - toggleUpdateFirmwareButton()
+          {static} + handleUpdateFirmware()
+          - checkFirmwareUpdate()
+          + initialize()
+          {static} - enterBootloaderMode()
+      }
+    }
+  }
+
+
+  FirmwareUpdaterController -up-|> Initializable
+
+
+'-------------------
+' UI gcode
+'-------------------
+
+  package tgfx {
+    package tgfx.ui.gcode {
+      class GcodeHistory {
+          {static} - logger : Logger
+          - commandHistory : ArrayList<String>
+          - commandIndex : int
+          + GcodeHistory()
+          + addCommandToHistory()
+          + clearCommandHistory()
+          + getNextHistoryCommand()
+          + getPreviousHistoryCommand()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.ui.gcode {
+      class GcodeLine {
+          {static} - logger : Logger
+          - codeLine : SimpleStringProperty
+          - gcodeLineNumber : int
+          ~ GcodeLine()
+          + getGcodeLineNumber()
+          + getCodeLine()
+          + getGcodeLineJsonified()
+      }
+    }
+  }
+
+
+  package tgfx {
+    package tgfx.ui.gcode {
+      class GcodeTabController {
+          {static} - logger : Logger
+          {static} - BAD_BYTES : byte[]
+          {static} - TRAVERSE_FEED_RATE : double
+          {static} - NUDGE_FEED_RATE : double
+          - feedRatePercentage : double
+          - timeStartDt : Date
+          - totalGcodeLines : int
+          - buildDate : String
+          - buildNumber : int
+          - scaleAmount : double
+          - jogDial : double
+          - zScale : float
+          - taskActive : boolean
+          - isKeyPressed : boolean
+          - isSendingFile : SimpleBooleanProperty
+          - cncMachineVisible : SimpleBooleanProperty
+          - gcodeStatusMessageValue : SimpleStringProperty
+          - gcodeStatusMessageVisible : SimpleBooleanProperty
+          - timeElapsed : SimpleStringProperty
+          - timeLeft : SimpleStringProperty
+          - xPosition : SimpleStringProperty
+          - yPosition : SimpleStringProperty
+          - data : ObservableList<GcodeLine>
+          - gcodeTabHbox : HBox
+          - gcodeView : TableView<GcodeLine>
+          - gcodeCol : TableColumn<GcodeLine, String>
+          - pauseResumeBtn : Button
+          - gcodePane : StackPane
+          - coordLocationGridPane : GridPane
+          - timeElapsedTxt : Text
+          - timeLeftTxt : Text
+          - xAxisLocationTxt : Text
+          - yAxisLocationTxt : Text
+          - gcodeStatusMessageTxt : Text
+          - lcdGauges : VBox
+          - xLcd : Gauge
+          - yLcd : Gauge
+          - zLcd : Gauge
+          - aLcd : Gauge
+          - velLcd : Gauge
+          - handleHomeXYZ()
+          - handleHomeAxisClick()
+          - handleZeroAxisClick()
+          - handleDroMouseClick()
+          - handleZeroSystem()
+          - handlePauseResume()
+          - handleClearScreen()
+          - handleReset()
+          - handleStop()
+          - handleOpenFile()
+          - handleRunFile()
+          + initialize()
+          - getLcdByAxisName()
+          - fileSenderTask()
+          + getCncMachinePane()
+          - isTaskActive()
+          + setTaskActive()
+          + isSendingFile()
+          + setGcodeText()
+          + hideGcodeText()
+          + drawCanvasUpdate()
+          - drawTable()
+          - normalizeGcodeLine()
+          - handleMaxHeightChange()
+          - handleMaxWidthChange()
+          - getScale()
+          + setCNCMachineVisible()
+          + setIsFileSending()
+          + updateProgress()
+      }
+    }
+  }
+
+
+  GcodeTabController -up-|> Initializable
+  GcodeTabController o-- TinygDriver : DRIVER
+  GcodeTabController o-- Machine : machine
+  GcodeTabController o-- SerialWriter : serialWriter
+  GcodeTabController o-- CommandManager : commandManager
+  GcodeTabController o-- CNCMachinePane : cncMachinePane
+
+
+
+'-------------------
+' UI MACHINESETTINGS
+'-------------------
+
+
+  package tgfx {
+    package tgfx.ui.machinesettings {
+      class MachineSettingsController {
+          {static} - logger : Logger
+          - decimalFormat : DecimalFormat
+          - configsListView : ListView<String>
+          - machineSwitchType : ChoiceBox
+          - machineUnitMode : ChoiceBox
+          - loadButton : Button
+          - configProgress : ProgressBar
+          + updateGuiMachineSettings()
+          + initialize()
+          - populateConfigFiles()
+          - handleSaveCurrentSettings()
+          - handleImportConfig()
+          - writeConfigValue()
+          - getElementCount()
+          - handleLoadConfig()
+          - handleApplyMachineSettings()
+          - handleQueryMachineSettings()
+          ~ handleApplyDefaultSettings()
+          - checkConectedMessage()
+      }
+    }
+  }
+
+
+  MachineSettingsController -up-|> Initializable
+
+
+
+'-------------------
+' UI TgFXSettings
+'-------------------
+
+  package tgfx {
+    package tgfx.ui.tgfxsettings {
+      class TgfxSettingsController {
+          {static} - logger : Logger
+          {static} - drawPreview : boolean
+          - tgfxBuildNumber : Label
+          - tgfxBuildDate : Label
+          - tgfxVersion : Label
+          - settingDrawBtn : ToggleButton
+          {static} + settingDebugBtn : ToggleButton
+          - handleTogglePreview()
+          {static} + isDrawPreview()
+          - setDrawPreview()
+          + initialize()
+      }
+    }
+  }
+
+
+  TgfxSettingsController -up-|> Initializable
+
+
+'-------------------
+' UI TINYGCONFIG
+'-------------------
+
+  package tgfx {
+    package tgfx.ui.tinygconfig {
+      class TinyGConfigController {
+          {static} - logger : Logger
+          {static} - DRIVER : TinygDriver
+          {static} - decimalFormat : DecimalFormat
+          - axisTabPane : TabPane
+          - motorTabPane : TabPane
+          - motor1ConfigTravelPerRev : TextField
+          - motor2ConfigTravelPerRev : TextField
+          - motor3ConfigTravelPerRev : TextField
+          - motor4ConfigTravelPerRev : TextField
+          - motor1ConfigStepAngle : TextField
+          - motor2ConfigStepAngle : TextField
+          - motor3ConfigStepAngle : TextField
+          - motor4ConfigStepAngle : TextField
+          - axisAmode : ChoiceBox
+          - axisBmode : ChoiceBox
+          - axisCmode : ChoiceBox
+          - axisXmode : ChoiceBox
+          - axisYmode : ChoiceBox
+          - axisZmode : ChoiceBox
+          - axisAswitchModeMin : ChoiceBox
+          - axisAswitchModeMax : ChoiceBox
+          - axisBswitchModeMin : ChoiceBox
+          - axisBswitchModeMax : ChoiceBox
+          - axisCswitchModeMin : ChoiceBox
+          - axisCswitchModeMax : ChoiceBox
+          - axisXswitchModeMin : ChoiceBox
+          - axisXswitchModeMax : ChoiceBox
+          - axisYswitchModeMin : ChoiceBox
+          - axisYswitchModeMax : ChoiceBox
+          - axisZswitchModeMin : ChoiceBox
+          - axisZswitchModeMax : ChoiceBox
+          - axisAmaxFeedRate : TextField
+          - axisBmaxFeedRate : TextField
+          - axisCmaxFeedRate : TextField
+          - axisXmaxFeedRate : TextField
+          - axisYmaxFeedRate : TextField
+          - axisZmaxFeedRate : TextField
+          - axisAmaxTravel : TextField
+          - axisBmaxTravel : TextField
+          - axisCmaxTravel : TextField
+          - axisXmaxTravel : TextField
+          - axisYmaxTravel : TextField
+          - axisZmaxTravel : TextField
+          - axisAjunctionDeviation : TextField
+          - axisBjunctionDeviation : TextField
+          - axisCjunctionDeviation : TextField
+          - axisXjunctionDeviation : TextField
+          - axisYjunctionDeviation : TextField
+          - axisZjunctionDeviation : TextField
+          - axisAsearchVelocity : TextField
+          - axisBsearchVelocity : TextField
+          - axisCsearchVelocity : TextField
+          - axisXsearchVelocity : TextField
+          - axisYsearchVelocity : TextField
+          - axisZsearchVelocity : TextField
+          - axisAzeroBackoff : TextField
+          - axisBzeroBackoff : TextField
+          - axisCzeroBackoff : TextField
+          - axisXzeroBackoff : TextField
+          - axisYzeroBackoff : TextField
+          - axisZzeroBackoff : TextField
+          - axisAmaxVelocity : TextField
+          - axisBmaxVelocity : TextField
+          - axisCmaxVelocity : TextField
+          - axisXmaxVelocity : TextField
+          - axisYmaxVelocity : TextField
+          - axisZmaxVelocity : TextField
+          - axisAmaxJerk : TextField
+          - axisBmaxJerk : TextField
+          - axisCmaxJerk : TextField
+          - axisXmaxJerk : TextField
+          - axisYmaxJerk : TextField
+          - axisZmaxJerk : TextField
+          - axisAradius : TextField
+          - axisBradius : TextField
+          - axisCradius : TextField
+          - axisAlatchVelocity : TextField
+          - axisBlatchVelocity : TextField
+          - axisClatchVelocity : TextField
+          - axisXlatchVelocity : TextField
+          - axisYlatchVelocity : TextField
+          - axisZlatchVelocity : TextField
+          - axisXlatchBackoff : TextField
+          - axisYlatchBackoff : TextField
+          - axisZlatchBackoff : TextField
+          - axisAlatchBackoff : TextField
+          - axisBlatchBackoff : TextField
+          - axisClatchBackoff : TextField
+          - motor1ConfigMapAxis : ChoiceBox
+          - motor2ConfigMapAxis : ChoiceBox
+          - motor3ConfigMapAxis : ChoiceBox
+          - motor4ConfigMapAxis : ChoiceBox
+          - motor1ConfigMicroSteps : ChoiceBox
+          - motor2ConfigMicroSteps : ChoiceBox
+          - motor3ConfigMicroSteps : ChoiceBox
+          - motor4ConfigMicroSteps : ChoiceBox
+          - motor1ConfigPolarity : ChoiceBox
+          - motor2ConfigPolarity : ChoiceBox
+          - motor3ConfigPolarity : ChoiceBox
+          - motor4ConfigPolarity : ChoiceBox
+          - motor1ConfigPowerMode : ChoiceBox
+          - motor2ConfigPowerMode : ChoiceBox
+          - motor3ConfigPowerMode : ChoiceBox
+          - motor4ConfigPowerMode : ChoiceBox
+          + initialize()
+          - handleEnableAllAxis()
+          - handleInhibitAllAxis()
+          - handleAxisEnter()
+          - handleAxisQuerySettings()
+          - handleAxisApplySettings()
+          + updateGuiAxisSettings()
+          - _updateGuiAxisSettings()
+          - _updateGuiAxisSettings()
+          - handleMotorEnter()
+          - handleMotorQuerySettings()
+          - handleMotorApplySettings()
+          + updateGuiMotorSettings()
+          - _updateGuiMotorSettings()
+      }
+    }
+  }
+
+
+  TinyGConfigController -up-|> Initializable
+
+
+@enduml

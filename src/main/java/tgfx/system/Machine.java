@@ -17,7 +17,7 @@ import org.json.JSONException;
 import tgfx.hardwarePlatforms.HardwarePlatform;
 import tgfx.tinyg.ResponseCommand;
 
-import static tgfx.tinyg.Mnemonics.*;
+import static tgfx.tinyg.MnemonicConstants.*;
 
 /**
  * Machine
@@ -28,47 +28,47 @@ import static tgfx.tinyg.Mnemonics.*;
 public final class Machine {
     private static final Logger logger = LogManager.getLogger();
 
-    private CoordinateManager coordinateManager = new CoordinateManager();
-    private HardwarePlatform hardwarePlatform = new HardwarePlatform();
+    private CoordinateManager coordinateManager;
+    private HardwarePlatform hardwarePlatform;
 
     //TG Specific Machine EEPROM Values binding
-    private SimpleStringProperty hardwareId = new SimpleStringProperty("");
-    private SimpleStringProperty hardwareVersion = new SimpleStringProperty("");
-    private SimpleStringProperty firmwareVersion = new SimpleStringProperty("");
-    private SimpleDoubleProperty firmwareBuild = new SimpleDoubleProperty(0.0);
-    private SimpleStringProperty coordinateSystem = new SimpleStringProperty();
-    private SimpleStringProperty machineState = new SimpleStringProperty();
-    private SimpleStringProperty motionMode = new SimpleStringProperty();
-    private SimpleStringProperty gcodeUnitMode = new SimpleStringProperty("");
+    private SimpleStringProperty hardwareId;
+    private SimpleStringProperty hardwareVersion;
+    private SimpleStringProperty firmwareVersion;
+    private SimpleDoubleProperty firmwareBuild;
+    private SimpleStringProperty coordinateSystem;
+    private SimpleStringProperty machineState;
+    private SimpleStringProperty motionMode;
+    private SimpleStringProperty gcodeUnitMode;
 
-    private SimpleDoubleProperty longestTravelAxisValue = new SimpleDoubleProperty();
-    private SimpleIntegerProperty xjoggingIncrement = new SimpleIntegerProperty();
-    private SimpleIntegerProperty yjoggingIncrement = new SimpleIntegerProperty();
-    private SimpleIntegerProperty zjoggingIncrement = new SimpleIntegerProperty();
-    private SimpleIntegerProperty ajoggingIncrement = new SimpleIntegerProperty();
-    private SimpleIntegerProperty lineNumber = new SimpleIntegerProperty(0);
+    private SimpleDoubleProperty longestTravelAxisValue;
+    private SimpleIntegerProperty xjoggingIncrement;
+    private SimpleIntegerProperty yjoggingIncrement;
+    private SimpleIntegerProperty zjoggingIncrement;
+    private SimpleIntegerProperty ajoggingIncrement;
+    private SimpleIntegerProperty lineNumber;
 
-    private SimpleDoubleProperty gcodeUnitDivision = new SimpleDoubleProperty(1);
-    private SimpleDoubleProperty velocity = new SimpleDoubleProperty();
+    private SimpleDoubleProperty gcodeUnitDivision;
+    private SimpleDoubleProperty velocity;
 
-    private final List<Motor> motors = new ArrayList<>();
-    private final List<Axis> axis = new ArrayList<>();
+    private final List<Motor> motors;
+    private final List<Axis> axis;
 
-    private List<CoordinateSystem> gcodeCoordinateSystems = new ArrayList<>();
+    private List<CoordinateSystem> gcodeCoordinateSystems;
 
     private GcodeUnitMode gcodeStartupUnits;
     private GcodeSelectPlane gcodeSelectPlane;
     private CoordinateSystem gcodeCoordinateSystem;
     private GcodePathControl gcodePathControl;
-    private GcodeDistanceMode gcodeDistanceMode = GcodeDistanceMode.ABSOLUTE;
+    private GcodeDistanceMode gcodeDistanceMode;
 
-    private String lastMessage = "";
+    private String lastMessage;
     private String machineName;
     private double minSegmentTime;
     private float junctionAcceleration;
     private float minLineSegment;
     private float minArcSegment;
-    private int switchType = 0; //0=normally closed 1 = normally open
+    private int switchType;
     private int statusReportInterval;
     private boolean enableAcceleration;
     private boolean enableCrOnTx;
@@ -82,11 +82,13 @@ public final class Machine {
      * machine constructor
      */
     public Machine() {
+        motors = new ArrayList<>();
         motors.add(new Motor(1));
         motors.add(new Motor(2));
         motors.add(new Motor(3));
         motors.add(new Motor(4));
 
+        axis = new ArrayList<>();
         axis.add(new Axis(AxisName.X, AxisType.LINEAR, AxisMode.STANDARD));
         axis.add(new Axis(AxisName.Y, AxisType.LINEAR, AxisMode.STANDARD));
         axis.add(new Axis(AxisName.Z, AxisType.LINEAR, AxisMode.STANDARD));
@@ -95,9 +97,31 @@ public final class Machine {
         axis.add(new Axis(AxisName.C, AxisType.ROTATIONAL, AxisMode.STANDARD));
 
         setMotionMode(0);
+        xjoggingIncrement = new SimpleIntegerProperty();
         xjoggingIncrement.bind(getAxisByName("X").travelMaximumProperty());
+        yjoggingIncrement = new SimpleIntegerProperty();
         yjoggingIncrement.bind(getAxisByName("Y").travelMaximumProperty());
+        zjoggingIncrement = new SimpleIntegerProperty();
         zjoggingIncrement.bind(getAxisByName("Z").travelMaximumProperty());
+        coordinateManager = new CoordinateManager();
+        hardwarePlatform = new HardwarePlatform();
+        hardwareId = new SimpleStringProperty("");
+        hardwareVersion = new SimpleStringProperty("");
+        firmwareVersion = new SimpleStringProperty("");
+        firmwareBuild = new SimpleDoubleProperty(0.0);
+        coordinateSystem = new SimpleStringProperty();
+        machineState = new SimpleStringProperty();
+        motionMode = new SimpleStringProperty();
+        gcodeUnitMode = new SimpleStringProperty("");
+        longestTravelAxisValue = new SimpleDoubleProperty();
+        ajoggingIncrement = new SimpleIntegerProperty();
+        lineNumber = new SimpleIntegerProperty(0);
+        gcodeUnitDivision = new SimpleDoubleProperty(1);
+        velocity = new SimpleDoubleProperty();
+        gcodeCoordinateSystems = new ArrayList<>();
+        gcodeDistanceMode = GcodeDistanceMode.ABSOLUTE;
+        switchType = 0;
+        lastMessage = "";
     }
 
 
@@ -895,7 +919,7 @@ public final class Machine {
      * @return number motors
      */
     public int getNumberOfMotors() {
-        return this.getMotors().size();
+        return getMotors().size();
     }
 
 

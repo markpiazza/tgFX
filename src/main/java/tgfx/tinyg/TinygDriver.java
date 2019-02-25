@@ -16,6 +16,7 @@ import org.json.JSONException;
 import tgfx.MainController;
 import tgfx.SerialDriver;
 import tgfx.SerialWriter;
+import tgfx.TgFXConstants;
 import tgfx.system.enums.AxisType;
 import tgfx.ui.gcode.GcodeLine;
 import tgfx.system.Axis;
@@ -24,8 +25,8 @@ import tgfx.system.Motor;
 import tgfx.hardwarePlatforms.HardwarePlatformManager;
 import tgfx.utility.AsyncTimer;
 
-import static tgfx.tinyg.Commands.*;
-import static tgfx.tinyg.Mnemonics.*;
+import static tgfx.tinyg.CommandConstants.*;
+import static tgfx.tinyg.MnemonicConstants.*;
 
 /**
  * TinygDriver
@@ -34,7 +35,7 @@ import static tgfx.tinyg.Mnemonics.*;
 public class TinygDriver extends Observable {
     private static final Logger logger = LogManager.getLogger();
 
-    public final static int MAX_BUFFER = 1024;
+    final static int MAX_BUFFER = 1024;
 
     private static TinygDriver instance;
 
@@ -54,12 +55,13 @@ public class TinygDriver extends Observable {
     private static ArrayBlockingQueue<String> jsonQueue = new ArrayBlockingQueue<>(10000);
     private static ArrayBlockingQueue<byte[]> responseQueue = new ArrayBlockingQueue<>(30);
 
-    private SimpleBooleanProperty connectionStatus = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty connectionStatus;
 
-    private ArrayList<String> connections = new ArrayList<>();
     private String[] message = new String[2];
     private boolean paused = false;
     private boolean timedout = false;
+
+    public static final String X="x", Y="y", Z="z", A="a", B="b", C="c";
 
 
     /**
@@ -75,6 +77,8 @@ public class TinygDriver extends Observable {
         mnemonicManager = new MnemonicManager();
         queueReport = new QueueReport();
         machine = new Machine();
+
+        connectionStatus = new SimpleBooleanProperty(false);
     }
 
 
@@ -106,6 +110,7 @@ public class TinygDriver extends Observable {
     public HardwarePlatformManager getHardwarePlatformManager() {
         return hardwarePlatformManager;
     }
+
 
     /**
      * get response parser
@@ -159,6 +164,7 @@ public class TinygDriver extends Observable {
     public static ArrayBlockingQueue<String> getJsonQueue() {
         return jsonQueue;
     }
+
 
     /**
      * get the connection status
@@ -225,14 +231,14 @@ public class TinygDriver extends Observable {
             // too old of a build  we need to tell the GUI about this...
             // This is where PUB/SUB will fix this
             // bad way of alerting the gui about model changes.
-            message[0] = "BUILD_ERROR";
+            message[0] = TgFXConstants.ROUTING_BUILD_ERROR;
             message[1] = Double.toString(machine.getFirmwareBuild());
             setChanged();
             notifyObservers(message);
             logger.debug("Build Version: " + machine.getFirmwareBuild() + " is NOT OK");
         } else if(machine.getFirmwareBuild() != 0.0){
             logger.debug("Build Version: " + machine.getFirmwareBuild() + " is OK");
-            message[0] = "BUILD_OK";
+            message[0] = TgFXConstants.ROUTING_BUILD_OK;
             message[1] = null;
             setChanged();
             notifyObservers(message);
@@ -246,7 +252,7 @@ public class TinygDriver extends Observable {
     public void sendReconnectRequest(){
         MainController.postConsoleMessage("Attempting to reconnect to TinyG...");
         logger.info("Reconnect Request Sent.");
-        message[0] = "RECONNECT";
+        message[0] = TgFXConstants.ROUTING_RECONNECT;
         message[1] = null;
         setChanged();
         notifyObservers(message);
@@ -258,7 +264,7 @@ public class TinygDriver extends Observable {
      */
     public void sendDisconnectRequest(){
         logger.info("Disconnect Request Sent.");
-        message[0] = "DISCONNECT";
+        message[0] = TgFXConstants.ROUTING_DISCONNECT;
         message[1] = null;
         setChanged();
         notifyObservers(message);
@@ -281,22 +287,22 @@ public class TinygDriver extends Observable {
     public void queryHardwareSingleAxisSettings(String axis) {
         String command = null;
         switch (axis.toLowerCase()) {
-            case "x":
+            case X:
                 command = CMD_QUERY_AXIS_X;
                 break;
-            case "y":
+            case Y:
                 command = CMD_QUERY_AXIS_Y;
                 break;
-            case "z":
+            case Z:
                 command = CMD_QUERY_AXIS_Z;
                 break;
-            case "a":
+            case A:
                 command = CMD_QUERY_AXIS_A;
                 break;
-            case "b":
+            case B:
                 command = CMD_QUERY_AXIS_B;
                 break;
-            case "c":
+            case C:
                 command = CMD_QUERY_AXIS_C;
                 break;
         }
@@ -304,6 +310,7 @@ public class TinygDriver extends Observable {
             serialDriver.write(command);
         }
     }
+
 
 
     /**
@@ -555,22 +562,22 @@ public class TinygDriver extends Observable {
                 if (choiceBox.getId().contains("MapAxis")) {
                     int mapAxis;
                     switch (choiceBox.getSelectionModel().getSelectedItem().toString()) {
-                        case "X":
+                        case X:
                             mapAxis = 0;
                             break;
-                        case "Y":
+                        case Y:
                             mapAxis = 1;
                             break;
-                        case "Z":
+                        case Z:
                             mapAxis = 2;
                             break;
-                        case "A":
+                        case A:
                             mapAxis = 3;
                             break;
-                        case "B":
+                        case B:
                             mapAxis = 4;
                             break;
-                        case "C":
+                        case C:
                             mapAxis = 5;
                             break;
                         default:
@@ -678,7 +685,7 @@ public class TinygDriver extends Observable {
     public synchronized void appendResponseQueue(byte[] queue) {
         // Add byte arrays to the buffer responseQueue from tinyG's responses.
         try {
-            TinygDriver.responseQueue.put(queue);
+            responseQueue.put(queue);
         } catch (InterruptedException e) {
             logger.error("ERROR appending to the Response Queue");
         }
@@ -759,7 +766,7 @@ public class TinygDriver extends Observable {
      * @param msg message to write
      */
     public synchronized void write(String msg) {
-        getSerialWriter().addCommandToBuffer(msg);
+        serialWriter.addCommandToBuffer(msg);
     }
 
 
@@ -813,6 +820,5 @@ public class TinygDriver extends Observable {
     public List<Axis> getInternalAllAxis() {
         return machine.getAllAxis();
     }
-
 
 }

@@ -27,7 +27,7 @@ import tgfx.system.Machine;
 import tgfx.tinyg.*;
 import tgfx.utility.UtilityFunctions;
 
-import static tgfx.tinyg.Commands.CMD_APPLY_BOOTLOADER_MODE;
+import static tgfx.tinyg.CommandConstants.CMD_APPLY_BOOTLOADER_MODE;
 
 /**
  * FirmwareUpdaterController

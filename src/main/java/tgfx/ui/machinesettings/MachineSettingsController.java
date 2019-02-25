@@ -29,7 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import org.json.JSONException;
 
-import static tgfx.tinyg.Commands.CMD_APPLY_DEFAULT_SETTINGS;
+import static tgfx.tinyg.CommandConstants.CMD_APPLY_DEFAULT_SETTINGS;
 
 /**
  * MachineSettingsController

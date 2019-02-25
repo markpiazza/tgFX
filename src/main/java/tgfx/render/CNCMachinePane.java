@@ -27,7 +27,7 @@ import tgfx.system.enums.GcodeUnitMode;
 import tgfx.tinyg.TinygDriver;
 
 import static javafx.scene.paint.Color.RED;
-import static tgfx.tinyg.Commands.*;
+import static tgfx.tinyg.CommandConstants.*;
 
 /**
  * CNCMachinePane

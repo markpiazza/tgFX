@@ -10,7 +10,7 @@ import javafx.application.Platform;
 import jfxtras.labs.dialogs.MonologFX;
 import jfxtras.labs.dialogs.MonologFXButton;
 
-import static tgfx.tinyg.Mnemonics.*;
+import static tgfx.tinyg.MnemonicConstants.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
