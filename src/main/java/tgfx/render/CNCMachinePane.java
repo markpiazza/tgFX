@@ -22,11 +22,13 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tgfx.MainController;
+import tgfx.TgFXConstants;
 import tgfx.system.Machine;
 import tgfx.system.enums.GcodeUnitMode;
 import tgfx.tinyg.TinygDriver;
 
 import static javafx.scene.paint.Color.RED;
+import static tgfx.TgFXConstants.*;
 import static tgfx.tinyg.CommandConstants.*;
 
 /**
@@ -130,13 +132,13 @@ public class CNCMachinePane extends Pane {
         maxWidthProperty().bind(MACHINE.getAxisByName("x").travelMaximumProperty()
                 .multiply(MACHINE.getGcodeUnitDivision()));
 
-        cursorPoint.translateYProperty().bind(
-                heightProperty().subtract(MACHINE.getAxisByName("y").machinePositionProperty()));
-        cursorPoint.layoutXProperty().bind(
-                MACHINE.getAxisByName("x").machinePositionProperty());
+        cursorPoint.translateYProperty()
+                .bind(heightProperty().subtract(MACHINE.getAxisByName("y").machinePositionProperty()));
+        cursorPoint.layoutXProperty()
+                .bind(MACHINE.getAxisByName("x").machinePositionProperty());
 
-        cncHeight.bind(this.heightProperty());
-        cncWidth.bind(this.widthProperty());
+        cncHeight.bind(heightProperty());
+        cncWidth.bind(widthProperty());
 
         //When the x or y pos changes we see if we want to show or hide the cursor
         cursorPoint.layoutXProperty().addListener(posChangeListener);
@@ -252,8 +254,11 @@ public class CNCMachinePane extends Pane {
     public void clearScreen() {
         logger.info("screen clear triggered CNCMachinePane layout setup");
         this.getChildren().clear();
-        draw2d.setFirstDraw(true);  //We don't want to draw a line from where the previous point was when a clear screen is called.
-        setupLayout();  //re-draw the needed elements.
+        // We don't want to draw a line from where the
+        // previous point was when a clear screen is called.
+        draw2d.setFirstDraw(true);
+        // re-draw the needed elements.
+        setupLayout();
     }
 
 
@@ -281,8 +286,8 @@ public class CNCMachinePane extends Pane {
 //        double newY = unitMagnification * (MACHINE.getAxisByName("Y").getWorkPosition().get() + 80);
 
         //FIXME: copied from below, seems to work better than above, but still not quite right
-        double newX = MACHINE.getAxisByName("x").machinePositionProperty().get() * 2;
-        double newY = this.getHeight() - MACHINE.getAxisByName("y").machinePositionProperty().get() * 2;
+        double newX = MACHINE.getAxisByName(X).machinePositionProperty().get();
+        double newY = this.getHeight() - MACHINE.getAxisByName(Y).machinePositionProperty().get();
 
         if (newX > getGcodePane().getWidth() || newX > getGcodePane().getWidth()) {
             scale = scale / 2;
