@@ -243,10 +243,8 @@ public class Motor {
 
     public void applyJsonSystemSetting(JSONObject js, String parent) {
         logger.info("Applying JSON Object to " + parent + " Group");
-        Iterator<String> ii = js.keySet().iterator();
         try {
-            while (ii.hasNext()) {
-                String key = ii.next();
+            for( String key : js.keySet()){
                 String val = js.get(key).toString();
                 ResponseCommand rc = new ResponseCommand(parent, key, val);
                 applyJsonSystemSetting(rc);
@@ -260,36 +258,29 @@ public class Motor {
 
 
     private void applyJsonSystemSetting(ResponseCommand rc) {
-        Machine machine = TinygDriver.getInstance().getMachine();
-        Motor motor = machine.getMotorByNumber(Integer.valueOf(rc.getSettingParent()));
-        if(motor == null){
-            logger.error("Invalid Motor: {}", rc.getSettingParent());
-            return;
-        }
-
         switch (rc.getSettingKey()) {
             case MNEMONIC_MOTOR_MAP_AXIS:
-                motor.setMapToAxis(Integer.valueOf(rc.getSettingValue()));
+                setMapToAxis(Integer.valueOf(rc.getSettingValue()));
                 logMotorInfo("map axis", rc);
                 break;
             case MNEMONIC_MOTOR_MICROSTEPS:
-                motor.setMicrosteps(Integer.valueOf(rc.getSettingValue()));
+                setMicrosteps(Integer.valueOf(rc.getSettingValue()));
                 logMotorInfo("microsteps", rc);
                 break;
             case MNEMONIC_MOTOR_POLARITY:
-                motor.setPolarity(Integer.valueOf(rc.getSettingValue()));
+                setPolarity(Integer.valueOf(rc.getSettingValue()));
                 logMotorInfo("polarity", rc);
                 break;
             case MNEMONIC_MOTOR_POWER_MANAGEMENT:
-                motor.setPowerManagement(Integer.valueOf(rc.getSettingValue()));
+                setPowerManagement(Integer.valueOf(rc.getSettingValue()));
                 logMotorInfo("power management", rc);
                 break;
             case MNEMONIC_MOTOR_STEP_ANGLE:
-                motor.setStepAngle(Float.valueOf(rc.getSettingValue()));
+                setStepAngle(Float.valueOf(rc.getSettingValue()));
                 logMotorInfo("step angle", rc);
                 break;
             case MNEMONIC_MOTOR_TRAVEL_PER_REVOLUTION:
-                motor.setTravelPerRevolution(Float.valueOf(rc.getSettingValue()));
+                setTravelPerRevolution(Float.valueOf(rc.getSettingValue()));
                 logMotorInfo("travel per revolution", rc);
                 break;
             default:

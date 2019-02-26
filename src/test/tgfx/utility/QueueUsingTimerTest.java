@@ -5,8 +5,9 @@
 package tgfx.utility;
 
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,6 +19,8 @@ import org.junit.Test;
  * @author pfarrell
  */
 public class QueueUsingTimerTest implements QueuedTimerable<String> {
+    private final static Logger logger = LogManager.getLogger();
+
     static ArrayBlockingQueue<String> theQueue;
     private static final String SPECIAL_ENTRY = "**TIMER**";
     public QueueUsingTimerTest() {
@@ -61,7 +64,7 @@ public class QueueUsingTimerTest implements QueuedTimerable<String> {
                         break;
                     }
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(QueueUsingTimerTest.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                     break;
                 }
             }
@@ -76,7 +79,7 @@ public class QueueUsingTimerTest implements QueuedTimerable<String> {
             try {
                 Thread.sleep(1);
             } catch (InterruptedException ex) {
-                Logger.getLogger(TimerTest.class.getName()).log(Level.SEVERE, null, ex);
+                logger.info(ex);
             }
         }
         long stop = System.currentTimeMillis();

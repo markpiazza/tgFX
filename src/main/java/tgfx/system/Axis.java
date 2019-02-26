@@ -215,6 +215,7 @@ public final class Axis {
     /**
      * set travel max
      * @param travelMaximum travel max
+     * FIXME: this is the only place where machine is being used
      */
     private void setTravelMaximum(float travelMaximum) {
         //Stub to always track the largest travel axis
@@ -518,67 +519,62 @@ public final class Axis {
 
 
     private void applyJsonSystemSetting(ResponseCommand rc) {
-        Axis axis = TinygDriver.getInstance().getMachine().getAxisByName(rc.getSettingParent());
-        if(axis == null){
-            logger.error("Invalid Axis: {}", rc.getSettingParent());
-            return;
-        }
 
         switch (rc.getSettingKey()) {
             case MNEMONIC_AXIS_AXIS_MODE:
-                axis.setAxisMode(Double.valueOf(rc.getSettingValue()).intValue());
+                setAxisMode(Double.valueOf(rc.getSettingValue()).intValue());
                 logAxisInfo("axis mode", rc);
                 break;
             case MNEMONIC_AXIS_FEEDRATE_MAXIMUM:
-                axis.setFeedRateMaximum(Float.valueOf(rc.getSettingValue()));
+                setFeedRateMaximum(Float.valueOf(rc.getSettingValue()));
                 logAxisInfo("feed rate max", rc);
                 break;
             case MNEMONIC_AXIS_JERK_MAXIMUM:
-                axis.setJerkMaximum(Float.valueOf(rc.getSettingValue()));
+                setJerkMaximum(Float.valueOf(rc.getSettingValue()));
                 logAxisInfo("jerk max", rc);
                 break;
             case MNEMONIC_AXIS_JUNCTION_DEVIATION:
-                axis.setJunctionDeviation(Float.valueOf(rc.getSettingValue()));
+                setJunctionDeviation(Float.valueOf(rc.getSettingValue()));
                 logAxisInfo("junction deviation", rc);
                 break;
             case MNEMONIC_AXIS_LATCH_BACKOFF:
-                axis.setLatchBackoff(Float.valueOf(rc.getSettingValue()));
+                setLatchBackoff(Float.valueOf(rc.getSettingValue()));
                 logAxisInfo("latch backoff", rc);
                 break;
             case MNEMONIC_AXIS_LATCH_VELOCITY:
-                axis.setLatchVelocity(Float.valueOf(rc.getSettingValue()));
+                setLatchVelocity(Float.valueOf(rc.getSettingValue()));
                 logAxisInfo("latch velocity", rc);
                 break;
             case MNEMONIC_AXIS_MAX_SWITCH_MODE:
-                axis.setMaxSwitchMode(Integer.valueOf(rc.getSettingValue()));
+                setMaxSwitchMode(Integer.valueOf(rc.getSettingValue()));
                 logAxisInfo("max switch mode", rc);
                 break;
             case MNEMONIC_AXIS_MIN_SWITCH_MODE:
-                axis.setMinSwitchMode(Integer.valueOf(rc.getSettingValue()));
+                setMinSwitchMode(Integer.valueOf(rc.getSettingValue()));
                 logAxisInfo("min switch mode", rc);
                 break;
             case MNEMONIC_AXIS_RADIUS:
-                axis.setRadius(Float.valueOf(rc.getSettingValue()));
+                setRadius(Float.valueOf(rc.getSettingValue()));
                 logAxisInfo("radius", rc);
                 break;
             case MNEMONIC_AXIS_SEARCH_VELOCITY:
-                axis.setSearchVelocity(Float.valueOf(rc.getSettingValue()));
+                setSearchVelocity(Float.valueOf(rc.getSettingValue()));
                 logAxisInfo("search velocity", rc);
                 break;
             case MNEMONIC_AXIS_TRAVEL_MAXIMUM:
-                axis.setTravelMaximum(Float.valueOf(rc.getSettingValue()));
+                setTravelMaximum(Float.valueOf(rc.getSettingValue()));
                 logAxisInfo("travel max", rc);
                 break;
             case MNEMONIC_AXIS_VELOCITY_MAXIMUM:
-                axis.setVelocityMaximum(Float.valueOf(rc.getSettingValue()));
+                setVelocityMaximum(Float.valueOf(rc.getSettingValue()));
                 logAxisInfo("velocity max", rc);
                 break;
             case MNEMONIC_AXIS_ZERO_BACKOFF:
-                axis.setZeroBackoff(Float.valueOf(rc.getSettingValue()));
+                setZeroBackoff(Float.valueOf(rc.getSettingValue()));
                 logAxisInfo("zero backoff", rc);
                 break;
             case MNEMONIC_AXIS_JERK_HOMING:
-                axis.setJerkHomingMaximum(Double.valueOf(rc.getSettingValue()));
+                setJerkHomingMaximum(Double.valueOf(rc.getSettingValue()));
                 logAxisInfo("jerk homing max", rc);
                 break;
             default:
